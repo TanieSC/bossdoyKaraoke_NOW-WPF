@@ -24,7 +24,7 @@ using static bossdoyKaraoke_NOW.Enums.TreeViewRootItem;
 namespace bossdoyKaraoke_NOW.Media
 {
     public class SongsSource : ISongsSource
-    {
+    { //comment
         private static string _filePath = PlayerBase.FilePath; // Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\karaokeNow\";
         private static HashSet<string> _extensions = PlayerBase.Entensions; //new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".cdg", ".mp4", ".flv" };
         private string _extPattern = HashSetExtensionsToString(_extensions);
