@@ -122,12 +122,9 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                     case NewTask.ADD_TO_QUEUE:
                     case NewTask.ADD_TO_QUEUE_AS_NEXT:
                     case NewTask.REMOVE_FROM_QUEUE:
-                        var count = songsSource.SongsQueue.Count;
+                       // var count = songsSource.SongsQueue.Count;
                         var parent = itemsControl.Items[0] as ITreeViewModel;
-                        if (count > 1)
-                            parent.Title = duration; //"Song Queue (" + count + "-[" + duration + "])";
-                        else
-                            parent.Title = "Song Queue (Empty)";
+                        parent.Title = duration; //"Song Queue (" + count + "-[" + duration + "])";
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:
                     case NewTask.EMPTY_QUEUE_LIST:
