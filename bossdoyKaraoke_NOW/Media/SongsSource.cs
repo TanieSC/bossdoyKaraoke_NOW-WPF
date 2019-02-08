@@ -136,8 +136,11 @@ namespace bossdoyKaraoke_NOW.Media
                                     {
                                         for (int i = 0; i < _songsQueue.Count; i++)
                                         {
-                                            AddRemoveFromQueue(_songsQueue[i], true);
-                                            _songsQueue[i].Duration = _trackInfo.Duration;
+                                            if (i > 0)
+                                            {
+                                                AddRemoveFromQueue(_songsQueue[i], true);
+                                                _songsQueue[i].Duration = _trackInfo.Duration;
+                                            }
                                         }
                                     }
                                 }
@@ -374,7 +377,7 @@ namespace bossdoyKaraoke_NOW.Media
                     return;
                 }
 
-                if (_songsQueue != null && CurrentTask != NewTask.LOAD_QUEUE_SONGS)
+                if (CurrentTask != NewTask.LOAD_QUEUE_SONGS)
                 {
                     int count = _songsQueue.Count + 1;
                     sender.ID = count.ToString();
@@ -389,11 +392,6 @@ namespace bossdoyKaraoke_NOW.Media
                         _totalDuration += _trackInfo.Tags.duration;
                         _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
 
-                    }
-
-                    if (_songsQueue.Count <= 0)
-                    {
-                        _songQueueTitle =  "Song Queue (Empty)";
                     }
 
                     if (CurrentTask == NewTask.LOAD_QUEUE_SONGS && CurrentPlayState == PlayState.Stopped)
@@ -419,16 +417,10 @@ namespace bossdoyKaraoke_NOW.Media
 
                     }
 
-                    if (_songsQueue.Count <= 0)
-                    {
-                        _songQueueTitle = "Song Queue (Empty)";
-                    }
-
                     if (CurrentTask == NewTask.LOAD_QUEUE_SONGS && CurrentPlayState == PlayState.Stopped)
-                    {
+                    {       
                         _totalDuration += vlcTimeDuration;
                         _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
-
                     }
 
                     if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
@@ -441,6 +433,11 @@ namespace bossdoyKaraoke_NOW.Media
                     _trackInfo.FilePath = sender.FilePath;
                     _trackInfo.Tags = new TAG_INFO();
                     _trackInfo.Tags.duration = vlcTimeDuration;
+                }
+
+                if (_songsQueue.Count <= 0)
+                {
+                    _songQueueTitle = "Song Queue (Empty)";
                 }
             }
             else //Removing song from SongQueue
