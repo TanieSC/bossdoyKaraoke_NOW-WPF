@@ -144,8 +144,10 @@ namespace bossdoyKaraoke_NOW.Media
                                             }
                                         }
 
-                                        _isAddingToQueue = false;
-                                        PreProcessFiles(_songsQueue[0].FilePath);
+                                        //_isAddingToQueue = false;
+                                        //PreProcessFiles(_songsQueue[0].FilePath);
+                                        AddRemoveFromQueue(_songsQueue[0], true);
+                                        _songsQueue[0].Tags = _trackInfo.Tags;
                                     }
                                     else
                                     {
