@@ -140,7 +140,6 @@ namespace bossdoyKaraoke_NOW.Media
                                             {
                                                 AddRemoveFromQueue(_songsQueue[i], true);
                                                 _songsQueue[i].Duration = _trackInfo.Duration;
-                                                _songQueueTitle = "Song Queue (" + i + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
                                             }
                                         }
 
@@ -153,6 +152,7 @@ namespace bossdoyKaraoke_NOW.Media
                                     {
                                         _songQueueTitle = "Song Queue (Empty)";
                                     }
+
                                 }
 
                                 items = AddTreeViewItems(items, PackIconKind.Music, _songQueueTitle);//_songsQueue.Count > 0 ? "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])" : "Song Queue (Empty)");
@@ -406,7 +406,7 @@ namespace bossdoyKaraoke_NOW.Media
                     if (CurrentTask == NewTask.LOAD_QUEUE_SONGS && CurrentPlayState == PlayState.Stopped)
                     {
                         _totalDuration += _trackInfo.Tags.duration;
-                       // _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+                        // _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
                     }
 
                     if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
@@ -427,7 +427,7 @@ namespace bossdoyKaraoke_NOW.Media
                     }
 
                     if (CurrentTask == NewTask.LOAD_QUEUE_SONGS && CurrentPlayState == PlayState.Stopped)
-                    {       
+                    {
                         _totalDuration += vlcTimeDuration;
                         //_songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
                     }

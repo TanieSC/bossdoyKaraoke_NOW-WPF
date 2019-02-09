@@ -76,7 +76,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         public Vlc()
         {
-            _factory = new MediaPlayerFactory(true);
+            _factory = new MediaPlayerFactory();
             _player = _factory.CreatePlayer<IVideoPlayer>();
             _media_list = _factory.CreateMediaList<IMediaList>();
             _media_list_preview = _factory.CreateMediaList<IMediaList>();
