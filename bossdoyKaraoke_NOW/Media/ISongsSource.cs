@@ -23,7 +23,7 @@ namespace bossdoyKaraoke_NOW.Media
         string AddToQueue(TrackInfo sender);
         string AddToQueueAsNext(TrackInfo sender);
         string RemoveFromQueue(TrackInfo sender);
-        void EmptyQueueList();
+        string EmptyQueueList();
         void PreProcessFiles(string mediaFileName);
     }
 

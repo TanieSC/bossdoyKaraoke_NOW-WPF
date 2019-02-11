@@ -162,7 +162,7 @@
                 </StackPanel>
             </DockPanel>
         </materialDesign:ColorZone>
-        <Grid Margin="0,114,0,0" Grid.ColumnSpan="2">
+        <Grid Name="media_grid" Margin="0,114,0,0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MinWidth="250" MaxWidth="350"/>
                 <ColumnDefinition Width="4" />
@@ -175,7 +175,7 @@
                 </TreeView.DataContext>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
-                        <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{ Binding ElementName=songs_listView}" />
+                        <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{ Binding ElementName=treeViewMenu}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <TreeView.Resources>
@@ -195,9 +195,6 @@
                     <DataTemplate DataType="{x:Type vm:TreeViewModelChild}">
                         <StackPanel Orientation="Horizontal" Margin="0 0 0 0" Background="Transparent">
                             <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Loaded">
-                                    <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{ Binding ElementName=songs_listView}" />
-                                </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                     <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" CommandParameter="{Binding}" />
                                 </i:EventTrigger>
@@ -296,7 +293,7 @@
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction 
                             Command="{Binding Loaded}" 
-                            CommandParameter="{ Binding ElementName=treeViewMenu}" />
+                            CommandParameter="{ Binding ElementName=songs_listView}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ListView.View>
@@ -308,32 +305,6 @@
                         <GridViewColumn Header="" Width="0" DisplayMemberBinding="{Binding FilePath}"/>
                     </GridView>
                 </ListView.View>
-                <!--<ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Play">
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="Play"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Add to queue">
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="PlaylistAdd"/>
-                            </MenuItem.Icon>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction 
-                                        Command="{Binding AddToQueueClick}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </MenuItem>
-                        <MenuItem Header="Add to queue as next" >
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="PlaylistPlus"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </ContextMenu>
-                </ListView.ContextMenu>-->
                 <ListView.Resources>
                     <ContextMenu x:Key="lvItemContextMenu">
                         <i:Interaction.Triggers>
@@ -381,7 +352,7 @@
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                     <i:InvokeCommandAction
                                         Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.RemoveFromQueueClick}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListView}}" />
+                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=SelectedItem}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </MenuItem>

@@ -183,15 +183,11 @@
     <Compile Include="Media\IMixer.cs" />
     <Compile Include="Media\IPlayer.cs" />
     <Compile Include="Media\ISongsSource.cs" />
-    <Compile Include="Media\ISongsSourceListView.cs" />
-    <Compile Include="Media\ISongsSourceTreeView.cs" />
     <Compile Include="Media\IVlc.cs" />
     <Compile Include="Media\Mixer.cs" />
     <Compile Include="Media\Player.cs" />
     <Compile Include="Media\PlayerBase.cs" />
     <Compile Include="Media\SongsSource.cs" />
-    <Compile Include="Media\SongsSourceListView.cs" />
-    <Compile Include="Media\SongsSourceTreeView.cs" />
     <Compile Include="Media\Vlc.cs" />
     <Compile Include="Model\ITrackInfo.cs" />
     <Compile Include="Model\TrackInfo.cs" />

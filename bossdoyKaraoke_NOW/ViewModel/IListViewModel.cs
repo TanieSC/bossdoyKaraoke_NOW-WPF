@@ -18,16 +18,5 @@ namespace bossdoyKaraoke_NOW.ViewModel
         ICommand AddToQueueClick { get; }
         ICommand AddToQueueAsNextClick { get; }
         ICommand RemoveFromQueueClick { get; }
-        //void LoadSelectedItem(object sender);
-        //void LoadSelectedItem(string senderName);
-
-        // List<TrackInfo> Items { get; set; }
-    }
-
-    public interface IListViewModelItems
-    {
-        ObservableCollection<TrackInfo> Items { get; }
-        //ICommand DoubleClickCommand { get; }
-        //ICommand LoadInitialSongs { get; }
     }
 }

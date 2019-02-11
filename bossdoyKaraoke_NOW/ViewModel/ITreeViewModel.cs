@@ -39,7 +39,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         int ID { get; set; }
         Visibility IsProgressVisible { get; set; }
         NewTask CurrentTask { get; set; }
-        ICommand Loaded { get; }
+        //ICommand Loaded { get; }
         ICommand SelectionChangedCommand { get; }
        // ListViewModelItems ListItems  { get; }
        // ListViewModelItems ShowSelectedSongs(ITreeViewModelChild sender);

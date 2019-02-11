@@ -16,28 +16,33 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
     class Worker
     {
         private static readonly Queue<QueueItem<NewTask>> _workerQueue = new Queue<QueueItem<NewTask>>();
+        private static ListView _listViewElement;
+        private static TreeView _treeViewElement;
 
-        public static void DoWork(ItemsControl[] itemsControl, NewTask newTask)
+        public static TreeView TreeViewElement { get { return _treeViewElement; } set { _treeViewElement = value; } }
+        public static ListView ListViewElement { get { return _listViewElement; } set { _listViewElement = value; } }
+
+        public static void DoWork(NewTask newTask)
         {
-            RunWorker(itemsControl, newTask);
+            RunWorker(newTask);
         }
 
-        public static void DoWork(ItemsControl[] itemsControl, NewTask newTask, TrackInfo trackInfo)
+        public static void DoWork(NewTask newTask, TrackInfo trackInfo)
         {
-            RunWorker(itemsControl, newTask, trackInfo);
+            RunWorker(newTask, trackInfo);
         }
 
-        public static void DoWork(ItemsControl[] itemsControl, NewTask newTask, int senderID)
+        public static void DoWork(NewTask newTask, int senderID)
         {
-            RunWorker(itemsControl, newTask, null, senderID);
+            RunWorker(newTask, null, senderID);
         }
 
-        public static void DoWork(ItemsControl[] itemsControl, NewTask newTask, int senderID, string filePath)
+        public static void DoWork(NewTask newTask, int senderID, string filePath)
         {
-            RunWorker(itemsControl, newTask, null, senderID, filePath);
+            RunWorker(newTask, null, senderID, filePath);
         }
 
-        private static void RunWorker(ItemsControl[] itemsControl, NewTask newTask, TrackInfo trackInfo = null, int senderID = 0, string filePath = "")
+        private static void RunWorker(NewTask newTask, TrackInfo trackInfo = null, int senderID = 0, string filePath = "")
         {
             
             Player player = Player.Instance;
@@ -92,7 +97,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          break;
                      case NewTask.EMPTY_QUEUE_LIST:
                          CurrentTask = NewTask.EMPTY_QUEUE_LIST;
-                         songsSource.EmptyQueueList();
+                         songQueueTitle = songsSource.EmptyQueueList();
                          break;
                      case NewTask.LOAD_FAVORITES:
                          CurrentTask = NewTask.LOAD_FAVORITES;
@@ -109,38 +114,48 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
             {
                 var currentID = args.Result.ID;
                 var songQueueTitle = args.Result.Duration;
+                var tempSongQueue = songsSource.SongsQueue;
+                var parentTreeview = _treeViewElement.Items[0] as ITreeViewModel;
 
                 switch (CurrentTask)
                 {
                     case NewTask.ADD_NEW_SONGS:
                         var myComputerIndex = 2;
                         if (songsSource.Songs != null)
-                            itemsControl[0].ItemsSource = songsSource.Songs[currentID];
+                            _listViewElement.ItemsSource = songsSource.Songs[currentID];
 
                         songsSource.ItemSource[myComputerIndex].Items[0].IsProgressVisible = System.Windows.Visibility.Hidden;
                         break;
                     case NewTask.ADD_TO_QUEUE:
                     case NewTask.ADD_TO_QUEUE_AS_NEXT:
                     case NewTask.REMOVE_FROM_QUEUE:
-                       // var count = songsSource.SongsQueue.Count;
-                        var parent = itemsControl[0].Items[0] as ITreeViewModel;
-                        parent.Title = songQueueTitle; //"Song Queue (" + count + "-[" + duration + "])";
-                        itemsControl[1].ItemsSource = songsSource.SongsQueue;
+                        parentTreeview.Title = songQueueTitle; 
+
+                        if (CurrentTask == NewTask.REMOVE_FROM_QUEUE)
+                        {
+                            if (tempSongQueue.Count > 0)
+                                tempSongQueue.RemoveAt(0);
+
+                            _listViewElement.ItemsSource = tempSongQueue;
+                        }
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:
                     case NewTask.EMPTY_QUEUE_LIST:
-                        var tempSongQueue = songsSource.SongsQueue;
                         if (tempSongQueue.Count > 0)
                             tempSongQueue.RemoveAt(0);
-                        itemsControl[0].ItemsSource = tempSongQueue;
+
+                        _listViewElement.ItemsSource = tempSongQueue;
+
+                        if (CurrentTask == NewTask.EMPTY_QUEUE_LIST)
+                            parentTreeview.Title = songQueueTitle;
                         break;
                     case NewTask.LOAD_FAVORITES:
                         if (songsSource.Favorites != null)
-                            itemsControl[0].ItemsSource = songsSource.Favorites[currentID];
+                            _listViewElement.ItemsSource = songsSource.Favorites[currentID];
                         break;
                     case NewTask.LOAD_SONGS:
                         if (songsSource.Songs != null)
-                            itemsControl[0].ItemsSource = songsSource.Songs[currentID];
+                            _listViewElement.ItemsSource = songsSource.Songs[currentID];
                         break;
                 }
 

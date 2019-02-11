@@ -20,8 +20,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
     public class ListViewModel : IListViewModel
     {
         private ISongsSource _songsSource = SongsSource.Instance;
-        private static TreeView _songs_treeView;
-        private static ListView _songs_listView;
         private ICommand _previewMouseDoubleClick;
         private ICommand _loaded;
         private ICommand _contextMenuLoaded;
@@ -56,7 +54,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _loaded ?? (_loaded = new RelayCommand(x =>
                 {
-                    GetTreeViewControl(x as TreeView);
+                    Worker.ListViewElement = x as ListView;
                 }));
             }
         }
@@ -105,16 +103,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        _songs_listView = x as ListView;
-                        RemoveFromQueue(_songs_listView.SelectedItem as TrackInfo);
+                        RemoveFromQueue(x as TrackInfo);
                     }
                 }));
             }
-        }
-
-        private void GetTreeViewControl(TreeView treeView)
-        {
-            _songs_treeView = treeView;
         }
 
         private void EnableDisableMenuItem(ContextMenu sender)
@@ -152,28 +144,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private void AddToQueue(TrackInfo sender)
         {
             CurrentTask = NewTask.ADD_TO_QUEUE;
-            Worker.DoWork(new ItemsControl[] { _songs_treeView }, CurrentTask, sender);
+            Worker.DoWork(CurrentTask, sender);
         }
 
         private void AddToQueueAsNext(TrackInfo sender)
         {
             CurrentTask = NewTask.ADD_TO_QUEUE_AS_NEXT;
-            Worker.DoWork(new ItemsControl[] { _songs_treeView }, CurrentTask, sender);
+            Worker.DoWork(CurrentTask, sender);
         }
 
         private void RemoveFromQueue(TrackInfo sender)
         {
             CurrentTask = NewTask.REMOVE_FROM_QUEUE;
-            Worker.DoWork(new ItemsControl[] { _songs_treeView, _songs_listView }, CurrentTask, sender);
+            Worker.DoWork(CurrentTask, sender);
         }
-    }
-
-    public class ListViewModelItems : IListViewModelItems
-    {
-        private ObservableCollection<TrackInfo> _items;
-
-        public ObservableCollection<TrackInfo> Items { get; private set; }
-
-       
     }
 }

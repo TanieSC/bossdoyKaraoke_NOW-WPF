@@ -31,6 +31,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
         private ISongsSource _songsSource = SongsSource.Instance;
         private static ListView _songs_listView;
+        private static TreeView _songs_treeView;
         private static TreeViewItem _selectedItem = new TreeViewItem();
         public ObservableCollection<ITreeViewModelChild> Items { get; set; }
         public List<ITreeViewModel> ItemSource { get { return _songsSource.ItemSource; } }
@@ -72,7 +73,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _loaded ?? (_loaded = new RelayCommand(x =>
                 {
-                    GetListViewControl(x as ListView);
+                    Worker.TreeViewElement = x as TreeView;
+
+                    if (_songsSource.SongsQueue.Count > 0)
+                        Worker.DoWork(NewTask.LOAD_QUEUE_SONGS, _songsSource.SongsQueue[0]);
                 }));
             }
         }
@@ -100,14 +104,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        private void GetListViewControl(ListView listView)
-        {
-            _songs_listView = listView;
-
-            if (_songsSource.SongsQueue.Count > 0)
-                Worker.DoWork(new ItemsControl[] { _songs_listView }, NewTask.LOAD_QUEUE_SONGS, _songsSource.SongsQueue[0]);
-        }
-
         private void EnableDisableMenuItem(ContextMenu sender)
         {
             var contextMenu = sender as ContextMenu;
@@ -122,10 +118,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             var currentTask = contextMenu.DataContext as ITreeViewModel != null
                 ? ((ITreeViewModel)contextMenu.DataContext).CurrentTask
                 : ((ITreeViewModelChild)contextMenu.DataContext).CurrentTask;
-            //.Remove(((ITreeViewModelChild)contextMenu.DataContext).Name.LastIndexOf("_"));
 
-            //if (Enum.TryParse(currentTask, out newTask))
-            // {
             switch (currentTask)
             {
                 case NewTask.LOAD_QUEUE_SONGS:
@@ -139,7 +132,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         emptyQueue.IsEnabled = false;
                         shuffle.IsEnabled = false;
                     }
-                                          
+
                     favorites.IsEnabled = false;
                     remove.IsEnabled = false;
                     break;
@@ -171,52 +164,45 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     createFavoritesPlayedSong.IsEnabled = false;
                     remove.IsEnabled = true;
                     break;
-            }              
-           // }
+            }
         }
 
         private void LoadSelectedItem(ITreeViewModel sender)
         {
-            Worker.DoWork(new ItemsControl[] { _songs_listView }, sender.CurrentTask);
+            Worker.DoWork(sender.CurrentTask);
         }
 
-        //ContextMenuItem Item Click Events
         public ICommand EmptyQueueCommand
         {
             get
             {
                 return _emptyQueueCommand ?? (_emptyQueueCommand = new RelayCommand(x =>
                 {
-                    EmptyQueue(x as ContextMenu);
+                    EmptyQueue();
                 }));
             }
         }
 
-        private void EmptyQueue(ContextMenu sender)
+        private void EmptyQueue()
         {
             if (_songsSource.SongsQueue.Count > 0)
             {
-                var parent = sender.DataContext as ITreeViewModel;
-                parent.Title = "Song Queue (Empty)";
+                // var parent = sender.DataContext as ITreeViewModel;
+                // parent.Title = "Song Queue (Empty)";
                 CurrentTask = NewTask.EMPTY_QUEUE_LIST;
-                Worker.DoWork(new ItemsControl[] { _songs_listView }, CurrentTask);
+                Worker.DoWork(CurrentTask);
             }
         }
     }
 
     class TreeViewModelChild : ITreeViewModelChild, INotifyPropertyChanged
     {
-        private ICommand _loaded;
         private ICommand _selectionChangedCommand;
-
-       // private System.Windows.Forms.FolderBrowserDialog _fbd;
-        private static ListView _songs_listView;
         private static TreeViewItem _selectedItem = new TreeViewItem();
         private Visibility _isProgressVisible;
         public PackIconKind PackIconKind { get; set; }
         public SolidColorBrush Foreground { get; set; }
         public string Title { get; set; }
-        //public string Name { get; set; }
         public int ID { get; set; }
         public Visibility IsProgressVisible
         {
@@ -239,17 +225,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public ICommand Loaded
-        {
-            get
-            {
-                return _loaded ?? (_loaded = new RelayCommand(x =>
-                {
-                    GetListViewControl(x as ListView);
-                }));
-            }
-        }
-
         public ICommand SelectionChangedCommand
         {
             get
@@ -259,11 +234,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     LoadSelectedSongs(x as ITreeViewModelChild);
                 }));
             }
-        }
-
-        private void GetListViewControl(ListView listView)
-        {
-            _songs_listView = listView;
         }
 
         private void LoadSelectedSongs(ITreeViewModelChild sender)
@@ -285,12 +255,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     string[] filePath = new string[] { fbd.SelectedPath };
                     string folderName = Path.GetFileName(fbd.SelectedPath);
                     items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = folderName, ID = items.Count - 1, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
-                    Worker.DoWork(new ItemsControl[] { _songs_listView }, sender.CurrentTask, items[0].ID, fbd.SelectedPath);
+                    Worker.DoWork(sender.CurrentTask, items[0].ID, fbd.SelectedPath);
                 }
             }
             else
             {
-                Worker.DoWork(new ItemsControl[] { _songs_listView }, sender.CurrentTask, sender.ID);
+                Worker.DoWork(sender.CurrentTask, sender.ID);
             }
         }
     }
