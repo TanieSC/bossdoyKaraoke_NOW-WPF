@@ -136,23 +136,25 @@ namespace bossdoyKaraoke_NOW.Media
                                     {
                                         for (int i = 0; i < _songsQueue.Count; i++)
                                         {
-                                            if (i > 0)
+                                            if (i > 0) //Skip first item so it will not be added to song count and total duration
                                             {
                                                 AddRemoveFromQueue(_songsQueue[i], true);
                                                 _songsQueue[i].Duration = _trackInfo.Duration;
+                                                _songsQueue[i].Tags = _trackInfo.Tags;
+                                                _songQueueTitle = "Song Queue (" + i + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+
                                             }
                                         }
 
-                                        //_isAddingToQueue = false;
-                                        //PreProcessFiles(_songsQueue[0].FilePath);
+                                        //Process the first item to play it automatically
+                                        _isAddingToQueue = false;
                                         AddRemoveFromQueue(_songsQueue[0], true);
                                         _songsQueue[0].Tags = _trackInfo.Tags;
                                     }
-                                    else
+                                    if(_songsQueue.Count <= 1)
                                     {
                                         _songQueueTitle = "Song Queue (Empty)";
                                     }
-
                                 }
 
                                 items = AddTreeViewItems(items, PackIconKind.Music, _songQueueTitle);//_songsQueue.Count > 0 ? "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])" : "Song Queue (Empty)");
@@ -260,6 +262,7 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 lock (_songsQueue)
                 {
+                    _isAddingToQueue = true;
                     AddRemoveFromQueue(sender, true);
 
                     if (_trackInfo != null)
@@ -282,7 +285,8 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 lock (_songsQueue)
                 {
-                     AddRemoveFromQueue(sender, true);
+                    _isAddingToQueue = true;
+                    AddRemoveFromQueue(sender, true);
 
                     if (_trackInfo != null)
                         _songsQueue.Insert(0, _trackInfo);
@@ -295,15 +299,15 @@ namespace bossdoyKaraoke_NOW.Media
 
             }
 
-            return string.Format("{0}", Utils.FixTimespan(_totalDuration, "HHMMSS"));
+            return _songQueueTitle; //string.Format("{0}", Utils.FixTimespan(_totalDuration, "HHMMSS"));
         }
 
         public string RemoveFromQueue(TrackInfo sender)
         {
             AddRemoveFromQueue(sender);
             _songsQueue.Remove(sender);
-           // WriteToQueueList();
-            return string.Format("{0}", Utils.FixTimespan(_totalDuration, "HHMMSS"));
+            WriteToQueueList();
+            return _songQueueTitle; //string.Format("{0}", Utils.FixTimespan(_totalDuration, "HHMMSS"));
         }
 
         public void EmptyQueueList()
@@ -368,7 +372,6 @@ namespace bossdoyKaraoke_NOW.Media
         {
             if (isAdding) //For adding songs to SongQueue
             {
-                _isAddingToQueue = true;
                 PreProcessFiles(sender.FilePath);
                 _isAddingToQueue = false;
 
@@ -387,7 +390,7 @@ namespace bossdoyKaraoke_NOW.Media
                     return;
                 }
 
-                if (CurrentTask != NewTask.LOAD_QUEUE_SONGS)
+                if (CurrentTask != NewTask.LOAD_QUEUE_SONGS && CurrentPlayState == PlayState.Playing)
                 {
                     int count = _songsQueue.Count + 1;
                     sender.ID = count.ToString();

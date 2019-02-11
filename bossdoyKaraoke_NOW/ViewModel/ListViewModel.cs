@@ -152,22 +152,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private void AddToQueue(TrackInfo sender)
         {
             CurrentTask = NewTask.ADD_TO_QUEUE;
-            Worker.DoWork(_songs_treeView, CurrentTask, sender);
+            Worker.DoWork(new ItemsControl[] { _songs_treeView }, CurrentTask, sender);
         }
 
         private void AddToQueueAsNext(TrackInfo sender)
         {
             CurrentTask = NewTask.ADD_TO_QUEUE_AS_NEXT;
-            Worker.DoWork(_songs_treeView, CurrentTask, sender);
+            Worker.DoWork(new ItemsControl[] { _songs_treeView }, CurrentTask, sender);
         }
 
         private void RemoveFromQueue(TrackInfo sender)
         {
             CurrentTask = NewTask.REMOVE_FROM_QUEUE;
-            Worker.DoWork(_songs_treeView, CurrentTask, sender);
-
-            Thread.Sleep(100);
-            _songs_listView.ItemsSource = SongsSource.Instance.SongsQueue;
+            Worker.DoWork(new ItemsControl[] { _songs_treeView, _songs_listView }, CurrentTask, sender);
         }
     }
 

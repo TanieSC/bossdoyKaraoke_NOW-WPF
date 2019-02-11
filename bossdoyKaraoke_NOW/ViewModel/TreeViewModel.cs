@@ -105,7 +105,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             _songs_listView = listView;
 
             if (_songsSource.SongsQueue.Count > 0)
-                Worker.DoWork(_songs_listView, NewTask.LOAD_QUEUE_SONGS, _songsSource.SongsQueue[0]);
+                Worker.DoWork(new ItemsControl[] { _songs_listView }, NewTask.LOAD_QUEUE_SONGS, _songsSource.SongsQueue[0]);
         }
 
         private void EnableDisableMenuItem(ContextMenu sender)
@@ -177,7 +177,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
         private void LoadSelectedItem(ITreeViewModel sender)
         {
-            Worker.DoWork(_songs_listView, sender.CurrentTask);
+            Worker.DoWork(new ItemsControl[] { _songs_listView }, sender.CurrentTask);
         }
 
         //ContextMenuItem Item Click Events
@@ -197,9 +197,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
             if (_songsSource.SongsQueue.Count > 0)
             {
                 var parent = sender.DataContext as ITreeViewModel;
-                parent.Title = "Song Queue ( Empty )";
+                parent.Title = "Song Queue (Empty)";
                 CurrentTask = NewTask.EMPTY_QUEUE_LIST;
-                Worker.DoWork(_songs_listView, CurrentTask);
+                Worker.DoWork(new ItemsControl[] { _songs_listView }, CurrentTask);
             }
         }
     }
@@ -285,12 +285,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     string[] filePath = new string[] { fbd.SelectedPath };
                     string folderName = Path.GetFileName(fbd.SelectedPath);
                     items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = folderName, ID = items.Count - 1, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
-                    Worker.DoWork(_songs_listView, sender.CurrentTask, items[0].ID, fbd.SelectedPath);
+                    Worker.DoWork(new ItemsControl[] { _songs_listView }, sender.CurrentTask, items[0].ID, fbd.SelectedPath);
                 }
             }
             else
             {
-                Worker.DoWork(_songs_listView, sender.CurrentTask, sender.ID);
+                Worker.DoWork(new ItemsControl[] { _songs_listView }, sender.CurrentTask, sender.ID);
             }
         }
     }

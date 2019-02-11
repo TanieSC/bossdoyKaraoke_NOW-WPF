@@ -224,30 +224,33 @@ namespace bossdoyKaraoke_NOW.Media
         {
             try
             {
-                if (_songsSource.SongsQueue.Count > 0)
+                if (_songsSource.SongsQueue.Count > 1)
                 {
-                    string showNextTrack = MediaControls.Instance.RemainingTime;
-                    int minute = Convert.ToInt32(showNextTrack.Substring(3, 2));
-                    int second = Convert.ToInt32(showNextTrack.Substring(6, 2));
+                    string showNextTrack = MediaControls.Instance.RemainingTime.Trim();
 
-                    if(minute <= 0 && second == 30)
-                        _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
+                    if (showNextTrack != string.Empty || showNextTrack != "")
+                    {
+                        int minute = Convert.ToInt32(showNextTrack.Substring(3, 2));
+                        int second = Convert.ToInt32(showNextTrack.Substring(6, 2));
 
-                    if (minute <= 0 && second < 30)
-                    {                      
-                        string nextSong = _songsSource.SongsQueue[0].Name + "( " + _songsSource.SongsQueue[0].Artist + " )";
-                        _getNestSongInfo = nextSong;
+                        if (minute <= 0 && second == 30)
+                            _songsSource.PreProcessFiles(_songsSource.SongsQueue[1].FilePath);
+
+                        if (minute <= 0 && second < 30)
+                        {
+                            string nextSong = _songsSource.SongsQueue[1].Name + "( " + _songsSource.SongsQueue[1].Artist + " )";
+                            _getNestSongInfo = nextSong;
+                        }
+                        else
+                            _getNestSongInfo = "";
                     }
-                    else
-                        _getNestSongInfo = "";
                 }
                 else
                     _getNestSongInfo = "";
             }
             catch (Exception ex)
             {
-
-
+                Console.WriteLine("GetNextTrackInfo");
             }
         }
 
@@ -310,7 +313,7 @@ namespace bossdoyKaraoke_NOW.Media
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine("AddToBassMixer");
             }
         }
 
@@ -322,9 +325,8 @@ namespace bossdoyKaraoke_NOW.Media
                 {
                     if (_songsSource.SongsQueue.Count > 0)
                     {
-                        _songsQueue = _songsSource.SongsQueue;
-                        MediaControls.Instance.SongTitle = _songsQueue[0].Name;
-                        MediaControls.Instance.SongArtist = _songsQueue[0].Artist;
+                        MediaControls.Instance.SongTitle = _songsSource.SongsQueue[0].Name;
+                        MediaControls.Instance.SongArtist = _songsSource.SongsQueue[0].Artist;
 
                         if (_songsSource.IsCdgFileType)
                         {
@@ -336,20 +338,20 @@ namespace bossdoyKaraoke_NOW.Media
                         }
                         else
                         {
-                            Vlc.Instance.PlayVideoke(_songsQueue[0].FilePath, new VlcSync.SYNCPROC(OnVlcSync));
+                            Vlc.Instance.PlayVideoke(_songsSource.SongsQueue[0].FilePath, new VlcSync.SYNCPROC(OnVlcSync));
                         }
                     }
                     else
                     {
-                        MediaControls.Instance.ElapsedTime = "00:00:00";
-                        MediaControls.Instance.RemainingTime = "00:00:00";
+                       // MediaControls.Instance.ElapsedTime = "00:00:00";
+                       // MediaControls.Instance.RemainingTime = "00:00:00";
                         Stop(); //Stop VLC from playing videoke
                     }
                 }
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine("PlayNextTrack");
             }
         }
 
@@ -358,9 +360,13 @@ namespace bossdoyKaraoke_NOW.Media
         {
             try
             {
+                _songsQueue = _songsSource.SongsQueue;
                 _songsQueue.RemoveAt(0);
                 _songsSource.SongsQueue = _songsQueue;
                 _songsQueue.Clear();
+
+                MediaControls.Instance.ElapsedTime = "00:00:00";
+                MediaControls.Instance.RemainingTime = "00:00:00";
 
                 if (_songsSource.SongsQueue.Count <= 0)
                 {
@@ -386,7 +392,7 @@ namespace bossdoyKaraoke_NOW.Media
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine("OnVlcSync");
             }
         }
 
@@ -403,9 +409,13 @@ namespace bossdoyKaraoke_NOW.Media
         {
             try
             {
+                _songsQueue = _songsSource.SongsQueue;
                 _songsQueue.RemoveAt(0);
                 _songsSource.SongsQueue = _songsQueue;
                 _songsQueue.Clear();
+
+                MediaControls.Instance.ElapsedTime = "00:00:00";
+                MediaControls.Instance.RemainingTime = "00:00:00";
 
                 if (_songsSource.SongsQueue.Count <= 0)
                     _currentTrack.NextTrackSync = 0;
@@ -439,7 +449,7 @@ namespace bossdoyKaraoke_NOW.Media
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine("OnTrackSync");
             }
 
         }
