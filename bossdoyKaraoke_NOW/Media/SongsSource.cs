@@ -131,32 +131,7 @@ namespace bossdoyKaraoke_NOW.Media
                                 if (songs.Count() > 0)
                                 {
                                     _songsQueue = TextSearchSongs(songs)[0].ToList();
-
-                                    if (_songsQueue.Count > 0)
-                                    {
-                                        for (int i = 0; i < _songsQueue.Count; i++)
-                                        {
-                                            if (i > 0) //Skip first item so it will not be added to song count and total duration
-                                            {
-                                                AddRemoveFromQueue(_songsQueue[i], true);
-                                                _songsQueue[i].Duration = _trackInfo.Duration;
-                                                _songsQueue[i].Tags = _trackInfo.Tags;
-
-                                                _totalDuration += _trackInfo.Tags.duration;
-                                                _songQueueTitle = "Song Queue (" + i + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
-
-                                            }
-                                        }
-
-                                        //Process the first item to play it automatically
-                                        _isAddingToQueue = false;
-                                        AddRemoveFromQueue(_songsQueue[0], true);
-                                        _songsQueue[0].Tags = _trackInfo.Tags;
-                                    }
-                                    if(_songsQueue.Count <= 1)
-                                    {
-                                        _songQueueTitle = "Song Queue (Empty)";
-                                    }
+                                    _songQueueTitle = "Song Queue (Empty)";
                                 }
 
                                 items = AddTreeViewItems(items, PackIconKind.Music, _songQueueTitle);//_songsQueue.Count > 0 ? "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])" : "Song Queue (Empty)");
@@ -197,6 +172,40 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        ///  Process the first item to play it automatically
+        /// </summary>
+        public void PlayFirstSongInQueue()
+        {
+            if (_songsQueue.Count > 0)
+            {              
+                _isAddingToQueue = false;
+                AddRemoveFromQueue(_songsQueue[0], true);
+                _songsQueue[0].Tags = _trackInfo.Tags;
+                _songsQueue[0].Tags.duration = 0.0;
+                _totalDuration = 0.0;
+            }
+        }
+
+        /// <summary>
+        /// Load the saved songs from SongQueueList.que to our songQueue list
+        /// </summary>
+        public void LoadSongsInQueue()
+        {
+            var songQueue = Worker.TreeViewElement.Items[0] as ITreeViewModel;
+
+            for (int i = 0; i < _songsQueue.Count; i++)
+            {
+                AddRemoveFromQueue(_songsQueue[i], true);
+                _songsQueue[i].Duration = _trackInfo.Duration;
+                _songsQueue[i].Tags = _trackInfo.Tags;
+
+                _totalDuration += _trackInfo.Tags.duration;
+                _songQueueTitle = "Song Queue (" + (i + 1) + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+                songQueue.Title = _songQueueTitle;
+            }
+        }
+       
         private ITreeViewModel AddTreeViewItems(ITreeViewModel songsSource, PackIconKind kindParent, string parentTitle, PackIconKind kindChild = PackIconKind.Null, List<string> songs = null, PackIconKind kindAddChild = PackIconKind.Null, string addChildTitle = null)
         {
             string fileName;
@@ -270,16 +279,16 @@ namespace bossdoyKaraoke_NOW.Media
                     if (_trackInfo != null)
                     {                        
                         _songsQueue.Add(_trackInfo);
-                        if (_songsQueue.Count > 1)
-                        {
-                            _totalDuration += _trackInfo.Tags.duration;
-                            _songQueueTitle = "Song Queue (" + (_songsQueue.Count - 1) + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
-                        }
-                        else
-                        {
+                       // if (_songsQueue.Count > 1)
+                       // {
+                       //     _totalDuration += _trackInfo.Tags.duration;
+                       //     _songQueueTitle = "Song Queue (" + (_songsQueue.Count - 1) + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+                      //  }
+                      //  else
+                      //  {
                             _totalDuration += _trackInfo.Tags.duration;
                             _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
-                        }
+                       // }
                     }
 
                     WriteToQueueList();
@@ -468,7 +477,7 @@ namespace bossdoyKaraoke_NOW.Media
         {
             try
             {
-                var file = _filePath + "SonQueueList.que";
+                var file = _filePath + "SongQueueList.que";
                 var songsPath = _songsQueue.Select(s => s.FilePath).ToArray();
                 Directory.CreateDirectory(_filePath);
 
@@ -580,7 +589,6 @@ namespace bossdoyKaraoke_NOW.Media
 
             try
             {
-                // string extPattern = ".cdg|.mp4";
                 string fName = System.IO.Path.GetFileName(file);
                 string[] regXpattern = Regex.Split(fName, pattern);
                 // var containsSwears = extensions.Any(w => file.Contains(w));

@@ -53,7 +53,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
             newTask,
              args =>  // DoWork
              {
-                 var currentTask = args.Argument;// as string;
+                 var currentTask = args.Argument;
                  string songQueueTitle = string.Empty;
 
                  switch (currentTask)
@@ -89,10 +89,14 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          CurrentTask = NewTask.LOAD_QUEUE_SONGS;
                          if (songsSource.SongsQueue.Count > 0 && CurrentPlayState == PlayState.Stopped)
                          {
+                             songsSource.PlayFirstSongInQueue();
+
                              if (songsSource.IsCdgFileType)
                                  player.LoadCDGFile(trackInfo.FilePath);
                              else
                                  player.LoadVideokeFile(trackInfo.FilePath);
+
+                             songsSource.LoadSongsInQueue();
                          }
                          break;
                      case NewTask.EMPTY_QUEUE_LIST:
@@ -107,14 +111,13 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          break;
 
                  }
-                 //}
+
                  return new { ID = senderID, Duration = songQueueTitle };
              },
             args =>  // RunWorkerCompleted
             {
                 var currentID = args.Result.ID;
                 var songQueueTitle = args.Result.Duration;
-                var tempSongQueue = songsSource.SongsQueue;
                 var parentTreeview = _treeViewElement.Items[0] as ITreeViewModel;
 
                 switch (CurrentTask)
@@ -129,22 +132,16 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                     case NewTask.ADD_TO_QUEUE:
                     case NewTask.ADD_TO_QUEUE_AS_NEXT:
                     case NewTask.REMOVE_FROM_QUEUE:
-                        parentTreeview.Title = songQueueTitle; 
+                        parentTreeview.Title = songQueueTitle;
 
                         if (CurrentTask == NewTask.REMOVE_FROM_QUEUE)
                         {
-                            if (tempSongQueue.Count > 0)
-                                tempSongQueue.RemoveAt(0);
-
-                            _listViewElement.ItemsSource = tempSongQueue;
+                            _listViewElement.ItemsSource = songsSource.SongsQueue;
                         }
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:
                     case NewTask.EMPTY_QUEUE_LIST:
-                        if (tempSongQueue.Count > 0)
-                            tempSongQueue.RemoveAt(0);
-
-                        _listViewElement.ItemsSource = tempSongQueue;
+                        _listViewElement.ItemsSource = songsSource.SongsQueue; ;
 
                         if (CurrentTask == NewTask.EMPTY_QUEUE_LIST)
                             parentTreeview.Title = songQueueTitle;

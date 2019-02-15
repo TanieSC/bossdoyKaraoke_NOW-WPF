@@ -19,6 +19,8 @@ namespace bossdoyKaraoke_NOW.Media
        // CDGFile CDGMp3 { get; set; }
         bool IsCdgFileType{ get; set; }
         void LoadSongCollections();
+        void PlayFirstSongInQueue();
+        void LoadSongsInQueue();
         void DirSearchSongs(string sDir);
         string AddToQueue(TrackInfo sender);
         string AddToQueueAsNext(TrackInfo sender);

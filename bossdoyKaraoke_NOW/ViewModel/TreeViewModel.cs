@@ -75,6 +75,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     Worker.TreeViewElement = x as TreeView;
 
+                    //This will automatically play the song in SongQueue if queue is not empty.
                     if (_songsSource.SongsQueue.Count > 0)
                         Worker.DoWork(NewTask.LOAD_QUEUE_SONGS, _songsSource.SongsQueue[0]);
                 }));
