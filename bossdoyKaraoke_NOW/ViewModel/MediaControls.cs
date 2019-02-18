@@ -9,6 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
+using MaterialDesignThemes.Wpf;
+using static bossdoyKaraoke_NOW.Enums.PlayerState;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
@@ -23,17 +25,35 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private string _tempo = "0%";
         private string _key = "0";
         private bool _enableTempoKeyPanel;
+        private bool _isMute;
         private double _keyTempoOpacity = 1;
         private StackPanel _audio_panel;
         private StackPanel _dual_screen_panel;
         private StackPanel _tempo_key_panel;
         private StackPanel _song_info_panel;
+        private PackIconKind _iconPlayPause = PackIconKind.Play;
+        private PackIconKind _iconMuteUnMute = PackIconKind.VolumeLow;
+        public PackIconKind IconPlayPause
+        {
+            get
+            {
+                return _iconPlayPause;
+            }
+            set
+            {
+                _iconPlayPause = value;
+                OnPropertyChanged();
+            }
+        }
+        public PackIconKind IconMuteUnMute { get { return _iconMuteUnMute; } set { _iconMuteUnMute = value; } }
         private IMediaControls _controls;
         private ICommand _loaded;
         private ICommand _tempoPlusCommand;
         private ICommand _tempoMinusCommand;
         private ICommand _keyPlusCommand;
         private ICommand _keyMinusCommand;
+        private ICommand _playPuaseCommand;
+        private ICommand _muteUnMuteCommand;
 
         public static MediaControls Instance
         {
@@ -198,16 +218,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        var dockPanel = x as DockPanel;
-                        _controls = dockPanel.DataContext as IMediaControls;
+                      //  var dockPanel = x as DockPanel;
+                      //  _controls = dockPanel.DataContext as IMediaControls;
 
-                        _audio_panel = dockPanel.Children[0] as StackPanel;
-                        _dual_screen_panel = dockPanel.Children[1] as StackPanel;
-                        _tempo_key_panel = dockPanel.Children[2] as StackPanel;
-                        _song_info_panel = dockPanel.Children[3] as StackPanel;
+                      //  _audio_panel = dockPanel.Children[0] as StackPanel;
+                      //  _dual_screen_panel = dockPanel.Children[1] as StackPanel;
+                      //  _tempo_key_panel = dockPanel.Children[2] as StackPanel;
+                      //  _song_info_panel = dockPanel.Children[3] as StackPanel;
 
-                        _tempo_key_panel.IsEnabled = false;
-                        KeyTempoOpacity = 0.25;
+                      // // _tempo_key_panel.IsEnabled = false;
+                      ////  KeyTempoOpacity = 0.25;
                     }
                 }));
             }
@@ -269,6 +289,49 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
+        public ICommand PlayPauseCommand
+        {
+            get
+            {
+                return _playPuaseCommand ?? (_playPuaseCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        if (CurrentPlayState == PlayState.Paused)
+                        {
+                            Player.Instance.Play();
+                        }
+                        else
+                        {
+                            Player.Instance.Pause();
+                        }
+                    }
+                }));
+            }
+        }
+        
+        public ICommand MuteUnMuteCommand
+        {
+            get
+            {
+                return _muteUnMuteCommand ?? (_muteUnMuteCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        if (!_isMute)
+                        {
+                            Player.Instance.Mute();
+                            _isMute = true;
+                        }
+                        else
+                        {
+                            Player.Instance.UnMute();
+                            _isMute = false;
+                        }
+                    }
+                }));
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

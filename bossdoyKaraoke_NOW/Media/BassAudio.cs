@@ -18,7 +18,7 @@ namespace bossdoyKaraoke_NOW.Media
         private static int _mixerChannel;
         private static IMixer _mixer;
         private bool _mute;
-        private float _playerVolume = 0.05f;
+        private float _playerVolume = 0.5f;
 
         public IMixer BassMixer { get { return _mixer; } }
         public static int MixerChannel { get { return _mixerChannel; } }
@@ -64,7 +64,7 @@ namespace bossdoyKaraoke_NOW.Media
 
            // var s = Bass.LoadMe(assemblyFolder);
           //  var f = BassMix.LoadMe(assemblyFolder);
-
+            
             BassNet.Registration("tanie_calacar@yahoo.com", "2X183372334322");
             Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_BUFFER, 200);
             Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_UPDATEPERIOD, 20);
@@ -89,6 +89,10 @@ namespace bossdoyKaraoke_NOW.Media
                      return false;
                 }
             }
+
+
+            Bass.BASS_SetVolume(0.3051406f);
+            Console.WriteLine("BASS_SetVolume: " + Bass.BASS_GetVolume());
 
             // already create a mixer
             _mixerChannel = _mixer.MixerStreamCreate(44100);
@@ -167,16 +171,25 @@ namespace bossdoyKaraoke_NOW.Media
         {
             if (CurrentPlayState == PlayState.Playing)
             {
-                if (!_mute)
-                {
+                //if (!_mute)
+                //{
                     Bass.BASS_ChannelSetAttribute(this.Channel, BASSAttribute.BASS_ATTRIB_VOL, 0f);
-                    _mute = true;
-                }
-                else
-                {
-                    Bass.BASS_ChannelSetAttribute(this.Channel, BASSAttribute.BASS_ATTRIB_VOL, _playerVolume);
-                    _mute = false;
-                }
+                
+                  //  _mute = true;
+                //}
+                //else
+                //{
+                  //  Bass.BASS_ChannelSetAttribute(this.Channel, BASSAttribute.BASS_ATTRIB_VOL, _playerVolume);
+                  //  _mute = false;
+               // }
+            }
+        }
+
+        public override void UnMute()
+        {
+            if (CurrentPlayState == PlayState.Playing)
+            {
+                Bass.BASS_ChannelSetAttribute(this.Channel, BASSAttribute.BASS_ATTRIB_VOL, _playerVolume);
             }
         }
 

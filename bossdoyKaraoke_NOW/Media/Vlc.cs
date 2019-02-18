@@ -58,9 +58,7 @@ namespace bossdoyKaraoke_NOW.Media
         public string TimeDuration { get; private set; }
         public string GetTimeDuration { get; private set; }
         public float PlayerPosition { get; private set; }
-        public bool MediaEnded { get; private set; }
-
-
+      
         public Bitmap BitmapVideo
         {
             get
@@ -213,7 +211,6 @@ namespace bossdoyKaraoke_NOW.Media
             _player.Open(_media);
             _media.Parse(true);
             Play();
-            MediaEnded = false;
 
             CurrentPlayState = PlayState.Playing;
 
@@ -313,13 +310,11 @@ namespace bossdoyKaraoke_NOW.Media
 
         private void Events_PlayerStopped(object sender, EventArgs e)
         {
-            MediaEnded = true;
             //_syncProc();
         }
 
         private void Events_MediaEnded(object sender, EventArgs e)
         {
-            MediaEnded = true;
             _syncProc();
         }
 
@@ -359,13 +354,22 @@ namespace bossdoyKaraoke_NOW.Media
 
         public override void Mute()
         {
-            _player.ToggleMute();
+            //_player.ToggleMute();
+            _player.Mute = true;
         }
+
+        public override void UnMute()
+        {
+            //_player.ToggleMute();
+            _player.Mute = false;
+        }
+
 
         public override void Pause()
         {
             if (_player.IsPlaying)
             {
+                CurrentPlayState = PlayState.Paused;
                 _player.Pause();
             }
         }
@@ -374,6 +378,7 @@ namespace bossdoyKaraoke_NOW.Media
         {
             if (!_player.IsPlaying)
             {
+                CurrentPlayState = PlayState.Playing;
                 _player.Play();
             }
         }

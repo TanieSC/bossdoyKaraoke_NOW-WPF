@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using bossdoyKaraoke_NOW.Model;
 using bossdoyKaraoke_NOW.ViewModel;
+using MaterialDesignThemes.Wpf;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Mix;
 using Un4seen.Bass.AddOn.Tags;
@@ -20,20 +21,22 @@ namespace bossdoyKaraoke_NOW.Media
 {
     class Player : PlayerBase
     {
-        private ObservableCollection<TrackInfo> _songsQueue;
         private ISongsSource _songsSource;
         private BassAudio _track = null;
         private BassAudio _currentTrack = null;
         private BassAudio _previousTrack = null;
         private SYNCPROC _mixerStallSync;
         private bool _isBassInitialized;
+        private bool _isPlayingBass;
+        private bool _isPlayingVlc;
         private long _bassChannelPosition;
         private double _bassChannelInSeconds;
         private long _renderAtPosition;
-        private int _progressValue;
         private string _getNestSongInfo;
         private double _progressBarMaximum = 2000;
 
+        public bool IsPlayingBass { get { return _isPlayingBass; } }
+        public bool IsPlayingVlc { get { return _isPlayingVlc; } }
         public IntPtr AppMainWindowHandle;
         public ISongsSource Songs_Source { get { return _songsSource; } }
         public Vlc VlcPlayer;
@@ -91,13 +94,13 @@ namespace bossdoyKaraoke_NOW.Media
         public void VlcRenderAtPosition()
         {
 
-            double timeElapsed = Convert.ToDouble(Vlc.Instance.TimeElapsed);
-            double timeRemain = Convert.ToDouble(Vlc.Instance.TimeDuration);
+            double timeElapsed = Convert.ToDouble(VlcPlayer.TimeElapsed);
+            double timeRemain = Convert.ToDouble(VlcPlayer.TimeDuration);
             MediaControls.Instance.ElapsedTime = TimeSpan.FromMilliseconds(timeElapsed).ToString().Substring(0, 8);
             MediaControls.Instance.RemainingTime = TimeSpan.FromMilliseconds(timeRemain - timeElapsed).ToString().Substring(0, 8);
 
             double bpp = 0;
-            bpp = (int)Math.Round(Vlc.Instance.PlayerPosition * _progressBarMaximum);
+            bpp = (int)Math.Round(VlcPlayer.PlayerPosition * _progressBarMaximum);
             MediaControls.Instance.ProgressValue = bpp;
 
         }
@@ -138,12 +141,16 @@ namespace bossdoyKaraoke_NOW.Media
 
             AddToBassMixer();
             PlayNextTrack();
+            _isPlayingBass = true;
+            _isPlayingVlc = false;
         }
 
         public void LoadVideokeFile(string videokeFileName)
         {
             CDGmp3 = null;
             PlayNextTrack();
+            _isPlayingVlc = true;
+            _isPlayingBass = false;
         }
 
         public override void KeyMinus()
@@ -185,17 +192,58 @@ namespace bossdoyKaraoke_NOW.Media
 
         public override void Mute()
         {
-            throw new NotImplementedException();
+            if (_isPlayingBass)
+            {
+                _currentTrack.Mute();
+            }
+
+            if (_isPlayingVlc)
+            {
+                VlcPlayer.Mute();
+            }
+        }
+
+        public override void UnMute()
+        {
+            if (_isPlayingBass)
+            {
+                _currentTrack.UnMute();
+            }
+
+            if (_isPlayingVlc)
+            {
+                VlcPlayer.UnMute();
+            }
         }
 
         public override void Pause()
         {
-            throw new NotImplementedException();
+            if (_isPlayingBass)
+            {
+                _currentTrack.Pause();
+            }
+
+            if (_isPlayingVlc)
+            {
+                VlcPlayer.Pause();
+            }
+
+            MediaControls.Instance.IconPlayPause = PackIconKind.Play;
         }
 
         public override void Play()
         {
-            throw new NotImplementedException();
+            if (_isPlayingBass)
+            {
+                _currentTrack.Play();
+            }
+
+            if (_isPlayingVlc)
+            {
+                VlcPlayer.Play();
+            }
+
+            MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
         }
 
         public override void Stop()
@@ -207,7 +255,7 @@ namespace bossdoyKaraoke_NOW.Media
                 _track = null;
                 _currentTrack = null;
                 _previousTrack = null;
-                Vlc.Instance.PlayBackGroundVideo();
+                VlcPlayer.PlayBackGroundVideo();
             }
             else
             {
@@ -215,6 +263,12 @@ namespace bossdoyKaraoke_NOW.Media
             }
 
             _songsSource.IsCdgFileType = false;
+            _isPlayingBass = false;
+            _isPlayingVlc = false;
+
+            MediaControls.Instance.ElapsedTime = "00:00:00";
+            MediaControls.Instance.RemainingTime = "00:00:00";
+            MediaControls.Instance.IconPlayPause = PackIconKind.Play;
         }
 
         /// <summary>
@@ -224,7 +278,7 @@ namespace bossdoyKaraoke_NOW.Media
         {
             try
             {
-                if (_songsSource.SongsQueue.Count > 1)
+                if (_songsSource.SongsQueue.Count > 0)
                 {
                     string showNextTrack = MediaControls.Instance.RemainingTime.Trim();
 
@@ -234,11 +288,11 @@ namespace bossdoyKaraoke_NOW.Media
                         int second = Convert.ToInt32(showNextTrack.Substring(6, 2));
 
                         if (minute <= 0 && second == 30)
-                            _songsSource.PreProcessFiles(_songsSource.SongsQueue[1].FilePath);
+                            _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
 
                         if (minute <= 0 && second < 30)
                         {
-                            string nextSong = _songsSource.SongsQueue[1].Name + "( " + _songsSource.SongsQueue[1].Artist + " )";
+                            string nextSong = _songsSource.SongsQueue[0].Name + "( " + _songsSource.SongsQueue[0].Artist + " )";
                             _getNestSongInfo = nextSong;
                         }
                         else
@@ -329,12 +383,12 @@ namespace bossdoyKaraoke_NOW.Media
                         {
                             _previousTrack = _currentTrack;
                             _currentTrack = _track as BassAudio;
-                            Vlc.Instance.PlayBackGroundVideo();
+                            VlcPlayer.PlayBackGroundVideo();
                             _currentTrack.Play();
                         }
                         else
                         {
-                            Vlc.Instance.PlayVideoke(_songsSource.SongsQueue[0].FilePath, new VlcSync.SYNCPROC(OnVlcSync));
+                            VlcPlayer.PlayVideoke(_songsSource.SongsQueue[0].FilePath, new VlcSync.SYNCPROC(OnVlcSync));
                         }
 
                         _songsSource.RemoveFromQueue(_songsSource.SongsQueue[0]);
@@ -355,14 +409,6 @@ namespace bossdoyKaraoke_NOW.Media
         {
             try
             {
-                //_songsQueue = _songsSource.SongsQueue;
-                //_songsQueue.RemoveAt(0);
-                //_songsSource.SongsQueue = _songsQueue;
-                //_songsQueue.Clear();
-
-                MediaControls.Instance.ElapsedTime = "00:00:00";
-                MediaControls.Instance.RemainingTime = "00:00:00";
-
                 if (_songsSource.SongsQueue.Count <= 0)
                 {
                     // END SYNC
@@ -373,14 +419,14 @@ namespace bossdoyKaraoke_NOW.Media
                     // POS SYNC
                     Application.Current.Dispatcher.BeginInvoke(new Action(delegate
                     {
-                            // this code runs on the UI thread!
-                            if (_songsSource.IsCdgFileType)
+                        // this code runs on the UI thread!
+                        if (_songsSource.IsCdgFileType)
                             LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
                         else
                             LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
 
-                            // and fade out and stop the 'previous' track (for 2 seconds)
-                            if (_previousTrack != null)
+                        // and fade out and stop the 'previous' track (for 2 seconds)
+                        if (_previousTrack != null)
                             Bass.BASS_ChannelSlideAttribute(_previousTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
                     }));
                 }
@@ -404,14 +450,6 @@ namespace bossdoyKaraoke_NOW.Media
         {
             try
             {
-                //_songsQueue = _songsSource.SongsQueue;
-                //_songsQueue.RemoveAt(0);
-                //_songsSource.SongsQueue = _songsQueue;
-                //_songsQueue.Clear();
-
-                MediaControls.Instance.ElapsedTime = "00:00:00";
-                MediaControls.Instance.RemainingTime = "00:00:00";
-
                 if (_songsSource.SongsQueue.Count <= 0)
                     _currentTrack.NextTrackSync = 0;
                 else

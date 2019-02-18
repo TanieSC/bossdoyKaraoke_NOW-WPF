@@ -36,11 +36,11 @@ namespace bossdoyKaraoke_NOW.FormControl
 
             LoadResources();
 
-
-            if (_player.CDGmp3 != null)
+            if (_player.IsPlayingBass)
             {
-                if (CurrentPlayState == PlayState.Playing)
+                if (_player.CDGmp3 != null)
                 {
+
                     var cdgbmp = _player.CDGmp3.RGBImage as WriteableBitmap;
                     _player.CDGmp3.renderAtPosition(_player.CdgRenderAtPosition);
                     _cdgbmp = GraphicUtil.ConvertToSharpDXBitmap(RenderContext.CdgContext, cdgbmp);
@@ -59,12 +59,10 @@ namespace bossdoyKaraoke_NOW.FormControl
                     RenderContext.CdgContext.DrawBitmap(_cdgbmp, _cdgBitmapRectangle, 1.0f, D2D.BitmapInterpolationMode.Linear);
                     RenderContext.CdgContext.EndDraw();
                 }
-
             }
-            else
+            if (_player.IsPlayingVlc)
             {
-                if (CurrentPlayState == PlayState.Playing)
-                    _player.VlcRenderAtPosition();
+                _player.VlcRenderAtPosition();
             }
 
             _player.GetNextTrackInfo();

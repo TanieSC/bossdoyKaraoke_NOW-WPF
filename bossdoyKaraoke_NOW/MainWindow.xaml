@@ -41,127 +41,158 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <Button Panel.ZIndex="1" Name="play_pause" Margin="10,54,0,0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+        <DockPanel Name="media_controls" Grid.ColumnSpan="2" VerticalAlignment="Top">
+            <DockPanel.DataContext>
+                <vm:MediaControls/>
+            </DockPanel.DataContext>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Loaded">
+                    <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{ Binding ElementName=media_controls}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <Button Panel.ZIndex="1" Name="play_pause" Margin="10,54,0,0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                        Content="{materialDesign:PackIcon  Kind=Play, Size=45 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" />
-        <materialDesign:ColorZone Panel.ZIndex="0" Mode="PrimaryMid"  Margin="38,50,0,0"  Grid.ColumnSpan="2"  BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Foreground="#DDFFFFFF" BorderThickness="0,5" >
-            <DockPanel Name="media_controls" Margin="24,7,0,7" Grid.ColumnSpan="2">
-                <DockPanel.DataContext>
-                    <vm:MediaControls/>
-                </DockPanel.DataContext>
+                         Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <materialDesign:PackIcon Kind="{Binding IconPlayPause}" Width="45" Height="45"/>
                 <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Loaded">
-                        <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{ Binding ElementName=media_controls}" />
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding PlayPauseCommand}" CommandParameter="{ Binding ElementName=play_pause}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                <StackPanel Name="audio_panel" Panel.ZIndex="1" Orientation="Horizontal"  HorizontalAlignment="Left">
-                    <Button Name="play_next" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+            </Button>
+            <materialDesign:ColorZone Panel.ZIndex="0" Mode="PrimaryMid"  Margin="-28,50,0,0"  Grid.ColumnSpan="2"  BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Foreground="#DDFFFFFF" BorderThickness="0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
+                <DockPanel Margin="24,7,0,7">
+                    <StackPanel Name="audio_panel" Panel.ZIndex="1" Orientation="Horizontal"  HorizontalAlignment="Left">
+                        <Button Name="play_next" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
                         Content="{materialDesign:PackIcon  Kind=SkipNext ,Size=35 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
-                    <Button Name="volume_main" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
+                        <Button Name="volume_main" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                        Content="{materialDesign:PackIcon  Kind=VolumeLow,Size=35 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
-                    <Button Name="remove_vocal" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+                        Content="{materialDesign:PackIcon  Kind=VolumeLow,Size=35 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding MuteUnMuteCommand}" CommandParameter="{ Binding ElementName=volume_main}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <Button.ContextMenu >
+                                <ContextMenu Width="100" Height="200">
+                                    <MenuItem>
+                                        <MenuItem.Template>
+                                            <ControlTemplate TargetType="{x:Type MenuItem}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Slider Orientation="Vertical" />
+                                                    <Slider Orientation="Vertical"/>
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </MenuItem.Template>
+                                    </MenuItem>
+
+                                </ContextMenu>
+                            </Button.ContextMenu>
+
+                        </Button>
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
+                        <Button Name="remove_vocal" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
                         Content="{materialDesign:PackIcon  Kind=Voice ,Size=30 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                </StackPanel>
-                <StackPanel Name="dual_screen_panel" Panel.ZIndex="2" Orientation="Horizontal">
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
-                    <materialDesign:Badged Badge="0" x:Name="full_screen_count">
-                        <Button Name="dual_Screen" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+                    </StackPanel>
+                    <StackPanel Name="dual_screen_panel" Panel.ZIndex="2" Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
+                        <materialDesign:Badged Badge="0" x:Name="full_screen_count">
+                            <Button Name="dual_Screen" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                             materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                             materialDesign:ButtonProgressAssist.Value="100"
                             materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
                             Content="{materialDesign:PackIcon  Kind=MonitorMultiple ,Size=25 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" Click="dual_Screen_Click"/>
-                    </materialDesign:Badged>
-                </StackPanel>
-                <StackPanel Name="tempo_key_panel" Panel.ZIndex="3" Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
-                    <StackPanel  Orientation="Vertical" HorizontalAlignment="Right" Margin="5,0" DockPanel.Dock="Right">
-                        <Button Name="key_plus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+                        </materialDesign:Badged>
+                    </StackPanel>
+                    <StackPanel Name="tempo_key_panel" Panel.ZIndex="3" Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                        <StackPanel  Orientation="Vertical" HorizontalAlignment="Right" Margin="5,0" DockPanel.Dock="Right">
+                            <Button Name="key_plus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
                         Content="{materialDesign:PackIcon  Kind=Plus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Top" Width="18" Padding="1">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding KeyPlusCommand}" CommandParameter="{ Binding ElementName=key_plus}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
-                        <Button Name="key_minus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding KeyPlusCommand}" CommandParameter="{ Binding ElementName=key_plus}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button Name="key_minus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
                         Content="{materialDesign:PackIcon  Kind=Minus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Bottom" Width="18" Padding="1" Margin="0,5,0,0">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding KeyMinusCommand}" CommandParameter="{ Binding ElementName=key_minus}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
-                    </StackPanel>
-                    <StackPanel  Orientation="Vertical" HorizontalAlignment="Right"  DockPanel.Dock="Right" Margin="0,0,5,0">
-                        <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center"> Key</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center" Text="{Binding Key}" FontWeight="Bold" />
-                    </StackPanel>
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="0,5,5,5" />
-                    <StackPanel  Orientation="Vertical" HorizontalAlignment="Right" Margin="5,0" DockPanel.Dock="Right">
-                        <Button Name="tempo_plus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding KeyMinusCommand}" CommandParameter="{ Binding ElementName=key_minus}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel  Orientation="Vertical" HorizontalAlignment="Right"  DockPanel.Dock="Right" Margin="0,0,5,0">
+                            <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center"> Key</TextBlock>
+                            <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center" Text="{Binding Key}" FontWeight="Bold" />
+                        </StackPanel>
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="0,5,5,5" />
+                        <StackPanel  Orientation="Vertical" HorizontalAlignment="Right" Margin="5,0" DockPanel.Dock="Right">
+                            <Button Name="tempo_plus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
                         Content="{materialDesign:PackIcon  Kind=Plus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Top" Width="18" Padding="1">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding TempoPlusCommand}" CommandParameter="{ Binding ElementName=tempo_plus}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
-                        <Button Name="tempo_minus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding TempoPlusCommand}" CommandParameter="{ Binding ElementName=tempo_plus}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button Name="tempo_minus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
                         Content="{materialDesign:PackIcon  Kind=Minus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Bottom" Width="18" Padding="1" Margin="0,5,0,0" >
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding TempoMinusCommand}" CommandParameter="{ Binding ElementName=tempo_minus}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
-                    </StackPanel>
-                    <StackPanel  Orientation="Vertical" HorizontalAlignment="Right"  DockPanel.Dock="Right" Margin="0,0,5,0">
-                        <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center">Tmp</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center" Text="{Binding Tempo}" FontWeight="Bold" Width="29"/>
-                    </StackPanel>
-
-                </StackPanel>
-                <StackPanel Name="song_info_panel" Panel.ZIndex="4" Orientation="Vertical" DockPanel.Dock="Right" Margin="5,0,0,0" >
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  >
-                        <TextBlock  VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                                   Text="{Binding ElapsedTime}"/>
-                        <StackPanel Orientation="Vertical" Width="325">
-                            <TextBlock Margin="16,0" FontWeight="Bold" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Center"
-                                   Text="{Binding SongTitle}" TextWrapping="Wrap" />
-                            <TextBlock Margin="16,0" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                   Text="{Binding SongArtist}" TextWrapping="Wrap"/>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding TempoMinusCommand}" CommandParameter="{ Binding ElementName=tempo_minus}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
                         </StackPanel>
-                        <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                                   Text="{Binding RemainingTime}"/>
+                        <StackPanel  Orientation="Vertical" HorizontalAlignment="Right"  DockPanel.Dock="Right" Margin="0,0,5,0">
+                            <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center">Tmp</TextBlock>
+                            <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center" Text="{Binding Tempo}" FontWeight="Bold" Width="29"/>
+                        </StackPanel>
+
                     </StackPanel>
-                    <ProgressBar Value="{Binding ProgressValue}" Width="410" HorizontalContentAlignment="Center" Maximum="2000" />
-                </StackPanel>
-            </DockPanel>
-        </materialDesign:ColorZone>
+                    <StackPanel Name="song_info_panel" Panel.ZIndex="4" Orientation="Vertical" DockPanel.Dock="Right" Margin="5,0,0,0" >
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  >
+                            <TextBlock  VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                   Text="{Binding ElapsedTime}"/>
+                            <StackPanel Orientation="Vertical" Width="325">
+                                <TextBlock Margin="16,0" FontWeight="Bold" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Center"
+                                   Text="{Binding SongTitle}" TextWrapping="Wrap" />
+                                <TextBlock Margin="16,0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   Text="{Binding SongArtist}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                   Text="{Binding RemainingTime}"/>
+                        </StackPanel>
+                        <ProgressBar Value="{Binding ProgressValue}" Width="410" HorizontalContentAlignment="Center" Maximum="2000" />
+                    </StackPanel>
+                </DockPanel>
+            </materialDesign:ColorZone>
+        </DockPanel>
         <Grid Name="media_grid" Margin="0,114,0,0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MinWidth="250" MaxWidth="350"/>
@@ -264,7 +295,7 @@
                 </TreeView.ItemContainerStyle>
             </TreeView>
             <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" MinHeight="415" />
-            <DockPanel Grid.Column="2" Height="220" VerticalAlignment="Top" Background="Black" Grid.ColumnSpan="2" >
+            <DockPanel Grid.Column="2" Height="220" Background="Black" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0" >
                 <WindowsFormsHost Name="main_video_screen" Width="390" Height="220"  Background="Black" HorizontalAlignment="Center" >
                     <!--<videoControl:D2dImageSource x:Name="main_screen_video"></videoControl:D2dImageSource>-->
                 </WindowsFormsHost>

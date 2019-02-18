@@ -277,18 +277,18 @@ namespace bossdoyKaraoke_NOW.Media
                     AddRemoveFromQueue(sender, true);
 
                     if (_trackInfo != null)
-                    {                        
+                    {
                         _songsQueue.Add(_trackInfo);
-                       // if (_songsQueue.Count > 1)
-                       // {
-                       //     _totalDuration += _trackInfo.Tags.duration;
-                       //     _songQueueTitle = "Song Queue (" + (_songsQueue.Count - 1) + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
-                      //  }
-                      //  else
-                      //  {
+                        if (_songsQueue.Count == 1 && CurrentPlayState == PlayState.Stopped)
+                        {
+                            _totalDuration += _trackInfo.Tags.duration;
+                            _songQueueTitle = "Song Queue (Empty)";
+                        }
+                        else
+                        {
                             _totalDuration += _trackInfo.Tags.duration;
                             _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
-                       // }
+                        }
                     }
 
                     WriteToQueueList();
@@ -296,7 +296,7 @@ namespace bossdoyKaraoke_NOW.Media
             }
             catch (Exception ex)
             {
-                
+
             }
 
             return _songQueueTitle; //string.Format("{0}", Utils.FixTimespan(_totalDuration, "HHMMSS"));
@@ -314,16 +314,9 @@ namespace bossdoyKaraoke_NOW.Media
                     if (_trackInfo != null)
                     {
                         _songsQueue.Insert(0, _trackInfo);
-                        if (_songsQueue.Count > 1)
-                        {
-                            _totalDuration += _trackInfo.Tags.duration;
-                            _songQueueTitle = "Song Queue (" + (_songsQueue.Count - 1) + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
-                        }
-                        else
-                        {
-                            _totalDuration += _trackInfo.Tags.duration;
-                            _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
-                        }
+
+                        _totalDuration += _trackInfo.Tags.duration;
+                        _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
                     }
 
                     WriteToQueueList();
@@ -341,7 +334,15 @@ namespace bossdoyKaraoke_NOW.Media
         {
             AddRemoveFromQueue(sender);
             _songsQueue.Remove(sender);
-            _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+
+            if (_songsQueue.Count <= 0)
+            {
+                _songQueueTitle = "Song Queue (Empty)";
+                _totalDuration = 0.0;
+            }
+            else
+                _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+
             WriteToQueueList();
 
             return _songQueueTitle;

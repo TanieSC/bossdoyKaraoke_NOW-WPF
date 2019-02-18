@@ -17,6 +17,7 @@ namespace bossdoyKaraoke_NOW.Media
         public abstract void KeyMinus();
         public abstract void KeyPlus();
         public abstract void Mute();
+        public abstract void UnMute();
         public abstract void Pause();
         public abstract void Play();
         public abstract void Stop();

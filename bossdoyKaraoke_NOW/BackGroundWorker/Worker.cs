@@ -8,6 +8,7 @@ using bossdoyKaraoke_NOW.Enums;
 using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Model;
 using bossdoyKaraoke_NOW.ViewModel;
+using MaterialDesignThemes.Wpf;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
 using static bossdoyKaraoke_NOW.Enums.PlayerState;
 
@@ -71,6 +72,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                                  player.LoadCDGFile(trackInfo.FilePath);
                              else
                                  player.LoadVideokeFile(trackInfo.FilePath);
+
+                             MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
                          }
                          break;
                      case NewTask.ADD_TO_QUEUE_AS_NEXT:
@@ -83,7 +86,6 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          break;
                      case NewTask.LOAD_CDG_FILE: //Not in use
                          CurrentTask = NewTask.LOAD_CDG_FILE;
-
                          break;
                      case NewTask.LOAD_QUEUE_SONGS:
                          CurrentTask = NewTask.LOAD_QUEUE_SONGS;
@@ -97,6 +99,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                                  player.LoadVideokeFile(trackInfo.FilePath);
 
                              songsSource.LoadSongsInQueue();
+
+                             MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
                          }
                          break;
                      case NewTask.EMPTY_QUEUE_LIST:
