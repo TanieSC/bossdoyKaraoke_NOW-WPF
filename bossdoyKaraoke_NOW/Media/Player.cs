@@ -201,6 +201,8 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 VlcPlayer.Mute();
             }
+
+            MediaControls.Instance.IconMuteUnMute = PackIconKind.VolumeMute;
         }
 
         public override void UnMute()
@@ -214,6 +216,8 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 VlcPlayer.UnMute();
             }
+
+            MediaControls.Instance.IconMuteUnMute = PackIconKind.VolumeHigh;
         }
 
         public override void Pause()

@@ -75,28 +75,29 @@
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                        Content="{materialDesign:PackIcon  Kind=VolumeLow,Size=35 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                            <materialDesign:PackIcon Kind="{Binding IconMuteUnMute}" Width="35" Height="35"/>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                     <i:InvokeCommandAction Command="{Binding MuteUnMuteCommand}" CommandParameter="{ Binding ElementName=volume_main}" />
                                 </i:EventTrigger>
+                                <i:EventTrigger EventName="PreviewMouseMove">
+                                    <i:InvokeCommandAction Command="{Binding ShowVolumeControlCommand}" CommandParameter="{ Binding ElementName=volume_main}" />
+                                </i:EventTrigger>
                             </i:Interaction.Triggers>
-                            <Button.ContextMenu >
-                                <ContextMenu Width="100" Height="200">
+                            <Button.ContextMenu>
+                                <ContextMenu Width="150">
                                     <MenuItem>
                                         <MenuItem.Template>
                                             <ControlTemplate TargetType="{x:Type MenuItem}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Slider Orientation="Vertical" />
-                                                    <Slider Orientation="Vertical"/>
+                                                <StackPanel Margin="5" >
+                                                    <Slider  />
                                                 </StackPanel>
                                             </ControlTemplate>
                                         </MenuItem.Template>
                                     </MenuItem>
-
                                 </ContextMenu>
                             </Button.ContextMenu>
-
                         </Button>
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
                         <Button Name="remove_vocal" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
@@ -173,7 +174,6 @@
                             <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center">Tmp</TextBlock>
                             <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center" Text="{Binding Tempo}" FontWeight="Bold" Width="29"/>
                         </StackPanel>
-
                     </StackPanel>
                     <StackPanel Name="song_info_panel" Panel.ZIndex="4" Orientation="Vertical" DockPanel.Dock="Right" Margin="5,0,0,0" >
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  >
@@ -396,5 +396,6 @@
                 </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
+        <!--<StackPanel x:Name="volume_control" HorizontalAlignment="Left" Height="239" Margin="130,105,0,0" VerticalAlignment="Top" Width="68" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>-->
     </Grid>
 </Window>

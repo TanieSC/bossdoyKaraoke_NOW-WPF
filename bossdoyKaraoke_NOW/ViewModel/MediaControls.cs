@@ -32,7 +32,17 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private StackPanel _tempo_key_panel;
         private StackPanel _song_info_panel;
         private PackIconKind _iconPlayPause = PackIconKind.Play;
-        private PackIconKind _iconMuteUnMute = PackIconKind.VolumeLow;
+        private PackIconKind _iconMuteUnMute = PackIconKind.VolumeHigh;
+        private IMediaControls _controls;
+        private ICommand _loaded;
+        private ICommand _tempoPlusCommand;
+        private ICommand _tempoMinusCommand;
+        private ICommand _keyPlusCommand;
+        private ICommand _keyMinusCommand;
+        private ICommand _playPuaseCommand;
+        private ICommand _muteUnMuteCommand;
+        private ICommand _showVolumeControlCommand;
+
         public PackIconKind IconPlayPause
         {
             get
@@ -45,15 +55,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 OnPropertyChanged();
             }
         }
-        public PackIconKind IconMuteUnMute { get { return _iconMuteUnMute; } set { _iconMuteUnMute = value; } }
-        private IMediaControls _controls;
-        private ICommand _loaded;
-        private ICommand _tempoPlusCommand;
-        private ICommand _tempoMinusCommand;
-        private ICommand _keyPlusCommand;
-        private ICommand _keyMinusCommand;
-        private ICommand _playPuaseCommand;
-        private ICommand _muteUnMuteCommand;
+
+        public PackIconKind IconMuteUnMute
+        {
+            get
+            {
+                return _iconMuteUnMute;
+            }
+            set
+            {
+                _iconMuteUnMute = value;
+                OnPropertyChanged();
+            }
+        }
 
         public static MediaControls Instance
         {
@@ -327,6 +341,28 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         {
                             Player.Instance.UnMute();
                             _isMute = false;
+                        }
+                    }
+                }));
+            }
+        }
+
+        public ICommand ShowVolumeControlCommand
+        {
+            get
+            {
+                return _showVolumeControlCommand ?? (_showVolumeControlCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        if (!_isMute)
+                        {
+                            //var b = x as Button;
+                            //b.ContextMenu.PlacementTarget = x as System.Windows.UIElement;
+                            //b.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+                            //b.ContextMenu.HorizontalOffset = 0;//set offset if required
+                            //b.ContextMenu.VerticalOffset = 0;//set offset if required.
+                            //b.ContextMenu.IsOpen = true;
                         }
                     }
                 }));
