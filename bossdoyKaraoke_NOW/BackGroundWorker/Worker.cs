@@ -89,14 +89,15 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          break;
                      case NewTask.LOAD_QUEUE_SONGS:
                          CurrentTask = NewTask.LOAD_QUEUE_SONGS;
+
+                         songsSource.PlayFirstSongInQueue();
+
                          if (songsSource.SongsQueue.Count > 0 && CurrentPlayState == PlayState.Stopped)
                          {
-                             songsSource.PlayFirstSongInQueue();
-
                              if (songsSource.IsCdgFileType)
-                                 player.LoadCDGFile(trackInfo.FilePath);
+                                 player.LoadCDGFile(songsSource.SongsQueue[0].FilePath);
                              else
-                                 player.LoadVideokeFile(trackInfo.FilePath);
+                                 player.LoadVideokeFile(songsSource.SongsQueue[0].FilePath);
 
                              songsSource.LoadSongsInQueue();
 
@@ -145,7 +146,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:
                     case NewTask.EMPTY_QUEUE_LIST:
-                        _listViewElement.ItemsSource = songsSource.SongsQueue; ;
+                        _listViewElement.ItemsSource = songsSource.SongsQueue;
 
                         if (CurrentTask == NewTask.EMPTY_QUEUE_LIST)
                             parentTreeview.Title = songQueueTitle;

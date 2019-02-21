@@ -138,7 +138,6 @@ namespace bossdoyKaraoke_NOW.Media
         public void LoadCDGFile(string cdgFileName)
         {
             CDGmp3 = new CDGFile(cdgFileName);
-
             AddToBassMixer();
             PlayNextTrack();
             _isPlayingBass = true;
@@ -155,7 +154,6 @@ namespace bossdoyKaraoke_NOW.Media
 
         public override void KeyMinus()
         {
-
             if (_songsSource.IsCdgFileType)
             {
                 _currentTrack.KeyMinus();
@@ -312,6 +310,34 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// Next button = Play the next track if Song Queue is not empty
+        /// </summary>
+        public void PlayNext()
+        {
+            try
+            {
+                lock (_songsSource.SongsQueue)
+                {
+                    if (_songsSource.SongsQueue.Count > 0)
+                    {
+                        if (_currentTrack != null)
+                            Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
+
+                        _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
+
+                        if (_songsSource.IsCdgFileType)
+                            LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                        else
+                            LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+    
         //Private Method ===================================================================================================
 
         /// <summary>

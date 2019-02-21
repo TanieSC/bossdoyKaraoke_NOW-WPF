@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
@@ -31,6 +32,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private StackPanel _dual_screen_panel;
         private StackPanel _tempo_key_panel;
         private StackPanel _song_info_panel;
+        private Popup _volumeControl;
         private PackIconKind _iconPlayPause = PackIconKind.Play;
         private PackIconKind _iconMuteUnMute = PackIconKind.VolumeHigh;
         private IMediaControls _controls;
@@ -40,8 +42,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _keyPlusCommand;
         private ICommand _keyMinusCommand;
         private ICommand _playPuaseCommand;
+        private ICommand _playNextCommand;
         private ICommand _muteUnMuteCommand;
         private ICommand _showVolumeControlCommand;
+        private ICommand _hideVolumeControlCommand;
 
         public PackIconKind IconPlayPause
         {
@@ -323,7 +327,21 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 }));
             }
         }
-        
+
+        public ICommand PlayNextCommand
+        {
+            get
+            {
+                return _playNextCommand ?? (_playNextCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        Player.Instance.PlayNext();
+                    }
+                }));
+            }
+        }
+
         public ICommand MuteUnMuteCommand
         {
             get
@@ -355,14 +373,48 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        if (!_isMute)
+                        _volumeControl = x as Popup;
+                        _volumeControl.PopupAnimation = PopupAnimation.Fade;
+                        _volumeControl.HorizontalOffset = 10;
+                        _volumeControl.VerticalOffset = 5;
+                        _volumeControl.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+
+                        if (!_volumeControl.IsOpen)
                         {
-                            //var b = x as Button;
-                            //b.ContextMenu.PlacementTarget = x as System.Windows.UIElement;
-                            //b.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-                            //b.ContextMenu.HorizontalOffset = 0;//set offset if required
-                            //b.ContextMenu.VerticalOffset = 0;//set offset if required.
-                            //b.ContextMenu.IsOpen = true;
+                            _volumeControl.IsOpen = true;
+                            _volumeControl.MouseLeave += _volumeControl_MouseLeave;
+                        }
+                    }
+                }));
+            }
+        }
+
+        private void _volumeControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            //var parent = ((((((sender as Popup).Parent as Grid)
+            //    .Children[1] as DockPanel)
+            //    .Children[1] as ColorZone).Content as DockPanel)
+            //    .Children[0] as StackPanel)
+            //    .Children[2] as Button;
+            //if (!parent.IsMouseOver)
+            //{
+                _volumeControl.IsOpen = false;
+           // }
+        }
+
+        public ICommand HideVolumeControlCommand
+        {
+            get
+            {
+                return _hideVolumeControlCommand ?? (_hideVolumeControlCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        var parent = (x as Popup).Parent as Grid;
+                        if (parent.IsMouseOver)
+                        {
+                            _volumeControl.PopupAnimation = PopupAnimation.Fade;
+                            _volumeControl.IsOpen = false;
                         }
                     }
                 }));

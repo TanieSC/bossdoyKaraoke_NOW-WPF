@@ -181,9 +181,18 @@ namespace bossdoyKaraoke_NOW.Media
             {              
                 _isAddingToQueue = false;
                 AddRemoveFromQueue(_songsQueue[0], true);
-                _songsQueue[0].Tags = _trackInfo.Tags;
-                _songsQueue[0].Tags.duration = 0.0;
-                _totalDuration = 0.0;
+                if (_trackInfo == null)
+                {
+                    _songsQueue.Remove(_songsQueue[0]);
+
+                    PlayFirstSongInQueue();
+                }
+                else
+                {
+                    _songsQueue[0].Tags = _trackInfo.Tags;
+                    _songsQueue[0].Tags.duration = 0.0;
+                    _totalDuration = 0.0;
+                }
             }
         }
 
@@ -194,15 +203,28 @@ namespace bossdoyKaraoke_NOW.Media
         {
             var songQueue = Worker.TreeViewElement.Items[0] as ITreeViewModel;
 
-            for (int i = 0; i < _songsQueue.Count; i++)
+            if (_songsQueue.Count > 0)
             {
-                AddRemoveFromQueue(_songsQueue[i], true);
-                _songsQueue[i].Duration = _trackInfo.Duration;
-                _songsQueue[i].Tags = _trackInfo.Tags;
+                for (int i = 0; i < _songsQueue.Count; i++)
+                {
+                    AddRemoveFromQueue(_songsQueue[i], true);
 
-                _totalDuration += _trackInfo.Tags.duration;
-                _songQueueTitle = "Song Queue (" + (i + 1) + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
-                songQueue.Title = _songQueueTitle;
+                    if (_trackInfo == null)
+                    {
+                        _songsQueue.Remove(_songsQueue[i]);
+                        i -= 1;
+                    }
+                    else
+                    {
+                        //_songsQueue[i].Duration = _trackInfo.Duration;
+                        //_songsQueue[i].Tags = _trackInfo.Tags;
+                        _songsQueue[i] = _trackInfo;
+
+                        _totalDuration += _trackInfo.Tags.duration;
+                        _songQueueTitle = "Song Queue (" + (i + 1) + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+                        songQueue.Title = _songQueueTitle;
+                    }
+                }
             }
         }
        
@@ -423,7 +445,6 @@ namespace bossdoyKaraoke_NOW.Media
                     if (CurrentTask == NewTask.LOAD_QUEUE_SONGS)
                     {
                         _trackInfo = null;
-                        _songsQueue.Remove(sender);
                     }
                     else
                     {

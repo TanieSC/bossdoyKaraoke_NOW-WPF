@@ -24,8 +24,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
         IMediaControls Controls { get; }
         ICommand Loaded { get; }
         ICommand PlayPauseCommand { get; }
+        ICommand PlayNextCommand { get; }
         ICommand MuteUnMuteCommand { get; }
         ICommand ShowVolumeControlCommand { get; }
+        ICommand HideVolumeControlCommand { get; }
         ICommand KeyPlusCommand { get; }
         ICommand KeyMinusCommand { get; }
         ICommand TempoPlusCommand { get; }

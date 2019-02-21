@@ -69,7 +69,13 @@
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-                        Content="{materialDesign:PackIcon  Kind=SkipNext ,Size=35 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        Content="{materialDesign:PackIcon  Kind=SkipNext ,Size=35 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding PlayNextCommand}" CommandParameter="{ Binding ElementName=play_next}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
                         <Button Name="volume_main" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
@@ -81,23 +87,13 @@
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                     <i:InvokeCommandAction Command="{Binding MuteUnMuteCommand}" CommandParameter="{ Binding ElementName=volume_main}" />
                                 </i:EventTrigger>
-                                <i:EventTrigger EventName="PreviewMouseMove">
-                                    <i:InvokeCommandAction Command="{Binding ShowVolumeControlCommand}" CommandParameter="{ Binding ElementName=volume_main}" />
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction Command="{Binding ShowVolumeControlCommand}" CommandParameter="{ Binding ElementName=volume_control}" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction Command="{Binding HideVolumeControlCommand}" CommandParameter="{ Binding ElementName=volume_control}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                            <Button.ContextMenu>
-                                <ContextMenu Width="150">
-                                    <MenuItem>
-                                        <MenuItem.Template>
-                                            <ControlTemplate TargetType="{x:Type MenuItem}">
-                                                <StackPanel Margin="5" >
-                                                    <Slider  />
-                                                </StackPanel>
-                                            </ControlTemplate>
-                                        </MenuItem.Template>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </Button.ContextMenu>
                         </Button>
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
                         <Button Name="remove_vocal" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
@@ -396,6 +392,19 @@
                 </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
-        <!--<StackPanel x:Name="volume_control" HorizontalAlignment="Left" Height="239" Margin="130,105,0,0" VerticalAlignment="Top" Width="68" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>-->
+        <Popup x:Name="volume_control"  PlacementTarget="{Binding ElementName=volume_main}"  AllowsTransparency="True"> <!--Height="200" Width="68">-->
+            <ContentControl Margin="3">
+                <Border BorderBrush="#89000000" CornerRadius="5">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0" Opacity="0.4"/>
+                    </Border.Effect>
+                    <DockPanel Background="#FFFAFAFA">
+                        <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"  >
+                            <Slider TickPlacement="BottomRight" Orientation="Vertical" Height="150" Maximum="100" Value="50" TickFrequency="5" />
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+            </ContentControl>
+        </Popup>
     </Grid>
 </Window>

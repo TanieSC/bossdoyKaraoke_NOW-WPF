@@ -184,7 +184,7 @@ namespace bossdoyKaraoke_NOW.Media
                 _list_player.Stop();
 
             if (_player.IsPlaying)
-                Stop();
+                _player.Stop();
 
             _media = _factory.CreateMedia<IMediaFromFile>(filePath);
             _memRender = _player.CustomRenderer;
