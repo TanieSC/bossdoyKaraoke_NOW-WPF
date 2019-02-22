@@ -274,7 +274,7 @@ namespace bossdoyKaraoke_NOW.Media
         }
 
         /// <summary>
-        /// Get the next tack to play and display on top of the full screen window for 30 sec.
+        /// Get the next tack to play and display on top of the screen window for 30 sec.
         /// </summary>
         public void GetNextTrackInfo()
         {
