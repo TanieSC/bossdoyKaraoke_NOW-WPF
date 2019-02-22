@@ -129,8 +129,7 @@ namespace bossdoyKaraoke_NOW.Media
             VlcPlayer = Vlc.Instance;
             Thread.Sleep(1000);
             App.SplashScreen.AddMessage("Loading Song Collections");
-            //Create Instance of song source
-            //SongsSource.Instance.LoadSongCollections();
+            //Create Instance of song source                                                                                                                             
             _songsSource = SongsSource.Instance;
             _songsSource.LoadSongCollections();
         }
