@@ -12,6 +12,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
     {
         string SongTitle { get; set; }
         string SongArtist { get; set; }
+        int VolumeValue { get; set; }
         string ElapsedTime { get; set; }
         string RemainingTime { get; set; }
         double ProgressValue { get; set; }
@@ -28,6 +29,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         ICommand MuteUnMuteCommand { get; }
         ICommand ShowVolumeControlCommand { get; }
         ICommand HideVolumeControlCommand { get; }
+        ICommand VolumeSliderCommand { get; }
         ICommand KeyPlusCommand { get; }
         ICommand KeyMinusCommand { get; }
         ICommand TempoPlusCommand { get; }

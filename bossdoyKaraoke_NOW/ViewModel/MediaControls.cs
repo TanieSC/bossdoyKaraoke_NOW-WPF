@@ -20,6 +20,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private static MediaControls _instance;
         private string _songTitle;
         private string _songArtist;
+        private int _volumeValue = 50;
         private string _elapsedTime = "00:00:00";
         private string _remainingTime = "00:00:00";
         private double _progressValue = 0;
@@ -46,6 +47,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _muteUnMuteCommand;
         private ICommand _showVolumeControlCommand;
         private ICommand _hideVolumeControlCommand;
+        private ICommand _volumeSliderCommand;
 
         public PackIconKind IconPlayPause
         {
@@ -88,6 +90,20 @@ namespace bossdoyKaraoke_NOW.ViewModel
         public MediaControls()
         {
             _instance = this;
+        }
+
+        public int VolumeValue
+        {
+            get
+            {
+                return _volumeValue;
+            }
+
+            set
+            {
+                _volumeValue = value;
+                OnPropertyChanged();
+            }
         }
 
         public string ElapsedTime
@@ -236,16 +252,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                      //  var dockPanel = x as DockPanel;
-                      //  _controls = dockPanel.DataContext as IMediaControls;
+                        //  var dockPanel = x as DockPanel;
+                        //  _controls = dockPanel.DataContext as IMediaControls;
 
-                      //  _audio_panel = dockPanel.Children[0] as StackPanel;
-                      //  _dual_screen_panel = dockPanel.Children[1] as StackPanel;
-                      //  _tempo_key_panel = dockPanel.Children[2] as StackPanel;
-                      //  _song_info_panel = dockPanel.Children[3] as StackPanel;
+                        //  _audio_panel = dockPanel.Children[0] as StackPanel;
+                        //  _dual_screen_panel = dockPanel.Children[1] as StackPanel;
+                        //  _tempo_key_panel = dockPanel.Children[2] as StackPanel;
+                        //  _song_info_panel = dockPanel.Children[3] as StackPanel;
 
-                      // // _tempo_key_panel.IsEnabled = false;
-                      ////  KeyTempoOpacity = 0.25;
+                        // // _tempo_key_panel.IsEnabled = false;
+                        ////  KeyTempoOpacity = 0.25;
                     }
                 }));
             }
@@ -410,12 +426,26 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        var parent = (x as Popup).Parent as Grid;
+                        var parent = ((x as Popup).Parent as DockPanel).Parent as Grid;
                         if (parent.IsMouseOver)
                         {
                             _volumeControl.PopupAnimation = PopupAnimation.Fade;
                             _volumeControl.IsOpen = false;
                         }
+                    }
+                }));
+            }
+        }
+
+        public ICommand VolumeSliderCommand
+        {
+            get
+            {
+                return _volumeSliderCommand ?? (_volumeSliderCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        Player.Instance.Volume = (float)(x as Slider).Value;
                     }
                 }));
             }

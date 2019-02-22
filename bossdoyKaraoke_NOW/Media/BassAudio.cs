@@ -37,7 +37,7 @@ namespace bossdoyKaraoke_NOW.Media
             set
             {
                 _playerVolume = value;
-                Bass.BASS_ChannelSetAttribute(this.Channel, BASSAttribute.BASS_ATTRIB_VOL, value);
+                Bass.BASS_ChannelSetAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, value);
             }
         }
 
@@ -119,8 +119,10 @@ namespace bossdoyKaraoke_NOW.Media
 
             if (Channel != 0)
             {
-                _mixer.StreamAddChannel(Channel, TrackSync);
                 TrackLength = Bass.BASS_ChannelGetLength(Channel);
+                Bass.BASS_ChannelSetAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, _playerVolume);
+                _mixer.StreamAddChannel(Channel, TrackSync);
+                Console.WriteLine("Bass: " + _playerVolume);            
             }
 
             CurrentPlayState = PlayState.Stopped;

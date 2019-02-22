@@ -27,6 +27,7 @@ namespace bossdoyKaraoke_NOW.Media
         private BassAudio _previousTrack = null;
         private SYNCPROC _mixerStallSync;
         private bool _isBassInitialized;
+        private float _volume = 50f;
         private bool _isPlayingBass;
         private bool _isPlayingVlc;
         private long _bassChannelPosition;
@@ -47,12 +48,20 @@ namespace bossdoyKaraoke_NOW.Media
         {
             get
             {
-                throw new NotImplementedException();
+                return _volume;
             }
 
             set
             {
-                throw new NotImplementedException();
+                _volume = value;
+
+                if (_isPlayingBass)
+                    _currentTrack.Volume = value * 0.01f;
+
+                if (_isPlayingVlc)
+                    VlcPlayer.Volume = (value != 0 ? (value + 25) : value);
+
+                MediaControls.Instance.VolumeValue = (int)value;
             }
         }
 
@@ -146,6 +155,7 @@ namespace bossdoyKaraoke_NOW.Media
         public void LoadVideokeFile(string videokeFileName)
         {
             CDGmp3 = null;
+            VlcPlayer.Volume = (Volume != 0 ? (Volume + 25) : Volume);
             PlayNextTrack();
             _isPlayingVlc = true;
             _isPlayingBass = false;
@@ -388,6 +398,7 @@ namespace bossdoyKaraoke_NOW.Media
                     _track.Tags = _songsSource.SongsQueue[0].Tags as TAG_INFO;
 
                     _track.TrackSync = new SYNCPROC(OnTrackSync);
+                    _track.Volume = Volume * 0.01f;
                     _track.CreateStream();
                 }
             }

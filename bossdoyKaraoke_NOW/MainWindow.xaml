@@ -50,6 +50,29 @@
                     <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{ Binding ElementName=media_controls}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            <Popup x:Name="volume_control"  PlacementTarget="{Binding ElementName=volume_main}"  AllowsTransparency="True">
+                <ContentControl Margin="3">
+                    <Border BorderBrush="#89000000" CornerRadius="5">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="0" Opacity="0.4"/>
+                        </Border.Effect>
+                        <DockPanel Background="#FFFAFAFA">
+                            <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"  >
+                                <TextBlock Text="Volume" Margin="0,0,0,10" />
+                                <Slider x:Name="volume_slider" TickPlacement="BottomRight" Orientation="Vertical" Height="150" Maximum="100" Value="50" TickFrequency="5" SmallChange="1" LargeChange="5" >
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="ValueChanged">
+                                            <i:InvokeCommandAction 
+                                            Command="{Binding VolumeSliderCommand}"
+                                            CommandParameter="{Binding ElementName=volume_slider}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Slider>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                </ContentControl>
+            </Popup>
             <Button Panel.ZIndex="1" Name="play_pause" Margin="10,54,0,0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
@@ -77,24 +100,26 @@
                             </i:Interaction.Triggers>
                         </Button>
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
-                        <Button Name="volume_main" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
-                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                        materialDesign:ButtonProgressAssist.Value="100"
-                        materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                        Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" >
-                            <materialDesign:PackIcon Kind="{Binding IconMuteUnMute}" Width="35" Height="35"/>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding MuteUnMuteCommand}" CommandParameter="{ Binding ElementName=volume_main}" />
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="MouseEnter">
-                                    <i:InvokeCommandAction Command="{Binding ShowVolumeControlCommand}" CommandParameter="{ Binding ElementName=volume_control}" />
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="MouseLeave">
-                                    <i:InvokeCommandAction Command="{Binding HideVolumeControlCommand}" CommandParameter="{ Binding ElementName=volume_control}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
+                        <materialDesign:Badged Badge="{Binding VolumeValue}" x:Name="volume_value">
+                            <Button Name="volume_main" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+                            materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                            materialDesign:ButtonProgressAssist.Value="100"
+                            materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+                            Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                                <materialDesign:PackIcon Kind="{Binding IconMuteUnMute}" Width="35" Height="35"/>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding MuteUnMuteCommand}" CommandParameter="{ Binding ElementName=volume_main}" />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseEnter">
+                                        <i:InvokeCommandAction Command="{Binding ShowVolumeControlCommand}" CommandParameter="{ Binding ElementName=volume_control}" />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseLeave">
+                                        <i:InvokeCommandAction Command="{Binding HideVolumeControlCommand}" CommandParameter="{ Binding ElementName=volume_control}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </materialDesign:Badged>
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
                         <Button Name="remove_vocal" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
@@ -392,7 +417,7 @@
                 </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
-        <Popup x:Name="volume_control"  PlacementTarget="{Binding ElementName=volume_main}"  AllowsTransparency="True"> <!--Height="200" Width="68">-->
+        <!--<Popup x:Name="volume_control"  PlacementTarget="{Binding ElementName=volume_main}"  AllowsTransparency="True"> --><!--Height="200" Width="68">--><!--
             <ContentControl Margin="3">
                 <Border BorderBrush="#89000000" CornerRadius="5">
                     <Border.Effect>
@@ -400,11 +425,19 @@
                     </Border.Effect>
                     <DockPanel Background="#FFFAFAFA">
                         <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"  >
-                            <Slider TickPlacement="BottomRight" Orientation="Vertical" Height="150" Maximum="100" Value="50" TickFrequency="5" />
+                            <Slider x:Name="volume_slider" TickPlacement="BottomRight" Orientation="Vertical" Height="150" Maximum="100" Value="50" TickFrequency="5" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="ValueChanged">
+                                        <i:InvokeCommandAction 
+                                            Command="{Binding VolumeSliderCommand}"
+                                            CommandParameter="{Binding ElementName=volume_slider}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Slider>
                         </StackPanel>
                     </DockPanel>
                 </Border>
             </ContentControl>
-        </Popup>
+        </Popup>-->
     </Grid>
 </Window>
