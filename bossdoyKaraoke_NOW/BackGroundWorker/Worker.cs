@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
 using bossdoyKaraoke_NOW.Enums;
 using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Model;
@@ -28,6 +30,11 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
             RunWorker(newTask);
         }
 
+        public static void DoWork(NewTask newTask, string filter)
+        {
+            RunWorker(newTask, null, 0, "", filter);
+        }
+
         public static void DoWork(NewTask newTask, TrackInfo trackInfo)
         {
             RunWorker(newTask, trackInfo);
@@ -43,12 +50,13 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
             RunWorker(newTask, null, senderID, filePath);
         }
 
-        private static void RunWorker(NewTask newTask, TrackInfo trackInfo = null, int senderID = 0, string filePath = "")
+        private static void RunWorker(NewTask newTask, TrackInfo trackInfo = null, int senderID = 0, string filePath = "", string filter = "")
         {
             
             Player player = Player.Instance;
-            ISongsSource songsSource = player.Songs_Source;
+            ISongsSource songsSource = SongsSource.Instance;//player.SongsSrc;
             IMediaControls mediaControls = MediaControls.Instance;
+            ISearchBoxModel searchBoxModel = SearchBoxModel.Instance;
             QueuedBackgroundWorker.QueueWorkItem(
             _workerQueue,
             newTask,
@@ -56,6 +64,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
              {
                  var currentTask = args.Argument;
                  string songQueueTitle = string.Empty;
+                 ObservableCollection<TrackInfo> filteredSong = new ObservableCollection<TrackInfo>();
 
                  switch (currentTask)
                  {
@@ -68,7 +77,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          songQueueTitle = songsSource.AddToQueue(trackInfo);
                          if (songsSource.SongsQueue.Count == 1 && CurrentPlayState == PlayState.Stopped)
                          {
-                             if(songsSource.IsCdgFileType)
+                             if (songsSource.IsCdgFileType)
                                  player.LoadCDGFile(trackInfo.FilePath);
                              else
                                  player.LoadVideokeFile(trackInfo.FilePath);
@@ -113,17 +122,22 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          break;
                      case NewTask.LOAD_SONGS:
                          CurrentTask = NewTask.LOAD_SONGS;
+                         searchBoxModel.ItemId = senderID;
                          break;
-
+                     case NewTask.SEARCH_LISTVIEW:
+                         CurrentTask = NewTask.SEARCH_LISTVIEW;
+                         filteredSong = searchBoxModel.FilteredSong(filter);
+                         break;
                  }
 
-                 return new { ID = senderID, Duration = songQueueTitle };
+                 return new { ID = senderID, Duration = songQueueTitle, Filter = filteredSong };
              },
             args =>  // RunWorkerCompleted
             {
                 var currentID = args.Result.ID;
                 var songQueueTitle = args.Result.Duration;
                 var parentTreeview = _treeViewElement.Items[0] as ITreeViewModel;
+                var filteredSong = args.Result.Filter;
 
                 switch (CurrentTask)
                 {
@@ -159,8 +173,11 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                         if (songsSource.Songs != null)
                             _listViewElement.ItemsSource = songsSource.Songs[currentID];
                         break;
+                    case NewTask.SEARCH_LISTVIEW:
+                       // CurrentTask = NewTask.LOAD_SONGS;
+                        _listViewElement.ItemsSource = filteredSong;                        
+                        break;
                 }
-
             });
         }
     }

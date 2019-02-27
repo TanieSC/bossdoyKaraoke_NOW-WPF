@@ -39,7 +39,7 @@ namespace bossdoyKaraoke_NOW.Media
         public bool IsPlayingBass { get { return _isPlayingBass; } }
         public bool IsPlayingVlc { get { return _isPlayingVlc; } }
         public IntPtr AppMainWindowHandle;
-        public ISongsSource Songs_Source { get { return _songsSource; } }
+        public ISongsSource SongsSrc { get { return _songsSource; } }
         public Vlc VlcPlayer;
         public CDGFile CDGmp3;
         public string GetNextSongInfo { get { return _getNestSongInfo; } }

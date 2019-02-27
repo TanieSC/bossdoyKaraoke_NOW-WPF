@@ -121,11 +121,13 @@
                             </Button>
                         </materialDesign:Badged>
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
+                        <materialDesign:Badged Badge="BAL" x:Name="audio_channel"> <!--LFT RGT-->
                         <Button Name="remove_vocal" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                        Content="{materialDesign:PackIcon  Kind=Voice ,Size=30 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        Content="{materialDesign:PackIcon  Kind=Voice ,Size=30}" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        </materialDesign:Badged>
                     </StackPanel>
                     <StackPanel Name="dual_screen_panel" Panel.ZIndex="2" Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
@@ -325,7 +327,18 @@
                 <!--Background="#FF673AB7"-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <materialDesign:PackIcon Kind="Search" VerticalContentAlignment="Bottom" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,10,0,0" Padding="0" />
-                    <TextBox x:Name="search_box" materialDesign:HintAssist.Hint="Search By Title/Artist" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="4,0,9,0" TextWrapping="Wrap" Width="212" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Stretch" VerticalAlignment="Top" Padding="1,0" HorizontalAlignment="Right"/>
+                    <TextBox x:Name="search_box" materialDesign:HintAssist.Hint="Search By Title/Artist" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="4,0,9,0" TextWrapping="Wrap" Width="212" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Stretch" VerticalAlignment="Top" Padding="1,0" HorizontalAlignment="Right">
+                        <TextBox.DataContext>
+                            <vm:SearchBoxModel/>
+                        </TextBox.DataContext>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="TextChanged">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding SearchSongsCommand}"
+                                    CommandParameter="{Binding ElementName=search_box}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
                 </StackPanel>
             </Border>
             <ListView ItemsSource="{Binding Items}"

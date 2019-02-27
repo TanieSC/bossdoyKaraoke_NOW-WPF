@@ -270,23 +270,43 @@ namespace bossdoyKaraoke_NOW.Media
         /// <returns></returns>
         public void DirSearchSongs(string sDir)
         {
-            int count = 1;
-            var files = new ObservableCollection<TrackInfo>(Directory.EnumerateFiles(sDir, "*.*", SearchOption.AllDirectories)
-                  .Where(s => _extensions.Contains(Path.GetExtension(s))).Select(s =>
-                  {
-                      //TrackInfo ti;
-                      //string file = GetExtPatern(s);
-                      //if (file.EndsWith(".mp3"))
-                      //{
-                      //    ti = new TrackInfo(file, count++);
-                      //    return ti;
-
-                      //}
-                      //else
+            try
+            {
+                int count = 1;
+                var files = new ObservableCollection<TrackInfo>(Directory.EnumerateFiles(sDir, "*.*", SearchOption.AllDirectories)
+                      .Where(s => _extensions.Contains(Path.GetExtension(s))).Select(s =>
+                      {
                           return trackInfo(s, count++);
-                  }).ToList());
+                      }).ToList());
 
-            _songs.Add(files);
+                _songs.Add(files);
+            }
+            catch (UnauthorizedAccessException) { }
+            catch (PathTooLongException) { }
+
+        }
+
+        public IEnumerable<string> DirSearchSongs1(string sDir)
+        {
+
+            try
+            {
+                int count = 1;
+                var dirFiles = Enumerable.Empty<string>();
+
+               var dir = Directory.EnumerateDirectories(sDir)
+                      .SelectMany(x => Directory.EnumerateFiles(x, "*.*", SearchOption.AllDirectories)
+                      .Where(s => _extensions.Contains(Path.GetExtension(s))).Select(s =>
+                      {
+                          return trackInfo(s, count++);
+                      }).ToList());
+
+                return dirFiles.Concat(Directory.EnumerateFiles(sDir, "*.*"));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Enumerable.Empty<string>();
+            }
         }
 
         public string AddToQueue(TrackInfo sender)
