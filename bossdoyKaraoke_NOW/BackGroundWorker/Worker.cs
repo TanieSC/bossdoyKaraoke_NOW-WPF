@@ -25,26 +25,51 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
         public static TreeView TreeViewElement { get { return _treeViewElement; } set { _treeViewElement = value; } }
         public static ListView ListViewElement { get { return _listViewElement; } set { _listViewElement = value; } }
 
+        /// <summary>
+        /// Run the new task in background
+        /// </summary>
+        /// <param name="newTask">Task to run</param>
         public static void DoWork(NewTask newTask)
         {
             RunWorker(newTask);
         }
 
+        /// <summary>
+        /// Run the new task in background
+        /// </summary>
+        /// <param name="newTask">Task to run</param>
+        /// <param name="filter">Filter song by typing string on the search box</param>
         public static void DoWork(NewTask newTask, string filter)
         {
             RunWorker(newTask, null, 0, "", filter);
         }
 
+        /// <summary>
+        /// Run the new task in background
+        /// </summary>
+        /// <param name="newTask">Task to run</param>
+        /// <param name="trackInfo">Contains the song information for adding, removing, and playing</param>
         public static void DoWork(NewTask newTask, TrackInfo trackInfo)
         {
             RunWorker(newTask, trackInfo);
         }
 
+        /// <summary>
+        /// Run the new task in background
+        /// </summary>
+        /// <param name="newTask">Task to run</param>
+        /// <param name="senderID">Song index from the list used for loading song to listview</param>
         public static void DoWork(NewTask newTask, int senderID)
         {
             RunWorker(newTask, null, senderID);
         }
 
+        /// <summary>
+        /// Run the new task in background
+        /// </summary>
+        /// <param name="newTask">Task to run</param>
+        /// <param name="senderID">Song index from the list used for loading song to listview</param>
+        /// <param name="filePath">The path folder on the song, used for adding new songs to the collections</param>
         public static void DoWork(NewTask newTask, int senderID, string filePath)
         {
             RunWorker(newTask, null, senderID, filePath);

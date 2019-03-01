@@ -113,7 +113,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BackGroundWorker\Worker.cs" />
-    <Compile Include="Enums\ControlType.cs" />
     <Compile Include="FormControl\VideoImage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -280,6 +279,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

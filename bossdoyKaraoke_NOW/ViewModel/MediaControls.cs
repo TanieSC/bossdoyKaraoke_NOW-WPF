@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -18,9 +19,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
     class MediaControls : IMediaControls, INotifyPropertyChanged
     {
         private static MediaControls _instance;
+        private List<Window> _fullScreen = new List<Window>();
         private string _songTitle;
         private string _songArtist;
         private int _volumeValue = 50;
+        private int _openScreen = 0;
+        private string _vocalChannel = "BAL";
         private string _elapsedTime = "00:00:00";
         private string _remainingTime = "00:00:00";
         private double _progressValue = 0;
@@ -38,6 +42,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private PackIconKind _iconMuteUnMute = PackIconKind.VolumeHigh;
         private IMediaControls _controls;
         private ICommand _loaded;
+        private ICommand _vocalChannelCommand;
+        private ICommand _addNewScreenCommand;
         private ICommand _tempoPlusCommand;
         private ICommand _tempoMinusCommand;
         private ICommand _keyPlusCommand;
@@ -102,6 +108,34 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _volumeValue = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public string VocalChannel
+        {
+            get
+            {
+                return _vocalChannel;
+            }
+
+            set
+            {
+                _vocalChannel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int AddNewSrceen
+        {
+            get
+            {
+                return _openScreen;
+            }
+
+            set
+            {
+                _openScreen = value;
                 OnPropertyChanged();
             }
         }
@@ -252,7 +286,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        //  var dockPanel = x as DockPanel;
+                        var dockPanel = x as DockPanel;
+                        var colorZone = (dockPanel.Children[2] as ColorZone).Content as DockPanel;
                         //  _controls = dockPanel.DataContext as IMediaControls;
 
                         //  _audio_panel = dockPanel.Children[0] as StackPanel;
@@ -262,6 +297,34 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
                         // // _tempo_key_panel.IsEnabled = false;
                         ////  KeyTempoOpacity = 0.25;
+                    }
+                }));
+            }
+        }
+
+        public ICommand VocalChannelCommand
+        {
+            get
+            {
+                return _vocalChannelCommand ?? (_vocalChannelCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        Player.Instance.RemoveVocalLeftRight();
+                    }
+                }));
+            }
+        }
+
+        public ICommand AddNewScreenCommand
+        {
+            get
+            {
+                return _addNewScreenCommand ?? (_addNewScreenCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        AddNewScreen();
                     }
                 }));
             }
@@ -449,6 +512,51 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     }
                 }));
             }
+        }
+
+        private void AddNewScreen()
+        {
+            //Thread thread = new Thread(() =>
+            //{
+            FullScreen fullScreen = new FullScreen();
+
+            _fullScreen.Add(fullScreen);
+
+            //    // Create our context, and install it:
+            //    SynchronizationContext.SetSynchronizationContext(
+            //        new DispatcherSynchronizationContext(
+            //            Dispatcher.CurrentDispatcher));
+
+            fullScreen.Loaded += (sender1, e1) =>
+            {
+                // full_screen_count.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new ThreadStart(UpdateFullScreenCount));
+                UpdateFullScreenCount();
+            };
+            fullScreen.Closed += (sender2, e2) =>
+            {
+                //fullScreen.Dispatcher.InvokeShutdown();
+                _fullScreen.Remove(fullScreen);
+                UpdateFullScreenCount();
+                //  full_screen_count.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new ThreadStart(UpdateFullScreenCount));
+            };
+
+            fullScreen.Show();
+            fullScreen.Activate();
+
+            //    Dispatcher.Run();
+
+            //});
+
+            //thread.SetApartmentState(ApartmentState.STA);
+            //thread.Start();
+        }
+
+        private void UpdateFullScreenCount()
+        {
+            if (_fullScreen != null)
+                AddNewSrceen = _fullScreen.Count();
+            else
+                AddNewSrceen = 0;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

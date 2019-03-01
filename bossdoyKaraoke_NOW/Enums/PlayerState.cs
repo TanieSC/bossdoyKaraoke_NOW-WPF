@@ -10,6 +10,9 @@ namespace bossdoyKaraoke_NOW.Enums
     {
         private static PlayState _currentState;
 
+        /// <summary>
+        /// Enums to Set player state
+        /// </summary>
         public enum PlayState
         {
             Playing,
@@ -18,7 +21,7 @@ namespace bossdoyKaraoke_NOW.Enums
         }
 
         /// <summary>
-        /// 
+        /// Get or Set Player state
         /// </summary>
         public static PlayState CurrentPlayState
         {

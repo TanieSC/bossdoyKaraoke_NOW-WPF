@@ -9,6 +9,9 @@ namespace bossdoyKaraoke_NOW.Enums
 {
     class TreeViewRootItem
     {
+        /// <summary>
+        /// Enums to Set root node of the treeview
+        /// </summary>
         public enum RootNode
         {
             SONG_QUEUE,
@@ -20,7 +23,7 @@ namespace bossdoyKaraoke_NOW.Enums
         }
 
         /// <summary>
-        ///
+        /// Enums to get the connections of node on the treeview and yield return
         /// </summary>
         /// <param name="nodes"></param>
         /// <returns></returns>

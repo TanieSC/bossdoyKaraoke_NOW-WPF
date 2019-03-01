@@ -9,13 +9,17 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Model;
 using bossdoyKaraoke_NOW.ViewModel;
 using MaterialDesignThemes.Wpf;
 using Un4seen.Bass;
+using Un4seen.Bass.AddOn.Fx;
 using Un4seen.Bass.AddOn.Mix;
 using Un4seen.Bass.AddOn.Tags;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
 using static bossdoyKaraoke_NOW.Enums.PlayerState;
+using static bossdoyKaraoke_NOW.Enums.RemoveVocal;
 
 namespace bossdoyKaraoke_NOW.Media
 {
@@ -26,6 +30,8 @@ namespace bossdoyKaraoke_NOW.Media
         private BassAudio _currentTrack = null;
         private BassAudio _previousTrack = null;
         private SYNCPROC _mixerStallSync;
+        private BASS_BFX_MIX _duplicateChannel;
+        private int _fxMix = 0;
         private bool _isBassInitialized;
         private float _volume = 50f;
         private bool _isPlayingBass;
@@ -141,6 +147,9 @@ namespace bossdoyKaraoke_NOW.Media
             //Create Instance of song source                                                                                                                             
             _songsSource = SongsSource.Instance;
             _songsSource.LoadSongCollections();
+
+            //Vocal Channel default value is Balance (ChannelSelected.None)
+            Channel = ChannelSelected.Right;
         }
 
         public void LoadCDGFile(string cdgFileName)
@@ -244,15 +253,24 @@ namespace bossdoyKaraoke_NOW.Media
 
         public override void Play()
         {
-            if (_isPlayingBass)
-            {
-                _currentTrack.Play();
-            }
+            //if (CurrentPlayState == PlayState.Stopped && _songsSource.SongsQueue.Count > 0)
+            //{
+            //    CurrentTask = NewTask.ADD_TO_QUEUE;
+            //    Worker.DoWork(CurrentTask, _songsSource.SongsQueue[0]);
+            //}
 
-            if (_isPlayingVlc)
-            {
-                VlcPlayer.Play();
-            }
+           // if (CurrentPlayState == PlayState.Paused || CurrentPlayState == PlayState.Playing)
+           // {
+                if (_isPlayingBass)
+                {
+                    _currentTrack.Play();
+                }
+
+                if (_isPlayingVlc)
+                {
+                    VlcPlayer.Play();
+                }
+            //}
 
             MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
         }
@@ -280,6 +298,44 @@ namespace bossdoyKaraoke_NOW.Media
             MediaControls.Instance.ElapsedTime = "00:00:00";
             MediaControls.Instance.RemainingTime = "00:00:00";
             MediaControls.Instance.IconPlayPause = PackIconKind.Play;
+        }
+
+        /// <summary>
+        /// Remove left/right vocal on audio track with seperate vocal track  
+        /// </summary>
+        public void RemoveVocalLeftRight()
+        {
+            switch (Channel)
+            {
+                case ChannelSelected.None: // Center no vocal removed
+                    Bass.BASS_ChannelRemoveFX(BassAudio.MixerChannel, _fxMix);
+                    MediaControls.Instance.VocalChannel = "BAL";                 
+                    Channel = ChannelSelected.Right;
+
+                   // bt.RemoveVocalLeftOrRight(ChannelSelected.None);
+                    break;
+                case ChannelSelected.Right: // Remove Right Vocal
+                    Bass.BASS_ChannelRemoveFX(BassAudio.MixerChannel, _fxMix);
+                    _duplicateChannel = new BASS_BFX_MIX(BASSFXChan.BASS_BFX_CHAN1, BASSFXChan.BASS_BFX_CHAN1);
+                    _fxMix = Bass.BASS_ChannelSetFX(BassAudio.MixerChannel, BASSFXType.BASS_FX_BFX_MIX, 0);
+                    Bass.BASS_FXSetParameters(_fxMix, _duplicateChannel);
+                    MediaControls.Instance.VocalChannel = "RGT";
+                    Channel = ChannelSelected.Left;
+
+                   // bt.RemoveVocalLeftOrRight(ChannelSelected.Right);
+                    break;
+                case ChannelSelected.Left: // Remove Left Vocal 
+                    Bass.BASS_ChannelRemoveFX(BassAudio.MixerChannel, _fxMix);
+                    _duplicateChannel = new BASS_BFX_MIX(BASSFXChan.BASS_BFX_CHAN2, BASSFXChan.BASS_BFX_CHAN2);
+                    _fxMix = Bass.BASS_ChannelSetFX(BassAudio.MixerChannel, BASSFXType.BASS_FX_BFX_MIX, 0);
+                    Bass.BASS_FXSetParameters(_fxMix, _duplicateChannel);
+                    MediaControls.Instance.VocalChannel = "LFT";
+                    Channel = ChannelSelected.None;
+
+                   // bt.RemoveVocalLeftOrRight(ChannelSelected.Left);
+                    break;
+            }
+
         }
 
         /// <summary>
@@ -370,21 +426,6 @@ namespace bossdoyKaraoke_NOW.Media
             catch (Exception ex)
             {
 
-            }
-        }
-
-        private void SetMediaControls()
-        {
-            if (CurrentPlayState == PlayState.Stopped)
-                MediaControls.Instance.EnableTempoKeyPanel = false;
-
-            if (_songsSource.IsCdgFileType)
-            {
-                MediaControls.Instance.EnableTempoKeyPanel = true;
-            }
-            else
-            {
-                MediaControls.Instance.EnableTempoKeyPanel = false;
             }
         }
 

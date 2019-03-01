@@ -13,6 +13,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         string SongTitle { get; set; }
         string SongArtist { get; set; }
         int VolumeValue { get; set; }
+        string VocalChannel { get; set; }
         string ElapsedTime { get; set; }
         string RemainingTime { get; set; }
         double ProgressValue { get; set; }
@@ -24,6 +25,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         PackIconKind IconMuteUnMute { get; set; }
         IMediaControls Controls { get; }
         ICommand Loaded { get; }
+        ICommand VocalChannelCommand { get; }
+        ICommand AddNewScreenCommand { get; }
         ICommand PlayPauseCommand { get; }
         ICommand PlayNextCommand { get; }
         ICommand MuteUnMuteCommand { get; }

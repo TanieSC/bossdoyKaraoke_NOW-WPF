@@ -11,7 +11,7 @@ namespace bossdoyKaraoke_NOW.Enums
         private static NewTask _currentTask;
 
         /// <summary>
-        /// 
+        /// The enum task used for running method in the background
         /// </summary>
         public enum NewTask
         {
@@ -43,16 +43,7 @@ namespace bossdoyKaraoke_NOW.Enums
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="SEARCHState"></param>
-        public static void setSEARCHDIRorTEXTState(NewTask currentTask)
-        {
-            _currentTask = currentTask;
-        }
-
-        /// <summary>
-        /// 
+        /// Get or Set current task for backgroung process
         /// </summary>
         public static NewTask CurrentTask
         {

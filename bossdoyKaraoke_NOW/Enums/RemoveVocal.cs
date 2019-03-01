@@ -9,6 +9,10 @@ namespace bossdoyKaraoke_NOW.Enums
     public class RemoveVocal
     {
         private static ChannelSelected _channelSelected;
+
+        /// <summary>
+        /// Enums to set and remove vocal from a channel
+        /// </summary>
         public enum ChannelSelected
         {
             None,
@@ -16,6 +20,9 @@ namespace bossdoyKaraoke_NOW.Enums
             Left
         }
 
+        /// <summary>
+        /// Get or Set Channel for removing vocal 
+        /// </summary>
         public static ChannelSelected Channel
         {
             get

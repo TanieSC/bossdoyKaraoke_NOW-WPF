@@ -20,7 +20,7 @@ namespace bossdoyKaraoke_NOW.Media
         private bool _mute;
         private float _playerVolume = 0.5f;
 
-        public IMixer BassMixer { get { return _mixer; } }
+        //public IMixer BassMixer { get { return _mixer; } }
         public static int MixerChannel { get { return _mixerChannel; } }
         public int Channel { get; private set; }
         public IFxTempo FXTempo { get; private set; }

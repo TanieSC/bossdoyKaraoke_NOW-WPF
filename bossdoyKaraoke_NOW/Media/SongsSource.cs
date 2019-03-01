@@ -61,8 +61,21 @@ namespace bossdoyKaraoke_NOW.Media
                 _songsQueue = value.ToList();
             }
         }
-       // public CDGFile CDGMp3 { get { return _cdgMp3; } set { _cdgMp3 = value; } }
-        public bool IsCdgFileType { get { return _isCdgFileType; } set { _isCdgFileType = value; } }
+
+        /// <summary>
+        /// Check method to know if file loaded is CdgMp3 oor Video file
+        /// </summary>
+        public bool IsCdgFileType
+        {
+            get
+            {
+                return _isCdgFileType;
+            }
+            set
+            {
+                _isCdgFileType = value;
+            }
+        }
 
         public static SongsSource Instance
         {
@@ -81,6 +94,9 @@ namespace bossdoyKaraoke_NOW.Media
             _itemSource = new List<ITreeViewModel>();
         }
 
+        /// <summary>
+        /// Method to load all songs collection (e.g Song Queue, Favorites, and Collections from Computer)
+        /// </summary>
         public void LoadSongCollections()
         {
             DirectoryInfo directoryInfo;
@@ -227,7 +243,18 @@ namespace bossdoyKaraoke_NOW.Media
                 }
             }
         }
-       
+
+        /// <summary>
+        /// Method to create the treeview to display menu, used by LoadSongCollections() method
+        /// </summary>
+        /// <param name="songsSource">The ITreeViewModel</param>
+        /// <param name="kindParent">Icon for parent node on treeview</param>
+        /// <param name="parentTitle">Title for parent treeview node</param>
+        /// <param name="kindChild">Ocin for child treeview node</param>
+        /// <param name="songs">The list of song collections</param>
+        /// <param name="kindAddChild">Icon for Add new child treeview node</param>
+        /// <param name="addChildTitle">Title for Add new child treeview node</param>
+        /// <returns>Returns the created treeview menu in ITreeViewModel form</returns>
         private ITreeViewModel AddTreeViewItems(ITreeViewModel songsSource, PackIconKind kindParent, string parentTitle, PackIconKind kindChild = PackIconKind.Null, List<string> songs = null, PackIconKind kindAddChild = PackIconKind.Null, string addChildTitle = null)
         {
             string fileName;
@@ -270,45 +297,34 @@ namespace bossdoyKaraoke_NOW.Media
         /// <returns></returns>
         public void DirSearchSongs(string sDir)
         {
-            try
-            {
-                int count = 1;
-                var files = new ObservableCollection<TrackInfo>(Directory.EnumerateFiles(sDir, "*.*", SearchOption.AllDirectories)
-                      .Where(s => _extensions.Contains(Path.GetExtension(s))).Select(s =>
-                      {
-                          return trackInfo(s, count++);
-                      }).ToList());
+            //try
+            //{
+            //    int count = 1;
+            //    var files = new ObservableCollection<TrackInfo>(Directory.EnumerateFiles(sDir, "*.*", SearchOption.AllDirectories)
+            //          .Where(s => _extensions.Contains(Path.GetExtension(s))).Select(s =>
+            //          {
+            //              return trackInfo(s, count++);
+            //          }).ToList());
 
-                _songs.Add(files);
-            }
-            catch (UnauthorizedAccessException) { }
-            catch (PathTooLongException) { }
+            //    _songs.Add(files);
+            //}
+            //catch (UnauthorizedAccessException) { }
+            //catch (PathTooLongException) { }
+
+            int count = 1;
+            DirectoryInfo dir_info = new DirectoryInfo(sDir);
+            List<TrackInfo> file_list = new List<TrackInfo>();
+
+            SearchDirectory(dir_info, file_list, count);
+            _songs.Add(new ObservableCollection<TrackInfo>(file_list));
 
         }
 
-        public IEnumerable<string> DirSearchSongs1(string sDir)
-        {
-
-            try
-            {
-                int count = 1;
-                var dirFiles = Enumerable.Empty<string>();
-
-               var dir = Directory.EnumerateDirectories(sDir)
-                      .SelectMany(x => Directory.EnumerateFiles(x, "*.*", SearchOption.AllDirectories)
-                      .Where(s => _extensions.Contains(Path.GetExtension(s))).Select(s =>
-                      {
-                          return trackInfo(s, count++);
-                      }).ToList());
-
-                return dirFiles.Concat(Directory.EnumerateFiles(sDir, "*.*"));
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return Enumerable.Empty<string>();
-            }
-        }
-
+        /// <summary>
+        /// Method adding song to song queue 
+        /// </summary>
+        /// <param name="sender">Contains the information of the selected song</param>
+        /// <returns>Returns the total count and total duration of song is song queue</returns>
         public string AddToQueue(TrackInfo sender)
         {
             try
@@ -344,6 +360,11 @@ namespace bossdoyKaraoke_NOW.Media
             return _songQueueTitle; //string.Format("{0}", Utils.FixTimespan(_totalDuration, "HHMMSS"));
         }
 
+        /// <summary>
+        /// Method inserting song to song queue to played next 
+        /// </summary>
+        /// <param name="sender">Contains the information of the selected song</param>
+        /// <returns>Returns the total count and total duration of song is song queue</returns>
         public string AddToQueueAsNext(TrackInfo sender)
         {
             try
@@ -372,6 +393,11 @@ namespace bossdoyKaraoke_NOW.Media
             return _songQueueTitle;
         }
 
+        /// <summary>
+        /// Method to remove the selected song from song queue 
+        /// </summary>
+        /// <param name="sender">Contains the information of the selected song to be removed</param>
+        /// <returns></returns>
         public string RemoveFromQueue(TrackInfo sender)
         {
             AddRemoveFromQueue(sender);
@@ -390,6 +416,10 @@ namespace bossdoyKaraoke_NOW.Media
             return _songQueueTitle;
         }
 
+        /// <summary>
+        /// Method to empty the song queue
+        /// </summary>
+        /// <returns></returns>
         public string EmptyQueueList()
         {
             _songsQueue.Clear();
@@ -401,8 +431,9 @@ namespace bossdoyKaraoke_NOW.Media
         }
 
         /// <summary>
-        /// Check for .cdg file if it exist, then replace the file extension to .mp3
+        /// Check for file if it exist and tag it if its mp3cdg or video (_isCdgFileType)
         /// </summary>
+        /// <param name="mediaFileName">The file to be checked</param>
         public void PreProcessFiles(string mediaFileName)
         {
             try
@@ -452,6 +483,11 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// Method to add or remove the song in song queue collection if not empty on application start up. "SongQueueList.que"
+        /// </summary>
+        /// <param name="sender">Contains the information of the song</param>
+        /// <param name="isAdding">Check method if adding or removing a song</param>
         private void AddRemoveFromQueue(TrackInfo sender, bool isAdding = false)
         {
             if (isAdding) //For adding songs to SongQueue
@@ -530,6 +566,42 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// Select Folder that contains mp3cdg and video from directory to add it to listview and to ProgramData\karaokeNow\songs\filename.bkn
+        /// </summary>
+        /// <param name="dir_info">Contains the infomation of the selected directory</param>
+        /// <param name="file_list">Add found files to list</param>
+        /// <param name="count">Totla number of files in directory</param>
+        private void SearchDirectory(DirectoryInfo dir_info, List<TrackInfo> file_list, int count)
+        {
+            try
+            {
+                foreach (DirectoryInfo subdir_info in dir_info.GetDirectories())
+                {
+                    SearchDirectory(subdir_info, file_list, count);
+                }
+            }
+            catch
+            {
+            }
+            try
+            {
+                var data = dir_info.GetFiles()
+                     .Where(w => _extensions.Contains(Path.GetExtension(w.FullName)))
+                     .Select(s =>
+                     {
+                         return trackInfo(s.FullName, count++);
+                     }).ToList();
+
+
+                if (data.Count > 0)
+                    file_list.AddRange(data);
+
+            }
+            catch
+            {
+            }
+        }
 
         /// <summary>
         /// Select added file from treeview and load content to litsview. (e.g Song Queue, Favorites, My computer )
@@ -588,10 +660,10 @@ namespace bossdoyKaraoke_NOW.Media
         }
 
         /// <summary>
-        /// 
+        /// The file extensions supported by the player
         /// </summary>
-        /// <param name="file_extensions"></param>
-        /// <returns></returns>
+        /// <param name="file_extensions">Supported extensions</param>
+        /// <returns>Returns the supported file extensions</returns>
         private static string HashSetExtensionsToString(HashSet<string> file_extensions)
         {
 
@@ -610,7 +682,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// Get the song duration being played using vlc (e.g mp4 files)
         /// </summary>
         /// <param name="timeOrDuration">Time duration of the file</param>
-        /// <returns></returns>
+        /// <returns>Returns the duration of video</returns>
         private double GetVlcTimeOrDuration(double timeOrDuration)
         {
             TimeSpan t = TimeSpan.FromMilliseconds(timeOrDuration);
@@ -618,11 +690,11 @@ namespace bossdoyKaraoke_NOW.Media
         }
 
         /// <summary>
-        /// 
+        /// Method to split and get the title and artist of songs
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
+        /// <param name="file">The filename of the song</param>
+        /// <param name="count">Song count used as song id</param>
+        /// <returns>Returns the information of the song</returns>
         private TrackInfo trackInfo(string file, int count, int duration = 0)
         {
             string SongTitle = "";
