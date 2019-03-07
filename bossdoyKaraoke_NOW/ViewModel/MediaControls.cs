@@ -468,19 +468,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        private void _volumeControl_MouseLeave(object sender, MouseEventArgs e)
-        {
-            //var parent = ((((((sender as Popup).Parent as Grid)
-            //    .Children[1] as DockPanel)
-            //    .Children[1] as ColorZone).Content as DockPanel)
-            //    .Children[0] as StackPanel)
-            //    .Children[2] as Button;
-            //if (!parent.IsMouseOver)
-            //{
-                _volumeControl.IsOpen = false;
-           // }
-        }
-
         public ICommand HideVolumeControlCommand
         {
             get
@@ -512,6 +499,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     }
                 }));
             }
+        }
+
+        private void _volumeControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            //var parent = ((((((sender as Popup).Parent as Grid)
+            //    .Children[1] as DockPanel)
+            //    .Children[1] as ColorZone).Content as DockPanel)
+            //    .Children[0] as StackPanel)
+            //    .Children[2] as Button;
+            //if (!parent.IsMouseOver)
+            //{
+            _volumeControl.IsOpen = false;
+            // }
         }
 
         private void AddNewScreen()

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bossdoyKaraoke_NOW"
         mc:Ignorable="d"
-        Title="FullScreen" Height="300" Width="300" Closing="Window_Closing">
+        Title="FullScreen" Height="350" Width="500" Closing="Window_Closing" MinHeight="350" MinWidth="500">
     <Grid>
         <WindowsFormsHost Name="full_video_screen" Background="Black">
             <!--<videoControl:D2dImageSource></videoControl:D2dImageSource>-->

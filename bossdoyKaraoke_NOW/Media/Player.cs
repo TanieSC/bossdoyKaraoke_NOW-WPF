@@ -45,7 +45,6 @@ namespace bossdoyKaraoke_NOW.Media
         public bool IsPlayingBass { get { return _isPlayingBass; } }
         public bool IsPlayingVlc { get { return _isPlayingVlc; } }
         public IntPtr AppMainWindowHandle;
-        public ISongsSource SongsSrc { get { return _songsSource; } }
         public Vlc VlcPlayer;
         public CDGFile CDGmp3;
         public string GetNextSongInfo { get { return _getNestSongInfo; } }
@@ -68,6 +67,15 @@ namespace bossdoyKaraoke_NOW.Media
                     VlcPlayer.Volume = (value != 0 ? (value + 25) : value);
 
                 MediaControls.Instance.VolumeValue = (int)value;
+
+                if (_volume <= 0)
+                {
+                    MediaControls.Instance.IconMuteUnMute = PackIconKind.VolumeMute;
+                }
+                else
+                {
+                    MediaControls.Instance.IconMuteUnMute = PackIconKind.VolumeHigh;
+                }
             }
         }
 
@@ -148,7 +156,7 @@ namespace bossdoyKaraoke_NOW.Media
             _songsSource = SongsSource.Instance;
             _songsSource.LoadSongCollections();
 
-            //Vocal Channel default value is Balance (ChannelSelected.None)
+            //Vocal Channel default value is Balance = ChannelSelected.None)
             Channel = ChannelSelected.Right;
         }
 
@@ -341,7 +349,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// <summary>
         /// Get the next tack to play and display on top of the screen window for 30 sec.
         /// </summary>
-        public void GetNextTrackInfo()
+        public string GetNextTrackInfo()
         {
             try
             {
@@ -359,7 +367,7 @@ namespace bossdoyKaraoke_NOW.Media
 
                         if (minute <= 0 && second < 30)
                         {
-                            string nextSong = _songsSource.SongsQueue[0].Name + "( " + _songsSource.SongsQueue[0].Artist + " )";
+                            string nextSong = _songsSource.SongsQueue[0].Name + "[ " + _songsSource.SongsQueue[0].Artist + " ]";
                             _getNestSongInfo = nextSong;
                         }
                         else
@@ -373,6 +381,8 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 Console.WriteLine("GetNextTrackInfo");
             }
+
+            return _getNestSongInfo;
         }
 
         /// <summary>

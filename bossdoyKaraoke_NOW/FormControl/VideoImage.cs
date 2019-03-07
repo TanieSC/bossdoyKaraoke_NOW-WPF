@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using bossdoyKaraoke_NOW.Graphic;
 using bossdoyKaraoke_NOW.Media;
 using SharpDX;
+using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
 using static bossdoyKaraoke_NOW.Enums.PlayerState;
 using D2D = SharpDX.Direct2D1;
@@ -15,32 +16,49 @@ namespace bossdoyKaraoke_NOW.FormControl
 {
     public class VideoImage : D2dImageSource
     {
+        private struct StringSize
+        {
+            public float Width;
+            public float Height;
+        }
+
         private static Player _player;
         private D2D.Bitmap bmp;
         private D2D.Bitmap _cdgbmp;
         private D2D.Bitmap1 _cdgTarget;
         private RawRectangleF _videoBitmapRectangle;
-        private RawRectangleF _destCdgRectangle;
+        private D2D.RoundedRectangle _roundedRecReserve;
+        private D2D.RoundedRectangle _roundedRecNextSong;
+        private D2D.SolidColorBrush _textBrush;
+        private D2D.SolidColorBrush _roundedRecOutColor;
+        private D2D.SolidColorBrush _roundedRecInColor;
+        private TextFormat _textFormat10;
+        private TextFormat _textFormat15;
+        private TextLayout _textLayout;
         private D2D.Effects.Shadow _shadowEffects;
         private D2D.Effects.AffineTransform2D _affineTransformEffect;
         private D2D.Effects.Composite _compositeEffect;
         private ISongsSource _songsSource = SongsSource.Instance;
 
-        public VideoImage()
+        private bool _isFullScreen;
+        private float _fontSize10 = 10f;
+        private float _fontSize15 = 15f;
+        private float _fontSize30 = 30f;
+
+        public VideoImage(bool isFullScreen = false)
         {
             _player = Player.Instance;
+            _isFullScreen = isFullScreen;
         }
 
         public override void Render()
         {
-
             LoadResources();
 
             if (_player.IsPlayingBass)
             {
                 if (_player.CDGmp3 != null)
                 {
-
                     var cdgbmp = _player.CDGmp3.RGBImage as WriteableBitmap;
                     _player.CDGmp3.renderAtPosition(_player.CdgRenderAtPosition);
                     _cdgbmp = GraphicUtil.ConvertToSharpDXBitmap(RenderContext.CdgContext, cdgbmp);
@@ -60,20 +78,60 @@ namespace bossdoyKaraoke_NOW.FormControl
                     RenderContext.CdgContext.EndDraw();
                 }
             }
+
             if (_player.IsPlayingVlc)
             {
                 _player.VlcRenderAtPosition();
             }
 
-            _player.GetNextTrackInfo();
+            var nextsong = _player.GetNextTrackInfo();
+            //Just guesing font size
+            _fontSize10 = _videoBitmapRectangle.Bottom / 40;
+            _fontSize15 = _videoBitmapRectangle.Bottom / 20;
+            _fontSize30 = _videoBitmapRectangle.Bottom / 10;
 
             RenderContext.VideoContext.BeginDraw();
             RenderContext.VideoContext.Clear(SharpDX.Color.Transparent);
             RenderContext.VideoContext.DrawBitmap(bmp, _videoBitmapRectangle, 1.0f, D2D.BitmapInterpolationMode.Linear);
             RenderContext.VideoContext.DrawImage(_compositeEffect, new RawVector2(0, 0), D2D.InterpolationMode.Linear, D2D.CompositeMode.Xor);
             RenderContext.VideoContext.DrawBitmap(_cdgTarget, 1f, D2D.BitmapInterpolationMode.Linear);
+
+            string reservedSong = "R".PadRight(2) + _songsSource.SongsQueue.Count;
+            var stringSize = MeasureStringDX(reservedSong, _videoBitmapRectangle.Right, _textFormat15);
+
+            _roundedRecReserve = new D2D.RoundedRectangle()
+            {
+                Rect = new RawRectangleF((_videoBitmapRectangle.Right - 10) - (stringSize.Width + 10), _videoBitmapRectangle.Top + 10, _videoBitmapRectangle.Right - 10, stringSize.Height + 10),
+                RadiusX = stringSize.Height / 8,
+                RadiusY = stringSize.Height / 8
+            };
+
+            RenderContext.VideoContext.DrawRoundedRectangle(_roundedRecReserve, _roundedRecOutColor, 10f);
+            RenderContext.VideoContext.FillRoundedRectangle(_roundedRecReserve, _roundedRecInColor);
+            RenderContext.VideoContext.DrawTextLayout(new Vector2(_roundedRecReserve.Rect.Left + 5, _roundedRecReserve.Rect.Top), _textLayout, _textBrush);
+
+            if (_isFullScreen)
+            {
+                if (nextsong != "" || nextsong != string.Empty)
+                {
+                    string song = "Next song: " + nextsong;
+                    var stringSize2 = MeasureStringDX(song, _videoBitmapRectangle.Right, _textFormat10);
+
+                    _roundedRecNextSong = new D2D.RoundedRectangle()
+                    {
+                        Rect = new RawRectangleF(_videoBitmapRectangle.Left + 10, _videoBitmapRectangle.Top + 10, _roundedRecReserve.Rect.Left - 15, (stringSize.Height + 10)),
+                        RadiusX = stringSize2.Height / 8,
+                        RadiusY = stringSize2.Height / 8
+                    };
+
+                    RenderContext.VideoContext.DrawRoundedRectangle(_roundedRecNextSong, _roundedRecOutColor, 10f);
+                    RenderContext.VideoContext.FillRoundedRectangle(_roundedRecNextSong, _roundedRecInColor);
+                    RenderContext.VideoContext.DrawTextLayout(new Vector2(_roundedRecNextSong.Rect.Left + 5, _roundedRecNextSong.Rect.Top + (stringSize2.Height / 1.5f)), _textLayout, _textBrush);
+                }
+            }
+
             RenderContext.VideoContext.EndDraw();
-          
+
             UnloadResources();
         }
 
@@ -101,6 +159,12 @@ namespace bossdoyKaraoke_NOW.FormControl
             _compositeEffect.SetInputEffect(1, _affineTransformEffect);
             _compositeEffect.SetInput(2, _cdgTarget, true);
 
+            _textBrush = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(128, 0, 255));
+            _roundedRecOutColor = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(32, 117, 81));
+            _roundedRecInColor = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(234, 137, 6));
+            _textFormat10 = new TextFormat(RenderContext.DWFactory, "Arial", FontWeight.Bold, FontStyle.Normal, _fontSize10);
+            _textFormat15 = new TextFormat(RenderContext.DWFactory, "Arial", FontWeight.UltraBold, FontStyle.Normal, _fontSize15);
+ 
         }
 
         private void UnloadResources()
@@ -112,6 +176,18 @@ namespace bossdoyKaraoke_NOW.FormControl
             _shadowEffects.Dispose();
             _affineTransformEffect.Dispose();
             _compositeEffect.Dispose();
+            _textBrush.Dispose();
+            _roundedRecInColor.Dispose();
+            _roundedRecOutColor.Dispose();
+            _textFormat10.Dispose();
+            _textFormat15.Dispose();
+            _textLayout.Dispose();
+        }
+
+        private StringSize MeasureStringDX(string Message, float Width, TextFormat format)
+        {
+            _textLayout = new TextLayout(RenderContext.DWFactory, Message, format, Width, format.FontSize);            
+            return new StringSize() { Width = _textLayout.Metrics.Width , Height = _textLayout.Metrics.Height };
         }
 
         public override void D2dImageSource_Disposed(object sender, EventArgs e)

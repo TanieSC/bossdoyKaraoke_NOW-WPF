@@ -28,7 +28,7 @@ namespace bossdoyKaraoke_NOW.FormControl
 
         public Rendercontext.IDeviceContext RenderContext;
 
-        private int _timerInterval = 33;
+        private int _timerInterval = 50;
         public int TimerInterval
         {
             get { return _timerInterval; }
