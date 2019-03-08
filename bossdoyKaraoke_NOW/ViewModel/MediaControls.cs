@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
 using MaterialDesignThemes.Wpf;
@@ -324,7 +325,13 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        AddNewScreen();
+                        //  AddNewScreen();
+                        //Worker.TreeViewElement.VerticalAlignment = VerticalAlignment.Top;
+                        //Worker.TreeViewElement.VerticalContentAlignment = VerticalAlignment.Top;
+                        Worker.ListViewElement.VerticalAlignment = VerticalAlignment.Bottom;
+                        Worker.ListViewElement.VerticalContentAlignment = VerticalAlignment.Bottom;
+                        Worker.ListViewElement.Width = 250;
+                        Grid.SetColumn(Worker.ListViewElement, 0);                      
                     }
                 }));
             }

@@ -236,7 +236,7 @@
                 <ColumnDefinition Width="35*" />
                 <ColumnDefinition Width="58*"/>
             </Grid.ColumnDefinitions>
-            <TreeView ItemsSource="{Binding ItemSource}" x:Name="treeViewMenu" MinWidth="250" MinHeight="413" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" FontSize="13">
+            <TreeView Grid.Column="0" ItemsSource="{Binding ItemSource}" x:Name="treeViewMenu" MinWidth="250" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" FontSize="13" VerticalAlignment="Top">
                 <TreeView.DataContext>
                     <vm:TreeViewModel/>
                 </TreeView.DataContext>
@@ -443,27 +443,5 @@
                 </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
-        <!--<Popup x:Name="volume_control"  PlacementTarget="{Binding ElementName=volume_main}"  AllowsTransparency="True"> --><!--Height="200" Width="68">--><!--
-            <ContentControl Margin="3">
-                <Border BorderBrush="#89000000" CornerRadius="5">
-                    <Border.Effect>
-                        <DropShadowEffect ShadowDepth="0" Opacity="0.4"/>
-                    </Border.Effect>
-                    <DockPanel Background="#FFFAFAFA">
-                        <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"  >
-                            <Slider x:Name="volume_slider" TickPlacement="BottomRight" Orientation="Vertical" Height="150" Maximum="100" Value="50" TickFrequency="5" >
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="ValueChanged">
-                                        <i:InvokeCommandAction 
-                                            Command="{Binding VolumeSliderCommand}"
-                                            CommandParameter="{Binding ElementName=volume_slider}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </Slider>
-                        </StackPanel>
-                    </DockPanel>
-                </Border>
-            </ContentControl>
-        </Popup>-->
     </Grid>
 </Window>

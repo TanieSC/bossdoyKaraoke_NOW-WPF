@@ -123,9 +123,12 @@
     <Compile Include="Interactivity\EventArgs.cs" />
     <Compile Include="Interactivity\EventRaiser.cs" />
     <Compile Include="Interactivity\RelayCommand.cs" />
+    <Compile Include="ScreenInformation.cs" />
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\FullScreenModel.cs" />
+    <Compile Include="ViewModel\IFullScreenModel.cs" />
     <Compile Include="ViewModel\IListViewModel.cs" />
     <Compile Include="ViewModel\IMediaControls.cs" />
     <Compile Include="ViewModel\ISearchBoxModel.cs" />
