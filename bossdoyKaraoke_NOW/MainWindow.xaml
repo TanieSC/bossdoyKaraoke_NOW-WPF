@@ -13,6 +13,7 @@
         mc:Ignorable="d"
        Title="MainWindow" Height="630" Width="820" MinWidth="820" MinHeight="630" Closing="Window_Closing">
     <Grid>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="111*"/>
             <ColumnDefinition Width="295*"/>

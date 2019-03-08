@@ -4,46 +4,55 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bossdoyKaraoke_NOW"
+        xmlns:graphic="clr-namespace:bossdoyKaraoke_NOW.Graphic"
         mc:Ignorable="d"
-        ShowInTaskbar = "False"
         ResizeMode = "NoResize"
         WindowStartupLocation = "CenterScreen"
         WindowState = "Normal"
         WindowStyle = "None"
-        Title="SplashScreen" Height="300" Width="300">
-    <Grid>
-        <StackPanel HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="300">
-            <Image Source="pack://siteoforigin:,,,/Resources/bkn.png" Margin="25" Height="215"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Name="UpdateMessageTextBox" FontSize="16" Text="Loading" Effect="{x:Null}"  />
-                <TextBlock Name="EllipsesTextBlock" FontSize="16" Margin="0,0,0,0" Effect="{x:Null}" Width="20" >
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Text" Value="...."/>
-                            <Style.Triggers>
-                                <EventTrigger RoutedEvent="TextBlock.Loaded">
-                                    <BeginStoryboard>
-                                        <Storyboard Storyboard.TargetProperty="Text">
-                                            <ObjectAnimationUsingKeyFrames Duration="00:00:1"
-                                                                RepeatBehavior="Forever">
-                                                <DiscreteObjectKeyFrame KeyTime="00:00:00"
-                                                            Value=""/>
-                                                <DiscreteObjectKeyFrame KeyTime="00:00:0.25"
-                                                            Value="."/>
-                                                <DiscreteObjectKeyFrame KeyTime="00:00:0.5"
-                                                            Value=".."/>
-                                                <DiscreteObjectKeyFrame KeyTime="00:00:0.75"
-                                                            Value="..."/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </StackPanel>
-        </StackPanel>
+        Title="SplashScreen" Height="300" Width="300" AllowsTransparency="True" ShowInTaskbar="False" Background="{x:Null}">
 
+    <Grid RenderTransformOrigin="0.5,0.5">
+        <Border CornerRadius="10" Background="White">
+            <StackPanel HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="300">
+                <!--<Image Source="pack://siteoforigin:,,,/Resources/bkn.png" Margin="25" Height="215"/>-->
+                <graphic:OutlinedText OuterStroke="#FF207551" ClipToBounds="False" FontSize="100" Fill="#FF673AB7"
+                             OuterStrokeThickness="12" Text="BKN" Margin="25,80,25,0" Height="115" 
+                             InnerStroke="#FFF0F0F0" InnerStrokeThickness="6"
+                             FontFamily="Arial" FontWeight="Bold" TextAlignment="Center"/>
+                <!--<graphic:OutlinedText OuterStroke="{x:Null}"  ClipToBounds="False" FontSize="18" Fill="#FF673AB7"
+                             OuterStrokeThickness="0" InnerStroke="#FFF0F0F0" 
+                             InnerStrokeThickness="2"  Margin="23,-10,25,0" FontFamily="Arial Black" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center">Bossdoy Karaoke  Now</graphic:OutlinedText>-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,60,0,0">
+                    <TextBlock Name="UpdateMessageTextBox" FontSize="16" Text="Loading" Effect="{x:Null}"  />
+                    <TextBlock Name="EllipsesTextBlock" FontSize="16" Margin="0,0,0,0" Effect="{x:Null}" Width="20" >
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="...."/>
+                                <Style.Triggers>
+                                    <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard Storyboard.TargetProperty="Text">
+                                                <ObjectAnimationUsingKeyFrames Duration="00:00:1"
+                                                                RepeatBehavior="Forever">
+                                                    <DiscreteObjectKeyFrame KeyTime="00:00:00"
+                                                            Value=""/>
+                                                    <DiscreteObjectKeyFrame KeyTime="00:00:0.25"
+                                                            Value="."/>
+                                                    <DiscreteObjectKeyFrame KeyTime="00:00:0.5"
+                                                            Value=".."/>
+                                                    <DiscreteObjectKeyFrame KeyTime="00:00:0.75"
+                                                            Value="..."/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

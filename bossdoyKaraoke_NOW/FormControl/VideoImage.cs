@@ -159,9 +159,9 @@ namespace bossdoyKaraoke_NOW.FormControl
             _compositeEffect.SetInputEffect(1, _affineTransformEffect);
             _compositeEffect.SetInput(2, _cdgTarget, true);
 
-            _textBrush = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(128, 0, 255));
-            _roundedRecOutColor = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(32, 117, 81));
-            _roundedRecInColor = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(234, 137, 6));
+            _textBrush = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(103, 58, 183)); //new Color(128, 0, 255));
+            _roundedRecOutColor = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(32, 117, 81)); //new Color(227,227,227));
+            _roundedRecInColor = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(240, 240, 240)); // new Color(234, 137, 6));
             _textFormat10 = new TextFormat(RenderContext.DWFactory, "Arial", FontWeight.Bold, FontStyle.Normal, _fontSize10);
             _textFormat15 = new TextFormat(RenderContext.DWFactory, "Arial", FontWeight.UltraBold, FontStyle.Normal, _fontSize15);
  
