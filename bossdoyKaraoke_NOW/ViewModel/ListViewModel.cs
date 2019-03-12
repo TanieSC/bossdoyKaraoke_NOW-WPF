@@ -128,6 +128,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 case NewTask.LOAD_SONGS:
                 case NewTask.ADD_TO_QUEUE:
                 case NewTask.ADD_TO_QUEUE_AS_NEXT:
+                case NewTask.SEARCH_LISTVIEW:
                     play.IsEnabled = true;
                     addToQueue.IsEnabled = true;
 

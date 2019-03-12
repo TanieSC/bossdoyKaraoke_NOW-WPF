@@ -33,7 +33,7 @@ namespace bossdoyKaraoke_NOW.Media
         string _videoDir;
 
         private SYNCPROC _syncProc;
-        private float _volume;
+        private float _volume = 75f;
         private static Vlc _instance;
         public static Vlc Instance
         {
@@ -87,6 +87,7 @@ namespace bossdoyKaraoke_NOW.Media
             //    _media_list.Add(_media);
             //}
 
+            _player.Volume = (int)_volume;
             _player.Events.PlayerPositionChanged += new EventHandler<MediaPlayerPositionChanged>(Events_PlayerPositionChanged);
             _player.Events.TimeChanged += new EventHandler<MediaPlayerTimeChanged>(Events_TimeChanged);
             _player.Events.MediaEnded += new EventHandler(Events_MediaEnded);
@@ -214,6 +215,7 @@ namespace bossdoyKaraoke_NOW.Media
 
             CurrentPlayState = PlayState.Playing;
 
+            Console.WriteLine("VLC: " + Volume);
             return true;
         }
 

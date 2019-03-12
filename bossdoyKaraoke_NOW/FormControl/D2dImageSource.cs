@@ -24,13 +24,11 @@ namespace bossdoyKaraoke_NOW.FormControl
 {
     public partial class D2dImageSource : UserControl
     {
-       private Timer _videotimer;
-
-       // public static RenderContext.IDeviceContext RenderContext { get; set; }
+        private Timer _videotimer;
 
         public Rendercontext.IDeviceContext RenderContext;
-       
-        private int _timerInterval = 33;
+
+        private int _timerInterval = 50;
         public int TimerInterval
         {
             get { return _timerInterval; }
@@ -61,8 +59,8 @@ namespace bossdoyKaraoke_NOW.FormControl
             _videotimer.Tick += Videotimer_Tick;
             _videotimer.Start();
 
-             Disposed += D2dImageSource_Disposed;
-          
+            Disposed += D2dImageSource_Disposed;
+
         }
 
         private void Videotimer_Tick(object sender, EventArgs e)

@@ -9,6 +9,10 @@ namespace bossdoyKaraoke_NOW.Enums
     public class DefaultAudio
     {
         private static DefaultAudioOutput defaultAudioOutput;
+
+        /// <summary>
+        /// Enums to set default audio interface
+        /// </summary>
         public enum DefaultAudioOutput
         {
             Bass,
