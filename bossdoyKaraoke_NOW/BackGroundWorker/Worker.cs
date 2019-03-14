@@ -185,7 +185,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:
                     case NewTask.EMPTY_QUEUE_LIST:
-                        _listViewElement.ItemsSource = songsSource.SongsQueue;
+                        if (songsSource.SongsQueue.Count != 0)
+                            _listViewElement.ItemsSource = songsSource.SongsQueue;
 
                         if (CurrentTask == NewTask.EMPTY_QUEUE_LIST)
                             parentTreeview.Title = songQueueTitle;
@@ -195,7 +196,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                             _listViewElement.ItemsSource = songsSource.Favorites[currentID];
                         break;
                     case NewTask.LOAD_SONGS:
-                        if (songsSource.Songs != null)
+                        if (songsSource.Songs.Count != 0)
                             _listViewElement.ItemsSource = songsSource.Songs[currentID];
                         break;
                     case NewTask.SEARCH_LISTVIEW:
