@@ -65,9 +65,9 @@ namespace bossdoyKaraoke_NOW.Media
             //    targetPath = Path.Combine(_startupPath, "x86");
 
 
-           // var s = Bass.LoadMe(assemblyFolder);
-          //  var f = BassMix.LoadMe(assemblyFolder);
-            
+            // var s = Bass.LoadMe(assemblyFolder);
+            //  var f = BassMix.LoadMe(assemblyFolder);
+            BassNet.OmitCheckVersion = true;
             BassNet.Registration("tanie_calacar@yahoo.com", "2X183372334322");
             var b = Bass.LoadMe(binariesPath);
             Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_BUFFER, 200);
@@ -96,7 +96,9 @@ namespace bossdoyKaraoke_NOW.Media
 
 
             Bass.BASS_SetVolume(0.3051406f);
-            Console.WriteLine("BASS_SetVolume: " + Bass.BASS_GetVolume());
+   
+
+            Console.WriteLine("BASS_SetVolume: " + b);
 
             // already create a mixer
             _mixerChannel = _mixer.MixerStreamCreate(44100);
