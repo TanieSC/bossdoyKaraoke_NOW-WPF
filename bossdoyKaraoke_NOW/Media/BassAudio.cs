@@ -69,7 +69,7 @@ namespace bossdoyKaraoke_NOW.Media
           //  var f = BassMix.LoadMe(assemblyFolder);
             
             BassNet.Registration("tanie_calacar@yahoo.com", "2X183372334322");
-            var b = Bass.LoadMe(binariesPath);
+
             Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_BUFFER, 200);
             Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_UPDATEPERIOD, 20);
             Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_FLOATDSP, true);
