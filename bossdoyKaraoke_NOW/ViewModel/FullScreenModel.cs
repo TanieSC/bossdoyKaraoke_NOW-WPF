@@ -38,7 +38,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
                         _videoImage.MouseDoubleClick += _videoImage_MouseDoubleClick;
 
-                        AutoSizeWindow();
+                        // AutoSizeWindow();
+                        _fullScreen.Topmost = true;
                     }
                 }));
             }

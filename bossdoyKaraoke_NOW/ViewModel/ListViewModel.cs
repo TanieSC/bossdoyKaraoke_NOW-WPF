@@ -145,6 +145,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private void AddToQueue(TrackInfo sender)
         {
             CurrentTask = NewTask.ADD_TO_QUEUE;
+            //System.Windows.Style style = new System.Windows.Style(typeof(ListViewItem));
+            //style.Setters.Add(new System.Windows.Setter(ListViewItem.HorizontalContentAlignmentProperty,
+            //     System.Windows.HorizontalAlignment.Stretch));
+
+            //Worker.ListViewElement.ItemContainerStyle = style;
+
             Worker.DoWork(CurrentTask, sender);
         }
 
