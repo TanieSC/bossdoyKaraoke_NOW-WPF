@@ -18,6 +18,7 @@ using MaterialDesignThemes.Wpf;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Tags;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
+using static bossdoyKaraoke_NOW.Enums.KaraokeNowFiles;
 using static bossdoyKaraoke_NOW.Enums.PlayerState;
 using static bossdoyKaraoke_NOW.Enums.TreeViewRootItem;
 
@@ -323,6 +324,9 @@ namespace bossdoyKaraoke_NOW.Media
             SearchDirectory(dir_info, file_list, count);
             _songs.Add(new ObservableCollection<TrackInfo>(file_list));
 
+            CreateKaraokeNowFiles(Create.NewSongs);
+
+
         }
 
         /// <summary>
@@ -354,7 +358,8 @@ namespace bossdoyKaraoke_NOW.Media
                         }
                     }
 
-                    WriteToQueueList();
+                    //WriteToQueueList();
+                    CreateKaraokeNowFiles(Create.SongQueueList);
                 }
             }
             catch (Exception ex)
@@ -387,7 +392,8 @@ namespace bossdoyKaraoke_NOW.Media
                         _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
                     }
 
-                    WriteToQueueList();
+                    // WriteToQueueList();
+                    CreateKaraokeNowFiles(Create.SongQueueList);
                 }
             }
             catch (Exception ex)
@@ -416,7 +422,8 @@ namespace bossdoyKaraoke_NOW.Media
             else
                 _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
 
-            WriteToQueueList();
+            // WriteToQueueList();
+            CreateKaraokeNowFiles(Create.SongQueueList);
 
             return _songQueueTitle;
         }
@@ -430,7 +437,8 @@ namespace bossdoyKaraoke_NOW.Media
             _songsQueue.Clear();
             _totalDuration = 0.0;
             _songQueueTitle = "Song Queue (Empty)";
-            WriteToQueueList();
+            //WriteToQueueList();
+            CreateKaraokeNowFiles(Create.SongQueueList);
 
             return _songQueueTitle;
         }
@@ -560,11 +568,48 @@ namespace bossdoyKaraoke_NOW.Media
         {
             try
             {
-                var file = _filePath + "SongQueueList.que";
                 var songsPath = _songsQueue.Select(s => s.FilePath).ToArray();
                 Directory.CreateDirectory(_filePath);
+                File.WriteAllLines(_songQueueList, songsPath);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
 
-                File.WriteAllLines(file, songsPath);
+        private void CreateKaraokeNowFiles(Create create)
+        {
+            var file = Array.Empty<string>();
+            string dirPath = string.Empty;
+            string filePath = string.Empty;
+            string title = string.Empty;
+            int itemID = 0;
+
+            try
+            {
+                switch (create)
+                {
+                    case Create.Favorites:
+                        // 1 = Favorites index in treeview;
+                        itemID = _itemSource[1].Items[0].ID;
+                        title = _itemSource[1].Items[0].Title + ".fav";
+                        Directory.CreateDirectory(_favoritesPath);
+                        File.WriteAllLines(_favoritesPath + title, file);
+                        break;
+                    case Create.NewSongs:
+                        // 2 = My Computer index in treeview;
+                        itemID = _itemSource[2].Items[0].ID;
+                        title = _itemSource[2].Items[0].Title + ".bkN";
+                        file = _songs[itemID].Select(s => s.FilePath).ToArray();
+                        Directory.CreateDirectory(_songsPath);
+                        File.WriteAllLines(dirPath + title, file);
+                        break;
+                    case Create.SongQueueList:
+                        file = _songsQueue.Select(s => s.FilePath).ToArray();
+                        Directory.CreateDirectory(_filePath);
+                        File.WriteAllLines(_songQueueList, file);
+                        break;
+                }
             }
             catch (Exception ex)
             {

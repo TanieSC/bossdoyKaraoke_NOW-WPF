@@ -113,6 +113,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BackGroundWorker\Worker.cs" />
+    <Compile Include="Enums\KaraokeNowFiles.cs" />
     <Compile Include="FormControl\VideoImage.cs">
       <SubType>UserControl</SubType>
     </Compile>
