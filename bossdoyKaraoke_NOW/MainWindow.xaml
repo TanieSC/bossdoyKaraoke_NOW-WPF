@@ -155,10 +155,10 @@
                     <StackPanel Name="tempo_key_panel" Panel.ZIndex="3" Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
                         <StackPanel  Orientation="Vertical" HorizontalAlignment="Right" Margin="5,0" DockPanel.Dock="Right">
                             <Button Name="key_plus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
-                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                        materialDesign:ButtonProgressAssist.Value="100"
-                        materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                        Content="{materialDesign:PackIcon  Kind=Plus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Top" Width="18" Padding="1">
+                                materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                                materialDesign:ButtonProgressAssist.Value="100"
+                                materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+                                Content="{materialDesign:PackIcon  Kind=Plus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Top" Width="18" Padding="1">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                         <i:InvokeCommandAction Command="{Binding KeyPlusCommand}" CommandParameter="{ Binding ElementName=key_plus}" />
@@ -166,11 +166,11 @@
                                 </i:Interaction.Triggers>
                             </Button>
                             <Button Name="key_minus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
-                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                        materialDesign:ButtonProgressAssist.Value="100"
-                        materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                        Content="{materialDesign:PackIcon  Kind=Minus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Bottom" Width="18" Padding="1" Margin="0,5,0,0">
-                                <i:Interaction.Triggers>
+                                materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                                materialDesign:ButtonProgressAssist.Value="100"
+                                materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+                                Content="{materialDesign:PackIcon  Kind=Minus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Bottom" Width="18" Padding="1" Margin="0,5,0,0">
+                                        <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                         <i:InvokeCommandAction Command="{Binding KeyMinusCommand}" CommandParameter="{ Binding ElementName=key_minus}" />
                                     </i:EventTrigger>
@@ -184,10 +184,10 @@
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="0,5,5,5" />
                         <StackPanel  Orientation="Vertical" HorizontalAlignment="Right" Margin="5,0" DockPanel.Dock="Right">
                             <Button Name="tempo_plus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
-                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                        materialDesign:ButtonProgressAssist.Value="100"
-                        materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                        Content="{materialDesign:PackIcon  Kind=Plus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Top" Width="18" Padding="1">
+                                materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                                materialDesign:ButtonProgressAssist.Value="100"
+                                materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+                                Content="{materialDesign:PackIcon  Kind=Plus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Top" Width="18" Padding="1">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                         <i:InvokeCommandAction Command="{Binding TempoPlusCommand}" CommandParameter="{ Binding ElementName=tempo_plus}" />
@@ -195,10 +195,10 @@
                                 </i:Interaction.Triggers>
                             </Button>
                             <Button Name="tempo_minus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
-                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                        materialDesign:ButtonProgressAssist.Value="100"
-                        materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                        Content="{materialDesign:PackIcon  Kind=Minus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Bottom" Width="18" Padding="1" Margin="0,5,0,0" >
+                                materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                                materialDesign:ButtonProgressAssist.Value="100"
+                                materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+                                Content="{materialDesign:PackIcon  Kind=Minus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Bottom" Width="18" Padding="1" Margin="0,5,0,0" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                         <i:InvokeCommandAction Command="{Binding TempoMinusCommand}" CommandParameter="{ Binding ElementName=tempo_minus}" />

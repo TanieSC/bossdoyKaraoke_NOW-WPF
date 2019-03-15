@@ -325,13 +325,11 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        //  AddNewScreen();
-                        //Worker.TreeViewElement.VerticalAlignment = VerticalAlignment.Top;
-                        //Worker.TreeViewElement.VerticalContentAlignment = VerticalAlignment.Top;
-                        Worker.ListViewElement.VerticalAlignment = VerticalAlignment.Bottom;
-                        Worker.ListViewElement.VerticalContentAlignment = VerticalAlignment.Bottom;
-                        Worker.ListViewElement.Width = 250;
-                        Grid.SetColumn(Worker.ListViewElement, 0);                      
+                        AddNewScreen();
+                        //Worker.ListViewElement.VerticalAlignment = VerticalAlignment.Bottom;
+                        //Worker.ListViewElement.VerticalContentAlignment = VerticalAlignment.Bottom;
+                        //Worker.ListViewElement.Width = 250;
+                        //Grid.SetColumn(Worker.ListViewElement, 0);                      
                     }
                 }));
             }

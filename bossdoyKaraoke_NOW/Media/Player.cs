@@ -180,7 +180,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         public override void KeyMinus()
         {
-            if (_songsSource.IsCdgFileType)
+            if (_isPlayingBass)
             {
                 _currentTrack.KeyMinus();
                 MediaControls.Instance.Key = string.Format("{0}", _currentTrack.FXTempo.Key);
@@ -189,7 +189,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         public override void KeyPlus()
         {
-            if (_songsSource.IsCdgFileType)
+            if (_isPlayingBass)
             {
                 _currentTrack.KeyPlus();
                 MediaControls.Instance.Key = string.Format("{0}", _currentTrack.FXTempo.Key);
@@ -198,7 +198,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         public override void TempoMinus()
         {
-            if (_songsSource.IsCdgFileType)
+            if (_isPlayingBass)
             {
                 _currentTrack.TempoMinus();
                 MediaControls.Instance.Tempo = string.Format("{0}", _currentTrack.FXTempo.Tempo + "%");
@@ -207,7 +207,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         public override void TempoPlus()
         {
-            if (_songsSource.IsCdgFileType)
+            if (_isPlayingBass)
             {
                 _currentTrack.TempoPlus();
                 MediaControls.Instance.Tempo = string.Format("{0}", _currentTrack.FXTempo.Tempo + "%");
@@ -285,7 +285,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         public override void Stop()
         {
-            if (_songsSource.IsCdgFileType)
+            if (_isPlayingBass)
             {
                 _currentTrack.Stop();
                 CDGmp3 = null;
@@ -294,7 +294,8 @@ namespace bossdoyKaraoke_NOW.Media
                 _previousTrack = null;
                 VlcPlayer.PlayBackGroundVideo();
             }
-            else
+
+            if (_isPlayingVlc)
             {
                 VlcPlayer.Stop();
             }
@@ -465,6 +466,9 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 lock (_songsSource.SongsQueue)
                 {
+                    MediaControls.Instance.VocalChannel = "BAL";
+                    Channel = ChannelSelected.Right;
+
                     if (_songsSource.SongsQueue.Count > 0)
                     {
                         MediaControls.Instance.SongTitle = _songsSource.SongsQueue[0].Name;
