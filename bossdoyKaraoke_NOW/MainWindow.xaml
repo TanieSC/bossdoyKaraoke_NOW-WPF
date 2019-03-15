@@ -439,6 +439,11 @@
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                         <Setter Property="ContextMenu" Value="{StaticResource lvItemContextMenu}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ID}" Value="1">
+                                <Setter Property="Background" Value="Red" />
+                            </DataTrigger>
+                        </Style.Triggers>
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>
