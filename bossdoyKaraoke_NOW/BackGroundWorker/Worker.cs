@@ -200,7 +200,6 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                             _listViewElement.ItemsSource = songsSource.Songs[currentID];
                         break;
                     case NewTask.SEARCH_LISTVIEW:
-                       // CurrentTask = NewTask.LOAD_SONGS;
                         _listViewElement.ItemsSource = filteredSong;                        
                         break;
                 }

@@ -30,7 +30,7 @@ namespace bossdoyKaraoke_NOW.Media
         private string _extPattern = HashSetExtensionsToString(_extensions);
         private string _favoritesPath = _filePath + @"favorites\";
         private string _songsPath = _filePath + @"songs\";
-        private string _mediaFileName;
+        private string _songQueueList = _filePath + @"SongQueueList.que";
         private string _mp3FileName;
         private string _songQueueTitle = string.Empty;
         private double _totalDuration = 0.0;
@@ -130,6 +130,11 @@ namespace bossdoyKaraoke_NOW.Media
 
                 Directory.CreateDirectory(_favoritesPath);
                 Directory.CreateDirectory(_songsPath);
+                if (!File.Exists(_songQueueList))
+                {
+                    using (File.Create(_songQueueList));
+                }
+
                 List<string> songs;
 
                 foreach (var node in Enum.GetValues(typeof(RootNode)))

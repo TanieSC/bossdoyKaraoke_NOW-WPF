@@ -23,7 +23,7 @@ namespace bossdoyKaraoke_NOW.FormControl
         }
 
         private static Player _player;
-        private D2D.Bitmap bmp;
+        private D2D.Bitmap _bmp;
         private D2D.Bitmap _cdgbmp;
         private D2D.Bitmap1 _cdgTarget;
         private RawRectangleF _videoBitmapRectangle;
@@ -92,18 +92,29 @@ namespace bossdoyKaraoke_NOW.FormControl
 
             RenderContext.VideoContext.BeginDraw();
             RenderContext.VideoContext.Clear(SharpDX.Color.Transparent);
-            RenderContext.VideoContext.DrawBitmap(bmp, _videoBitmapRectangle, 1.0f, D2D.BitmapInterpolationMode.Linear);
+
+            if (_bmp != null)
+            {
+                RenderContext.VideoContext.DrawBitmap(_bmp, _videoBitmapRectangle, 1.0f, D2D.BitmapInterpolationMode.Linear);
+            }
+            else
+            {
+                var stringSize0 = MeasureStringDX("Video file not found!", _videoBitmapRectangle.Right, _textFormat15);
+                RenderContext.VideoContext.DrawTextLayout(new Vector2((_videoBitmapRectangle.Right / 2) - (stringSize0.Width / 2), (_videoBitmapRectangle.Bottom / 2) - (stringSize0.Height / 2)), _textLayout, _textBrush);
+
+            }
+
             RenderContext.VideoContext.DrawImage(_compositeEffect, new RawVector2(0, 0), D2D.InterpolationMode.Linear, D2D.CompositeMode.Xor);
             RenderContext.VideoContext.DrawBitmap(_cdgTarget, 1f, D2D.BitmapInterpolationMode.Linear);
 
             string reservedSong = "R".PadRight(2) + _songsSource.SongsQueue.Count;
-            var stringSize = MeasureStringDX(reservedSong, _videoBitmapRectangle.Right, _textFormat15);
+            var stringSize1 = MeasureStringDX(reservedSong, _videoBitmapRectangle.Right, _textFormat15);
 
             _roundedRecReserve = new D2D.RoundedRectangle()
             {
-                Rect = new RawRectangleF((_videoBitmapRectangle.Right - 10) - (stringSize.Width + 10), _videoBitmapRectangle.Top + 10, _videoBitmapRectangle.Right - 10, stringSize.Height + 10),
-                RadiusX = stringSize.Height / 8,
-                RadiusY = stringSize.Height / 8
+                Rect = new RawRectangleF((_videoBitmapRectangle.Right - 10) - (stringSize1.Width + 10), _videoBitmapRectangle.Top + 10, _videoBitmapRectangle.Right - 10, stringSize1.Height + 10),
+                RadiusX = stringSize1.Height / 8,
+                RadiusY = stringSize1.Height / 8
             };
 
             RenderContext.VideoContext.DrawRoundedRectangle(_roundedRecReserve, _roundedRecOutColor, 10f);
@@ -119,7 +130,7 @@ namespace bossdoyKaraoke_NOW.FormControl
 
                     _roundedRecNextSong = new D2D.RoundedRectangle()
                     {
-                        Rect = new RawRectangleF(_videoBitmapRectangle.Left + 10, _videoBitmapRectangle.Top + 10, _roundedRecReserve.Rect.Left - 15, (stringSize.Height + 10)),
+                        Rect = new RawRectangleF(_videoBitmapRectangle.Left + 10, _videoBitmapRectangle.Top + 10, _roundedRecReserve.Rect.Left - 15, (stringSize1.Height + 10)),
                         RadiusX = stringSize2.Height / 8,
                         RadiusY = stringSize2.Height / 8
                     };
@@ -140,7 +151,7 @@ namespace bossdoyKaraoke_NOW.FormControl
             _videoBitmapRectangle = new RawRectangleF(0, 0, this.Width, this.Height);
 
             byte[] bmpBytes = _player.VlcPlayer.ByteArrayBitmap;
-            bmp = GraphicUtil.ConvertToSharpDXBitmap(RenderContext.VideoContext, bmpBytes, _player.VlcPlayer.VideoWidth, _player.VlcPlayer.VideoHeight);
+            _bmp = GraphicUtil.ConvertToSharpDXBitmap(RenderContext.VideoContext, bmpBytes, _player.VlcPlayer.VideoWidth, _player.VlcPlayer.VideoHeight);
 
             _cdgTarget = new D2D.Bitmap1(RenderContext.CdgContext, new Size2((int)_videoBitmapRectangle.Right, (int)_videoBitmapRectangle.Bottom), GraphicUtil.BitmapProps1);
 
@@ -169,9 +180,12 @@ namespace bossdoyKaraoke_NOW.FormControl
 
         private void UnloadResources()
         {
-            bmp.Dispose();
+            if (_bmp != null)
+                _bmp.Dispose();
+
             if (_cdgbmp != null)
                 _cdgbmp.Dispose();
+
             _cdgTarget.Dispose();
             _shadowEffects.Dispose();
             _affineTransformEffect.Dispose();
