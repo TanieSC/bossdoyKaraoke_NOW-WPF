@@ -96,7 +96,7 @@ namespace bossdoyKaraoke_NOW.Media
             Bass.BASS_SetVolume(0.3051406f);
    
 
-            //Console.WriteLine("BASS_SetVolume: " + b);
+            Console.WriteLine("BASS_SetVolume: " + Bass.BASS_GetVolume());
 
             // already create a mixer
             _mixerChannel = _mixer.MixerStreamCreate(44100);
