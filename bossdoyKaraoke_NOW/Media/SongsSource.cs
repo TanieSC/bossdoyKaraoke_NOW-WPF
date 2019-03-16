@@ -45,7 +45,6 @@ namespace bossdoyKaraoke_NOW.Media
         private List<ObservableCollection<TrackInfo>> _songs = new List<ObservableCollection<Model.TrackInfo>>();
         private List<ObservableCollection<TrackInfo>> _favorites;
         private List<TrackInfo> _songsQueue;
-        private CDGFile _cdgMp3;
         private TrackInfo _trackInfo;
 
         public List<ITreeViewModel> ItemSource { get { return _itemSource; } }
