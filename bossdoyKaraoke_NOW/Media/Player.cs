@@ -314,37 +314,39 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         public void RemoveVocalLeftRight()
         {
-            switch (Channel)
+            if (_isPlayingBass)
             {
-                case ChannelSelected.None: // Center no vocal removed
-                    Bass.BASS_ChannelRemoveFX(BassAudio.MixerChannel, _fxMix);
-                    MediaControls.Instance.VocalChannel = "BAL";                 
-                    Channel = ChannelSelected.Right;
+                switch (Channel)
+                {
+                    case ChannelSelected.None: // Center no vocal removed
+                        Bass.BASS_ChannelRemoveFX(BassAudio.MixerChannel, _fxMix);
+                        MediaControls.Instance.VocalChannel = "BAL";
+                        Channel = ChannelSelected.Right;
 
-                   // bt.RemoveVocalLeftOrRight(ChannelSelected.None);
-                    break;
-                case ChannelSelected.Right: // Remove Right Vocal
-                    Bass.BASS_ChannelRemoveFX(BassAudio.MixerChannel, _fxMix);
-                    _duplicateChannel = new BASS_BFX_MIX(BASSFXChan.BASS_BFX_CHAN1, BASSFXChan.BASS_BFX_CHAN1);
-                    _fxMix = Bass.BASS_ChannelSetFX(BassAudio.MixerChannel, BASSFXType.BASS_FX_BFX_MIX, 0);
-                    Bass.BASS_FXSetParameters(_fxMix, _duplicateChannel);
-                    MediaControls.Instance.VocalChannel = "RGT";
-                    Channel = ChannelSelected.Left;
+                        // bt.RemoveVocalLeftOrRight(ChannelSelected.None);
+                        break;
+                    case ChannelSelected.Right: // Remove Right Vocal
+                        Bass.BASS_ChannelRemoveFX(BassAudio.MixerChannel, _fxMix);
+                        _duplicateChannel = new BASS_BFX_MIX(BASSFXChan.BASS_BFX_CHAN1, BASSFXChan.BASS_BFX_CHAN1);
+                        _fxMix = Bass.BASS_ChannelSetFX(BassAudio.MixerChannel, BASSFXType.BASS_FX_BFX_MIX, 0);
+                        Bass.BASS_FXSetParameters(_fxMix, _duplicateChannel);
+                        MediaControls.Instance.VocalChannel = "RGT";
+                        Channel = ChannelSelected.Left;
 
-                   // bt.RemoveVocalLeftOrRight(ChannelSelected.Right);
-                    break;
-                case ChannelSelected.Left: // Remove Left Vocal 
-                    Bass.BASS_ChannelRemoveFX(BassAudio.MixerChannel, _fxMix);
-                    _duplicateChannel = new BASS_BFX_MIX(BASSFXChan.BASS_BFX_CHAN2, BASSFXChan.BASS_BFX_CHAN2);
-                    _fxMix = Bass.BASS_ChannelSetFX(BassAudio.MixerChannel, BASSFXType.BASS_FX_BFX_MIX, 0);
-                    Bass.BASS_FXSetParameters(_fxMix, _duplicateChannel);
-                    MediaControls.Instance.VocalChannel = "LFT";
-                    Channel = ChannelSelected.None;
+                        // bt.RemoveVocalLeftOrRight(ChannelSelected.Right);
+                        break;
+                    case ChannelSelected.Left: // Remove Left Vocal 
+                        Bass.BASS_ChannelRemoveFX(BassAudio.MixerChannel, _fxMix);
+                        _duplicateChannel = new BASS_BFX_MIX(BASSFXChan.BASS_BFX_CHAN2, BASSFXChan.BASS_BFX_CHAN2);
+                        _fxMix = Bass.BASS_ChannelSetFX(BassAudio.MixerChannel, BASSFXType.BASS_FX_BFX_MIX, 0);
+                        Bass.BASS_FXSetParameters(_fxMix, _duplicateChannel);
+                        MediaControls.Instance.VocalChannel = "LFT";
+                        Channel = ChannelSelected.None;
 
-                   // bt.RemoveVocalLeftOrRight(ChannelSelected.Left);
-                    break;
+                        // bt.RemoveVocalLeftOrRight(ChannelSelected.Left);
+                        break;
+                }
             }
-
         }
 
         /// <summary>
