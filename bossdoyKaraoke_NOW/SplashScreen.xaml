@@ -20,9 +20,9 @@
                              OuterStrokeThickness="12" Text="BKN" Margin="25,80,25,0" Height="115" 
                              InnerStroke="#FFF0F0F0" InnerStrokeThickness="6"
                              FontFamily="Arial" FontWeight="Bold" TextAlignment="Center"/>
-                <graphic:OutlinedText OuterStroke="{x:Null}"  ClipToBounds="False" FontSize="18" Fill="#FF673AB7"
+                <!--<graphic:OutlinedText OuterStroke="{x:Null}"  ClipToBounds="False" FontSize="18" Fill="#FF673AB7"
                              OuterStrokeThickness="0" InnerStroke="#FFF0F0F0" 
-                             InnerStrokeThickness="2"  Margin="23,-10,25,0" FontFamily="Arial Black" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center">Bossdoy Karaoke  Now</graphic:OutlinedText>
+                             InnerStrokeThickness="2"  Margin="23,-10,25,0" FontFamily="Arial Black" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center">Bossdoy Karaoke  Now</graphic:OutlinedText>-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,55,0,0">
                     <TextBlock Name="UpdateMessageTextBox" FontSize="16" Text="Loading" Effect="{x:Null}"  />
                     <TextBlock Name="EllipsesTextBlock" FontSize="16" Margin="0,0,0,0" Effect="{x:Null}" Width="20" >

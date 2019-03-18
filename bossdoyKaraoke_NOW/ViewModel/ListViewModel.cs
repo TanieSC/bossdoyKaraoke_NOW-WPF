@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -145,18 +146,14 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private void AddToQueue(TrackInfo sender)
         {
             CurrentTask = NewTask.ADD_TO_QUEUE;
-            //System.Windows.Style style = new System.Windows.Style(typeof(ListViewItem));
-            //style.Setters.Add(new System.Windows.Setter(ListViewItem.HorizontalContentAlignmentProperty,
-            //     System.Windows.HorizontalAlignment.Stretch));
-
-            //Worker.ListViewElement.ItemContainerStyle = style;
-
+            sender.IsSelected = true;
             Worker.DoWork(CurrentTask, sender);
         }
 
         private void AddToQueueAsNext(TrackInfo sender)
         {
             CurrentTask = NewTask.ADD_TO_QUEUE_AS_NEXT;
+            sender.IsSelected = true;
             Worker.DoWork(CurrentTask, sender);
         }
 

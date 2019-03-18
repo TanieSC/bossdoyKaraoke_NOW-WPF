@@ -17,5 +17,6 @@ namespace bossdoyKaraoke_NOW.Model
         string Duration { get; set; }
         string FilePath { get; set; }
         TAG_INFO Tags { get; set; }
+        bool IsSelected { get; set; }
     }
 }

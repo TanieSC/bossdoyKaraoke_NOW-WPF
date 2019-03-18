@@ -183,6 +183,11 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                     case NewTask.REMOVE_FROM_QUEUE:
                         parentTreeview.Title = songQueueTitle;
 
+                        if (CurrentTask == NewTask.ADD_TO_QUEUE || CurrentTask == NewTask.ADD_TO_QUEUE_AS_NEXT)
+                        {
+                            trackInfo.IsSelected = false;
+                        }
+
                         if (CurrentTask == NewTask.REMOVE_FROM_QUEUE)
                         {
                             _listViewElement.ItemsSource = songsSource.SongsQueue;
@@ -190,7 +195,6 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:
                     case NewTask.EMPTY_QUEUE_LIST:
-                        if (songsSource.SongsQueue.Count != 0)
                             _listViewElement.ItemsSource = songsSource.SongsQueue;
 
                         if (CurrentTask == NewTask.EMPTY_QUEUE_LIST)

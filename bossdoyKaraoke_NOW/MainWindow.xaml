@@ -440,8 +440,19 @@
                     <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                         <Setter Property="ContextMenu" Value="{StaticResource lvItemContextMenu}" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ID}" Value="1">
-                                <Setter Property="Background" Value="Red" />
+                            <DataTrigger Binding="{Binding IsSelected}" Value="true" >
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="Flash">
+                                        <Storyboard FillBehavior="Stop">
+                                            <ColorAnimation
+                                                Storyboard.TargetProperty="Background.Color"
+                                                From="#DD000000"
+                                                To="#FF11BB00"
+                                                Duration="00:00:1"
+                                                RepeatBehavior="00:00:1" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
