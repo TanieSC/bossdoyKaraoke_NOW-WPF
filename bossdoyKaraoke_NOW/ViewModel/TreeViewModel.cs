@@ -245,7 +245,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 var favoritesIndex = 1;
                 var items = SongsSource.Instance.ItemSource[favoritesIndex].Items;
                 items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = "Favorites " + items.Count, ID = items.Count - 1, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
-              //  Worker.DoWork(sender.CurrentTask, items[0].ID);
+                 
+                //  Worker.DoWork(sender.CurrentTask, items[0].ID);
             }
             else if (sender.CurrentTask == NewTask.ADD_NEW_SONGS)
             {
