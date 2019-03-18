@@ -69,7 +69,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
         /// </summary>
         /// <param name="newTask">Task to run</param>
         /// <param name="senderID">Song index from the list used for loading song to listview</param>
-        /// <param name="filePath">The path folder on the song, used for adding new songs to the collections</param>
+        /// <param name="filePath">The path folder of the song, used for adding new songs to the collections</param>
         public static void DoWork(NewTask newTask, int senderID, string filePath)
         {
             RunWorker(newTask, null, senderID, filePath);
@@ -96,6 +96,9 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                      case NewTask.ADD_NEW_SONGS:
                          CurrentTask = NewTask.ADD_NEW_SONGS;
                          songsSource.DirSearchSongs(filePath);
+                         break;
+                     case NewTask.ADD_NEW_FAVORITES:
+                         CurrentTask = NewTask.ADD_NEW_FAVORITES;
                          break;
                      case NewTask.ADD_TO_QUEUE:
                          CurrentTask = NewTask.ADD_TO_QUEUE;
@@ -172,6 +175,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                             _listViewElement.ItemsSource = songsSource.Songs[currentID];
 
                         songsSource.ItemSource[myComputerIndex].Items[0].IsProgressVisible = System.Windows.Visibility.Hidden;
+                        break;
+                    case NewTask.ADD_NEW_FAVORITES:
                         break;
                     case NewTask.ADD_TO_QUEUE:
                     case NewTask.ADD_TO_QUEUE_AS_NEXT:

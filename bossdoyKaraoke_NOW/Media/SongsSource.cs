@@ -45,7 +45,6 @@ namespace bossdoyKaraoke_NOW.Media
         private List<ObservableCollection<TrackInfo>> _songs = new List<ObservableCollection<Model.TrackInfo>>();
         private List<ObservableCollection<TrackInfo>> _favorites;
         private List<TrackInfo> _songsQueue;
-        private CDGFile _cdgMp3;
         private TrackInfo _trackInfo;
 
         public List<ITreeViewModel> ItemSource { get { return _itemSource; } }
@@ -184,7 +183,6 @@ namespace bossdoyKaraoke_NOW.Media
                                 _itemSource.Add(items);
                                 break;
                         }
-
                     }
                 }
             }
@@ -277,7 +275,6 @@ namespace bossdoyKaraoke_NOW.Media
                     
                     songsSource.Items.Add(new TreeViewModelChild() { PackIconKind = kindChild, Foreground = new SolidColorBrush(color), Title = fileName, ID = i, IsProgressVisible = Visibility.Hidden, CurrentTask = CurrentTask });
                 }
-
             }
 
             if (addChildTitle != null)
@@ -643,10 +640,8 @@ namespace bossdoyKaraoke_NOW.Media
                          return trackInfo(s.FullName, count++);
                      }).ToList();
 
-
                 if (data.Count > 0)
                     file_list.AddRange(data);
-
             }
             catch
             {
