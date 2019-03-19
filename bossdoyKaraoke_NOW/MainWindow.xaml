@@ -321,6 +321,13 @@
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="DeleteForeverOutline"/>
                             </MenuItem.Icon>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                    <i:InvokeCommandAction 
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=DataContext.RemoveTreeViewItemCommand}" 
+                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                         </MenuItem>
                     </ContextMenu>
                 </TreeView.Resources>

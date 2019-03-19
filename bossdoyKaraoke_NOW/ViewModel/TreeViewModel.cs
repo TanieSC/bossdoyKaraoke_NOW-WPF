@@ -133,15 +133,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         emptyQueue.IsEnabled = false;
                         shuffle.IsEnabled = false;
                     }
-
                     favorites.IsEnabled = false;
                     remove.IsEnabled = false;
                     break;
                 case NewTask.LOAD_FAVORITES:
                     emptyQueue.IsEnabled = false;
 
-                    if (_songsSource.Favorites.Count > 0)
-                        shuffle.IsEnabled = true;
+                    if (_songsSource.Favorites != null)
+                    {
+                        if (_songsSource.Favorites.Count > 0)
+                            shuffle.IsEnabled = true;
+                        else
+                            shuffle.IsEnabled = false;
+                    }
                     else
                         shuffle.IsEnabled = false;
 
@@ -188,8 +192,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
         {
             if (_songsSource.SongsQueue.Count > 0)
             {
-                // var parent = sender.DataContext as ITreeViewModel;
-                // parent.Title = "Song Queue (Empty)";
                 CurrentTask = NewTask.EMPTY_QUEUE_LIST;
                 Worker.DoWork(CurrentTask);
             }
@@ -199,7 +201,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
     class TreeViewModelChild : ITreeViewModelChild, INotifyPropertyChanged
     {
         private ICommand _selectionChangedCommand;
-        private static TreeViewItem _selectedItem = new TreeViewItem();
+        private ICommand _removeTreeViewItemCommand;
         private Visibility _isProgressVisible;
         public PackIconKind PackIconKind { get; set; }
         public SolidColorBrush Foreground { get; set; }
@@ -235,6 +237,25 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     LoadSelectedSongs(x as ITreeViewModelChild);
                 }));
             }
+        }
+
+        public ICommand RemoveTreeViewItemCommand
+        {
+            get
+            {
+                return _removeTreeViewItemCommand ?? (_removeTreeViewItemCommand = new RelayCommand(x =>
+                {
+                    var s =x as TreeViewItem;
+                    RemoveTreeViewItem(x as ITreeViewModelChild);
+                }));
+            }
+        }
+
+        private void RemoveTreeViewItem(ITreeViewModelChild sender)
+        {
+            var myComputerIndex = 2;
+            var items = SongsSource.Instance.ItemSource[myComputerIndex].Items;
+            items.Remove(sender);
         }
 
         private void LoadSelectedSongs(ITreeViewModelChild sender)

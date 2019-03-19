@@ -17,12 +17,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
     {
         ObservableCollection<ITreeViewModelChild> Items { get; }
         List<ITreeViewModel> ItemSource { get; }
-        //StackPanel Title { get; set; }
         PackIconKind PackIconKind { get; set; }
         SolidColorBrush Foreground { get; set; }
         string Title { get; set; }
-        //string Name { get; set; }
-       // int ID { get; set; }
         NewTask CurrentTask { get; set; }
         ICommand Loaded { get; }
         ICommand ContextMenuLoaded { get; }
@@ -31,17 +28,13 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
     public interface ITreeViewModelChild
     {
-        // StackPanel Title { get; }
         PackIconKind PackIconKind { get; set; }
         SolidColorBrush Foreground { get; set; }
         string Title { get; set; }
-       // string Name { get; set; }
         int ID { get; set; }
         Visibility IsProgressVisible { get; set; }
         NewTask CurrentTask { get; set; }
-        //ICommand Loaded { get; }
         ICommand SelectionChangedCommand { get; }
-       // ListViewModelItems ListItems  { get; }
-       // ListViewModelItems ShowSelectedSongs(ITreeViewModelChild sender);
+        ICommand RemoveTreeViewItemCommand { get; }
     }
 }
