@@ -36,5 +36,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
         Visibility IsProgressVisible { get; set; }
         NewTask CurrentTask { get; set; }
         ICommand SelectionChangedCommand { get; }
+        ICommand CreateFavoritesCommand { get; }
     }
 }

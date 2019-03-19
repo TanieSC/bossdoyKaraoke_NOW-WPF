@@ -229,7 +229,11 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
     class TreeViewModelChild : ITreeViewModelChild, INotifyPropertyChanged
     {
+        private const int _favoritesIndex = 1;
+        private const int _myComputerIndex = 2;
+        private Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
         private ICommand _selectionChangedCommand;
+        private ICommand _createFavoritesCommand;
         private Visibility _isProgressVisible;
         public PackIconKind PackIconKind { get; set; }
         public SolidColorBrush Foreground { get; set; }
@@ -267,13 +271,26 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
+        public ICommand CreateFavoritesCommand //Not yet fully implmented
+        {
+            get
+            {
+                return _createFavoritesCommand ?? (_createFavoritesCommand = new RelayCommand(x =>
+                {
+                    var title = x as ITreeViewModelChild;
+                    var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
+                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = title.Title , ID = items.Count - 1, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+
+                }));
+            }
+        }
+
         private void LoadSelectedSongs(ITreeViewModelChild sender)
         {
-            Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
+            
             if (sender.CurrentTask == NewTask.ADD_NEW_FAVORITES)
             {
-                var favoritesIndex = 1;
-                var items = SongsSource.Instance.ItemSource[favoritesIndex].Items;
+                var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
                 items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = "Favorites " + items.Count, ID = items.Count - 1, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
                  
                 //  Worker.DoWork(sender.CurrentTask, items[0].ID);
@@ -283,8 +300,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 var fbd = new System.Windows.Forms.FolderBrowserDialog();
                 if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    var myComputerIndex = 2;
-                    var items = SongsSource.Instance.ItemSource[myComputerIndex].Items;
+                    var items = SongsSource.Instance.ItemSource[_myComputerIndex].Items;
                     var songs = SongsSource.Instance.Songs.Count;
                     string[] filePath = new string[] { fbd.SelectedPath };
                     string folderName = Path.GetFileName(fbd.SelectedPath);

@@ -309,6 +309,13 @@
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="Create"/>
                                 </MenuItem.Icon>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                        <i:InvokeCommandAction 
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=DataContext.CreateFavoritesCommand}" 
+                                    CommandParameter="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                             </MenuItem>
                             <MenuItem Header="Create favorites from played songs" >
                                 <MenuItem.Icon>
