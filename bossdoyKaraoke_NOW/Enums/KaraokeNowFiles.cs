@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bossdoyKaraoke_NOW.Enums
 {
-    class KaraokeNowFiles
+    public class KaraokeNowFiles
     {
         private static Create _createNew;
 

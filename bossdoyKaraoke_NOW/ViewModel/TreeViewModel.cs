@@ -27,6 +27,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _loaded;
         private ICommand _contextMenuLoaded;
         private ICommand _selectionChangedCommand;
+        private ICommand _removeTreeViewItemCommand;
         private ICommand _emptyQueueCommand;
 
         private ISongsSource _songsSource = SongsSource.Instance;
@@ -105,6 +106,17 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
+        public ICommand RemoveTreeViewItemCommand
+        {
+            get
+            {
+                return _removeTreeViewItemCommand ?? (_removeTreeViewItemCommand = new RelayCommand(x =>
+                {
+                    RemoveTreeViewItem(x as ITreeViewModelChild);
+                }));
+            }
+        }
+
         private void EnableDisableMenuItem(ContextMenu sender)
         {
             var contextMenu = sender as ContextMenu;
@@ -177,6 +189,23 @@ namespace bossdoyKaraoke_NOW.ViewModel
             Worker.DoWork(sender.CurrentTask);
         }
 
+        private void RemoveTreeViewItem(ITreeViewModelChild sender)
+        {
+            if (sender != null)
+            {
+                if (sender.CurrentTask == NewTask.LOAD_FAVORITES)
+                {
+                    CurrentTask = NewTask.REMOVE_FAVORITES;
+                    Worker.DoWork(CurrentTask, sender);
+                }
+                else if (sender.CurrentTask == NewTask.LOAD_SONGS)
+                {
+                    CurrentTask = NewTask.REMOVE_SONGS;
+                    Worker.DoWork(CurrentTask, sender);
+                }
+            }
+        }
+
         public ICommand EmptyQueueCommand
         {
             get
@@ -201,7 +230,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
     class TreeViewModelChild : ITreeViewModelChild, INotifyPropertyChanged
     {
         private ICommand _selectionChangedCommand;
-        private ICommand _removeTreeViewItemCommand;
         private Visibility _isProgressVisible;
         public PackIconKind PackIconKind { get; set; }
         public SolidColorBrush Foreground { get; set; }
@@ -239,25 +267,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand RemoveTreeViewItemCommand
-        {
-            get
-            {
-                return _removeTreeViewItemCommand ?? (_removeTreeViewItemCommand = new RelayCommand(x =>
-                {
-                    var s =x as TreeViewItem;
-                    RemoveTreeViewItem(x as ITreeViewModelChild);
-                }));
-            }
-        }
-
-        private void RemoveTreeViewItem(ITreeViewModelChild sender)
-        {
-            var myComputerIndex = 2;
-            var items = SongsSource.Instance.ItemSource[myComputerIndex].Items;
-            items.Remove(sender);
-        }
-
         private void LoadSelectedSongs(ITreeViewModelChild sender)
         {
             Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
@@ -276,9 +285,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     var myComputerIndex = 2;
                     var items = SongsSource.Instance.ItemSource[myComputerIndex].Items;
+                    var songs = SongsSource.Instance.Songs.Count;
                     string[] filePath = new string[] { fbd.SelectedPath };
                     string folderName = Path.GetFileName(fbd.SelectedPath);
-                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = folderName, ID = items.Count - 1, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
+                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = folderName, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
                     Worker.DoWork(sender.CurrentTask, items[0].ID, fbd.SelectedPath);
                 }
             }

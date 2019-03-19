@@ -441,6 +441,16 @@ namespace bossdoyKaraoke_NOW.Media
         }
 
         /// <summary>
+        /// Remove KaraokeNow files.
+        /// </summary>
+        /// <param name="create">Remove from Favorites or Songs collections</param>
+        /// <param name="sender">The item to remove</param>
+        public void RemoveTreeViewItem(Create create, ITreeViewModelChild sender)
+        {
+            RemoveKaraokeNowFiles(create, sender);
+        }
+
+        /// <summary>
         /// Check for file if it exist and tag it if its mp3cdg or video (_isCdgFileType)
         /// </summary>
         /// <param name="mediaFileName">The file to be checked</param>
@@ -599,7 +609,7 @@ namespace bossdoyKaraoke_NOW.Media
                         title = _itemSource[2].Items[0].Title + ".bkN";
                         file = _songs[itemID].Select(s => s.FilePath).ToArray();
                         Directory.CreateDirectory(_songsPath);
-                        File.WriteAllLines(dirPath + title, file);
+                        File.WriteAllLines(_songsPath + title, file);
                         break;
                     case Create.SongQueueList:
                         file = _songsQueue.Select(s => s.FilePath).ToArray();
@@ -610,6 +620,22 @@ namespace bossdoyKaraoke_NOW.Media
             }
             catch (Exception ex)
             {
+            }
+        }
+
+        private void RemoveKaraokeNowFiles(Create create, ITreeViewModelChild sender)
+        {
+            string file = string.Empty;
+
+            switch (create)
+            {
+                case Create.Favorites:
+                    break;
+                case Create.NewSongs:
+                    file = _songsPath + sender.Title + ".bkN";
+                    if (File.Exists(file))
+                        File.Delete(file);
+                    break;
             }
         }
 

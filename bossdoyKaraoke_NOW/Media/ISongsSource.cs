@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using bossdoyKaraoke_NOW.Model;
 using bossdoyKaraoke_NOW.ViewModel;
+using static bossdoyKaraoke_NOW.Enums.KaraokeNowFiles;
 
 namespace bossdoyKaraoke_NOW.Media
 {
@@ -26,6 +27,7 @@ namespace bossdoyKaraoke_NOW.Media
         string AddToQueueAsNext(TrackInfo sender);
         string RemoveFromQueue(TrackInfo sender);
         string EmptyQueueList();
+        void RemoveTreeViewItem(Create create, ITreeViewModelChild sender);
         void PreProcessFiles(string mediaFileName);
     }
 

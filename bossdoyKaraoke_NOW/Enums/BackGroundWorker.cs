@@ -29,6 +29,8 @@ namespace bossdoyKaraoke_NOW.Enums
             LOAD_QUEUE_SONGS,
             PLAY_NEXT_TRACK,
             REMOVE_FROM_QUEUE,
+            REMOVE_FAVORITES,
+            REMOVE_SONGS,
             SEARCH_DIRECTORY,
             SEARCH_TEXTFILE,
             SEARCH_LISTVIEW,
