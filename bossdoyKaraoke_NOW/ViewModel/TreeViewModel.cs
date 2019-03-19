@@ -271,16 +271,13 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand CreateFavoritesCommand //Not yet fully implmented
+        public ICommand CreateFavoritesCommand
         {
             get
             {
                 return _createFavoritesCommand ?? (_createFavoritesCommand = new RelayCommand(x =>
                 {
-                    var title = x as ITreeViewModelChild;
-                    var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
-                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = title.Title , ID = items.Count - 1, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
-
+                    CreateFavorites(x as ITreeViewModelChild);
                 }));
             }
         }
@@ -289,11 +286,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         {
             
             if (sender.CurrentTask == NewTask.ADD_NEW_FAVORITES)
-            { //Not yet fully implmented
-                var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
-                items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = "Favorites " + items.Count, ID = items.Count - 1, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
-                 
-                //  Worker.DoWork(sender.CurrentTask, items[0].ID);
+            {
+                CreateFavorites();
             }
             else if (sender.CurrentTask == NewTask.ADD_NEW_SONGS)
             {
@@ -312,6 +306,14 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 Worker.DoWork(sender.CurrentTask, sender.ID);
             }
+        }
+
+        private void CreateFavorites(ITreeViewModelChild sender = null)
+        {            
+            var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
+            var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
+            items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = sender != null ? sender.Title : "Favorites " + items.Count, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+            Worker.DoWork(NewTask.ADD_NEW_FAVORITES, sender);
         }
     }
 }

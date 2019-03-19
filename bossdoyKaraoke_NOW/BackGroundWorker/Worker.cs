@@ -45,11 +45,11 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
         /// Run the new task in background
         /// </summary>
         /// <param name="newTask">Task to run</param>
-        /// <param name="treeViewModelChild">The TreeviewItem to be remove</param>
+        /// <param name="treeViewModelChild">The TreeviewItem that contains inforamtion used for adding/removing treeview items.</param>
         public static void DoWork(NewTask newTask, ITreeViewModelChild treeViewModelChild)
         {
             _treeViewModelChild = treeViewModelChild;
-            _senderID = treeViewModelChild.ID;
+            //_senderID = treeViewModelChild.ID;
             RunWorker(newTask);
         }
 
@@ -64,8 +64,6 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
             _searchFilter = filter;
             RunWorker(newTask);
         }
-
-
 
         /// <summary>
         /// Run the new task in background
@@ -129,6 +127,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          break;
                      case NewTask.ADD_NEW_FAVORITES:
                          CurrentTask = NewTask.ADD_NEW_FAVORITES;
+                         songsSource.CreateFavorites(_treeViewModelChild);
                          break;
                      case NewTask.ADD_TO_QUEUE:
                          CurrentTask = NewTask.ADD_TO_QUEUE;
@@ -238,7 +237,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                             parentTreeview.Title = songQueueTitle;
                         break;
                     case NewTask.LOAD_FAVORITES:
-                        if (songsSource.Favorites != null)
+                        if (songsSource.Favorites.Count != 0)
                             _listViewElement.ItemsSource = songsSource.Favorites[_senderID];
                         break;
                     case NewTask.LOAD_SONGS:

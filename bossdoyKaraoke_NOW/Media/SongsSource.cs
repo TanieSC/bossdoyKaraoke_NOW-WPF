@@ -42,8 +42,8 @@ namespace bossdoyKaraoke_NOW.Media
         private RootNode _rootNode;
         private List<ITreeViewModel> _itemSource;
         private static SongsSource _instance;
-        private List<ObservableCollection<TrackInfo>> _songs = new List<ObservableCollection<Model.TrackInfo>>();
-        private List<ObservableCollection<TrackInfo>> _favorites;
+        private List<ObservableCollection<TrackInfo>> _songs = new List<ObservableCollection<TrackInfo>>();
+        private List<ObservableCollection<TrackInfo>> _favorites = new List<ObservableCollection<TrackInfo>>();
         private List<TrackInfo> _songsQueue;
         private TrackInfo _trackInfo;
 
@@ -440,6 +440,12 @@ namespace bossdoyKaraoke_NOW.Media
             return _songQueueTitle;
         }
 
+
+        public void CreateFavorites(ITreeViewModelChild sender)
+        {
+            CreateKaraokeNowFiles(Create.Favorites, sender);
+        }
+
         /// <summary>
         /// Remove KaraokeNow files.
         /// </summary>
@@ -584,7 +590,11 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
-        private void CreateKaraokeNowFiles(Create create)
+        /// <summary>
+        /// Write files to karaokeNow Directory
+        /// </summary>
+        /// <param name="create">Task to be run</param>
+        private void CreateKaraokeNowFiles(Create create, ITreeViewModelChild sender = null)
         {
             var file = Array.Empty<string>();
             string dirPath = string.Empty;
@@ -597,9 +607,22 @@ namespace bossdoyKaraoke_NOW.Media
                 switch (create)
                 {
                     case Create.Favorites:
-                        // 1 = Favorites index in treeview;
-                        itemID = _itemSource[1].Items[0].ID;
-                        title = _itemSource[1].Items[0].Title + ".fav";
+
+                        if (sender != null) //Creates favorites from song colletions 
+                        {
+                            itemID = sender.ID;
+                            title = sender.Title + ".fav";
+                            file = _songs[itemID].Select(s => s.FilePath).ToArray();
+                            _favorites.Add(_songs[itemID]);
+                        }
+                        else // Creates new empty favorites used for adding song from played song and from songQueue
+                        {
+                            // 1 = Favorites index in treeview;
+                            itemID = _itemSource[1].Items[0].ID;
+                            title = _itemSource[1].Items[0].Title + ".fav";
+                            _favorites.Add(new ObservableCollection<TrackInfo>());
+                        }
+
                         Directory.CreateDirectory(_favoritesPath);
                         File.WriteAllLines(_favoritesPath + title, file);
                         break;
