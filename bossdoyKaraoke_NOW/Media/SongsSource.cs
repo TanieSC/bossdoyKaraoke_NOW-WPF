@@ -51,7 +51,7 @@ namespace bossdoyKaraoke_NOW.Media
         public List<ObservableCollection<TrackInfo>> Songs { get { return _songs; } }
         public List<ObservableCollection<TrackInfo>> Favorites { get { return _favorites; } set { _favorites = value; } }
         public ObservableCollection<TrackInfo> SongsQueue
-        {
+        {          
             get
             {
                 return new ObservableCollection<TrackInfo>(_songsQueue);
@@ -61,6 +61,8 @@ namespace bossdoyKaraoke_NOW.Media
                 _songsQueue = value.ToList();
             }
         }
+
+        public int SongQueueCount { get { return _songsQueue.Count; } }
 
         /// <summary>
         /// Check method to know if file loaded is CdgMp3 oor Video file
@@ -239,9 +241,10 @@ namespace bossdoyKaraoke_NOW.Media
                         }
                         else
                         {
+                           // SongQueueCount = i + 1;
                             _songsQueue[i] = _trackInfo;
                             _totalDuration += _trackInfo.Tags.duration;
-                            _songQueueTitle = "Song Queue (" + (i + 1) + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+                            _songQueueTitle = "Song Queue (" + (i + 1) + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
                             songQueue.Title = _songQueueTitle;
                         }
                     }
@@ -352,7 +355,7 @@ namespace bossdoyKaraoke_NOW.Media
                         else
                         {
                             _totalDuration += _trackInfo.Tags.duration;
-                            _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+                            _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
                         }
                     }
 
@@ -387,7 +390,7 @@ namespace bossdoyKaraoke_NOW.Media
                         _songsQueue.Insert(0, _trackInfo);
 
                         _totalDuration += _trackInfo.Tags.duration;
-                        _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+                        _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
                     }
 
                     // WriteToQueueList();
@@ -418,7 +421,7 @@ namespace bossdoyKaraoke_NOW.Media
                 _totalDuration = 0.0;
             }
             else
-                _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])";
+                _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
 
             // WriteToQueueList();
             CreateKaraokeNowFiles(Create.SongQueueList);
@@ -513,61 +516,68 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="isAdding">Check method if adding or removing a song</param>
         private void AddRemoveFromQueue(TrackInfo sender, bool isAdding = false)
         {
-            if (isAdding) //For adding songs to SongQueue
+            try
             {
-                var count = 0;
-                PreProcessFiles(sender.FilePath);
-                _isAddingToQueue = false;
-
-                if (!File.Exists(_mp3FileName))
+                if (isAdding) //For adding songs to SongQueue
                 {
-                    if (CurrentTask == NewTask.LOAD_QUEUE_SONGS)
+                    var count = 0;
+                    PreProcessFiles(sender.FilePath);
+                    _isAddingToQueue = false;
+
+                    if (!File.Exists(_mp3FileName))
                     {
-                        _trackInfo = null;
+                        if (CurrentTask == NewTask.LOAD_QUEUE_SONGS)
+                        {
+                            _trackInfo = null;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cannot find " + Path.GetFileName(_mp3FileName) + " file to play.");
+                            _trackInfo = null;
+                        }
+                        return;
+                    }
+
+                    if (CurrentPlayState == PlayState.Playing)
+                    {
+                        count = _songsQueue.Count + 1;
+                    }
+
+                    if (GetExtPatern(_mp3FileName).EndsWith(".mp3"))
+                    {
+                        _trackInfo = new TrackInfo(sender);
+                        _trackInfo.ID = count.ToString();
+
+                        if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
+                            _isCdgFileType = true;
                     }
                     else
                     {
-                        MessageBox.Show("Cannot find " + Path.GetFileName(_mp3FileName) + " file to play.");
-                        _trackInfo = null;
+                        _trackInfo = new TrackInfo();
+                        Vlc.Instance.GetDuration(_mp3FileName);
+
+                        double vlcTimeDuration = GetVlcTimeOrDuration(Convert.ToDouble(Vlc.Instance.GetTimeDuration));
+
+                        if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
+                            IsCdgFileType = false;
+
+                        _trackInfo.ID = count.ToString();
+                        _trackInfo.Name = sender.Name;
+                        _trackInfo.Artist = sender.Artist;
+                        _trackInfo.Duration = Utils.FixTimespan(vlcTimeDuration, "HHMMSS");
+                        _trackInfo.FilePath = sender.FilePath;
+                        _trackInfo.Tags = new TAG_INFO();
+                        _trackInfo.Tags.duration = vlcTimeDuration;
                     }
-                    return;
                 }
-
-                if (CurrentPlayState == PlayState.Playing)
+                else //Removing song from SongQueue
                 {
-                    count = _songsQueue.Count + 1;
-                }
-
-                if (GetExtPatern(_mp3FileName).EndsWith(".mp3"))
-                {
-                    _trackInfo = new TrackInfo(sender);
-                    _trackInfo.ID = count.ToString();
-
-                    if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
-                        _isCdgFileType = true;
-                }
-                else
-                {
-                    _trackInfo = new TrackInfo();
-                    Vlc.Instance.GetDuration(_mp3FileName);
-
-                    double vlcTimeDuration = GetVlcTimeOrDuration(Convert.ToDouble(Vlc.Instance.GetTimeDuration));
-
-                    if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
-                        IsCdgFileType = false;
-
-                    _trackInfo.ID = count.ToString();
-                    _trackInfo.Name = sender.Name;
-                    _trackInfo.Artist = sender.Artist;
-                    _trackInfo.Duration = Utils.FixTimespan(vlcTimeDuration, "HHMMSS");
-                    _trackInfo.FilePath = sender.FilePath;
-                    _trackInfo.Tags = new TAG_INFO();
-                    _trackInfo.Tags.duration = vlcTimeDuration;
+                    _totalDuration -= sender.Tags.duration;
                 }
             }
-            else //Removing song from SongQueue
+            catch (Exception ex)
             {
-                _totalDuration -= sender.Tags.duration;
+                Console.WriteLine("AddRemoveFromQueue");
             }
         }
 

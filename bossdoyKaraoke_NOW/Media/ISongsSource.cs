@@ -17,7 +17,7 @@ namespace bossdoyKaraoke_NOW.Media
         List<ObservableCollection<TrackInfo>> Songs { get; }
         List<ObservableCollection<TrackInfo>> Favorites { get; }
         ObservableCollection<TrackInfo> SongsQueue { get; set; }
-       // CDGFile CDGMp3 { get; set; }
+        int SongQueueCount { get; }
         bool IsCdgFileType{ get; set; }
         void LoadSongCollections();
         void PlayFirstSongInQueue();

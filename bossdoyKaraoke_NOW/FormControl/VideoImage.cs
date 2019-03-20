@@ -107,7 +107,7 @@ namespace bossdoyKaraoke_NOW.FormControl
             RenderContext.VideoContext.DrawImage(_compositeEffect, new RawVector2(0, 0), D2D.InterpolationMode.Linear, D2D.CompositeMode.Xor);
             RenderContext.VideoContext.DrawBitmap(_cdgTarget, 1f, D2D.BitmapInterpolationMode.Linear);
 
-            string reservedSong = "R".PadRight(2) + _songsSource.SongsQueue.Count;
+            string reservedSong = "R".PadRight(2) + _songsSource.SongQueueCount;
             var stringSize1 = MeasureStringDX(reservedSong, _videoBitmapRectangle.Right, _textFormat15);
 
             _roundedRecReserve = new D2D.RoundedRectangle()
