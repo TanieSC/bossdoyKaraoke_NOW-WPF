@@ -21,7 +21,7 @@ namespace bossdoyKaraoke_NOW.Media
         bool IsCdgFileType{ get; set; }
         void LoadSongCollections();
         void PlayFirstSongInQueue();
-        void LoadSongsInQueue();
+        void LoadSongsInQueue(int songQueuePreviousCount = 0);
         void DirSearchSongs(string sDir);
         string AddToQueue(TrackInfo sender);
         string AddToQueueAsNext(TrackInfo sender);

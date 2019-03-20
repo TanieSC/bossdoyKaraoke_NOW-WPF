@@ -165,9 +165,9 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                              else
                                  player.LoadVideokeFile(songsSource.SongsQueue[0].FilePath);
 
-                             songsSource.LoadSongsInQueue();
-
                              MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
+
+                             songsSource.LoadSongsInQueue();                          
                          }
                          break;
                      case NewTask.EMPTY_QUEUE_LIST:
