@@ -132,7 +132,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                      case NewTask.ADD_TO_QUEUE:
                          CurrentTask = NewTask.ADD_TO_QUEUE;
                          songQueueTitle = songsSource.AddToQueue(_trackInfo);
-                         if (songsSource.SongsQueue.Count == 1 && CurrentPlayState == PlayState.Stopped)
+                         if (songsSource.SongQueueCount == 1 && CurrentPlayState == PlayState.Stopped)
                          {
                              if (songsSource.IsCdgFileType)
                                  player.LoadCDGFile(_trackInfo.FilePath);
@@ -158,7 +158,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
 
                          songsSource.PlayFirstSongInQueue();
 
-                         if (songsSource.SongsQueue.Count > 0 && CurrentPlayState == PlayState.Stopped)
+                         if (songsSource.SongQueueCount > 0 && CurrentPlayState == PlayState.Stopped)
                          {
                              if (songsSource.IsCdgFileType)
                                  player.LoadCDGFile(songsSource.SongsQueue[0].FilePath);

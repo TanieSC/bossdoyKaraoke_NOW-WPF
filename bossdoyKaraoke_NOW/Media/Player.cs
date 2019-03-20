@@ -368,7 +368,7 @@ namespace bossdoyKaraoke_NOW.Media
                     {
                         lock (_songsSource.SongsQueue)
                         {
-                            if (_songsSource.SongsQueue.Count > 0)
+                            if (_songsSource.SongQueueCount > 0)
                             {
                                 _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
                                 string nextSong = _songsSource.SongsQueue[0].Name + "[ " + _songsSource.SongsQueue[0].Artist + " ]";
@@ -422,7 +422,7 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 lock (_songsSource.SongsQueue)
                 {
-                    if (_songsSource.SongsQueue.Count > 0)
+                    if (_songsSource.SongQueueCount > 0)
                     {
                         if (_currentTrack != null)
                             Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
@@ -497,7 +497,7 @@ namespace bossdoyKaraoke_NOW.Media
                     MediaControls.Instance.VocalChannel = "BAL";
                     Channel = ChannelSelected.Right;
 
-                    if (_songsSource.SongsQueue.Count > 0)
+                    if (_songsSource.SongQueueCount > 0)
                     {
                         MediaControls.Instance.SongTitle = _songsSource.SongsQueue[0].Name;
                         MediaControls.Instance.SongArtist = _songsSource.SongsQueue[0].Artist;
@@ -534,7 +534,7 @@ namespace bossdoyKaraoke_NOW.Media
         {
             try
             {
-                if (_songsSource.SongsQueue.Count <= 0)
+                if (_songsSource.SongQueueCount <= 0)
                 {
                     // END SYNC
                     Application.Current.Dispatcher.BeginInvoke(new Action(PlayNextTrack));
@@ -575,7 +575,7 @@ namespace bossdoyKaraoke_NOW.Media
         {
             try
             {
-                if (_songsSource.SongsQueue.Count <= 0)
+                if (_songsSource.SongQueueCount <= 0)
                     _currentTrack.NextTrackSync = 0;
                 else
                     _currentTrack.NextTrackSync = 1;
