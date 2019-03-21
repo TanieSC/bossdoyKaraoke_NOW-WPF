@@ -217,14 +217,14 @@
                                    Text="{Binding ElapsedTime}"/>
                             <StackPanel Orientation="Vertical" Width="325">
                                 <TextBlock Margin="16,0" FontWeight="Bold" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Center"
-                                   Text="{Binding SongTitle}" TextWrapping="Wrap" />
+                                   Text="{Binding SongTitle}" TextTrimming="CharacterEllipsis" />
                                 <TextBlock Margin="16,0" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                   Text="{Binding SongArtist}" TextWrapping="Wrap"/>
+                                   Text="{Binding SongArtist}" TextTrimming="CharacterEllipsis"/>
                             </StackPanel>
                             <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center"
                                    Text="{Binding RemainingTime}"/>
-                        </StackPanel>
-                        <ProgressBar Value="{Binding ProgressValue}" Width="410" HorizontalContentAlignment="Center" Maximum="2000" />
+                        </StackPanel> <!--{Binding ProgressValue}-->
+                        <ProgressBar Value="{Binding ProgressValue}" Width="410" HorizontalContentAlignment="Center" Maximum="2000" Foreground="#FF207551" Background="#FF7DB49C" />
                     </StackPanel>
                 </DockPanel>
             </materialDesign:ColorZone>
