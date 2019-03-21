@@ -104,8 +104,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
         }
 
         private static void RunWorker(NewTask newTask)//, TrackInfo trackInfo = null, int senderID = 0, string filePath = "", string filter = "")
-        {
-            
+        {           
             Player player = Player.Instance;
             ISongsSource songsSource = SongsSource.Instance;//player.SongsSrc;
             IMediaControls mediaControls = MediaControls.Instance;
