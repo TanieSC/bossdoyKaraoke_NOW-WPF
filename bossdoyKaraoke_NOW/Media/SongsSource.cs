@@ -241,7 +241,6 @@ namespace bossdoyKaraoke_NOW.Media
                         }
                         else
                         {
-                           // SongQueueCount = i + 1;
                             _songsQueue[i] = _trackInfo;
                             _totalDuration += _trackInfo.Tags.duration;
                             _songQueueTitle = "Song Queue (" + (i + 1) + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
