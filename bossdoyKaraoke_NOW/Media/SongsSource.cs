@@ -225,6 +225,7 @@ namespace bossdoyKaraoke_NOW.Media
         {
             
             var songQueue = Worker.TreeViewElement.Items[0] as ITreeViewModel;
+            var dialog = TreeViewDialogModel.Instance;
 
             lock (_songsQueue)
             {
@@ -245,6 +246,8 @@ namespace bossdoyKaraoke_NOW.Media
                             _totalDuration += _trackInfo.Tags.duration;
                             _songQueueTitle = "Song Queue (" + (i + 1) + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
                             songQueue.Title = _songQueueTitle;
+                            dialog.ShowDialog = true;
+                            dialog.DialogStatus = _songQueueTitle;
                         }
                     }
                 }

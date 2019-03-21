@@ -110,6 +110,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
             ISongsSource songsSource = SongsSource.Instance;//player.SongsSrc;
             IMediaControls mediaControls = MediaControls.Instance;
             ISearchBoxModel searchBoxModel = SearchBoxModel.Instance;
+            ITreeViewDialogModel dialog = TreeViewDialogModel.Instance;
             QueuedBackgroundWorker.QueueWorkItem(
             _workerQueue,
             newTask,
@@ -231,7 +232,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:
                     case NewTask.EMPTY_QUEUE_LIST:
-                            _listViewElement.ItemsSource = songsSource.SongsQueue;
+                        dialog.ShowDialog = false;
+                        _listViewElement.ItemsSource = songsSource.SongsQueue;
 
                         if (CurrentTask == NewTask.EMPTY_QUEUE_LIST)
                             parentTreeview.Title = songQueueTitle;

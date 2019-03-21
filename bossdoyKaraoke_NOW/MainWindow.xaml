@@ -223,7 +223,7 @@
                             </StackPanel>
                             <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center"
                                    Text="{Binding RemainingTime}"/>
-                        </StackPanel> <!--{Binding ProgressValue}-->
+                        </StackPanel>
                         <ProgressBar Value="{Binding ProgressValue}" Width="410" HorizontalContentAlignment="Center" Maximum="2000" Foreground="#FF207551" Background="#FF7DB49C" />
                     </StackPanel>
                 </DockPanel>
@@ -236,114 +236,130 @@
                 <ColumnDefinition Width="35*" />
                 <ColumnDefinition Width="58*"/>
             </Grid.ColumnDefinitions>
-            <TreeView Grid.Column="0" ItemsSource="{Binding ItemSource}" x:Name="treeViewMenu" MinWidth="250" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" FontSize="13" VerticalAlignment="Top">
-                <TreeView.DataContext>
-                    <vm:TreeViewModel/>
-                </TreeView.DataContext>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Loaded">
-                        <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{ Binding ElementName=treeViewMenu}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type vm:TreeViewModel}" ItemsSource="{Binding Items}">
-                        <StackPanel Orientation="Horizontal" Margin="0 0 0 0" Background="Transparent">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction 
+            <materialDesign:DialogHost IsOpen="{Binding ShowDialog}">
+                <materialDesign:DialogHost.DataContext>
+                    <vm:TreeViewDialogModel/>
+                </materialDesign:DialogHost.DataContext>
+                <materialDesign:DialogHost.DialogContent>
+                    <StackPanel Margin="16">
+                        <ProgressBar
+                          Style="{DynamicResource MaterialDesignCircularProgressBar}"
+                          HorizontalAlignment="Center"
+                          Margin="16"
+                          IsIndeterminate="True"
+                          Value="0" />
+                        <TextBlock Text="{Binding DialogStatus}" TextAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </materialDesign:DialogHost.DialogContent>
+                <TreeView Grid.Column="0" ItemsSource="{Binding ItemSource}" x:Name="treeViewMenu" MinWidth="250" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" FontSize="13" VerticalAlignment="Top">
+                    <TreeView.DataContext>
+                        <vm:TreeViewModel/>
+                    </TreeView.DataContext>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Loaded">
+                            <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{ Binding ElementName=treeViewMenu}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeViewModel}" ItemsSource="{Binding Items}">
+                            <StackPanel Orientation="Horizontal" Margin="0 0 0 0" Background="Transparent">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                        <i:InvokeCommandAction 
                                         Command="{Binding SelectionChangedCommand}"
                                         CommandParameter="{Binding}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <materialDesign:PackIcon Kind="{Binding PackIconKind}" Foreground="{Binding Foreground}"/>
-                            <TextBlock Text="{Binding Title}" Foreground="{Binding Foreground}" FontWeight="Bold" Margin="8 0 0 0"/>
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                    <DataTemplate DataType="{x:Type vm:TreeViewModelChild}">
-                        <StackPanel Orientation="Horizontal" Margin="0 0 0 0" Background="Transparent">
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <materialDesign:PackIcon Kind="{Binding PackIconKind}" Foreground="{Binding Foreground}"/>
+                                <TextBlock Text="{Binding Title}" Foreground="{Binding Foreground}" FontWeight="Bold" Margin="8 0 0 0"/>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type vm:TreeViewModelChild}">
+                            <StackPanel Orientation="Horizontal" Margin="0 0 0 0" Background="Transparent">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" CommandParameter="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <materialDesign:PackIcon Kind="{Binding PackIconKind}" Foreground="{Binding Foreground}"/>
+                                <TextBlock Text="{Binding Title}" Foreground="{Binding Foreground}" Margin="8 0 0 0"/>
+                                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Visibility="{Binding IsProgressVisible}"  Margin="8 0 0 0" />
+                            </StackPanel>
+                        </DataTemplate>
+                        <ContextMenu x:Key="tvItemContextMenu">
                             <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" CommandParameter="{Binding}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <materialDesign:PackIcon Kind="{Binding PackIconKind}" Foreground="{Binding Foreground}"/>
-                            <TextBlock Text="{Binding Title}" Foreground="{Binding Foreground}" Margin="8 0 0 0"/>
-                            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Visibility="{Binding IsProgressVisible}"  Margin="8 0 0 0" />
-                        </StackPanel>
-                    </DataTemplate>
-                    <ContextMenu x:Key="tvItemContextMenu">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Opened">
-                                <i:InvokeCommandAction 
+                                <i:EventTrigger EventName="Opened">
+                                    <i:InvokeCommandAction 
                                     Command="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=DataContext.ContextMenuLoaded}" 
                                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <MenuItem Header="Empty queue" >
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="DeleteOutline"/>
-                            </MenuItem.Icon>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction 
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=DataContext.EmptyQueueCommand}" 
-                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                        </MenuItem>
-                        <MenuItem Header="Shuffle" >
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="ShuffleVariant"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Favorites" >
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="FavoriteOutline"/>
-                            </MenuItem.Icon>
-                            <MenuItem Header="Add favorites to Songs Queue" >
+                            <MenuItem Header="Empty queue" >
                                 <MenuItem.Icon>
-                                    <materialDesign:PackIcon Kind="Add"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Header="Create favorites" >
-                                <MenuItem.Icon>
-                                    <materialDesign:PackIcon Kind="Create"/>
+                                    <materialDesign:PackIcon Kind="DeleteOutline"/>
                                 </MenuItem.Icon>
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                         <i:InvokeCommandAction 
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=DataContext.EmptyQueueCommand}" 
+                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </MenuItem>
+                            <MenuItem Header="Shuffle" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="ShuffleVariant"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Favorites" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="FavoriteOutline"/>
+                                </MenuItem.Icon>
+                                <MenuItem Header="Add favorites to Songs Queue" >
+                                    <MenuItem.Icon>
+                                        <materialDesign:PackIcon Kind="Add"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Create favorites" >
+                                    <MenuItem.Icon>
+                                        <materialDesign:PackIcon Kind="Create"/>
+                                    </MenuItem.Icon>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction 
                                     Command="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=DataContext.CreateFavoritesCommand}" 
+                                    CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </MenuItem>
+                                <MenuItem Header="Create favorites from played songs" >
+                                    <MenuItem.Icon>
+                                        <materialDesign:PackIcon Kind="Create"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuItem>
+                            <Separator />
+                            <MenuItem Header="Remove" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="DeleteForeverOutline"/>
+                                </MenuItem.Icon>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                        <i:InvokeCommandAction 
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=DataContext.RemoveTreeViewItemCommand}" 
                                     CommandParameter="{Binding}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </MenuItem>
-                            <MenuItem Header="Create favorites from played songs" >
-                                <MenuItem.Icon>
-                                    <materialDesign:PackIcon Kind="Create"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </MenuItem>
-                        <Separator />
-                        <MenuItem Header="Remove" >
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="DeleteForeverOutline"/>
-                            </MenuItem.Icon>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction 
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=DataContext.RemoveTreeViewItemCommand}" 
-                                    CommandParameter="{Binding}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </MenuItem>
-                    </ContextMenu>
-                </TreeView.Resources>
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
-                        <Setter Property="ContextMenu" Value="{StaticResource tvItemContextMenu}" />
-                    </Style>
-                </TreeView.ItemContainerStyle>
-            </TreeView>
+                        </ContextMenu>
+                    </TreeView.Resources>
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+                            <Setter Property="ContextMenu" Value="{StaticResource tvItemContextMenu}" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                </TreeView>
+            </materialDesign:DialogHost>
             <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" MinHeight="415" />
             <DockPanel Grid.Column="2" Height="220" Background="Black" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0" >
                 <WindowsFormsHost Name="main_video_screen" Width="390" Height="220"  Background="Black" HorizontalAlignment="Center" >

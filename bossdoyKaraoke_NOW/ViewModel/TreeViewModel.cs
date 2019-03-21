@@ -31,8 +31,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _emptyQueueCommand;
 
         private ISongsSource _songsSource = SongsSource.Instance;
-        private static ListView _songs_listView;
-        private static TreeView _songs_treeView;
         private static TreeViewItem _selectedItem = new TreeViewItem();
         public ObservableCollection<ITreeViewModelChild> Items { get; set; }
         public List<ITreeViewModel> ItemSource { get { return _songsSource.ItemSource; } }

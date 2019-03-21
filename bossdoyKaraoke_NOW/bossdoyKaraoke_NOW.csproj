@@ -134,10 +134,12 @@
     <Compile Include="ViewModel\IListViewModel.cs" />
     <Compile Include="ViewModel\IMediaControls.cs" />
     <Compile Include="ViewModel\ISearchBoxModel.cs" />
+    <Compile Include="ViewModel\ITreeViewDialogModel.cs" />
     <Compile Include="ViewModel\ITreeViewModel.cs" />
     <Compile Include="ViewModel\ListViewModel.cs" />
     <Compile Include="ViewModel\MediaControls.cs" />
     <Compile Include="ViewModel\SearchBoxModel.cs" />
+    <Compile Include="ViewModel\TreeViewDialogModel.cs" />
     <Compile Include="ViewModel\TreeViewModel.cs" />
     <Page Include="FullScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
