@@ -242,34 +242,35 @@
                 </materialDesign:DialogHost.DataContext>
                 <materialDesign:DialogHost.DialogContent>
                     <StackPanel Margin="16">
-                        <!--<ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
-                          HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
-                        <TextBlock Text="{Binding DialogStatus}" TextAlignment="Center"></TextBlock>-->
-                        <TextBlock>Add new favorites.
-                        </TextBlock>
-                        <TextBox Margin="0 8 0 0" HorizontalAlignment="Stretch" materialDesign:HintAssist.Hint="Favorites Title" />
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0"
+                        <StackPanel>
+                            <!--<ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
+                                HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
+                            <TextBlock Text="{Binding DialogStatus}" TextAlignment="Center"></TextBlock>-->
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock>Add new favorites.
+                            </TextBlock>
+                            <TextBox Margin="0 8 0 0" HorizontalAlignment="Stretch" materialDesign:HintAssist.Hint="Favorites Title" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0"
                                     Command="materialDesign:DialogHost.CloseDialogCommand">
-                                <Button.CommandParameter>
-                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                        True
-                                    </system:Boolean>
-                                </Button.CommandParameter>
-                                ACCEPT
-                            </Button>
-                            <Button
-                                 Style="{StaticResource MaterialDesignFlatButton}"
-                                 IsCancel="True"
-                                 Margin="0 8 8 0"
+                                    <!--<Button.CommandParameter>
+                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                            True
+                                        </system:Boolean>
+                                    </Button.CommandParameter>-->
+                                    ACCEPT
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True" Margin="0 8 8 0"
                                  Command="materialDesign:DialogHost.CloseDialogCommand">
-                                <Button.CommandParameter>
-                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                        False
-                                    </system:Boolean>
-                                </Button.CommandParameter>
-                                CANCEL
-                            </Button>
+                                    <!--<Button.CommandParameter>
+                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                            False
+                                        </system:Boolean>
+                                    </Button.CommandParameter>-->
+                                    CANCEL
+                                </Button>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </materialDesign:DialogHost.DialogContent>
