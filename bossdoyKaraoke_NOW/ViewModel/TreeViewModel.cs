@@ -76,7 +76,11 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
                     //This will automatically play the song in SongQueue if queue is not empty.
                     if (_songsSource.SongQueueCount > 0)
+                    {                        
+                         TreeViewDialogModel.Instance.DialogStatus = "Song Queue (0-[0.00:00:00]";
+                        TreeViewDialogModel.Instance.ShowDialog = true;
                         Worker.DoWork(NewTask.LOAD_QUEUE_SONGS, _songsSource.SongsQueue[0]);
+                    }
                 }));
             }
         }
@@ -297,6 +301,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     string[] filePath = new string[] { fbd.SelectedPath };
                     string folderName = Path.GetFileName(fbd.SelectedPath);
                     items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = folderName, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
+
+                    TreeViewDialogModel.Instance.DialogStatus = "Working on it! Please wait...";
+                    TreeViewDialogModel.Instance.ShowDialog = true;
                     Worker.DoWork(sender.CurrentTask, items[0].ID, fbd.SelectedPath);
                 }
             }
@@ -311,6 +318,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
             var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
             var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
             items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = sender != null ? sender.Title : "Favorites " + items.Count, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+
+            TreeViewDialogModel.Instance.DialogStatus = "Working on it! Please wait...";
+            TreeViewDialogModel.Instance.ShowDialog = true;
             Worker.DoWork(NewTask.ADD_NEW_FAVORITES, sender);
         }
     }

@@ -210,9 +210,11 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                         if (songsSource.Songs != null)
                             _listViewElement.ItemsSource = songsSource.Songs[_senderID];
 
+                        TreeViewDialogModel.Instance.ShowDialog = false;
                         songsSource.ItemSource[myComputerIndex].Items[0].IsProgressVisible = System.Windows.Visibility.Hidden;
                         break;
                     case NewTask.ADD_NEW_FAVORITES:
+                        TreeViewDialogModel.Instance.ShowDialog = false;
                         break;
                     case NewTask.ADD_TO_QUEUE:
                     case NewTask.ADD_TO_QUEUE_AS_NEXT:

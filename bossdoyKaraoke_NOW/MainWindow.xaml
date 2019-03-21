@@ -242,8 +242,7 @@
                 </materialDesign:DialogHost.DataContext>
                 <materialDesign:DialogHost.DialogContent>
                     <StackPanel Margin="16">
-                        <ProgressBar
-                          Style="{DynamicResource MaterialDesignCircularProgressBar}"
+                        <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
                           HorizontalAlignment="Center"
                           Margin="16"
                           IsIndeterminate="True"
