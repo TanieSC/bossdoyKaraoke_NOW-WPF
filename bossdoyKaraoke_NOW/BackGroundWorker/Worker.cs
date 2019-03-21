@@ -19,6 +19,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
 {
     class Worker
     {
+        private const int _favoritesIndex = 1;
+        private const int _myComputerIndex = 2;
         private static readonly Queue<QueueItem<NewTask>> _workerQueue = new Queue<QueueItem<NewTask>>();
         private static ListView _listViewElement;
         private static TreeView _treeViewElement;
@@ -49,7 +51,10 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
         public static void DoWork(NewTask newTask, ITreeViewModelChild treeViewModelChild)
         {
             _treeViewModelChild = treeViewModelChild;
-            //_senderID = treeViewModelChild.ID;
+
+            if (treeViewModelChild != null)
+                _senderID = treeViewModelChild.ID;
+
             RunWorker(newTask);
         }
 
@@ -187,6 +192,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          break;
                      case NewTask.REMOVE_FAVORITES:
                          CurrentTask = NewTask.REMOVE_FAVORITES;
+                         songsSource.RemoveTreeViewItem(Create.Favorites, _treeViewModelChild);
                          break;
                      case NewTask.REMOVE_SONGS:
                          CurrentTask = NewTask.REMOVE_SONGS;
@@ -201,8 +207,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                 var songQueueTitle = args.Result.Duration;
                 var parentTreeview = _treeViewElement.Items[0] as ITreeViewModel;
                 var filteredSong = args.Result.Filter;
-                var favoritesIndex = 1;
-                var myComputerIndex = 2;
+
 
                 switch (CurrentTask)
                 {
@@ -211,7 +216,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                             _listViewElement.ItemsSource = songsSource.Songs[_senderID];
 
                         TreeViewDialogModel.Instance.ShowDialog = false;
-                        songsSource.ItemSource[myComputerIndex].Items[0].IsProgressVisible = System.Windows.Visibility.Hidden;
+                        songsSource.ItemSource[_myComputerIndex].Items[0].IsProgressVisible = System.Windows.Visibility.Hidden;
                         break;
                     case NewTask.ADD_NEW_FAVORITES:
                         TreeViewDialogModel.Instance.ShowDialog = false;
@@ -250,11 +255,12 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                     case NewTask.SEARCH_LISTVIEW:
                         _listViewElement.ItemsSource = filteredSong;                        
                         break;
-                    case NewTask.REMOVE_FAVORITES: //not yet properly implemented
-                        songsSource.ItemSource[favoritesIndex].Items.Remove(_treeViewModelChild);
+                    case NewTask.REMOVE_FAVORITES:
+                        songsSource.ItemSource[_favoritesIndex].Items.Remove(_treeViewModelChild);
+                        songsSource.Favorites[_senderID].Clear();
                         break;
                     case NewTask.REMOVE_SONGS:
-                        songsSource.ItemSource[myComputerIndex].Items.Remove(_treeViewModelChild);
+                        songsSource.ItemSource[_myComputerIndex].Items.Remove(_treeViewModelChild);
                         songsSource.Songs[_senderID].Clear();
                         break;
                 }

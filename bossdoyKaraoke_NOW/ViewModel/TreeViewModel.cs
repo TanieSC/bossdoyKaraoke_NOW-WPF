@@ -24,9 +24,13 @@ namespace bossdoyKaraoke_NOW.ViewModel
     class TreeViewModel : ITreeViewModel, INotifyPropertyChanged
     {
         private string _title;
+        private const int _favoritesIndex = 1;
+        private const int _myComputerIndex = 2;
+        private Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
         private ICommand _loaded;
         private ICommand _contextMenuLoaded;
         private ICommand _selectionChangedCommand;
+        private ICommand _createFavoritesCommand;
         private ICommand _removeTreeViewItemCommand;
         private ICommand _emptyQueueCommand;
 
@@ -37,7 +41,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         public PackIconKind PackIconKind { get; set; }
         public SolidColorBrush Foreground { get; set; }
 
-        public string Title {
+        public string Title
+        {
             get
             {
                 return _title;
@@ -61,7 +66,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public TreeViewModel() 
+        public TreeViewModel()
         {
             Items = new ObservableCollection<ITreeViewModelChild>();
         }
@@ -76,8 +81,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
                     //This will automatically play the song in SongQueue if queue is not empty.
                     if (_songsSource.SongQueueCount > 0)
-                    {                        
-                         TreeViewDialogModel.Instance.DialogStatus = "Song Queue (0-[0.00:00:00]";
+                    {
+                        TreeViewDialogModel.Instance.DialogStatus = "Song Queue (0-[0.00:00:00]";
                         TreeViewDialogModel.Instance.ShowDialog = true;
                         Worker.DoWork(NewTask.LOAD_QUEUE_SONGS, _songsSource.SongsQueue[0]);
                     }
@@ -191,6 +196,17 @@ namespace bossdoyKaraoke_NOW.ViewModel
             Worker.DoWork(sender.CurrentTask);
         }
 
+        public ICommand CreateFavoritesCommand
+        {
+            get
+            {
+                return _createFavoritesCommand ?? (_createFavoritesCommand = new RelayCommand(x =>
+                {
+                    CreateFavorites(x as ITreeViewModelChild);
+                }));
+            }
+        }
+
         private void RemoveTreeViewItem(ITreeViewModelChild sender)
         {
             if (sender != null)
@@ -227,6 +243,18 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 Worker.DoWork(CurrentTask);
             }
         }
+
+        private void CreateFavorites(ITreeViewModelChild sender)
+        {
+            if (sender != null)
+            {
+                var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
+                var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
+                items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = sender.Title, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+
+                Worker.DoWork(NewTask.ADD_NEW_FAVORITES, sender);
+            }
+        }
     }
 
     class TreeViewModelChild : ITreeViewModelChild, INotifyPropertyChanged
@@ -235,7 +263,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private const int _myComputerIndex = 2;
         private Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
         private ICommand _selectionChangedCommand;
-        private ICommand _createFavoritesCommand;
         private Visibility _isProgressVisible;
         public PackIconKind PackIconKind { get; set; }
         public SolidColorBrush Foreground { get; set; }
@@ -273,23 +300,15 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand CreateFavoritesCommand
-        {
-            get
-            {
-                return _createFavoritesCommand ?? (_createFavoritesCommand = new RelayCommand(x =>
-                {
-                    CreateFavorites(x as ITreeViewModelChild);
-                }));
-            }
-        }
-
         private void LoadSelectedSongs(ITreeViewModelChild sender)
         {
-            
+
             if (sender.CurrentTask == NewTask.ADD_NEW_FAVORITES)
             {
-                CreateFavorites();
+                var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
+                var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
+                items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = "Favorites " + items.Count, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+                Worker.DoWork(sender.CurrentTask, sender);
             }
             else if (sender.CurrentTask == NewTask.ADD_NEW_SONGS)
             {
@@ -311,17 +330,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 Worker.DoWork(sender.CurrentTask, sender.ID);
             }
-        }
-
-        private void CreateFavorites(ITreeViewModelChild sender = null)
-        {            
-            var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
-            var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
-            items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = sender != null ? sender.Title : "Favorites " + items.Count, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
-
-            TreeViewDialogModel.Instance.DialogStatus = "Working on it! Please wait...";
-            TreeViewDialogModel.Instance.ShowDialog = true;
-            Worker.DoWork(NewTask.ADD_NEW_FAVORITES, sender);
         }
     }
 }

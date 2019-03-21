@@ -236,16 +236,16 @@
                 <ColumnDefinition Width="35*" />
                 <ColumnDefinition Width="58*"/>
             </Grid.ColumnDefinitions>
-            <materialDesign:DialogHost IsOpen="{Binding ShowDialog}">
+            <!--<materialDesign:DialogHost IsOpen="{Binding ShowDialog}">
                 <materialDesign:DialogHost.DataContext>
                     <vm:TreeViewDialogModel/>
                 </materialDesign:DialogHost.DataContext>
                 <materialDesign:DialogHost.DialogContent>
                     <StackPanel Margin="16">
                         <StackPanel>
-                            <!--<ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
+                            <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
                                 HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
-                            <TextBlock Text="{Binding DialogStatus}" TextAlignment="Center"></TextBlock>-->
+                            <TextBlock Text="{Binding DialogStatus}" TextAlignment="Center"></TextBlock>
                         </StackPanel>
                         <StackPanel>
                             <TextBlock>Add new favorites.
@@ -254,26 +254,26 @@
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0"
                                     Command="materialDesign:DialogHost.CloseDialogCommand">
-                                    <!--<Button.CommandParameter>
+                                    --><!--<Button.CommandParameter>
                                         <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
                                             True
                                         </system:Boolean>
-                                    </Button.CommandParameter>-->
+                                    </Button.CommandParameter>--><!--
                                     ACCEPT
                                 </Button>
                                 <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True" Margin="0 8 8 0"
                                  Command="materialDesign:DialogHost.CloseDialogCommand">
-                                    <!--<Button.CommandParameter>
+                                    --><!--<Button.CommandParameter>
                                         <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
                                             False
                                         </system:Boolean>
-                                    </Button.CommandParameter>-->
+                                    </Button.CommandParameter>--><!--
                                     CANCEL
                                 </Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                </materialDesign:DialogHost.DialogContent>
+                </materialDesign:DialogHost.DialogContent>-->
                 <TreeView Grid.Column="0" ItemsSource="{Binding ItemSource}" x:Name="treeViewMenu" MinWidth="250" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" FontSize="13" VerticalAlignment="Top">
                     <TreeView.DataContext>
                         <vm:TreeViewModel/>
@@ -350,7 +350,7 @@
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                             <i:InvokeCommandAction 
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=DataContext.CreateFavoritesCommand}" 
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=DataContext.CreateFavoritesCommand}" 
                                     CommandParameter="{Binding}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
@@ -382,7 +382,7 @@
                         </Style>
                     </TreeView.ItemContainerStyle>
                 </TreeView>
-            </materialDesign:DialogHost>
+            <!--</materialDesign:DialogHost>-->
             <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" MinHeight="415" />
             <DockPanel Grid.Column="2" Height="220" Background="Black" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0" >
                 <WindowsFormsHost Name="main_video_screen" Width="390" Height="220"  Background="Black" HorizontalAlignment="Center" >

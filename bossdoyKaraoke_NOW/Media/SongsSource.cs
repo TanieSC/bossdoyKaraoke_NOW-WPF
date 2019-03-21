@@ -615,12 +615,12 @@ namespace bossdoyKaraoke_NOW.Media
                 {
                     case Create.Favorites:
 
-                        if (sender != null) //Creates favorites from song colletions 
+                        if (sender.CurrentTask != NewTask.ADD_NEW_FAVORITES) //Creates favorites from song colletions 
                         {
                             itemID = sender.ID;
                             title = sender.Title + ".fav";
                             file = _songs[itemID].Select(s => s.FilePath).ToArray();
-                            _favorites.Add(_songs[itemID]);
+                            _favorites.Add(new ObservableCollection<TrackInfo>(_songs[itemID]));
                         }
                         else // Creates new empty favorites used for adding song from played song and from songQueue
                         {
@@ -660,6 +660,9 @@ namespace bossdoyKaraoke_NOW.Media
             switch (create)
             {
                 case Create.Favorites:
+                    file = _favoritesPath + sender.Title + ".fav";
+                    if (File.Exists(file))
+                        File.Delete(file);
                     break;
                 case Create.NewSongs:
                     file = _songsPath + sender.Title + ".bkN";

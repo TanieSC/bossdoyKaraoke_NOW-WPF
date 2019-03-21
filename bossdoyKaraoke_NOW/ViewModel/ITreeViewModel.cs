@@ -24,6 +24,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         ICommand Loaded { get; }
         ICommand ContextMenuLoaded { get; }
         ICommand SelectionChangedCommand { get; }
+        ICommand CreateFavoritesCommand { get; }
         ICommand RemoveTreeViewItemCommand { get; }
     }
 
@@ -36,6 +37,5 @@ namespace bossdoyKaraoke_NOW.ViewModel
         Visibility IsProgressVisible { get; set; }
         NewTask CurrentTask { get; set; }
         ICommand SelectionChangedCommand { get; }
-        ICommand CreateFavoritesCommand { get; }
     }
 }
