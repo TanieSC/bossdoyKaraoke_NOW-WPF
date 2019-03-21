@@ -243,10 +243,7 @@
                 <materialDesign:DialogHost.DialogContent>
                     <StackPanel Margin="16">
                         <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
-                          HorizontalAlignment="Center"
-                          Margin="16"
-                          IsIndeterminate="True"
-                          Value="0" />
+                          HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
                         <TextBlock Text="{Binding DialogStatus}" TextAlignment="Center"></TextBlock>
                     </StackPanel>
                 </materialDesign:DialogHost.DialogContent>
