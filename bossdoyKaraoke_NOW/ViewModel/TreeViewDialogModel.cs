@@ -14,6 +14,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private string _dialogStatus;
         private bool _showDialog;
 
+        //public List<ITreeViewModel> ItemSource { get; }
+
         public bool ShowDialog
         {
             get
