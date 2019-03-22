@@ -25,6 +25,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         ICommand ContextMenuLoaded { get; }
         ICommand SelectionChangedCommand { get; }
         ICommand CreateFavoritesCommand { get; }
+        ICommand AddFavoritesToSongQueueCommand { get; }
         ICommand RemoveTreeViewItemCommand { get; }
     }
 

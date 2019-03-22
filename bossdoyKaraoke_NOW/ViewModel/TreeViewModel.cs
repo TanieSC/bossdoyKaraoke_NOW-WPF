@@ -31,6 +31,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _contextMenuLoaded;
         private ICommand _selectionChangedCommand;
         private ICommand _createFavoritesCommand;
+        private ICommand _addFavoritesToSongQueueCommand;
         private ICommand _removeTreeViewItemCommand;
         private ICommand _emptyQueueCommand;
 
@@ -138,9 +139,18 @@ namespace bossdoyKaraoke_NOW.ViewModel
             var createFavoritesPlayedSong = favorites.Items[2] as MenuItem;
             var remove = contextMenu.Items[4] as MenuItem;
 
-            var currentTask = contextMenu.DataContext as ITreeViewModel != null
-                ? ((ITreeViewModel)contextMenu.DataContext).CurrentTask
-                : ((ITreeViewModelChild)contextMenu.DataContext).CurrentTask;
+            var parent = contextMenu.DataContext as ITreeViewModel;
+            var child = contextMenu.DataContext as ITreeViewModelChild;
+            var currentTask = CurrentTask;
+
+            if (parent != null)
+                currentTask = ((ITreeViewModel)contextMenu.DataContext).CurrentTask;
+            else
+                currentTask = ((ITreeViewModelChild)contextMenu.DataContext).CurrentTask;
+
+            //var currentTask = contextMenu.DataContext as ITreeViewModel != null
+            //    ? ((ITreeViewModel)contextMenu.DataContext).CurrentTask
+            //    : ((ITreeViewModelChild)contextMenu.DataContext).CurrentTask;
 
             switch (currentTask)
             {
@@ -159,6 +169,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     remove.IsEnabled = false;
                     break;
                 case NewTask.LOAD_FAVORITES:
+
+                    if (parent != null)
+                    {
+                        emptyQueue.IsEnabled = false;
+                        favorites.IsEnabled = false;
+                        shuffle.IsEnabled = false;
+                        addFavorites.IsEnabled = false;
+                        createFavorites.IsEnabled = false;
+                        createFavoritesPlayedSong.IsEnabled = false;
+                        remove.IsEnabled = false;
+                        return;
+                    }
+
                     emptyQueue.IsEnabled = false;
 
                     if (_songsSource.Favorites != null)
@@ -178,6 +201,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     remove.IsEnabled = true;
                     break;
                 case NewTask.LOAD_SONGS:
+
+                    if (parent != null)
+                    {
+                        emptyQueue.IsEnabled = false;
+                        favorites.IsEnabled = false;
+                        shuffle.IsEnabled = false;
+                        addFavorites.IsEnabled = false;
+                        createFavorites.IsEnabled = false;
+                        createFavoritesPlayedSong.IsEnabled = false;
+                        remove.IsEnabled = false;
+                        return;
+                    }
+
                     emptyQueue.IsEnabled = false;
 
                     if (_songsSource.Songs.Count > 0)
@@ -206,6 +242,23 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 return _createFavoritesCommand ?? (_createFavoritesCommand = new RelayCommand(x =>
                 {
                     CreateFavorites(x as ITreeViewModelChild);
+                }));
+            }
+        }
+
+        public ICommand AddFavoritesToSongQueueCommand
+        {
+            get
+            {
+                return _addFavoritesToSongQueueCommand ?? (_addFavoritesToSongQueueCommand = new RelayCommand(x =>
+                {
+                    CurrentTask = NewTask.ADD_FAVORITES_TO_QUEUE;
+                    var id = (x as ITreeViewModelChild).ID;
+                    TreeViewDialogModel.Instance.DialogStatus = "Song Queue (0-[0.00:00:00]";
+                    TreeViewDialogModel.Instance.AddingStatus = Visibility.Collapsed;
+                    TreeViewDialogModel.Instance.LoadingStatus = Visibility.Visible;
+                    TreeViewDialogModel.Instance.ShowDialog = true;
+                    Worker.DoWork(CurrentTask, id);
                 }));
             }
         }
@@ -267,6 +320,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 Worker.DoWork(NewTask.ADD_NEW_FAVORITES, sender);
             }
         }
+
+
     }
 
     class TreeViewModelChild : ITreeViewModelChild, INotifyPropertyChanged

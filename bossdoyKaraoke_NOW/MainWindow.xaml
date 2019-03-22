@@ -368,6 +368,13 @@
                                     <MenuItem.Icon>
                                         <materialDesign:PackIcon Kind="Add"/>
                                     </MenuItem.Icon>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction 
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=DataContext.AddFavoritesToSongQueueCommand}" 
+                                                CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                 </MenuItem>
                                 <MenuItem Header="Create favorites" >
                                     <MenuItem.Icon>
@@ -376,8 +383,8 @@
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                             <i:InvokeCommandAction 
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=DataContext.CreateFavoritesCommand}" 
-                                    CommandParameter="{Binding}" />
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=DataContext.CreateFavoritesCommand}" 
+                                                CommandParameter="{Binding}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </MenuItem>

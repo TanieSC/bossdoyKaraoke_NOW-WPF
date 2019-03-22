@@ -222,8 +222,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// Load the saved songs from SongQueueList.que to our songQueue list
         /// </summary>
         public void LoadSongsInQueue(int songQueuePreviousCount = 0)
-        {
-            
+        {          
             var songQueue = Worker.TreeViewElement.Items[0] as ITreeViewModel;
 
             lock (_songsQueue)
@@ -250,6 +249,18 @@ namespace bossdoyKaraoke_NOW.Media
                     }
                 }
             }
+        }
+
+        public void AddFavoritesToSongQueue(int senderId)
+        {
+            var favorites = _favorites[senderId];
+
+            for (int i = 0; i < favorites.Count; i++)
+            {
+                _songsQueue.Add(favorites[i]);
+            }
+
+            CreateKaraokeNowFiles(Create.SongQueueList);
         }
 
         /// <summary>

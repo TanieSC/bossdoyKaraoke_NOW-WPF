@@ -377,33 +377,6 @@ namespace bossdoyKaraoke_NOW.Media
                         }
                     }
                 }
-
-                //lock (_songsSource.SongsQueue)
-                //{
-                //    if (_songsSource.SongsQueue.Count > 0)
-                //    {
-                //        string showNextTrack = MediaControls.Instance.RemainingTime.Trim();
-
-                //        if (showNextTrack != string.Empty || showNextTrack != "")
-                //        {
-                //            int minute = Convert.ToInt32(showNextTrack.Substring(3, 2));
-                //            int second = Convert.ToInt32(showNextTrack.Substring(6, 2));
-
-                //            if (minute <= 0 && second == 30)
-                //                _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
-
-                //            if (minute <= 0 && second < 30)
-                //            {
-                //                string nextSong = _songsSource.SongsQueue[0].Name + "[ " + _songsSource.SongsQueue[0].Artist + " ]";
-                //                _getNestSongInfo = nextSong;
-                //            }
-                //            else
-                //                _getNestSongInfo = "";
-                //        }
-                //    }
-                //    else
-                //        _getNestSongInfo = "";
-                //}
             }
             catch (Exception ex)
             {

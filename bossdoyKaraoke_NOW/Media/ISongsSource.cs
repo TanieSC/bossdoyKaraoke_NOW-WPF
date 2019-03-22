@@ -22,6 +22,7 @@ namespace bossdoyKaraoke_NOW.Media
         void LoadSongCollections();
         void PlayFirstSongInQueue();
         void LoadSongsInQueue(int songQueuePreviousCount = 0);
+        void AddFavoritesToSongQueue(int senderId);
         void DirSearchSongs(string sDir);
         string AddToQueue(TrackInfo sender);
         string AddToQueueAsNext(TrackInfo sender);

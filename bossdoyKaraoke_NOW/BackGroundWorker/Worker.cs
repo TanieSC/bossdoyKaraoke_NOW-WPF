@@ -136,7 +136,9 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          break;
                      case NewTask.ADD_TO_QUEUE:
                          CurrentTask = NewTask.ADD_TO_QUEUE;
+
                          songQueueTitle = songsSource.AddToQueue(_trackInfo);
+
                          if (songsSource.SongQueueCount == 1 && CurrentPlayState == PlayState.Stopped)
                          {
                              if (songsSource.IsCdgFileType)
@@ -146,6 +148,27 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
 
                              MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
                          }
+                         break;
+                     case NewTask.ADD_FAVORITES_TO_QUEUE:
+                         CurrentTask = NewTask.ADD_FAVORITES_TO_QUEUE;
+
+                         var previousCount = songsSource.SongQueueCount;
+
+                         songsSource.AddFavoritesToSongQueue(_senderID);
+
+                         if (songsSource.SongQueueCount > 0 && CurrentPlayState == PlayState.Stopped)
+                         {
+                             songsSource.PlayFirstSongInQueue();
+
+                             if (songsSource.IsCdgFileType)
+                                 player.LoadCDGFile(songsSource.SongsQueue[0].FilePath);
+                             else
+                                 player.LoadVideokeFile(songsSource.SongsQueue[0].FilePath);
+
+                             MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
+                         }
+
+                         songsSource.LoadSongsInQueue(previousCount);
                          break;
                      case NewTask.ADD_TO_QUEUE_AS_NEXT:
                          CurrentTask = NewTask.ADD_TO_QUEUE_AS_NEXT;
@@ -237,6 +260,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                         }
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:
+                    case NewTask.ADD_FAVORITES_TO_QUEUE:
                     case NewTask.EMPTY_QUEUE_LIST:
                         dialog.ShowDialog = false;
                         _listViewElement.ItemsSource = songsSource.SongsQueue;
