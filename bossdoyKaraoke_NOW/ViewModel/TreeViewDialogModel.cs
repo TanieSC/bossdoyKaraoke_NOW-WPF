@@ -147,27 +147,20 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     var favoritesIndex = 1;
                     var items = SongsSource.Instance.ItemSource[favoritesIndex].Items;
                     var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
+                  
+                    for (int i = 0; i < items.Count; i++)
+                    {
+                        if (_favoritesTitle.Text == items[i].Title)
+                        {
+                            do
+                            {
+                                _favoritesTitle.Text = string.Format("{0}_{1}", _favoritesTitle.Text, i + 1);
+                            }
+                            while (_favoritesTitle.Text == items[i].Title);
+                        }
+                    }
 
-                    //for(int i = 0; i < items.Count; i++)
-                    //{
-                    //    if (_favoritesTitle.Text == items[i].Title)
-                    //    {
-                    //        _favoritesTitle.Text = _favoritesTitle.Text + " " + (i + 1).ToString();
-                    //    } 
-                    //}
-                    //int n = 0;
-                    //string newName = "";
-                    //for (int i = 0; i < items.Count; i++)
-                    //{
-                    //    do
-                    //    {
-                    //        n++;
-                    //        newName = string.Format("{0}({1})", _favoritesTitle.Text, n);
-                    //    }
-                    //    while (newName == items[i].Title);
-                    //}
-
-                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = newName, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = _favoritesTitle.Text, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
                     _favoritesTitle.Text = string.Empty;
                     Worker.DoWork(AddFavoritesSender.CurrentTask, AddFavoritesSender);
 
