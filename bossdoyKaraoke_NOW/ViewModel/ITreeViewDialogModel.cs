@@ -8,7 +8,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
 {
     public interface ITreeViewDialogModel
     {
-       // List<ITreeViewModel> ItemSource { get; }
         bool ShowDialog { get; set; }
         string DialogStatus { get; set; }
     }
