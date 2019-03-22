@@ -256,28 +256,44 @@
                         <StackPanel Visibility="{Binding AddingStatus}">
                             <TextBlock>Add new favorites.
                             </TextBlock>
-                            <TextBox Margin="0 8 0 0" HorizontalAlignment="Stretch" materialDesign:HintAssist.Hint="Favorites Title" />
+                            <TextBox x:Name="add_favorites" Margin="0 8 0 0" HorizontalAlignment="Stretch" materialDesign:HintAssist.Hint="Favorites Title">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged">
+                                        <i:InvokeCommandAction 
+                                    Command="{Binding AddFavoritesTitleCommand}"
+                                    CommandParameter="{Binding ElementName=add_favorites}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBox>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0"
+                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" IsEnabled="{Binding AcceptEnabled}" Margin="0 8 8 0"
                                     Command="materialDesign:DialogHost.CloseDialogCommand">
-                                    
-                        <!--<Button.CommandParameter>
-                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                            True
-                                        </system:Boolean>
-                                    </Button.CommandParameter>-->
-                        
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding AcceptCommand}">
+                                                <i:InvokeCommandAction.CommandParameter>
+                                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                                        True
+                                                    </system:Boolean>
+                                                </i:InvokeCommandAction.CommandParameter>
+                                            </i:InvokeCommandAction>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                     ACCEPT
                                 </Button>
                                 <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True" Margin="0 8 8 0"
                                  Command="materialDesign:DialogHost.CloseDialogCommand">
-                                    
-                        <!--<Button.CommandParameter>
-                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                            False
-                                        </system:Boolean>
-                                    </Button.CommandParameter>-->
-                        
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding AcceptCommand}">
+                                                <i:InvokeCommandAction.CommandParameter>
+                                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                                        False
+                                                    </system:Boolean>
+                                                </i:InvokeCommandAction.CommandParameter>
+                                            </i:InvokeCommandAction>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                     CANCEL
                                 </Button>
                             </StackPanel>

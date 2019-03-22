@@ -253,6 +253,15 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
                 var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
+
+                //for (int i = 0; i < items.Count; i++)
+                //{
+                //    if (sender.Title == items[i].Title)
+                //    {
+                //        sender.Title = sender.Title + " " + (i + 1).ToString();
+                //    }
+                //}
+
                 items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = sender.Title, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
 
                 Worker.DoWork(NewTask.ADD_NEW_FAVORITES, sender);
@@ -308,14 +317,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
             if (sender.CurrentTask == NewTask.ADD_NEW_FAVORITES)
             {
-                var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
-                var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
-                items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = "Favorites " + items.Count, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+               // var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
+               // var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
 
                 TreeViewDialogModel.Instance.AddingStatus = Visibility.Visible;
                 TreeViewDialogModel.Instance.LoadingStatus = Visibility.Collapsed;
                 TreeViewDialogModel.Instance.ShowDialog = true;
-               // Worker.DoWork(sender.CurrentTask, sender);
+                TreeViewDialogModel.Instance.AddFavoritesSender = sender;
+
+               // items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = "Favorites " + items.Count, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+              //  Worker.DoWork(sender.CurrentTask, sender);
             }
             else if (sender.CurrentTask == NewTask.ADD_NEW_SONGS)
             {
@@ -326,6 +337,15 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     var songs = SongsSource.Instance.Songs.Count;
                     string[] filePath = new string[] { fbd.SelectedPath };
                     string folderName = Path.GetFileName(fbd.SelectedPath);
+
+                    //for (int i = 0; i < items.Count; i++)
+                    //{
+                    //    if (folderName == items[i].Title)
+                    //    {
+                    //        folderName = folderName + " 1";
+                    //    }
+                    //}
+
                     items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = folderName, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
 
                     TreeViewDialogModel.Instance.DialogStatus = "Working on it! Please wait...";
