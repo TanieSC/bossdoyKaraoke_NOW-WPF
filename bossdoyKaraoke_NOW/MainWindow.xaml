@@ -248,40 +248,40 @@
                 </materialDesign:DialogHost.DataContext>-->
                 <materialDesign:DialogHost.DialogContent>
                     <StackPanel Margin="16">
-                        <StackPanel>
+                        <StackPanel Visibility="{Binding LoadingStatus}">
                             <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
                                 HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
                             <TextBlock Text="{Binding DialogStatus}" TextAlignment="Center"></TextBlock>
                         </StackPanel>
-                        <!--<StackPanel>
+                        <StackPanel Visibility="{Binding AddingStatus}">
                             <TextBlock>Add new favorites.
                             </TextBlock>
                             <TextBox Margin="0 8 0 0" HorizontalAlignment="Stretch" materialDesign:HintAssist.Hint="Favorites Title" />
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0"
                                     Command="materialDesign:DialogHost.CloseDialogCommand">
-                                    -->
+                                    
                         <!--<Button.CommandParameter>
                                         <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
                                             True
                                         </system:Boolean>
                                     </Button.CommandParameter>-->
-                        <!--
+                        
                                     ACCEPT
                                 </Button>
                                 <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True" Margin="0 8 8 0"
                                  Command="materialDesign:DialogHost.CloseDialogCommand">
-                                    -->
+                                    
                         <!--<Button.CommandParameter>
                                         <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
                                             False
                                         </system:Boolean>
                                     </Button.CommandParameter>-->
-                        <!--
+                        
                                     CANCEL
                                 </Button>
                             </StackPanel>
-                        </StackPanel>-->
+                        </StackPanel>
                     </StackPanel>
                 </materialDesign:DialogHost.DialogContent>
                 <TreeView Grid.Column="0" DataContext="{StaticResource TreeViewModel}" ItemsSource="{Binding ItemSource}" x:Name="treeViewMenu" MinWidth="250" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" FontSize="13" VerticalAlignment="Top">

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
@@ -13,8 +14,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private static TreeViewDialogModel _instance;
         private string _dialogStatus;
         private bool _showDialog;
-
-        //public List<ITreeViewModel> ItemSource { get; }
+        private Visibility _addingStatus = Visibility.Collapsed;
+        private Visibility _loadingStatus = Visibility.Collapsed;
 
         public bool ShowDialog
         {
@@ -38,6 +39,34 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _dialogStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility AddingStatus
+        {
+            get
+            {
+                return _addingStatus;
+            }
+
+            set
+            {
+                _addingStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility LoadingStatus
+        {
+            get
+            {
+                return _loadingStatus;
+            }
+
+            set
+            {
+                _loadingStatus = value;
                 OnPropertyChanged();
             }
         }
