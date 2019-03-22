@@ -147,14 +147,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     var favoritesIndex = 1;
                     var items = SongsSource.Instance.ItemSource[favoritesIndex].Items;
                     var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
-                  
+
+                    int n = 0;
                     for (int i = 0; i < items.Count; i++)
                     {
+                        n++;
                         if (_favoritesTitle.Text == items[i].Title)
                         {
                             do
-                            {
-                                _favoritesTitle.Text = string.Format("{0}_{1}", _favoritesTitle.Text, i + 1);
+                            {                               
+                                _favoritesTitle.Text = string.Format("{0}_{1}", _favoritesTitle.Text, n);
                             }
                             while (_favoritesTitle.Text == items[i].Title);
                         }
