@@ -198,7 +198,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     favorites.IsEnabled = true;
                     addFavorites.IsEnabled = true;
                     createFavorites.IsEnabled = false;
-                    createFavoritesPlayedSong.IsEnabled = true;
+
+                    if (_songsSource.PlayedSongsCount > 0)
+                        createFavoritesPlayedSong.IsEnabled = true;
+                    else
+                        createFavoritesPlayedSong.IsEnabled = false;
+
                     remove.IsEnabled = true;
                     break;
                 case NewTask.LOAD_SONGS:

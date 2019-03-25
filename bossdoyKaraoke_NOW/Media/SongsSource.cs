@@ -65,6 +65,8 @@ namespace bossdoyKaraoke_NOW.Media
 
         public int SongQueueCount { get { return _songsQueue.Count; } }
 
+        public int PlayedSongsCount { get { return _playedSongs.Count; } }
+
         /// <summary>
         /// Check method to know if file loaded is CdgMp3 oor Video file
         /// </summary>
@@ -274,6 +276,8 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="sender">The index of favorites to update.</param>
         public void CreateFavoritesPlayedSongs(ITreeViewModelChild sender)
         {
+            if (_playedSongs.Count <= 0) return;
+
             CreateKaraokeNowFiles(Create.FromPlayedSongs, sender);
         }
 
