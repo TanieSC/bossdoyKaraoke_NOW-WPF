@@ -268,6 +268,10 @@ namespace bossdoyKaraoke_NOW.Media
             CreateKaraokeNowFiles(Create.SongQueueList);
         }
 
+        /// <summary>
+        /// Method to create favorites from played songs.
+        /// </summary>
+        /// <param name="sender">The index of favorites to update.</param>
         public void CreateFavoritesPlayedSongs(ITreeViewModelChild sender)
         {
             CreateKaraokeNowFiles(Create.FromPlayedSongs, sender);
