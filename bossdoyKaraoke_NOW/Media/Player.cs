@@ -39,7 +39,7 @@ namespace bossdoyKaraoke_NOW.Media
         private long _bassChannelPosition;
         private double _bassChannelInSeconds;
         private long _renderAtPosition;
-        private string _getNestSongInfo;
+        private string _getNestSongInfo = string.Empty;
         private double _progressBarMaximum = 2000;
 
         public bool IsPlayingBass { get { return _isPlayingBass; } }
