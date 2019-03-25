@@ -174,12 +174,13 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          CurrentTask = NewTask.ADD_TO_QUEUE_AS_NEXT;
                          songQueueTitle = songsSource.AddToQueueAsNext(_trackInfo);
                          break;
+                     case NewTask.ADD_PLAYEDSONGS_TO_FAVORITES:
+                         CurrentTask = NewTask.ADD_PLAYEDSONGS_TO_FAVORITES;
+                         songsSource.CreateFavoritesPlayedSongs(_treeViewModelChild);
+                         break;
                      case NewTask.REMOVE_FROM_QUEUE:
                          CurrentTask = NewTask.REMOVE_FROM_QUEUE;
                          songQueueTitle = songsSource.RemoveFromQueue(_trackInfo);
-                         break;
-                     case NewTask.LOAD_CDG_FILE: //Not in use
-                         CurrentTask = NewTask.LOAD_CDG_FILE;
                          break;
                      case NewTask.LOAD_QUEUE_SONGS:
                          CurrentTask = NewTask.LOAD_QUEUE_SONGS;
@@ -269,6 +270,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                             parentTreeview.Title = songQueueTitle;
                         break;
                     case NewTask.LOAD_FAVORITES:
+                    case NewTask.ADD_PLAYEDSONGS_TO_FAVORITES:
                         if (songsSource.Favorites.Count != 0)
                             _listViewElement.ItemsSource = songsSource.Favorites[_senderID];
                         break;

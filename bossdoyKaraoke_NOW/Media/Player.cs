@@ -489,7 +489,7 @@ namespace bossdoyKaraoke_NOW.Media
 
                         //CurrentTask = NewTask.REMOVE_FROM_QUEUE;
                         //Worker.DoWork(CurrentTask, _songsSource.SongsQueue[0]);
-                        _songsSource.RemoveFromQueue(_songsSource.SongsQueue[0]);
+                        _songsSource.RemoveFromQueue(_songsSource.SongsQueue[0], true);
                     }
                     else
                     {

@@ -32,6 +32,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _selectionChangedCommand;
         private ICommand _createFavoritesCommand;
         private ICommand _addFavoritesToSongQueueCommand;
+        private ICommand _createFavoritesPlayedSongsCommand;
         private ICommand _removeTreeViewItemCommand;
         private ICommand _emptyQueueCommand;
 
@@ -259,6 +260,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     TreeViewDialogModel.Instance.LoadingStatus = Visibility.Visible;
                     TreeViewDialogModel.Instance.ShowDialog = true;
                     Worker.DoWork(CurrentTask, id);
+                }));
+            }
+        }
+
+        public ICommand CreateFavoritesPlayedSongsCommand
+        {
+            get
+            {
+                return _createFavoritesPlayedSongsCommand ?? (_createFavoritesPlayedSongsCommand = new RelayCommand(x =>
+                {
+                    CurrentTask = NewTask.ADD_PLAYEDSONGS_TO_FAVORITES;
+                    var sender = x as ITreeViewModelChild;
+                    Worker.DoWork(CurrentTask, sender);
                 }));
             }
         }

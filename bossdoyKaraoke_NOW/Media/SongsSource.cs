@@ -44,6 +44,7 @@ namespace bossdoyKaraoke_NOW.Media
         private static SongsSource _instance;
         private List<ObservableCollection<TrackInfo>> _songs = new List<ObservableCollection<TrackInfo>>();
         private List<ObservableCollection<TrackInfo>> _favorites = new List<ObservableCollection<TrackInfo>>();
+        private List<TrackInfo> _playedSongs = new List<TrackInfo>();
         private List<TrackInfo> _songsQueue;
         private TrackInfo _trackInfo;
 
@@ -251,6 +252,10 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// Method to load/add favorites to our SongQueue List
+        /// </summary>
+        /// <param name="senderId">The index of favorites to add</param>
         public void AddFavoritesToSongQueue(int senderId)
         {
             var favorites = _favorites[senderId];
@@ -261,6 +266,16 @@ namespace bossdoyKaraoke_NOW.Media
             }
 
             CreateKaraokeNowFiles(Create.SongQueueList);
+        }
+
+        public void CreateFavoritesPlayedSongs(ITreeViewModelChild sender)
+        {
+            CreateKaraokeNowFiles(Create.FromPlayedSongs, sender);
+        }
+
+        public void CreateFavoritesSongQueue()
+        {
+
         }
 
         /// <summary>
@@ -421,8 +436,12 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         /// <param name="sender">Contains the information of the selected song to be removed</param>
         /// <returns></returns>
-        public string RemoveFromQueue(TrackInfo sender)
+        public string RemoveFromQueue(TrackInfo sender, bool fromPlayNextTrack = false)
         {
+
+            if (fromPlayNextTrack)
+                _playedSongs.Add(sender);
+
             AddRemoveFromQueue(sender);
             _songsQueue.Remove(sender);
 
@@ -633,7 +652,7 @@ namespace bossdoyKaraoke_NOW.Media
                             file = _songs[itemID].Select(s => s.FilePath).ToArray();
                             _favorites.Add(new ObservableCollection<TrackInfo>(_songs[itemID]));
                         }
-                        else // Creates new empty favorites used for adding song from played song and from songQueue
+                        else // Creates new empty favorites file use for adding song from played song and from songQueue
                         {
                             // 1 = Favorites index in treeview;
                             itemID = _itemSource[1].Items[0].ID;
@@ -643,6 +662,14 @@ namespace bossdoyKaraoke_NOW.Media
 
                         Directory.CreateDirectory(_favoritesPath);
                         File.WriteAllLines(_favoritesPath + title, file);
+                        break;
+                    case Create.FromPlayedSongs:
+                        file = _playedSongs.Select(s => s.FilePath).ToArray();
+
+                        _favorites[sender.ID] = new ObservableCollection<TrackInfo>(_playedSongs);
+
+                        Directory.CreateDirectory(_filePath);
+                        File.WriteAllLines(_favoritesPath + sender.Title + ".fav", file);
                         break;
                     case Create.NewSongs:
                         // 2 = My Computer index in treeview;

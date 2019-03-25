@@ -13,6 +13,7 @@ namespace bossdoyKaraoke_NOW.Enums
         public enum Create
         {
             Favorites,
+            FromPlayedSongs,
             SongQueueList,
             NewSongs
         }
