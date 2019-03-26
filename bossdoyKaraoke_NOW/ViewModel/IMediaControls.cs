@@ -14,7 +14,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
         string SongTitle { get; set; }
         string SongArtist { get; set; }
         int VolumeValue { get; set; }
-        ImageSource VUmeter { get; set; }
+        string VUmeterValue { get; set; }
+        string VUmeterColorL { get; set; }
+        string VUmeterColorR { get; set; }
         string VocalChannel { get; set; }
         string ElapsedTime { get; set; }
         string RemainingTime { get; set; }

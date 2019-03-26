@@ -41,7 +41,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private StackPanel _tempo_key_panel;
         private StackPanel _song_info_panel;
         private Popup _volumeControl;
-        private ImageSource _vuMeter = new BitmapImage(new Uri(@"Resources/vu1.png", UriKind.Relative));
+        private string _vuMeterValue = "99";
+        private string _vuMeterColorL = "#FFF0F0F0";
+        private string _vuMeterColorR = "#FFF0F0F0";
+        private bool _playerStatus = false;
         private PackIconKind _iconPlayPause = PackIconKind.Play;
         private PackIconKind _iconMuteUnMute = PackIconKind.VolumeHigh;
         private IMediaControls _controls;
@@ -116,16 +119,58 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
         
-        public ImageSource VUmeter
+        public string VUmeterValue
         {
             get
             {
-                return _vuMeter;
+                return _vuMeterValue;
             }
 
             set
             {
-                _vuMeter = value;
+                _vuMeterValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string VUmeterColorL
+        {
+            get
+            {
+                return _vuMeterColorL;
+            }
+
+            set
+            {
+                _vuMeterColorL = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string VUmeterColorR
+        {
+            get
+            {
+                return _vuMeterColorR;
+            }
+
+            set
+            {
+                _vuMeterColorR = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool PlayerStatus
+        {
+            get
+            {
+                return _playerStatus;
+            }
+
+            set
+            {
+                _playerStatus = value;
                 OnPropertyChanged();
             }
         }

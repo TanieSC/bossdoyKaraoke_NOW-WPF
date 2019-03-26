@@ -77,6 +77,8 @@ namespace bossdoyKaraoke_NOW.FormControl
                     RenderContext.CdgContext.DrawBitmap(_cdgbmp, _cdgBitmapRectangle, 1.0f, D2D.BitmapInterpolationMode.Linear);
                     RenderContext.CdgContext.EndDraw();
                 }
+
+                _player.DbLevel();
             }
 
             if (_player.IsPlayingVlc)

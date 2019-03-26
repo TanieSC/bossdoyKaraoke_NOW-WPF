@@ -261,6 +261,7 @@ namespace bossdoyKaraoke_NOW.Media
             }
 
             MediaControls.Instance.IconPlayPause = PackIconKind.Play;
+            MediaControls.Instance.PlayerStatus = false;
         }
 
         public override void Play()
@@ -285,6 +286,7 @@ namespace bossdoyKaraoke_NOW.Media
             //}
 
             MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
+            MediaControls.Instance.PlayerStatus = true;
         }
 
         public override void Stop()
@@ -308,6 +310,7 @@ namespace bossdoyKaraoke_NOW.Media
             _isPlayingBass = false;
             _isPlayingVlc = false;
 
+            MediaControls.Instance.PlayerStatus = false;
             MediaControls.Instance.ElapsedTime = "00:00:00";
             MediaControls.Instance.RemainingTime = "00:00:00";
             MediaControls.Instance.IconPlayPause = PackIconKind.Play;
@@ -417,7 +420,134 @@ namespace bossdoyKaraoke_NOW.Media
             {
             }
         }
-    
+
+        public void DbLevel()
+        {
+            double dbLevelL = 0.0;
+            double dbLevelR = 0.0;
+
+            RMS(out dbLevelL, out dbLevelR);
+
+            // Raise the level with factor 1.5 so that the VUMeter shows more activity
+            dbLevelL += Math.Abs(dbLevelL * 0.5);
+            dbLevelR += Math.Abs(dbLevelR * 0.5);
+
+            if ((int)dbLevelL < -25)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FFF0F0F0"; //off
+            }
+            else if ((int)dbLevelL < -20)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FF00EE55";
+            }
+            else if ((int)dbLevelL < -17)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FF00EE55"; 
+            }
+            else if ((int)dbLevelL < -15)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FF5AF700"; 
+            }
+            else if ((int)dbLevelL < -12)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FF5DFF00";
+            }
+            else if ((int)dbLevelL < -10)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FF82EE00";
+            }
+            else if ((int)dbLevelL < -8)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FFA2EE00";
+            }
+            else if ((int)dbLevelL < -6)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FFADEE00";
+            }
+            else if ((int)dbLevelL < -3)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FFC6F100";
+            }
+            else if ((int)dbLevelL < 0)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FFD2FF00";
+            }
+            else if ((int)dbLevelL < 1)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FFE3EE00";
+            }
+            else if ((int)dbLevelL < 2)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FFEEE300";
+            }
+            else if ((int)dbLevelL < 3)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FFEEC300";
+            }
+            else if ((int)dbLevelL < 4)
+            {
+                MediaControls.Instance.VUmeterColorL = "#FFEE6100";
+            }
+
+
+            if ((int)dbLevelR < -25)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FFF0F0F0"; //off
+            }
+            else if ((int)dbLevelR < -20)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FF00EE55";
+            }
+            else if ((int)dbLevelR < -17)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FF00EE55";
+            }
+            else if ((int)dbLevelR < -15)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FF5AF700";
+            }
+            else if ((int)dbLevelR < -12)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FF5DFF00";
+            }
+            else if ((int)dbLevelR < -10)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FF82EE00";
+            }
+            else if ((int)dbLevelR < -8)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FFA2EE00";
+            }
+            else if ((int)dbLevelR < -6)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FFADEE00";
+            }
+            else if ((int)dbLevelR < -3)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FFC6F100";
+            }
+            else if ((int)dbLevelR < 0)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FFD2FF00";
+            }
+            else if ((int)dbLevelR < 1)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FFE3EE00";
+            }
+            else if ((int)dbLevelR < 2)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FFEEE300";
+            }
+            else if ((int)dbLevelR < 3)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FFEEC300";
+            }
+            else if ((int)dbLevelR < 4)
+            {
+                MediaControls.Instance.VUmeterColorR = "#FFEE6100";
+            }
+        }
+
         //Private Method ===================================================================================================
 
         /// <summary>
@@ -471,6 +601,7 @@ namespace bossdoyKaraoke_NOW.Media
                 lock (_songsSource.SongsQueue)
                 {
                     _getNestSongInfo = "";
+                    MediaControls.Instance.PlayerStatus = true;
                     MediaControls.Instance.VocalChannel = "BAL";
                     Channel = ChannelSelected.Right;
 
@@ -606,5 +737,49 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+
+        /// <summary>
+        /// Get the dblevel per channel
+        /// </summary>
+        /// <param name="dbLevelL">Left channel</param>
+        /// <param name="dbLevelR">Right channel</param>
+        private void RMS(out double dbLevelL, out double dbLevelR)
+        {
+
+            int peakL = 0;
+            int peakR = 0;
+            double dbLeft = 0.0;
+            double dbRight = 0.0;
+
+            int level = 0;
+
+            //if (Player.IsAsioInitialized)
+            //{
+            //    float fpeakL = BassAsio.BASS_ASIO_ChannelGetLevel(false, BassAsioDevice.asioOuputChannel);
+            //    float fpeakR = BassAsio.BASS_ASIO_ChannelGetLevel(false, BassAsioDevice.asioOuputChannel + 1);
+            //    dbLeft = 20.0 * Math.Log10(fpeakL);
+            //    dbRight = 20.0 * Math.Log10(fpeakR);
+            //}
+
+            //else if (Player.IsWasapiInitialized)
+            //{
+            //    level = BassWasapi.BASS_WASAPI_GetLevel();
+            //}
+            //else
+                level = Bass.BASS_ChannelGetLevel(BassAudio.MixerChannel);
+
+
+           // if (Player.IsBassInitialized || Player.IsWasapiInitialized)
+          //  {
+                peakL = Un4seen.Bass.Utils.LowWord32(level); // the left level
+                peakR = Un4seen.Bass.Utils.HighWord32(level); // the right level
+
+                dbLeft = Un4seen.Bass.Utils.LevelToDB(peakL, 65535);
+                dbRight = Un4seen.Bass.Utils.LevelToDB(peakR, 65535);
+           // }
+
+            dbLevelL = dbLeft;
+            dbLevelR = dbRight;
+        }
     }
 }
