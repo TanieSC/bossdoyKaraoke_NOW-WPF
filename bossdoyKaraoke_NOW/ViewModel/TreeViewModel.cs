@@ -84,7 +84,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     //This will automatically play the song in SongQueue if queue is not empty.
                     if (_songsSource.SongQueueCount > 0)
                     {
-
                         TreeViewDialogModel.Instance.DialogStatus = "Song Queue (0-[0.00:00:00]";
                         TreeViewDialogModel.Instance.AddingStatus = Visibility.Collapsed;
                         TreeViewDialogModel.Instance.LoadingStatus = Visibility.Visible;

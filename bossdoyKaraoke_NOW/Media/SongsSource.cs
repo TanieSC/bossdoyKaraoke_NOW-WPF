@@ -447,8 +447,6 @@ namespace bossdoyKaraoke_NOW.Media
         public string RemoveFromQueue(TrackInfo sender, bool fromPlayNextTrack = false)
         {
 
-            if (fromPlayNextTrack)
-                _playedSongs.Add(sender);
 
             AddRemoveFromQueue(sender);
             _songsQueue.Remove(sender);
@@ -460,6 +458,16 @@ namespace bossdoyKaraoke_NOW.Media
             }
             else
                 _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
+
+            if (fromPlayNextTrack)
+            {
+                _playedSongs.Add(sender);
+                (Worker.TreeViewElement.Items[0] as ITreeViewModel).Title = _songQueueTitle;
+                Application.Current.Dispatcher.BeginInvoke(new Action(delegate
+                {
+                    Worker.ListViewElement.ItemsSource = SongsQueue;
+                }));
+            }
 
             // WriteToQueueList();
             CreateKaraokeNowFiles(Create.SongQueueList);
