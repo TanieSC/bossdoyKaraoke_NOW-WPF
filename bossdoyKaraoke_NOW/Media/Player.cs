@@ -491,9 +491,8 @@ namespace bossdoyKaraoke_NOW.Media
                             VlcPlayer.PlayVideoke(_songsSource.SongsQueue[0].FilePath, new VlcSync.SYNCPROC(OnVlcSync));
                         }
 
-                        //CurrentTask = NewTask.REMOVE_FROM_QUEUE;
-                        //Worker.DoWork(CurrentTask, _songsSource.SongsQueue[0]);
-                        _songsSource.RemoveFromQueue(_songsSource.SongsQueue[0], true);
+                        var songQueueTitle = _songsSource.RemoveFromQueue(_songsSource.SongsQueue[0], true);
+                        (Worker.TreeViewElement.Items[0] as ITreeViewModel).Title = songQueueTitle;
                     }
                     else
                     {
