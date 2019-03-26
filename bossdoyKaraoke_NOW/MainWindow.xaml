@@ -48,6 +48,7 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
+        <!--<Image Panel.ZIndex="2" Source="Resources/volume.png" Margin="112,-218,62,218" HorizontalAlignment="Center" VerticalAlignment="Center" />-->
         <DockPanel DataContext="{StaticResource MediaControls}" Name="media_controls" Grid.ColumnSpan="2" VerticalAlignment="Top">
             <!--<DockPanel.DataContext>
                 <vm:MediaControls/>
@@ -95,6 +96,9 @@
             <materialDesign:ColorZone Panel.ZIndex="0" Mode="PrimaryMid"  Margin="-28,50,0,0"  Grid.ColumnSpan="2"  BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Foreground="#DDFFFFFF" BorderThickness="0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
                 <DockPanel Margin="24,7,0,7">
                     <StackPanel Name="audio_panel" Panel.ZIndex="1" Orientation="Horizontal"  HorizontalAlignment="Left">
+                        <StackPanel.Background>
+                            <ImageBrush/>
+                        </StackPanel.Background>
                         <Button Name="play_next" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
@@ -112,7 +116,7 @@
                             materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                             materialDesign:ButtonProgressAssist.Value="100"
                             materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                            Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                            Foreground="#FFF0F0F0" VerticalAlignment="Top" HorizontalAlignment="Left" >
                                 <materialDesign:PackIcon Kind="{Binding IconMuteUnMute}" Width="35" Height="35"/>
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
@@ -128,7 +132,8 @@
                             </Button>
                         </materialDesign:Badged>
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
-                        <materialDesign:Badged Badge="{Binding VocalChannel}" x:Name="audio_channel"> <!--LFT RGT-->
+                        <materialDesign:Badged Badge="{Binding VocalChannel}" x:Name="audio_channel">
+                            <!--LFT RGT-->
                             <Button Name="remove_vocal" IsEnabled="{Binding EnableControl}"  Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                                 materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                                 materialDesign:ButtonProgressAssist.Value="100"
@@ -176,7 +181,7 @@
                                 materialDesign:ButtonProgressAssist.Value="100"
                                 materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
                                 Content="{materialDesign:PackIcon  Kind=Minus ,Size=15 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" Height="18" VerticalAlignment="Bottom" Width="18" Padding="1" Margin="0,5,0,0">
-                                        <i:Interaction.Triggers>
+                                <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                         <i:InvokeCommandAction Command="{Binding KeyMinusCommand}" CommandParameter="{ Binding ElementName=key_minus}" />
                                     </i:EventTrigger>

@@ -290,6 +290,9 @@
   <ItemGroup>
     <Resource Include="TextFile1.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\volume.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
