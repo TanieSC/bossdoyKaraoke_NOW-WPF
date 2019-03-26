@@ -19,7 +19,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         double ProgressValue { get; set; }
         string Tempo { get; set; }
         string Key { get; set; }
-        bool EnableTempoKeyPanel { get; set; }
+        bool EnableControl { get; set; }
         double KeyTempoOpacity { get; set; }
         PackIconKind IconPlayPause { get; set; }
         PackIconKind IconMuteUnMute { get; set; }

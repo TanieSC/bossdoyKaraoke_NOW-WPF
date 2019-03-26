@@ -129,7 +129,7 @@
                         </materialDesign:Badged>
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
                         <materialDesign:Badged Badge="{Binding VocalChannel}" x:Name="audio_channel"> <!--LFT RGT-->
-                            <Button Name="remove_vocal" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
+                            <Button Name="remove_vocal" IsEnabled="{Binding EnableControl}"  Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                                 materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                                 materialDesign:ButtonProgressAssist.Value="100"
                                 materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
@@ -158,7 +158,7 @@
                             </Button>
                         </materialDesign:Badged>
                     </StackPanel>
-                    <StackPanel Name="tempo_key_panel" Panel.ZIndex="3" Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                    <StackPanel Name="tempo_key_panel" IsEnabled="{Binding EnableControl}" Panel.ZIndex="3" Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
                         <StackPanel  Orientation="Vertical" HorizontalAlignment="Right" Margin="5,0" DockPanel.Dock="Right">
                             <Button Name="key_plus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                                 materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
@@ -187,7 +187,7 @@
                             <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center"> Key</TextBlock>
                             <TextBlock VerticalAlignment="Center" Opacity="{Binding KeyTempoOpacity}" TextAlignment="Center" Text="{Binding Key}" FontWeight="Bold" />
                         </StackPanel>
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="0,5,5,5" />
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Opacity="{Binding KeyTempoOpacity}"  BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="0,5,5,5" />
                         <StackPanel  Orientation="Vertical" HorizontalAlignment="Right" Margin="5,0" DockPanel.Dock="Right">
                             <Button Name="tempo_plus" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                                 materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"

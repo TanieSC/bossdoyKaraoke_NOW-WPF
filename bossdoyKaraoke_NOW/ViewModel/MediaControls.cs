@@ -31,9 +31,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private double _progressValue = 0;
         private string _tempo = "0%";
         private string _key = "0";
-        private bool _enableTempoKeyPanel;
+        private bool _enableControl = false;
         private bool _isMute;
-        private double _keyTempoOpacity = 1;
+        private double _keyTempoOpacity = 0.25;
         private StackPanel _audio_panel;
         private StackPanel _dual_screen_panel;
         private StackPanel _tempo_key_panel;
@@ -239,16 +239,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public bool EnableTempoKeyPanel
+        public bool EnableControl
         {
             get
             {
-                return _enableTempoKeyPanel;
+                return _enableControl;
             }
 
             set
             {
-                _enableTempoKeyPanel = value;
+                _enableControl = value;
                 OnPropertyChanged();
             }
         }
@@ -297,7 +297,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         //  _song_info_panel = dockPanel.Children[3] as StackPanel;
 
                         // // _tempo_key_panel.IsEnabled = false;
-                        ////  KeyTempoOpacity = 0.25;
+                        //  KeyTempoOpacity = 0.25;
                     }
                 }));
             }

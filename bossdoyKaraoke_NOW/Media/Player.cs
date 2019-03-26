@@ -167,6 +167,8 @@ namespace bossdoyKaraoke_NOW.Media
             PlayNextTrack();
             _isPlayingBass = true;
             _isPlayingVlc = false;
+            MediaControls.Instance.EnableControl = true;
+            MediaControls.Instance.KeyTempoOpacity = 1f;
         }
 
         public void LoadVideokeFile(string videokeFileName)
@@ -176,6 +178,8 @@ namespace bossdoyKaraoke_NOW.Media
             PlayNextTrack();
             _isPlayingVlc = true;
             _isPlayingBass = false;
+            MediaControls.Instance.EnableControl = false;
+            MediaControls.Instance.KeyTempoOpacity = 0.25f;
         }
 
         public override void KeyMinus()
