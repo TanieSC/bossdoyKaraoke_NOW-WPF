@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
 
 namespace bossdoyKaraoke_NOW.ViewModel
@@ -13,6 +14,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         string SongTitle { get; set; }
         string SongArtist { get; set; }
         int VolumeValue { get; set; }
+        ImageSource VUmeter { get; set; }
         string VocalChannel { get; set; }
         string ElapsedTime { get; set; }
         string RemainingTime { get; set; }

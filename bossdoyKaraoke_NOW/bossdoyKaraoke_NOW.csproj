@@ -125,6 +125,11 @@
     <Compile Include="Interactivity\EventArgs.cs" />
     <Compile Include="Interactivity\EventRaiser.cs" />
     <Compile Include="Interactivity\RelayCommand.cs" />
+    <Compile Include="Properties\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="ScreenInformation.cs" />
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
@@ -202,11 +207,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -215,9 +215,9 @@
     <EmbeddedResource Include="FormControl\D2dImageSource.resx">
       <DependentUpon>D2dImageSource.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="Properties\Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Help\BassNet.chm" />
     <None Include="packages.config" />
@@ -231,67 +231,130 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\bkn.png" />
-    <Resource Include="Resources\bkn4.ico" />
-    <Resource Include="Resources\bkn7.ico" />
-    <Resource Include="Resources\bkn8.ico" />
-    <Resource Include="Resources\bossdoyKaraokeNOW.png" />
-    <Resource Include="Resources\check_1.png" />
-    <Resource Include="Resources\error1.png" />
-    <Resource Include="Resources\error_1.png" />
-    <Resource Include="Resources\ic_add_black_18dp_1x.png" />
-    <Resource Include="Resources\ic_add_black_24dp_1x.png" />
-    <Resource Include="Resources\ic_filter_none_black_24dp_1x.png" />
-    <Resource Include="Resources\ic_filter_none_black_36dp_1x.png" />
-    <Resource Include="Resources\ic_pause_black_36dp_1x.png" />
-    <Resource Include="Resources\ic_play_arrow_black_36dp_1x.png" />
-    <Resource Include="Resources\ic_play_arrow_black_48dp_1x.png" />
-    <Resource Include="Resources\ic_record_voice_over_L_black_24dp_1x.png" />
-    <Resource Include="Resources\ic_record_voice_over_L_R_black_24dp_1x.png" />
-    <Resource Include="Resources\ic_record_voice_over_R_black_24dp_1x.png" />
-    <Resource Include="Resources\ic_remove_black_18dp_1x.png" />
-    <Resource Include="Resources\ic_settings_voice_black_18dp_1x.png" />
-    <Resource Include="Resources\ic_skip_next_black_24dp_1x.png" />
-    <Resource Include="Resources\ic_skip_previous_black_24dp_1x.png" />
-    <Resource Include="Resources\ic_volume_off_black_24dp_1x.png" />
-    <Resource Include="Resources\ic_volume_up_black_24dp_1x.png" />
-    <Resource Include="Resources\vu-0.png" />
-    <Resource Include="Resources\vu-10.png" />
-    <Resource Include="Resources\vu-12.png" />
-    <Resource Include="Resources\vu-15.png" />
-    <Resource Include="Resources\vu-17.png" />
-    <Resource Include="Resources\vu-20.png" />
-    <Resource Include="Resources\vu-3.png" />
-    <Resource Include="Resources\vu-6.png" />
-    <Resource Include="Resources\vu-8.png" />
-    <Resource Include="Resources\vu-off.png" />
-    <Resource Include="Resources\vu-plus1.png" />
-    <Resource Include="Resources\vu-plus2.png" />
-    <Resource Include="Resources\vu-plus3.png" />
-    <Resource Include="Resources\vu-plus4.png" />
-    <Resource Include="Resources\vu-v-0.png" />
-    <Resource Include="Resources\vu-v-10.png" />
-    <Resource Include="Resources\vu-v-12.png" />
-    <Resource Include="Resources\vu-v-15.png" />
-    <Resource Include="Resources\vu-v-17.png" />
-    <Resource Include="Resources\vu-v-20.png" />
-    <Resource Include="Resources\vu-v-3.png" />
-    <Resource Include="Resources\vu-v-6.png" />
-    <Resource Include="Resources\vu-v-8.png" />
-    <Resource Include="Resources\vu-v-off.png" />
-    <Resource Include="Resources\vu-v-plus1.png" />
-    <Resource Include="Resources\vu-v-plus2.png" />
-    <Resource Include="Resources\vu-v-plus3.png" />
-    <Resource Include="Resources\vu-v-plus4.png" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\volume.png" />
+    <None Include="Resources\bkn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bkn4.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bkn7.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bkn8.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bossdoyKaraokeNOW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\check_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\error_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\error1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_add_black_18dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_add_black_24dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_filter_none_black_24dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_filter_none_black_36dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_pause_black_36dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_play_arrow_black_36dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_play_arrow_black_48dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_record_voice_over_L_black_24dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_record_voice_over_L_R_black_24dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_record_voice_over_R_black_24dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_remove_black_18dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_settings_voice_black_18dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_skip_next_black_24dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_skip_previous_black_24dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_volume_off_black_24dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_volume_up_black_24dp_1x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\volume.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vu13.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vuOff.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

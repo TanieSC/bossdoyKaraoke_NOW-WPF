@@ -48,7 +48,7 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <!--<Image Panel.ZIndex="2" Source="Resources/volume.png" Margin="112,-218,62,218" HorizontalAlignment="Center" VerticalAlignment="Center" />-->
+        <Image DataContext="{StaticResource MediaControls}" x:Name="vu_meter" Panel.ZIndex="1" Width="50" Height="48" VerticalAlignment="Top" HorizontalAlignment="Left" Source="{Binding VUmeter}" Margin="112,58,0,0" />
         <DockPanel DataContext="{StaticResource MediaControls}" Name="media_controls" Grid.ColumnSpan="2" VerticalAlignment="Top">
             <!--<DockPanel.DataContext>
                 <vm:MediaControls/>
@@ -85,7 +85,7 @@
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
-                         Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" >
                 <materialDesign:PackIcon Kind="{Binding IconPlayPause}" Width="45" Height="45"/>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">

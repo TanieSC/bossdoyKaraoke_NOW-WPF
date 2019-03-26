@@ -9,6 +9,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
@@ -39,6 +41,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private StackPanel _tempo_key_panel;
         private StackPanel _song_info_panel;
         private Popup _volumeControl;
+        private ImageSource _vuMeter = new BitmapImage(new Uri(@"Resources/vu1.png", UriKind.Relative));
         private PackIconKind _iconPlayPause = PackIconKind.Play;
         private PackIconKind _iconMuteUnMute = PackIconKind.VolumeHigh;
         private IMediaControls _controls;
@@ -113,6 +116,20 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
         
+        public ImageSource VUmeter
+        {
+            get
+            {
+                return _vuMeter;
+            }
+
+            set
+            {
+                _vuMeter = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string VocalChannel
         {
             get
