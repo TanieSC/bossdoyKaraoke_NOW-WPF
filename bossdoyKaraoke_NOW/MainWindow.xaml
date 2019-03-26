@@ -485,11 +485,11 @@
                                         CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <MenuItem Header="Play">
+                        <!--<MenuItem Header="Play">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="Play"/>
                             </MenuItem.Icon>
-                        </MenuItem>
+                        </MenuItem>-->
                         <MenuItem Header="Add to queue">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="PlaylistAdd"/>
