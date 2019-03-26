@@ -534,7 +534,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
             fullScreen.Loaded += (sender1, e1) =>
             {
-                // full_screen_count.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new ThreadStart(UpdateFullScreenCount));
+                // fullScreen.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new ThreadStart(UpdateFullScreenCount));
                 UpdateFullScreenCount();
             };
             fullScreen.Closed += (sender2, e2) =>
@@ -542,7 +542,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 //fullScreen.Dispatcher.InvokeShutdown();
                 _fullScreen.Remove(fullScreen);
                 UpdateFullScreenCount();
-                //  full_screen_count.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new ThreadStart(UpdateFullScreenCount));
+                //  fullScreen.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new ThreadStart(UpdateFullScreenCount));
             };
 
             fullScreen.Show();
