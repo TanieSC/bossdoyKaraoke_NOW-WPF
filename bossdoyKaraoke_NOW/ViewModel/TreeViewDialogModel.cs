@@ -15,6 +15,7 @@ using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
 using MaterialDesignThemes.Wpf;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
+using static bossdoyKaraoke_NOW.Enums.KaraokeNowFiles;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
@@ -150,25 +151,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     var items = SongsSource.Instance.ItemSource[favoritesIndex].Items;
                     var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
 
-                    var name = _favoritesTitle.Text;
+                    var filename = SongsSource.Instance.CheckFilenameExist(Create.Favorites, _favoritesTitle.Text);
 
-                    var n = 0;
-                    do
-                    {
-                        if (n == 0)
-                        {
-                            _favoritesTitle.Text = name;
-                        }
-                        else
-                        {
-                            _favoritesTitle.Text = string.Format("{0}_{1}", name, n);
-                        }
-
-                        n++;
-                    }
-                    while (File.Exists(PlayerBase.FilePath + @"favorites\" + _favoritesTitle.Text + ".fav"));
-
-                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = _favoritesTitle.Text, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = filename, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
                     _favoritesTitle.Text = string.Empty;
                     Worker.DoWork(AddFavoritesSender.CurrentTask, AddFavoritesSender);
 

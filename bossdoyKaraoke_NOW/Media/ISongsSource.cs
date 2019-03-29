@@ -25,7 +25,7 @@ namespace bossdoyKaraoke_NOW.Media
         void LoadSongsInQueue(int songQueuePreviousCount = 0);
         void AddFavoritesToSongQueue(int senderId);
         void CreateFavoritesPlayedSongs(ITreeViewModelChild sender);
-        void CreateFavoritesSongQueue();
+        //void CreateFavoritesSongQueue();
         void DirSearchSongs(string sDir);
         string AddToQueue(TrackInfo sender);
         string AddToQueueAsNext(TrackInfo sender);
@@ -34,6 +34,7 @@ namespace bossdoyKaraoke_NOW.Media
         void CreateFavorites(ITreeViewModelChild sender);
         void RemoveTreeViewItem(Create create, ITreeViewModelChild sender);
         void PreProcessFiles(string mediaFileName);
+        string CheckFilenameExist(Create createFile, string filename);
     }
 
 }

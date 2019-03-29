@@ -281,11 +281,6 @@ namespace bossdoyKaraoke_NOW.Media
             CreateKaraokeNowFiles(Create.FromPlayedSongs, sender);
         }
 
-        public void CreateFavoritesSongQueue()
-        {
-
-        }
-
         /// <summary>
         /// Method to create the treeview to display menu, used by LoadSongCollections() method
         /// </summary>
@@ -555,6 +550,55 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+
+        /// <summary>
+        /// Method to check if filename already exist and return a new name.
+        /// </summary>
+        /// <param name="createFile">Task to run</param>
+        /// <param name="filename">The filename for checking</param>
+        /// <returns></returns>
+        public string CheckFilenameExist(Create createFile, string filename)
+        {
+            var n = 0;
+            var path = string.Empty;
+            var name = string.Empty;
+            var newName = string.Empty;
+            var ext = string.Empty;
+
+
+            switch (createFile)
+            {
+                case Create.Favorites:
+                    path = _favoritesPath;
+                    name = filename;
+                    ext = ".fav";
+                    break;
+                case Create.NewSongs:
+                    path = _songsPath;
+                    name = filename;
+                    ext = ".bkN";
+                    break;
+            }
+
+            do
+            {
+                if (n == 0)
+                {
+                    newName = name;
+                }
+                else
+                {
+                    newName = string.Format("{0}_{1}", name, n);
+                }
+
+                n++;
+            }
+            while (File.Exists(path + newName + ext));
+
+
+            return newName;
+        }
+
         /// <summary>
         /// Method to add or remove the song in song queue collection if not empty on application start up. "SongQueueList.que"
         /// </summary>
@@ -701,6 +745,7 @@ namespace bossdoyKaraoke_NOW.Media
                         File.WriteAllLines(_songQueueList, file);
                         break;
                 }
+
             }
             catch (Exception ex)
             {

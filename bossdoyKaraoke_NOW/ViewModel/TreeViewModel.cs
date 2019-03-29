@@ -18,6 +18,7 @@ using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Model;
 using MaterialDesignThemes.Wpf;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
+using static bossdoyKaraoke_NOW.Enums.KaraokeNowFiles;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
@@ -328,17 +329,13 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
                 var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
+                var filaname = SongsSource.Instance.CheckFilenameExist(Create.Favorites, sender.Title);
 
-                //for (int i = 0; i < items.Count; i++)
-                //{
-                //    if (sender.Title == items[i].Title)
-                //    {
-                //        sender.Title = sender.Title + " " + (i + 1).ToString();
-                //    }
-                //}
+                //Console.WriteLine("F: " + filaname + " " + sender.Title);
 
-                items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = sender.Title, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+                items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = filaname, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
 
+                sender.Title = filaname;
                 Worker.DoWork(NewTask.ADD_NEW_FAVORITES, sender);
             }
         }
@@ -408,20 +405,13 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 var fbd = new System.Windows.Forms.FolderBrowserDialog();
                 if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    var items = SongsSource.Instance.ItemSource[_myComputerIndex].Items;
-                    var songs = SongsSource.Instance.Songs.Count;
                     string[] filePath = new string[] { fbd.SelectedPath };
                     string folderName = Path.GetFileName(fbd.SelectedPath);
+                    var items = SongsSource.Instance.ItemSource[_myComputerIndex].Items;
+                    var songs = SongsSource.Instance.Songs.Count;
+                    var filaname = SongsSource.Instance.CheckFilenameExist(Create.NewSongs, folderName);
 
-                    //for (int i = 0; i < items.Count; i++)
-                    //{
-                    //    if (folderName == items[i].Title)
-                    //    {
-                    //        folderName = folderName + " 1";
-                    //    }
-                    //}
-
-                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = folderName, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
+                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = filaname, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
 
                     TreeViewDialogModel.Instance.DialogStatus = "Working on it! Please wait...";
                     TreeViewDialogModel.Instance.AddingStatus = Visibility.Collapsed;
