@@ -41,7 +41,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private StackPanel _tempo_key_panel;
         private StackPanel _song_info_panel;
         private Popup _volumeControl;
-        private string _vuMeterValue = "99";
+        private string _vuMeterValue = "99.9";
         private string _vuMeterColorL = "#FFF0F0F0";
         private string _vuMeterColorR = "#FFF0F0F0";
         private bool _playerStatus = false;
