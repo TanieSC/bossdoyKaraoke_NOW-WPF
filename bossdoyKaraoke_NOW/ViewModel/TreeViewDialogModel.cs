@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -150,35 +151,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
 
                     var name = _favoritesTitle.Text;
-                    // int n = 0;
-                    //for (int i = 0; i < items.Count; i++)
-                    //{
-                    //    n++;
-                    //    if (_favoritesTitle.Text == items[i].Title)
-                    //    {
+
+                    var n = 0;
                     do
                     {
-                        for (int i = 0; i < items.Count; i++)
-                        {
-
-                            if (_favoritesTitle.Text == items[_count].Title || items[_count].Title.Contains(_favoritesTitle.Text + "_" + _count))
-                            {
-                                _favoritesTitle.Text = string.Format("{0}_{1}", name, _count);
-                                _count = i;
-                            }
-                        }
+                        _favoritesTitle.Text = string.Format("{0}_{1}", name, n);
+                        n++;
                     }
-                    while (_favoritesTitle.Text == items[_count].Title || items[_count].Title.Contains(_favoritesTitle.Text + "_" + _count));
-                //}
-                    //}
-                    
-                    //while (items[_count].Title == _favoritesTitle.Text || items[_count].Title.Contains(_favoritesTitle.Text + "_"))
-                    //{
-                    //    _favoritesTitle.Text = string.Format("{0}_{1}", name, _count);
-                    //    _count++;
-                    //}
+                    while (File.Exists(PlayerBase.FilePath + @"favorites\" + _favoritesTitle.Text + ".fav"));
 
-                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = _favoritesTitle.Text, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = n == 0 ? name : _favoritesTitle.Text, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
                     _favoritesTitle.Text = string.Empty;
                     Worker.DoWork(AddFavoritesSender.CurrentTask, AddFavoritesSender);
 
