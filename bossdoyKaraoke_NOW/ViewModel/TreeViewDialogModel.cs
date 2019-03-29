@@ -155,12 +155,20 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     var n = 0;
                     do
                     {
-                        _favoritesTitle.Text = string.Format("{0}_{1}", name, n);
+                        if (n == 0)
+                        {
+                            _favoritesTitle.Text = name;
+                        }
+                        else
+                        {
+                            _favoritesTitle.Text = string.Format("{0}_{1}", name, n);
+                        }
+
                         n++;
                     }
                     while (File.Exists(PlayerBase.FilePath + @"favorites\" + _favoritesTitle.Text + ".fav"));
 
-                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = n == 0 ? name : _favoritesTitle.Text, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
+                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = _favoritesTitle.Text, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
                     _favoritesTitle.Text = string.Empty;
                     Worker.DoWork(AddFavoritesSender.CurrentTask, AddFavoritesSender);
 
