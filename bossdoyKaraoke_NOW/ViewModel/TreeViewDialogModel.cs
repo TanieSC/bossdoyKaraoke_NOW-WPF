@@ -20,6 +20,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
     class TreeViewDialogModel : ITreeViewDialogModel, INotifyPropertyChanged
     {
         private static TreeViewDialogModel _instance;
+        private int _count = 0;
         private TextBox _favoritesTitle;
         private string _dialogStatus;
         private bool _showDialog;
@@ -148,7 +149,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     var items = SongsSource.Instance.ItemSource[favoritesIndex].Items;
                     var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
 
-                    int n = 0;
+                   // int n = 0;
                     //for (int i = 0; i < items.Count; i++)
                     //{
                     //    n++;
@@ -162,11 +163,11 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     //while (_favoritesTitle.Text == items[n].Title || items[n].Title.Contains(_favoritesTitle.Text + "_" + n) );
                     //    }
                     //}
-
-                    while (_favoritesTitle.Text == items[n].Title || items[n].Title.Contains(_favoritesTitle.Text + "_" + n))
+                    var name = _favoritesTitle.Text;
+                    while (items[_count].Title == _favoritesTitle.Text || items[_count].Title.Contains(_favoritesTitle.Text + "_"))
                     {
-                        n++;
-                        _favoritesTitle.Text = string.Format("{0}_{1}", _favoritesTitle.Text, n);
+                        _favoritesTitle.Text = string.Format("{0}_{1}", name, _count);
+                        _count++;
                     }
 
                     items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = _favoritesTitle.Text, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
