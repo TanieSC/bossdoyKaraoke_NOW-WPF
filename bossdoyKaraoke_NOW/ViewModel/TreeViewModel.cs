@@ -318,6 +318,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
+        /// <summary>
+        /// Method to create favorites from played songs and from collections
+        /// </summary>
+        /// <param name="sender">Index of the selected treeview item</param>
         private void CreateFavorites(ITreeViewModelChild sender)
         {
             if (sender != null)
@@ -338,8 +342,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 Worker.DoWork(NewTask.ADD_NEW_FAVORITES, sender);
             }
         }
-
-
     }
 
     class TreeViewModelChild : ITreeViewModelChild, INotifyPropertyChanged

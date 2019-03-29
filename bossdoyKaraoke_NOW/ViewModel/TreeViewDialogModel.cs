@@ -148,19 +148,26 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     var items = SongsSource.Instance.ItemSource[favoritesIndex].Items;
                     var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
 
-                    //int n = 0;
+                    int n = 0;
                     //for (int i = 0; i < items.Count; i++)
                     //{
                     //    n++;
                     //    if (_favoritesTitle.Text == items[i].Title)
                     //    {
-                    //        do
-                    //        {                               
-                    //            _favoritesTitle.Text = string.Format("{0}_{1}", _favoritesTitle.Text, n);
-                    //        }
-                    //        while (_favoritesTitle.Text == items[i].Title);
+                    //do
+                    //{
+                    //    _favoritesTitle.Text = string.Format("{0}_{1}", _favoritesTitle.Text, n);
+                    //   // n++;
+                    //}
+                    //while (_favoritesTitle.Text == items[n].Title || items[n].Title.Contains(_favoritesTitle.Text + "_" + n) );
                     //    }
                     //}
+
+                    while (_favoritesTitle.Text == items[n].Title || items[n].Title.Contains(_favoritesTitle.Text + "_" + n))
+                    {
+                        n++;
+                        _favoritesTitle.Text = string.Format("{0}_{1}", _favoritesTitle.Text, n);
+                    }
 
                     items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = _favoritesTitle.Text, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
                     _favoritesTitle.Text = string.Empty;
