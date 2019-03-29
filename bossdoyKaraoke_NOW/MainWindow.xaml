@@ -82,8 +82,7 @@
             </Popup>
             <Button Panel.ZIndex="1" Name="play_pause" Margin="10,54,0,0" Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                        materialDesign:ButtonProgressAssist.Value="-1"
-                        materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding PlayerStatus}"
+                        materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
                         Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" HorizontalAlignment="Left" >
                 <materialDesign:PackIcon Kind="{Binding IconPlayPause}" Width="45" Height="45"/>

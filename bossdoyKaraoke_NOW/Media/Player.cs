@@ -261,7 +261,6 @@ namespace bossdoyKaraoke_NOW.Media
             }
 
             MediaControls.Instance.IconPlayPause = PackIconKind.Play;
-            MediaControls.Instance.PlayerStatus = false;
         }
 
         public override void Play()
@@ -286,7 +285,6 @@ namespace bossdoyKaraoke_NOW.Media
             //}
 
             MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
-            MediaControls.Instance.PlayerStatus = true;
         }
 
         public override void Stop()
@@ -310,7 +308,6 @@ namespace bossdoyKaraoke_NOW.Media
             _isPlayingBass = false;
             _isPlayingVlc = false;
 
-            MediaControls.Instance.PlayerStatus = false;
             MediaControls.Instance.ElapsedTime = "00:00:00";
             MediaControls.Instance.RemainingTime = "00:00:00";
             MediaControls.Instance.IconPlayPause = PackIconKind.Play;
@@ -458,19 +455,19 @@ namespace bossdoyKaraoke_NOW.Media
             }
             else if ((int)dbLevelL < -8)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFA2EE00";
+                MediaControls.Instance.VUmeterColorR = "#FFA4F100";
             }
             else if ((int)dbLevelL < -6)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFADEE00";
+                MediaControls.Instance.VUmeterColorR = "#FFBAFF00";
             }
             else if ((int)dbLevelL < -3)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFC6F100";
+                MediaControls.Instance.VUmeterColorR = "#FFBAFF00";
             }
             else if ((int)dbLevelL < 0)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFD2FF00";
+                MediaControls.Instance.VUmeterColorR = "#FFD1FF00";
             }
             else if ((int)dbLevelL < 1)
             {
@@ -516,19 +513,19 @@ namespace bossdoyKaraoke_NOW.Media
             }
             else if ((int)dbLevelR < -8)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFA2EE00";
+                MediaControls.Instance.VUmeterColorR = "#FFA4F100";
             }
             else if ((int)dbLevelR < -6)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFADEE00";
+                MediaControls.Instance.VUmeterColorR = "#FFBAFF00"; 
             }
             else if ((int)dbLevelR < -3)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFC6F100";
+                MediaControls.Instance.VUmeterColorR = "#FFBAFF00"; 
             }
             else if ((int)dbLevelR < 0)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFD2FF00";
+                MediaControls.Instance.VUmeterColorR = "#FFD1FF00";
             }
             else if ((int)dbLevelR < 1)
             {
@@ -601,7 +598,6 @@ namespace bossdoyKaraoke_NOW.Media
                 lock (_songsSource.SongsQueue)
                 {
                     _getNestSongInfo = "";
-                    MediaControls.Instance.PlayerStatus = true;
                     MediaControls.Instance.VocalChannel = "BAL";
                     Channel = ChannelSelected.Right;
 
