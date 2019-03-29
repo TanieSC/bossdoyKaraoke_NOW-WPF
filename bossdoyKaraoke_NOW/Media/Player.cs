@@ -455,19 +455,19 @@ namespace bossdoyKaraoke_NOW.Media
             }
             else if ((int)dbLevelL < -8)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFA4F100";
+                MediaControls.Instance.VUmeterColorL = "#FFA4F100";
             }
             else if ((int)dbLevelL < -6)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFBAFF00";
+                MediaControls.Instance.VUmeterColorL = "#FFBAFF00";
             }
             else if ((int)dbLevelL < -3)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFBAFF00";
+                MediaControls.Instance.VUmeterColorL = "#FFBAFF00";
             }
             else if ((int)dbLevelL < 0)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFD1FF00";
+                MediaControls.Instance.VUmeterColorL = "#FFD1FF00";
             }
             else if ((int)dbLevelL < 1)
             {
