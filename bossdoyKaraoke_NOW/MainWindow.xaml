@@ -463,12 +463,12 @@
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDoubleClick">
                         <i:InvokeCommandAction 
-                            Command="{Binding PreviewMouseDoubleClick}"
+                            Command="{Binding AddToQueueDblClkCommand}"
                             CommandParameter="{Binding ElementName=songs_listView, Path=SelectedItem}"/>
                     </i:EventTrigger>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction 
-                            Command="{Binding Loaded}" 
+                            Command="{Binding LoadedCommand}" 
                             CommandParameter="{ Binding ElementName=songs_listView}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
@@ -486,7 +486,7 @@
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Opened">
                                 <i:InvokeCommandAction 
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.ContextMenuLoaded}" 
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.ContextMenuLoadedCommand}" 
                                         CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -502,7 +502,7 @@
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                     <i:InvokeCommandAction
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.AddToQueueClick}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.AddToQueueCommand}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=SelectedItem}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
@@ -514,20 +514,20 @@
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                     <i:InvokeCommandAction
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.AddToQueueAsNextClick}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.AddToQueueAsNextCommand}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=SelectedItem}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </MenuItem>
                         <Separator/>
-                        <MenuItem Header="Remove from queue">
+                        <MenuItem Header="Remove">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="DeleteForeverOutline"/>
                             </MenuItem.Icon>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                     <i:InvokeCommandAction
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.RemoveFromQueueClick}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.RemoveCommand}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=SelectedItem}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>

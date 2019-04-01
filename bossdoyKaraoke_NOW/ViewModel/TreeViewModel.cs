@@ -269,6 +269,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
+        /// <summary>
+        /// Method to create favorites from played songs 
+        /// </summary>
         public ICommand CreateFavoritesPlayedSongsCommand
         {
             get
@@ -320,7 +323,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         }
 
         /// <summary>
-        /// Method to create favorites from played songs and from collections
+        /// Method to create favorites from collections
         /// </summary>
         /// <param name="sender">Index of the selected treeview item</param>
         private void CreateFavorites(ITreeViewModelChild sender)

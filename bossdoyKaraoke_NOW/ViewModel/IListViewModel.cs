@@ -12,11 +12,11 @@ namespace bossdoyKaraoke_NOW.ViewModel
     public interface IListViewModel
     {
         ObservableCollection<TrackInfo> Items { get; }
-        ICommand PreviewMouseDoubleClick { get; }
-        ICommand Loaded { get; }
-        ICommand ContextMenuLoaded { get; }
-        ICommand AddToQueueClick { get; }
-        ICommand AddToQueueAsNextClick { get; }
-        ICommand RemoveFromQueueClick { get; }
+        ICommand AddToQueueDblClkCommand { get; }
+        ICommand LoadedCommand { get; }
+        ICommand ContextMenuLoadedCommand { get; }
+        ICommand AddToQueueCommand { get; }
+        ICommand AddToQueueAsNextCommand { get; }
+        ICommand RemoveCommand { get; }
     }
 }

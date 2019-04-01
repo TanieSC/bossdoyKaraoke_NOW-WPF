@@ -21,12 +21,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
     public class ListViewModel : IListViewModel
     {
         private ISongsSource _songsSource = SongsSource.Instance;
-        private ICommand _previewMouseDoubleClick;
-        private ICommand _loaded;
-        private ICommand _contextMenuLoaded;
-        private ICommand _addToQueueClick;
-        private ICommand _addToQueueAsNextClick;
-        private ICommand _removeFromQueue;
+        private ICommand _addToQueueDblClkCommand;// _previewMouseDoubleClick;
+        private ICommand _loadedCommand;
+        private ICommand _contextMenuLoadedCommand;
+        private ICommand _addToQueueCommand;
+        private ICommand _addToQueueAsNextCommand;
+        private ICommand _removeCommand;
 
         public ObservableCollection<TrackInfo> Items { get; private set; }
 
@@ -35,11 +35,11 @@ namespace bossdoyKaraoke_NOW.ViewModel
             Items =  _songsSource.Songs.Count > 0 ? _songsSource.Songs[0] : new ObservableCollection<TrackInfo>();
         }
 
-        public ICommand PreviewMouseDoubleClick
+        public ICommand AddToQueueDblClkCommand// PreviewMouseDoubleClick
         {
             get
             {
-                return _previewMouseDoubleClick ?? (_previewMouseDoubleClick = new RelayCommand(x =>
+                return _addToQueueDblClkCommand ?? (_addToQueueDblClkCommand = new RelayCommand(x =>
                 {
                     if (x != null)
                     {
@@ -49,22 +49,22 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand Loaded
+        public ICommand LoadedCommand
         {
             get
             {
-                return _loaded ?? (_loaded = new RelayCommand(x =>
+                return _loadedCommand ?? (_loadedCommand = new RelayCommand(x =>
                 {
                     Worker.ListViewElement = x as ListView;
                 }));
             }
         }
 
-        public ICommand ContextMenuLoaded
+        public ICommand ContextMenuLoadedCommand
         {
             get
             {
-                return _contextMenuLoaded ?? (_contextMenuLoaded = new RelayCommand(x =>
+                return _contextMenuLoadedCommand ?? (_contextMenuLoadedCommand = new RelayCommand(x =>
                 {
                     if (x != null)
                         EnableDisableMenuItem(x as ContextMenu);
@@ -72,11 +72,11 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand AddToQueueClick
+        public ICommand AddToQueueCommand
         {
             get
             {
-                return _addToQueueClick ?? (_addToQueueClick = new RelayCommand(x =>
+                return _addToQueueCommand ?? (_addToQueueCommand = new RelayCommand(x =>
                 {
                     if (x != null)
                         AddToQueue(x as TrackInfo);
@@ -84,11 +84,11 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand AddToQueueAsNextClick
+        public ICommand AddToQueueAsNextCommand
         {
             get
             {
-                return _addToQueueAsNextClick ?? (_addToQueueAsNextClick = new RelayCommand(x =>
+                return _addToQueueAsNextCommand ?? (_addToQueueAsNextCommand = new RelayCommand(x =>
                 {
                     if (x != null)
                         AddToQueueAsNext(x as TrackInfo);
@@ -96,15 +96,15 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand RemoveFromQueueClick
+        public ICommand RemoveCommand
         {
             get
             {
-                return _removeFromQueue ?? (_removeFromQueue = new RelayCommand(x =>
+                return _removeCommand ?? (_removeCommand = new RelayCommand(x =>
                 {
                     if (x != null)
                     {
-                        RemoveFromQueue(x as TrackInfo);
+                        RemoveSong(x as TrackInfo);
                     }
                 }));
             }
@@ -113,10 +113,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private void EnableDisableMenuItem(ContextMenu sender)
         {
             var contextMenu = sender as ContextMenu;
-            var play = contextMenu.Items[0] as MenuItem;
-            var addToQueue = contextMenu.Items[1] as MenuItem;
-            var addToQueueAsNext = contextMenu.Items[2] as MenuItem;
-            var removeFromQueue = contextMenu.Items[4] as MenuItem;
+           // var play = contextMenu.Items[0] as MenuItem;
+            var addToQueue = contextMenu.Items[0] as MenuItem;
+            var addToQueueAsNext = contextMenu.Items[1] as MenuItem;
+            var removeFromQueue = contextMenu.Items[3] as MenuItem;
 
             switch (CurrentTask) //CurrentTask is already set from selecting treeview item so we are just getting the enum value
             {
@@ -130,7 +130,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 case NewTask.ADD_TO_QUEUE:
                 case NewTask.ADD_TO_QUEUE_AS_NEXT:
                 case NewTask.SEARCH_LISTVIEW:
-                    play.IsEnabled = true;
+                   // play.IsEnabled = true;
                     addToQueue.IsEnabled = true;
 
                     if (CurrentPlayState == PlayState.Stopped)
@@ -138,7 +138,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     else
                         addToQueueAsNext.IsEnabled = true;
 
-                    removeFromQueue.IsEnabled = false;
+                   // removeFromQueue.IsEnabled = false;
                     break;
             }
         }
@@ -157,10 +157,26 @@ namespace bossdoyKaraoke_NOW.ViewModel
             Worker.DoWork(CurrentTask, sender);
         }
 
-        private void RemoveFromQueue(TrackInfo sender)
+        private void RemoveSong(TrackInfo sender)
         {
-            CurrentTask = NewTask.REMOVE_FROM_QUEUE;
-            Worker.DoWork(CurrentTask, sender);
+            if (CurrentTask == NewTask.LOAD_QUEUE_SONGS)
+            {
+                //CurrentTask = NewTask.REMOVE_FROM_QUEUE;
+                Worker.DoWork(NewTask.REMOVE_FROM_QUEUE, sender);
+            }
+            else if (CurrentTask == NewTask.LOAD_FAVORITES)
+            {
+                //CurrentTask = NewTask.REMOVE_SELECTED_FAVORITE;
+                Worker.DoWork(NewTask.REMOVE_SELECTED_FAVORITE, sender);
+            }
+            else if (CurrentTask == NewTask.LOAD_SONGS)
+            {
+                //CurrentTask = NewTask.REMOVE_SELECTED_SONG;
+                Worker.DoWork(NewTask.REMOVE_SELECTED_SONG, sender);
+            }
+            
+            //CurrentTask = NewTask.REMOVE_FROM_QUEUE;
+            //Worker.DoWork(CurrentTask, sender);
         }
     }
 }

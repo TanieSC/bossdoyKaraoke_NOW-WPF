@@ -441,8 +441,6 @@ namespace bossdoyKaraoke_NOW.Media
         /// <returns></returns>
         public string RemoveFromQueue(TrackInfo sender, bool fromPlayNextTrack = false)
         {
-
-
             AddRemoveFromQueue(sender);
             _songsQueue.Remove(sender);
 
@@ -454,13 +452,14 @@ namespace bossdoyKaraoke_NOW.Media
             else
                 _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
 
-            if (fromPlayNextTrack)
+            if (fromPlayNextTrack) //PlayNext Method that does not use background worker, so we are calling a data refresh and update UI.
             {
                 _playedSongs.Add(sender);
                 (Worker.TreeViewElement.Items[0] as ITreeViewModel).Title = _songQueueTitle;
                 Application.Current.Dispatcher.BeginInvoke(new Action(delegate
                 {
-                    Worker.ListViewElement.ItemsSource = SongsQueue;
+                    if (CurrentTask == NewTask.LOAD_QUEUE_SONGS)
+                        Worker.ListViewElement.ItemsSource = SongsQueue;
                 }));
             }
 
@@ -468,6 +467,22 @@ namespace bossdoyKaraoke_NOW.Media
             CreateKaraokeNowFiles(Create.SongQueueList);
 
             return _songQueueTitle;
+        }
+
+        public void RemoveSelectedFavorite(TrackInfo trackInfo, int senderId)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(delegate
+            {
+                _favorites[senderId].Remove(trackInfo);
+            }));            
+        }
+
+        public void RemoveSelectedSong(TrackInfo trackInfo, int senderId)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(delegate
+            {
+                _songs[senderId].Remove(trackInfo);
+            }));
         }
 
         /// <summary>
@@ -566,19 +581,32 @@ namespace bossdoyKaraoke_NOW.Media
             var ext = string.Empty;
 
 
-            switch (createFile)
+            if (createFile == Create.Favorites)
             {
-                case Create.Favorites:
-                    path = _favoritesPath;
-                    name = filename;
-                    ext = ".fav";
-                    break;
-                case Create.NewSongs:
-                    path = _songsPath;
-                    name = filename;
-                    ext = ".bkN";
-                    break;
+                path = _favoritesPath;
+                name = filename;
+                ext = ".fav";
             }
+            else if (createFile == Create.NewSongs)
+            {
+                path = _songsPath;
+                name = filename;
+                ext = ".bkN";
+            }
+
+            //switch (createFile)
+            //{
+            //    case Create.Favorites:
+            //        path = _favoritesPath;
+            //        name = filename;
+            //        ext = ".fav";
+            //        break;
+            //    case Create.NewSongs:
+            //        path = _songsPath;
+            //        name = filename;
+            //        ext = ".bkN";
+            //        break;
+            //}
 
             do
             {
@@ -674,7 +702,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// <summary>
         /// Write selected song to SonQueueList.que text file located in ProgramData\karaokeNow directory
         /// </summary>
-        private void WriteToQueueList()
+        private void WriteToQueueList() // not in use
         {
             try
             {
