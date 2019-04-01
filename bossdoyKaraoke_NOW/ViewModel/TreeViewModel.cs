@@ -425,7 +425,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
             else
             {
-                Worker.DoWork(sender.CurrentTask, sender.ID);
+                Worker.DoWork(sender.CurrentTask, sender);
             }
         }
     }

@@ -86,7 +86,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
         /// Run the new task in background
         /// </summary>
         /// <param name="newTask">Task to run</param>
-        /// <param name="senderID">Song index from the list used for loading song to listview</param>
+        /// <param name="senderID">Song index from treeview used for loading song to listview</param>
         public static void DoWork(NewTask newTask, int senderID)
         {
             //RunWorker(newTask, null, senderID);
@@ -182,7 +182,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          songQueueTitle = songsSource.RemoveFromQueue(_trackInfo);
                          break;
                      case NewTask.REMOVE_SELECTED_FAVORITE:
-                         songsSource.RemoveSelectedFavorite(_trackInfo, _senderID);
+                         songsSource.RemoveSelectedFavorite(_trackInfo, _treeViewModelChild);
                          break;
                      case NewTask.REMOVE_SELECTED_SONG:
                          songsSource.RemoveSelectedSong(_trackInfo, _senderID);

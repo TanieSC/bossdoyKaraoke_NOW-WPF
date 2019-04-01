@@ -26,6 +26,8 @@ namespace bossdoyKaraoke_NOW.Media
 {
     public class SongsSource : ISongsSource
     {
+        private const int _favoritesIndex = 1;
+        private const int _myComputerIndex = 2;
         private static string _filePath = PlayerBase.FilePath; // Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\karaokeNow\";
         private static HashSet<string> _extensions = PlayerBase.Entensions; //new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".cdg", ".mp4", ".flv" };
         private string _extPattern = HashSetExtensionsToString(_extensions);
@@ -469,12 +471,14 @@ namespace bossdoyKaraoke_NOW.Media
             return _songQueueTitle;
         }
 
-        public void RemoveSelectedFavorite(TrackInfo trackInfo, int senderId)
+        public void RemoveSelectedFavorite(TrackInfo trackInfo, ITreeViewModelChild sender)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(delegate
             {
-                _favorites[senderId].Remove(trackInfo);
-            }));            
+                _favorites[sender.ID].Remove(trackInfo);
+                sender.CurrentTask = NewTask.REMOVE_SELECTED_FAVORITE;
+                CreateKaraokeNowFiles(Create.Favorites, sender);
+            }));
         }
 
         public void RemoveSelectedSong(TrackInfo trackInfo, int senderId)
@@ -735,16 +739,30 @@ namespace bossdoyKaraoke_NOW.Media
 
                         if (sender.CurrentTask != NewTask.ADD_NEW_FAVORITES) //Creates favorites from song colletions 
                         {
-                            itemID = sender.ID;
-                            title = sender.Title + ".fav";
-                            file = _songs[itemID].Select(s => s.FilePath).ToArray();
-                            _favorites.Add(new ObservableCollection<TrackInfo>(_songs[itemID]));
+                            if (sender.CurrentTask == NewTask.REMOVE_SELECTED_FAVORITE)
+                            {
+                                itemID = sender.ID;
+                                title = sender.Title + ".fav";
+                                file = _favorites[itemID].Select(s => s.FilePath).ToArray();
+                            }
+                            else if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
+                            {
+                                itemID = sender.ID;
+                                title = sender.Title + ".fav";
+                            }
+                            else
+                            {
+                                itemID = sender.ID;
+                                title = sender.Title + ".fav";
+                                file = _songs[itemID].Select(s => s.FilePath).ToArray();
+                                _favorites.Add(new ObservableCollection<TrackInfo>(_songs[itemID]));
+                            }
                         }
                         else // Creates new empty favorites file use for adding song from played song and from songQueue
                         {
                             // 1 = Favorites index in treeview;
-                            itemID = _itemSource[1].Items[0].ID;
-                            title = _itemSource[1].Items[0].Title + ".fav";
+                            itemID = _itemSource[_favoritesIndex].Items[0].ID;
+                            title = _itemSource[_favoritesIndex].Items[0].Title + ".fav";
                             _favorites.Add(new ObservableCollection<TrackInfo>());
                         }
 
@@ -761,8 +779,8 @@ namespace bossdoyKaraoke_NOW.Media
                         break;
                     case Create.NewSongs:
                         // 2 = My Computer index in treeview;
-                        itemID = _itemSource[2].Items[0].ID;
-                        title = _itemSource[2].Items[0].Title + ".bkN";
+                        itemID = _itemSource[_myComputerIndex].Items[0].ID;
+                        title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
                         file = _songs[itemID].Select(s => s.FilePath).ToArray();
                         Directory.CreateDirectory(_songsPath);
                         File.WriteAllLines(_songsPath + title, file);
