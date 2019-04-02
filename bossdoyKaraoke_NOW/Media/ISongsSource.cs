@@ -31,7 +31,7 @@ namespace bossdoyKaraoke_NOW.Media
         string AddToQueueAsNext(TrackInfo sender);
         string RemoveFromQueue(TrackInfo sender, bool fromPlayNextTrack = false);
         void RemoveSelectedFavorite(TrackInfo trackInfo, ITreeViewModelChild sender);
-        void RemoveSelectedSong(TrackInfo trackInfo, int senderId);
+        void RemoveSelectedSong(TrackInfo trackInfo, ITreeViewModelChild sender);
         string EmptyQueueList();
         void CreateFavorites(ITreeViewModelChild sender);
         void RemoveTreeViewItem(Create create, ITreeViewModelChild sender);

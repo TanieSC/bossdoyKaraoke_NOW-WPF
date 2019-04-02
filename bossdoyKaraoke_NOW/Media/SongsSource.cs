@@ -475,17 +475,19 @@ namespace bossdoyKaraoke_NOW.Media
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(delegate
             {
-                _favorites[sender.ID].Remove(trackInfo);
                 sender.CurrentTask = NewTask.REMOVE_SELECTED_FAVORITE;
+                _favorites[sender.ID].Remove(trackInfo);
                 CreateKaraokeNowFiles(Create.Favorites, sender);
             }));
         }
 
-        public void RemoveSelectedSong(TrackInfo trackInfo, int senderId)
+        public void RemoveSelectedSong(TrackInfo trackInfo, ITreeViewModelChild sender)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(delegate
             {
-                _songs[senderId].Remove(trackInfo);
+                sender.CurrentTask = NewTask.REMOVE_SELECTED_SONG;
+                _songs[sender.ID].Remove(trackInfo);
+                CreateKaraokeNowFiles(Create.NewSongs, sender);
             }));
         }
 
@@ -737,20 +739,15 @@ namespace bossdoyKaraoke_NOW.Media
                 {
                     case Create.Favorites:
 
-                        if (sender.CurrentTask != NewTask.ADD_NEW_FAVORITES) //Creates favorites from song colletions 
+                        if (sender.CurrentTask != NewTask.ADD_NEW_FAVORITES)  
                         {
-                            if (sender.CurrentTask == NewTask.REMOVE_SELECTED_FAVORITE)
+                            if (sender.CurrentTask == NewTask.REMOVE_SELECTED_FAVORITE) //Delete song from selected favorites
                             {
                                 itemID = sender.ID;
                                 title = sender.Title + ".fav";
                                 file = _favorites[itemID].Select(s => s.FilePath).ToArray();
                             }
-                            else if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
-                            {
-                                itemID = sender.ID;
-                                title = sender.Title + ".fav";
-                            }
-                            else
+                            else //Creates favorites from song colletions
                             {
                                 itemID = sender.ID;
                                 title = sender.Title + ".fav";
@@ -779,8 +776,17 @@ namespace bossdoyKaraoke_NOW.Media
                         break;
                     case Create.NewSongs:
                         // 2 = My Computer index in treeview;
-                        itemID = _itemSource[_myComputerIndex].Items[0].ID;
-                        title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
+                        if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
+                        {
+                            itemID = sender.ID;
+                            title = sender.Title + ".bkN";
+                        }
+                        else
+                        {
+                            itemID = _itemSource[_myComputerIndex].Items[0].ID;
+                            title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
+                        }
+
                         file = _songs[itemID].Select(s => s.FilePath).ToArray();
                         Directory.CreateDirectory(_songsPath);
                         File.WriteAllLines(_songsPath + title, file);
