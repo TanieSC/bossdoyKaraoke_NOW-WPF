@@ -216,7 +216,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          searchBoxModel.ItemId = _senderID;
                          break;
                      case NewTask.SEARCH_LISTVIEW:
-                         CurrentTask = NewTask.SEARCH_LISTVIEW;
+                         //CurrentTask = NewTask.SEARCH_LISTVIEW;
                          filteredSong = searchBoxModel.FilteredSong(_searchFilter);
                          break;
                      case NewTask.REMOVE_FAVORITES:

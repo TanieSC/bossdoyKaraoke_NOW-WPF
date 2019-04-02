@@ -59,8 +59,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                        // if (CurrentTask == NewTask.LOAD_SONGS)
                        // {
-                            CurrentTask = NewTask.SEARCH_LISTVIEW;
-                            Worker.DoWork(CurrentTask, (x as TextBox).Text);
+                            //CurrentTask = NewTask.SEARCH_LISTVIEW;
+                            Worker.DoWork(NewTask.SEARCH_LISTVIEW, (x as TextBox).Text);
                        // }
                     }
                 }));
