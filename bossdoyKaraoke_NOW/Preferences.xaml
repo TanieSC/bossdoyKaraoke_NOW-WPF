@@ -1,0 +1,31 @@
+﻿<Window x:Class="bossdoyKaraoke_NOW.Preferences"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:bossdoyKaraoke_NOW"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Preferences" Height="614" Width="552" MaxHeight="614" MaxWidth="552" MinHeight="614" MinWidth="552">
+    <Grid>
+        <TabControl x:Name="tabControl">
+            <TabItem Header="General">
+                <Grid Background="#FFE5E5E5">
+                    <GroupBox Header="Intro text setting" VerticalAlignment="Top" Padding="9,5">
+                        <TextBox Margin="30,0,0,0" Padding="1" materialDesign:HintAssist.Hint="Set the intro text"  />
+                    </GroupBox>
+                    <GroupBox Header="Sound setting" VerticalAlignment="Top" Padding="9,5" Margin="0,70,0,0">
+                        <ComboBox  Margin="30,0,0,0" materialDesign:HintAssist.Hint="Select sound device" />
+                            <!--<TextBox Margin="30,0,0,0" Padding="1" materialDesign:HintAssist.Hint="Set the intro text" Width="472" />-->
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Audio">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Video">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
