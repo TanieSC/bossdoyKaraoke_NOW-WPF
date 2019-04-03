@@ -185,7 +185,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          songsSource.RemoveSelectedFavorite(_trackInfo, _treeViewModelChild);
                          break;
                      case NewTask.REMOVE_SELECTED_SONG:
-                         songsSource.RemoveSelectedSong(_trackInfo, _senderID);
+                         songsSource.RemoveSelectedSong(_trackInfo, _treeViewModelChild);
                          break;
                      case NewTask.LOAD_QUEUE_SONGS:
                          CurrentTask = NewTask.LOAD_QUEUE_SONGS;
