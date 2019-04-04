@@ -346,6 +346,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
     class TreeViewModelChild : ITreeViewModelChild, INotifyPropertyChanged
     {
+        private ISongsSource _songsSource = SongsSource.Instance;
         private const int _favoritesIndex = 1;
         private const int _myComputerIndex = 2;
         private Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
@@ -405,23 +406,25 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
             else if (sender.CurrentTask == NewTask.ADD_NEW_SONGS)
             {
-                var fbd = new System.Windows.Forms.FolderBrowserDialog();
-                if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    string[] filePath = new string[] { fbd.SelectedPath };
-                    string folderName = Path.GetFileName(fbd.SelectedPath);
-                    var items = SongsSource.Instance.ItemSource[_myComputerIndex].Items;
-                    var songs = SongsSource.Instance.Songs.Count;
-                    var filaname = SongsSource.Instance.CheckFilenameExist(Create.NewSongs, folderName);
+                _songsSource.AddNewSongs(sender);
 
-                    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = filaname, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
+                //var fbd = new System.Windows.Forms.FolderBrowserDialog();
+                //if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                //{
+                //    string[] filePath = new string[] { fbd.SelectedPath };
+                //    string folderName = Path.GetFileName(fbd.SelectedPath);
+                //    var items = SongsSource.Instance.ItemSource[_myComputerIndex].Items;
+                //    var songs = SongsSource.Instance.Songs.Count;
+                //    var filaname = SongsSource.Instance.CheckFilenameExist(Create.NewSongs, folderName);
 
-                    TreeViewDialogModel.Instance.DialogStatus = "Working on it! Please wait...";
-                    TreeViewDialogModel.Instance.AddingStatus = Visibility.Collapsed;
-                    TreeViewDialogModel.Instance.LoadingStatus = Visibility.Visible;
-                    TreeViewDialogModel.Instance.ShowDialog = true;
-                    Worker.DoWork(sender.CurrentTask, items[0].ID, fbd.SelectedPath);
-                }
+                //    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = filaname, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
+
+                //    TreeViewDialogModel.Instance.DialogStatus = "Working on it! Please wait...";
+                //    TreeViewDialogModel.Instance.AddingStatus = Visibility.Collapsed;
+                //    TreeViewDialogModel.Instance.LoadingStatus = Visibility.Visible;
+                //    TreeViewDialogModel.Instance.ShowDialog = true;
+                //    Worker.DoWork(sender.CurrentTask, items[0].ID, fbd.SelectedPath);
+                //}
             }
             else
             {

@@ -10,7 +10,7 @@
     <Grid>
         <TabControl x:Name="tabControl">
             <TabItem Header="General">
-                <Grid Background="#FFE5E5E5">
+                <Grid>
                     <GroupBox Header="Intro text setting" VerticalAlignment="Top" Padding="9,5">
                         <TextBox Margin="30,0,0,0" Padding="1" materialDesign:HintAssist.Hint="Set the intro text"  />
                     </GroupBox>
@@ -21,10 +21,10 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Audio">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid/>
             </TabItem>
             <TabItem Header="Video">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid/>
             </TabItem>
         </TabControl>
     </Grid>

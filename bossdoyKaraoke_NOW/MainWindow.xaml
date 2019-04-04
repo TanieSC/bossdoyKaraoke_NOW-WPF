@@ -13,6 +13,7 @@
         mc:Ignorable="d"
        Title="MainWindow" Height="630" Width="820" MinWidth="820" MinHeight="630" Closing="Window_Closing">
     <Window.Resources>
+        <vm:MainMenuModel x:Key="MainMenuModel"></vm:MainMenuModel>
         <vm:TreeViewDialogModel x:Key="TreeViewDialogModel"/>
         <vm:TreeViewModel x:Key="TreeViewModel"/>
         <vm:MediaControls x:Key="MediaControls"/>
@@ -24,27 +25,47 @@
             <ColumnDefinition Width="111*"/>
             <ColumnDefinition Width="295*"/>
         </Grid.ColumnDefinitions>
-        <Menu IsMainMenu="True" Grid.ColumnSpan="2" VerticalAlignment="Top" >
+        <Menu DataContext="{StaticResource MainMenuModel}" IsMainMenu="True" Grid.ColumnSpan="2" VerticalAlignment="Top" >
             <MenuItem Header="_File">
                 <MenuItem Header="Open">
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="File" />
                     </MenuItem.Icon>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding OpenCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </MenuItem>
-                <MenuItem Header="Add Folder" >
+                <MenuItem Header="Add Songs" >
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="FolderOpen" />
                     </MenuItem.Icon>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding AddSongsCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </MenuItem>
                 <MenuItem Header="Preferences" >
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="Settings" />
                     </MenuItem.Icon>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding PreferencesShowCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </MenuItem>
                 <MenuItem Header="Exit" InputGestureText="Ctrl+E">
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="ExitToApp" />
                     </MenuItem.Icon>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding ExitApplicationCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </MenuItem>
             </MenuItem>
         </Menu>

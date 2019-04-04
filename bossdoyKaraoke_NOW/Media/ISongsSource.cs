@@ -27,6 +27,7 @@ namespace bossdoyKaraoke_NOW.Media
         void CreateFavoritesPlayedSongs(ITreeViewModelChild sender);
         //void CreateFavoritesSongQueue();
         void DirSearchSongs(string sDir);
+        void AddNewSongs(ITreeViewModelChild sender);
         string AddToQueue(TrackInfo sender);
         string AddToQueueAsNext(TrackInfo sender);
         string RemoveFromQueue(TrackInfo sender, bool fromPlayNextTrack = false);

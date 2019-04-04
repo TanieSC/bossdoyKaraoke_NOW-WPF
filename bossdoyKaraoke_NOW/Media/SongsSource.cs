@@ -28,6 +28,7 @@ namespace bossdoyKaraoke_NOW.Media
     {
         private const int _favoritesIndex = 1;
         private const int _myComputerIndex = 2;
+        private Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
         private static string _filePath = PlayerBase.FilePath; // Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\karaokeNow\";
         private static HashSet<string> _extensions = PlayerBase.Entensions; //new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".cdg", ".mp4", ".flv" };
         private string _extPattern = HashSetExtensionsToString(_extensions);
@@ -186,7 +187,7 @@ namespace bossdoyKaraoke_NOW.Media
                                     _songs = TextSearchSongs(songs);
                                 }
 
-                                items = AddTreeViewItems(items, PackIconKind.Monitor, "My Computer", PackIconKind.Music, songs, PackIconKind.Folder, "Add Folder");
+                                items = AddTreeViewItems(items, PackIconKind.Monitor, "My Computer", PackIconKind.Music, songs, PackIconKind.Folder, "Add Songs");
                                 _itemSource.Add(items);
                                 break;
                         }
@@ -358,7 +359,31 @@ namespace bossdoyKaraoke_NOW.Media
 
             CreateKaraokeNowFiles(Create.NewSongs);
 
+        }
 
+        /// <summary>
+        /// Method to add collection of songs from a selected folder.
+        /// </summary>
+        /// <param name="sender"></param>
+        public void AddNewSongs(ITreeViewModelChild sender)
+        {
+            var fbd = new System.Windows.Forms.FolderBrowserDialog();
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string[] filePath = new string[] { fbd.SelectedPath };
+                string folderName = Path.GetFileName(fbd.SelectedPath);
+                var items = _itemSource[_myComputerIndex].Items;
+                var songs = _songs.Count;
+                var filaname = CheckFilenameExist(Create.NewSongs, folderName);
+
+                items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = filaname, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
+
+                TreeViewDialogModel.Instance.DialogStatus = "Working on it! Please wait...";
+                TreeViewDialogModel.Instance.AddingStatus = Visibility.Collapsed;
+                TreeViewDialogModel.Instance.LoadingStatus = Visibility.Visible;
+                TreeViewDialogModel.Instance.ShowDialog = true;
+                Worker.DoWork(sender.CurrentTask, items[0].ID, fbd.SelectedPath);
+            }
         }
 
         /// <summary>
@@ -600,20 +625,6 @@ namespace bossdoyKaraoke_NOW.Media
                 ext = ".bkN";
             }
 
-            //switch (createFile)
-            //{
-            //    case Create.Favorites:
-            //        path = _favoritesPath;
-            //        name = filename;
-            //        ext = ".fav";
-            //        break;
-            //    case Create.NewSongs:
-            //        path = _songsPath;
-            //        name = filename;
-            //        ext = ".bkN";
-            //        break;
-            //}
-
             do
             {
                 if (n == 0)
@@ -776,16 +787,30 @@ namespace bossdoyKaraoke_NOW.Media
                         break;
                     case Create.NewSongs:
                         // 2 = My Computer index in treeview;
-                        if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
+                        if (sender != null)
                         {
-                            itemID = sender.ID;
-                            title = sender.Title + ".bkN";
+                            if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
+                            {
+                                itemID = sender.ID;
+                                title = sender.Title + ".bkN";
+                            }
                         }
                         else
                         {
                             itemID = _itemSource[_myComputerIndex].Items[0].ID;
                             title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
                         }
+
+                        //if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
+                        //{
+                        //    itemID = sender.ID;
+                        //    title = sender.Title + ".bkN";
+                        //}
+                        //else
+                        //{
+                        //    itemID = _itemSource[_myComputerIndex].Items[0].ID;
+                        //    title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
+                        //}
 
                         file = _songs[itemID].Select(s => s.FilePath).ToArray();
                         Directory.CreateDirectory(_songsPath);
