@@ -32,6 +32,7 @@ namespace bossdoyKaraoke_NOW.Media
         private static string _filePath = PlayerBase.FilePath; // Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\karaokeNow\";
         private static HashSet<string> _extensions = PlayerBase.Entensions; //new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".cdg", ".mp4", ".flv" };
         private string _extPattern = HashSetExtensionsToString(_extensions);
+        private string _logs = _filePath + @"logs\";
         private string _favoritesPath = _filePath + @"favorites\";
         private string _songsPath = _filePath + @"songs\";
         private string _songQueueList = _filePath + @"SongQueueList.que";
@@ -116,87 +117,81 @@ namespace bossdoyKaraoke_NOW.Media
             PackIcon icon = new PackIcon();
             icon.Kind = PackIconKind.Music;
 
-            try
+            if (Directory.Exists(_filePath))
+                directoryExist = true;
+
+            directoryInfo = Directory.CreateDirectory(_filePath);
+
+            if (!directoryExist)
             {
-                if (Directory.Exists(_filePath))
-                    directoryExist = true;
-
                 directoryInfo = Directory.CreateDirectory(_filePath);
+                bool modified;
+                directorySecurity = directoryInfo.GetAccessControl();
+                accessRule = new FileSystemAccessRule(
+                        securityIdentifier,
+                        FileSystemRights.FullControl,
+                        AccessControlType.Allow);
+                directorySecurity.ModifyAccessRule(AccessControlModification.Add, accessRule, out modified);
+                directoryInfo.SetAccessControl(directorySecurity);
+            }
 
-                if (!directoryExist)
+            Directory.CreateDirectory(_favoritesPath);
+            Directory.CreateDirectory(_favoritesPath);
+            Directory.CreateDirectory(_songsPath);
+            if (!File.Exists(_songQueueList))
+            {
+                using (File.Create(_songQueueList)) ;
+            }
+
+            List<string> songs;
+
+            foreach (var node in Enum.GetValues(typeof(RootNode)))
+            {
+                ITreeViewModel items = null;
+
+                if (Enum.TryParse(node.ToString().ToUpper(), out _rootNode))
                 {
-                    directoryInfo = Directory.CreateDirectory(_filePath);
-                    bool modified;
-                    directorySecurity = directoryInfo.GetAccessControl();
-                    accessRule = new FileSystemAccessRule(
-                            securityIdentifier,
-                            FileSystemRights.FullControl,
-                            AccessControlType.Allow);
-                    directorySecurity.ModifyAccessRule(AccessControlModification.Add, accessRule, out modified);
-                    directoryInfo.SetAccessControl(directorySecurity);
-                }
-
-                Directory.CreateDirectory(_favoritesPath);
-                Directory.CreateDirectory(_songsPath);
-                if (!File.Exists(_songQueueList))
-                {
-                    using (File.Create(_songQueueList));
-                }
-
-                List<string> songs;
-
-                foreach (var node in Enum.GetValues(typeof(RootNode)))
-                {
-                    ITreeViewModel items = null;
-
-                    if (Enum.TryParse(node.ToString().ToUpper(), out _rootNode))
+                    switch (_rootNode)
                     {
-                        switch (_rootNode)
-                        {
-                            case RootNode.SONG_QUEUE:
-                                songs = new List<string>();
-                                songs = Directory.EnumerateFiles(_filePath, "*.que", SearchOption.AllDirectories).ToList();
-                                CurrentTask = NewTask.LOAD_QUEUE_SONGS;
-                                if (songs.Count() > 0)
-                                {
-                                    _songsQueue = TextSearchSongs(songs)[0].ToList();
-                                    _songQueueTitle = "Song Queue (Empty)";
-                                }
+                        case RootNode.SONG_QUEUE:
+                            songs = new List<string>();
+                            songs = Directory.EnumerateFiles(_filePath, "*.que", SearchOption.AllDirectories).ToList();
+                            CurrentTask = NewTask.LOAD_QUEUE_SONGS;
+                            if (songs.Count() > 0)
+                            {
+                                _songsQueue = TextSearchSongs(songs)[0].ToList();
+                                _songQueueTitle = "Song Queue (Empty)";
+                            }
 
-                                items = AddTreeViewItems(items, PackIconKind.Music, _songQueueTitle);//_songsQueue.Count > 0 ? "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])" : "Song Queue (Empty)");
-                                _itemSource.Add(items);
-                                break;
-                            case RootNode.MY_FAVORITES:
-                                songs = new List<string>();
-                                songs = Directory.EnumerateFiles(_favoritesPath, "*.fav", SearchOption.AllDirectories).OrderByDescending(file => new FileInfo(file).CreationTime).ToList();
-                                CurrentTask = NewTask.LOAD_FAVORITES;
-                                if (songs.Count > 0)
-                                {
-                                    _favorites = TextSearchSongs(songs);
-                                }
+                            items = AddTreeViewItems(items, PackIconKind.Music, _songQueueTitle);//_songsQueue.Count > 0 ? "Song Queue (" + _songsQueue.Count + "-[" + Utils.FixTimespan(_totalDuration, "HHMMSS") + "])" : "Song Queue (Empty)");
+                            _itemSource.Add(items);
+                            break;
+                        case RootNode.MY_FAVORITES:
+                            songs = new List<string>();
+                            songs = Directory.EnumerateFiles(_favoritesPath, "*.fav", SearchOption.AllDirectories).OrderByDescending(file => new FileInfo(file).CreationTime).ToList();
+                            CurrentTask = NewTask.LOAD_FAVORITES;
+                            if (songs.Count > 0)
+                            {
+                                _favorites = TextSearchSongs(songs);
+                            }
 
-                                items = AddTreeViewItems(items, PackIconKind.FavoriteOutline, "Favorites", PackIconKind.Favorite, songs, PackIconKind.Folder, "Add Favorites");
-                                _itemSource.Add(items);
-                                break;
-                            case RootNode.MY_COMPUTER:
-                                songs = new List<string>();
-                                songs = Directory.EnumerateFiles(_songsPath, "*.bkN", SearchOption.AllDirectories).OrderByDescending(file => new FileInfo(file).CreationTime).ToList();
-                                CurrentTask = NewTask.LOAD_SONGS;
-                                if (songs.Count > 0)
-                                {
-                                    _songs = TextSearchSongs(songs);
-                                }
+                            items = AddTreeViewItems(items, PackIconKind.FavoriteOutline, "Favorites", PackIconKind.Favorite, songs, PackIconKind.Folder, "Add Favorites");
+                            _itemSource.Add(items);
+                            break;
+                        case RootNode.MY_COMPUTER:
+                            songs = new List<string>();
+                            songs = Directory.EnumerateFiles(_songsPath, "*.bkN", SearchOption.AllDirectories).OrderByDescending(file => new FileInfo(file).CreationTime).ToList();
+                            CurrentTask = NewTask.LOAD_SONGS;
+                            if (songs.Count > 0)
+                            {
+                                _songs = TextSearchSongs(songs);
+                            }
 
-                                items = AddTreeViewItems(items, PackIconKind.Monitor, "My Computer", PackIconKind.Music, songs, PackIconKind.Folder, "Add Songs");
-                                _itemSource.Add(items);
-                                break;
-                        }
+                            items = AddTreeViewItems(items, PackIconKind.Monitor, "My Computer", PackIconKind.Music, songs, PackIconKind.Folder, "Add Songs");
+                            _itemSource.Add(items);
+                            break;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-
             }
         }
 
@@ -300,7 +295,7 @@ namespace bossdoyKaraoke_NOW.Media
             string fileName;
             string fileExt;
             Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
-            songsSource = new TreeViewModel() { PackIconKind = kindParent, Foreground = new SolidColorBrush(color), Title = parentTitle, CurrentTask = CurrentTask };
+           // songsSource = new TreeViewModel() { PackIconKind = kindParent, Foreground = new SolidColorBrush(color), Title = parentTitle, CurrentTask = CurrentTask };
             
             if (songs != null)
             {
@@ -393,35 +388,28 @@ namespace bossdoyKaraoke_NOW.Media
         /// <returns>Returns the total count and total duration of song is song queue</returns>
         public string AddToQueue(TrackInfo sender)
         {
-            try
+            lock (_songsQueue)
             {
-                lock (_songsQueue)
+                _isAddingToQueue = true;
+                AddRemoveFromQueue(sender, true);
+
+                if (_trackInfo != null)
                 {
-                    _isAddingToQueue = true;
-                    AddRemoveFromQueue(sender, true);
-
-                    if (_trackInfo != null)
+                    _songsQueue.Add(_trackInfo);
+                    if (_songsQueue.Count == 1 && CurrentPlayState == PlayState.Stopped)
                     {
-                        _songsQueue.Add(_trackInfo);
-                        if (_songsQueue.Count == 1 && CurrentPlayState == PlayState.Stopped)
-                        {
-                            _totalDuration += _trackInfo.Tags.duration;
-                            _songQueueTitle = "Song Queue (Empty)";
-                        }
-                        else
-                        {
-                            _totalDuration += _trackInfo.Tags.duration;
-                            _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
-                        }
+                        _totalDuration += _trackInfo.Tags.duration;
+                        _songQueueTitle = "Song Queue (Empty)";
                     }
-
-                    //WriteToQueueList();
-                    CreateKaraokeNowFiles(Create.SongQueueList);
+                    else
+                    {
+                        _totalDuration += _trackInfo.Tags.duration;
+                        _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
 
+                //WriteToQueueList();
+                CreateKaraokeNowFiles(Create.SongQueueList);
             }
 
             return _songQueueTitle; //string.Format("{0}", Utils.FixTimespan(_totalDuration, "HHMMSS"));
@@ -434,28 +422,21 @@ namespace bossdoyKaraoke_NOW.Media
         /// <returns>Returns the total count and total duration of song is song queue</returns>
         public string AddToQueueAsNext(TrackInfo sender)
         {
-            try
+            lock (_songsQueue)
             {
-                lock (_songsQueue)
+                _isAddingToQueue = true;
+                AddRemoveFromQueue(sender, true);
+
+                if (_trackInfo != null)
                 {
-                    _isAddingToQueue = true;
-                    AddRemoveFromQueue(sender, true);
+                    _songsQueue.Insert(0, _trackInfo);
 
-                    if (_trackInfo != null)
-                    {
-                        _songsQueue.Insert(0, _trackInfo);
-
-                        _totalDuration += _trackInfo.Tags.duration;
-                        _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
-                    }
-
-                    // WriteToQueueList();
-                    CreateKaraokeNowFiles(Create.SongQueueList);
+                    _totalDuration += _trackInfo.Tags.duration;
+                    _songQueueTitle = "Song Queue (" + _songsQueue.Count + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
                 }
-            }
-            catch (Exception ex)
-            {
 
+                // WriteToQueueList();
+                CreateKaraokeNowFiles(Create.SongQueueList);
             }
 
             return _songQueueTitle;
@@ -553,49 +534,40 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="mediaFileName">The file to be checked</param>
         public void PreProcessFiles(string mediaFileName)
         {
-            try
+            string cdgFileName = "";
+            // if (Regex.IsMatch(tbFileName.Text, "\\.zip$"))
+            // {
+            //     string myTempDir = Path.GetTempPath() + Path.GetRandomFileName();
+            //     Directory.CreateDirectory(myTempDir);
+            //     mTempDir = myTempDir;
+            //     myCDGFileName = Unzip.UnzipMP3GFiles(tbFileName.Text, myTempDir);
+            //     goto PairUpFiles;
+            // }
+            // else 
+            if (Regex.IsMatch(mediaFileName, "\\.cdg$", RegexOptions.IgnoreCase))
             {
-                string cdgFileName = "";
-                // if (Regex.IsMatch(tbFileName.Text, "\\.zip$"))
-                // {
-                //     string myTempDir = Path.GetTempPath() + Path.GetRandomFileName();
-                //     Directory.CreateDirectory(myTempDir);
-                //     mTempDir = myTempDir;
-                //     myCDGFileName = Unzip.UnzipMP3GFiles(tbFileName.Text, myTempDir);
-                //     goto PairUpFiles;
-                // }
-                // else 
-                if (Regex.IsMatch(mediaFileName, "\\.cdg$", RegexOptions.IgnoreCase))
-                {
-                    cdgFileName = mediaFileName;
-                    _mp3FileName = mediaFileName;
-                    goto PairUpCdgMp3;
-                }
-                else
-                {
-                    _mp3FileName = mediaFileName;
-                    if (!_isAddingToQueue)
-                        _isCdgFileType = false;
-                }
-
-                PairUpCdgMp3:
-                string mp3FileName = Regex.Replace(cdgFileName, "\\.cdg$", ".mp3", RegexOptions.IgnoreCase);
-                if (File.Exists(mp3FileName))
-                {
-                    _mp3FileName = mp3FileName;
-                    //_mediaFileName = cdgFileName;
-                    //// m_TempDir = "";
-                    if (!_isAddingToQueue)
-                        _isCdgFileType = true;
-                }
-
+                cdgFileName = mediaFileName;
+                _mp3FileName = mediaFileName;
+                goto PairUpCdgMp3;
             }
-            catch (Exception ex)
+            else
             {
+                _mp3FileName = mediaFileName;
+                if (!_isAddingToQueue)
+                    _isCdgFileType = false;
+            }
 
+            PairUpCdgMp3:
+            string mp3FileName = Regex.Replace(cdgFileName, "\\.cdg$", ".mp3", RegexOptions.IgnoreCase);
+            if (File.Exists(mp3FileName))
+            {
+                _mp3FileName = mp3FileName;
+                //_mediaFileName = cdgFileName;
+                //// m_TempDir = "";
+                if (!_isAddingToQueue)
+                    _isCdgFileType = true;
             }
         }
-
 
         /// <summary>
         /// Method to check if filename already exist and return a new name.
@@ -651,68 +623,61 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="isAdding">Check method if adding or removing a song</param>
         private void AddRemoveFromQueue(TrackInfo sender, bool isAdding = false)
         {
-            try
+            if (isAdding) //For adding songs to SongQueue
             {
-                if (isAdding) //For adding songs to SongQueue
+                var count = 0;
+                PreProcessFiles(sender.FilePath);
+                _isAddingToQueue = false;
+
+                if (!File.Exists(_mp3FileName))
                 {
-                    var count = 0;
-                    PreProcessFiles(sender.FilePath);
-                    _isAddingToQueue = false;
-
-                    if (!File.Exists(_mp3FileName))
+                    if (CurrentTask == NewTask.LOAD_QUEUE_SONGS)
                     {
-                        if (CurrentTask == NewTask.LOAD_QUEUE_SONGS)
-                        {
-                            _trackInfo = null;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Cannot find " + Path.GetFileName(_mp3FileName) + " file to play.");
-                            _trackInfo = null;
-                        }
-                        return;
-                    }
-
-                    if (CurrentPlayState == PlayState.Playing)
-                    {
-                        count = _songsQueue.Count + 1;
-                    }
-
-                    if (GetExtPatern(_mp3FileName).EndsWith(".mp3"))
-                    {
-                        _trackInfo = new TrackInfo(sender);
-                        _trackInfo.ID = count.ToString();
-
-                        if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
-                            _isCdgFileType = true;
+                        _trackInfo = null;
                     }
                     else
                     {
-                        _trackInfo = new TrackInfo();
-                        Vlc.Instance.GetDuration(_mp3FileName);
-
-                        double vlcTimeDuration = GetVlcTimeOrDuration(Convert.ToDouble(Vlc.Instance.GetTimeDuration));
-
-                        if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
-                            IsCdgFileType = false;
-
-                        _trackInfo.ID = count.ToString();
-                        _trackInfo.Name = sender.Name;
-                        _trackInfo.Artist = sender.Artist;
-                        _trackInfo.Duration = Utils.FixTimespan(vlcTimeDuration, "HHMMSS");
-                        _trackInfo.FilePath = sender.FilePath;
-                        _trackInfo.Tags = new TAG_INFO();
-                        _trackInfo.Tags.duration = vlcTimeDuration;
+                        MessageBox.Show("Cannot find " + Path.GetFileName(_mp3FileName) + " file to play.");
+                        _trackInfo = null;
                     }
+                    return;
                 }
-                else //Removing song from SongQueue
+
+                if (CurrentPlayState == PlayState.Playing)
                 {
-                    _totalDuration -= sender.Tags.duration;
+                    count = _songsQueue.Count + 1;
+                }
+
+                if (GetExtPatern(_mp3FileName).EndsWith(".mp3"))
+                {
+                    _trackInfo = new TrackInfo(sender);
+                    _trackInfo.ID = count.ToString();
+
+                    if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
+                        _isCdgFileType = true;
+                }
+                else
+                {
+                    _trackInfo = new TrackInfo();
+                    Vlc.Instance.GetDuration(_mp3FileName);
+
+                    double vlcTimeDuration = GetVlcTimeOrDuration(Convert.ToDouble(Vlc.Instance.GetTimeDuration));
+
+                    if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
+                        IsCdgFileType = false;
+
+                    _trackInfo.ID = count.ToString();
+                    _trackInfo.Name = sender.Name;
+                    _trackInfo.Artist = sender.Artist;
+                    _trackInfo.Duration = Utils.FixTimespan(vlcTimeDuration, "HHMMSS");
+                    _trackInfo.FilePath = sender.FilePath;
+                    _trackInfo.Tags = new TAG_INFO();
+                    _trackInfo.Tags.duration = vlcTimeDuration;
                 }
             }
-            catch (Exception ex)
+            else //Removing song from SongQueue
             {
-                Console.WriteLine("AddRemoveFromQueue");
+                _totalDuration -= sender.Tags.duration;
             }
         }
 
@@ -721,15 +686,9 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         private void WriteToQueueList() // not in use
         {
-            try
-            {
-                var songsPath = _songsQueue.Select(s => s.FilePath).ToArray();
-                Directory.CreateDirectory(_filePath);
-                File.WriteAllLines(_songQueueList, songsPath);
-            }
-            catch (Exception ex)
-            {
-            }
+            var songsPath = _songsQueue.Select(s => s.FilePath).ToArray();
+            Directory.CreateDirectory(_filePath);
+            File.WriteAllLines(_songQueueList, songsPath);
         }
 
         /// <summary>
@@ -744,88 +703,81 @@ namespace bossdoyKaraoke_NOW.Media
             string title = string.Empty;
             int itemID = 0;
 
-            try
+            switch (create)
             {
-                switch (create)
-                {
-                    case Create.Favorites:
+                case Create.Favorites:
 
-                        if (sender.CurrentTask != NewTask.ADD_NEW_FAVORITES)  
+                    if (sender.CurrentTask != NewTask.ADD_NEW_FAVORITES)
+                    {
+                        if (sender.CurrentTask == NewTask.REMOVE_SELECTED_FAVORITE) //Delete song from selected favorites
                         {
-                            if (sender.CurrentTask == NewTask.REMOVE_SELECTED_FAVORITE) //Delete song from selected favorites
-                            {
-                                itemID = sender.ID;
-                                title = sender.Title + ".fav";
-                                file = _favorites[itemID].Select(s => s.FilePath).ToArray();
-                            }
-                            else //Creates favorites from song colletions
-                            {
-                                itemID = sender.ID;
-                                title = sender.Title + ".fav";
-                                file = _songs[itemID].Select(s => s.FilePath).ToArray();
-                                _favorites.Add(new ObservableCollection<TrackInfo>(_songs[itemID]));
-                            }
+                            itemID = sender.ID;
+                            title = sender.Title + ".fav";
+                            file = _favorites[itemID].Select(s => s.FilePath).ToArray();
                         }
-                        else // Creates new empty favorites file use for adding song from played song and from songQueue
+                        else //Creates favorites from song colletions
                         {
-                            // 1 = Favorites index in treeview;
-                            itemID = _itemSource[_favoritesIndex].Items[0].ID;
-                            title = _itemSource[_favoritesIndex].Items[0].Title + ".fav";
-                            _favorites.Add(new ObservableCollection<TrackInfo>());
+                            itemID = sender.ID;
+                            title = sender.Title + ".fav";
+                            file = _songs[itemID].Select(s => s.FilePath).ToArray();
+                            _favorites.Add(new ObservableCollection<TrackInfo>(_songs[itemID]));
                         }
+                    }
+                    else // Creates new empty favorites file use for adding song from played song and from songQueue
+                    {
+                        // 1 = Favorites index in treeview;
+                        itemID = _itemSource[_favoritesIndex].Items[0].ID;
+                        title = _itemSource[_favoritesIndex].Items[0].Title + ".fav";
+                        _favorites.Add(new ObservableCollection<TrackInfo>());
+                    }
 
-                        Directory.CreateDirectory(_favoritesPath);
-                        File.WriteAllLines(_favoritesPath + title, file);
-                        break;
-                    case Create.FromPlayedSongs:
-                        file = _playedSongs.Select(s => s.FilePath).ToArray();
+                    Directory.CreateDirectory(_favoritesPath);
+                    File.WriteAllLines(_favoritesPath + title, file);
+                    break;
+                case Create.FromPlayedSongs:
+                    file = _playedSongs.Select(s => s.FilePath).ToArray();
 
-                        _favorites[sender.ID] = new ObservableCollection<TrackInfo>(_playedSongs);
+                    _favorites[sender.ID] = new ObservableCollection<TrackInfo>(_playedSongs);
 
-                        Directory.CreateDirectory(_filePath);
-                        File.WriteAllLines(_favoritesPath + sender.Title + ".fav", file);
-                        break;
-                    case Create.NewSongs:
-                        // 2 = My Computer index in treeview;
-                        if (sender != null)
+                    Directory.CreateDirectory(_filePath);
+                    File.WriteAllLines(_favoritesPath + sender.Title + ".fav", file);
+                    break;
+                case Create.NewSongs:
+                    // 2 = My Computer index in treeview;
+                    if (sender != null)
+                    {
+                        if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
                         {
-                            if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
-                            {
-                                itemID = sender.ID;
-                                title = sender.Title + ".bkN";
-                            }
+                            itemID = sender.ID;
+                            title = sender.Title + ".bkN";
                         }
-                        else
-                        {
-                            itemID = _itemSource[_myComputerIndex].Items[0].ID;
-                            title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
-                        }
+                    }
+                    else
+                    {
+                        itemID = _itemSource[_myComputerIndex].Items[0].ID;
+                        title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
+                    }
 
-                        //if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
-                        //{
-                        //    itemID = sender.ID;
-                        //    title = sender.Title + ".bkN";
-                        //}
-                        //else
-                        //{
-                        //    itemID = _itemSource[_myComputerIndex].Items[0].ID;
-                        //    title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
-                        //}
+                    //if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
+                    //{
+                    //    itemID = sender.ID;
+                    //    title = sender.Title + ".bkN";
+                    //}
+                    //else
+                    //{
+                    //    itemID = _itemSource[_myComputerIndex].Items[0].ID;
+                    //    title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
+                    //}
 
-                        file = _songs[itemID].Select(s => s.FilePath).ToArray();
-                        Directory.CreateDirectory(_songsPath);
-                        File.WriteAllLines(_songsPath + title, file);
-                        break;
-                    case Create.SongQueueList:
-                        file = _songsQueue.Select(s => s.FilePath).ToArray();
-                        Directory.CreateDirectory(_filePath);
-                        File.WriteAllLines(_songQueueList, file);
-                        break;
-                }
-
-            }
-            catch (Exception ex)
-            {
+                    file = _songs[itemID].Select(s => s.FilePath).ToArray();
+                    Directory.CreateDirectory(_songsPath);
+                    File.WriteAllLines(_songsPath + title, file);
+                    break;
+                case Create.SongQueueList:
+                    file = _songsQueue.Select(s => s.FilePath).ToArray();
+                    Directory.CreateDirectory(_filePath);
+                    File.WriteAllLines(_songQueueList, file);
+                    break;
             }
         }
 
@@ -893,25 +845,17 @@ namespace bossdoyKaraoke_NOW.Media
             int count = CurrentTask == NewTask.LOAD_QUEUE_SONGS ? 0 : 1;
 
             var AllSongs = new List<ObservableCollection<TrackInfo>>();
-            try
+
+            for (int i = 0; i < sDir.Count; i++)
             {
+                AllSongs.Add(new ObservableCollection<TrackInfo>(File.ReadAllLines(sDir[i])
+                    .Where(w => _extensions.Contains(Path.GetExtension(w)))
+                    .Select(s =>
+                    {
+                        return trackInfo(s, count++);
+                    }).ToList()));
 
-                for (int i = 0; i < sDir.Count; i++)
-                {
-                    AllSongs.Add(new ObservableCollection<TrackInfo>(File.ReadAllLines(sDir[i])
-                        .Where(w => _extensions.Contains(Path.GetExtension(w)))
-                        .Select(s =>
-                        {
-                            return trackInfo(s, count++);
-                        }).ToList()));
-
-                    count = 1;
-                }
-            }
-            catch (Exception ex)
-            {
-                // Logger.LogFile(ex.Message, "", "TextSearchSongs", ex.LineNumber(), this.m_thisControl.Name);
-
+                count = 1;
             }
 
             return AllSongs;
@@ -980,65 +924,56 @@ namespace bossdoyKaraoke_NOW.Media
             string SongTitle = "";
             string SongArtist = "";
             string pattern = @"-\s+|–\s+"; //@"-\s+|–\s+|-|–";
+            string fName = System.IO.Path.GetFileName(file);
+            string[] regXpattern = Regex.Split(fName, pattern);
+            // var containsSwears = extensions.Any(w => file.Contains(w));
 
-            try
+            Regex regX = new Regex(_extPattern, RegexOptions.IgnoreCase);
+
+            switch (regXpattern.Length)
             {
-                string fName = System.IO.Path.GetFileName(file);
-                string[] regXpattern = Regex.Split(fName, pattern);
-                // var containsSwears = extensions.Any(w => file.Contains(w));
-
-                Regex regX = new Regex(_extPattern, RegexOptions.IgnoreCase);
-
-                switch (regXpattern.Length)
-                {
-                    case 1:
-                        SongTitle = regX.Replace(regXpattern[0], "");
-                        SongArtist = regX.Replace(regXpattern[0], "");
-                        //count++;
-                        break;
-                    case 2:
-                        SongTitle = regX.Replace(regXpattern[regXpattern.Length - 1], "");
-                        SongArtist = regX.Replace(regXpattern[0], "");
-                        //count++;
-                        break;
-                    case 3:
-                        SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
-                        SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
-                        //count++;
-                        break;
-                    case 4:
-                        SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
-                        SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
-                        //count++;
-                        break;
-                    case 5:
-                        SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
-                        SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
-                        //count++;
-                        break;
-                    case 6:
-                        SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
-                        SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
-                        //count++;
-                        break;
-                    case 7:
-                        SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
-                        SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
-                        //count++;
-                        break;
-                    case 8:
-                        SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
-                        SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
-                        //count++;
-                        break;
-                }
-
+                case 1:
+                    SongTitle = regX.Replace(regXpattern[0], "");
+                    SongArtist = regX.Replace(regXpattern[0], "");
+                    //count++;
+                    break;
+                case 2:
+                    SongTitle = regX.Replace(regXpattern[regXpattern.Length - 1], "");
+                    SongArtist = regX.Replace(regXpattern[0], "");
+                    //count++;
+                    break;
+                case 3:
+                    SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
+                    SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
+                    //count++;
+                    break;
+                case 4:
+                    SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
+                    SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
+                    //count++;
+                    break;
+                case 5:
+                    SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
+                    SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
+                    //count++;
+                    break;
+                case 6:
+                    SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
+                    SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
+                    //count++;
+                    break;
+                case 7:
+                    SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
+                    SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
+                    //count++;
+                    break;
+                case 8:
+                    SongTitle = regX.Replace(regXpattern[(regXpattern.Length - 1)], "");
+                    SongArtist = regX.Replace(regXpattern[(regXpattern.Length - 2)], "");
+                    //count++;
+                    break;
             }
-            catch (Exception ex)
-            {
 
-
-            }
             TrackInfo trackInfo = new TrackInfo();
             trackInfo.ID = Convert.ToString(count);
             trackInfo.Name = SongTitle;

@@ -358,33 +358,27 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         public string GetNextTrackInfo()
         {
-            try
+
+            string showNextTrack = MediaControls.Instance.RemainingTime.Trim();
+
+            if (showNextTrack != string.Empty || showNextTrack != "")
             {
-                string showNextTrack = MediaControls.Instance.RemainingTime.Trim();
+                // int minute = Convert.ToInt32(showNextTrack.Substring(3, 2));
+                // int second = Convert.ToInt32(showNextTrack.Substring(6, 2));
+                double second = TimeSpan.Parse(showNextTrack).TotalSeconds;
 
-                if (showNextTrack != string.Empty || showNextTrack != "")
+                if (second == 30)
                 {
-                    // int minute = Convert.ToInt32(showNextTrack.Substring(3, 2));
-                    // int second = Convert.ToInt32(showNextTrack.Substring(6, 2));
-                    double second = TimeSpan.Parse(showNextTrack).TotalSeconds;
-
-                    if (second == 30)
+                    lock (_songsSource.SongsQueue)
                     {
-                        lock (_songsSource.SongsQueue)
+                        if (_songsSource.SongQueueCount > 0)
                         {
-                            if (_songsSource.SongQueueCount > 0)
-                            {
-                                _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
-                                string nextSong = _songsSource.SongsQueue[0].Name + "[ " + _songsSource.SongsQueue[0].Artist + " ]";
-                                _getNestSongInfo = nextSong;
-                            }
+                            _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
+                            string nextSong = _songsSource.SongsQueue[0].Name + "[ " + _songsSource.SongsQueue[0].Artist + " ]";
+                            _getNestSongInfo = nextSong;
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("GetNextTrackInfo");
             }
 
             return _getNestSongInfo;
@@ -395,26 +389,21 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         public void PlayNext()
         {
-            try
+
+            lock (_songsSource.SongsQueue)
             {
-                lock (_songsSource.SongsQueue)
+                if (_songsSource.SongQueueCount > 0)
                 {
-                    if (_songsSource.SongQueueCount > 0)
-                    {
-                        if (_currentTrack != null)
-                            Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
+                    if (_currentTrack != null)
+                        Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
 
-                        _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
+                    _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
 
-                        if (_songsSource.IsCdgFileType)
-                            LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
-                        else
-                            LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
-                    }
+                    if (_songsSource.IsCdgFileType)
+                        LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                    else
+                        LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
                 }
-            }
-            catch (Exception ex)
-            {
             }
         }
 
@@ -552,116 +541,88 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         private void InitBass()
         {
-            try
+            CurrentPlayState = PlayState.Stopped;
+            _isBassInitialized = BassAudio.Initialize(AppMainWindowHandle);
+
+            if (_isBassInitialized)
             {
-                CurrentPlayState = PlayState.Stopped;
-                _isBassInitialized = BassAudio.Initialize(AppMainWindowHandle);
+                _mixerStallSync = new SYNCPROC(OnMixerStall);
+                Bass.BASS_ChannelSetSync(BassAudio.MixerChannel, BASSSync.BASS_SYNC_STALL, 0L, _mixerStallSync, IntPtr.Zero);
 
-                if (_isBassInitialized)
-                {
-                    _mixerStallSync = new SYNCPROC(OnMixerStall);
-                    Bass.BASS_ChannelSetSync(BassAudio.MixerChannel, BASSSync.BASS_SYNC_STALL, 0L, _mixerStallSync, IntPtr.Zero);
-
-                    Bass.BASS_ChannelPlay(BassAudio.MixerChannel, false);
-                }
-            }
-            catch (Exception ex)
-            {
-
+                Bass.BASS_ChannelPlay(BassAudio.MixerChannel, false);
             }
         }
 
         private void AddToBassMixer()
         {
-            try
+            lock (_songsSource.SongsQueue)
             {
-                lock (_songsSource.SongsQueue)
-                {
-                    _track = new BassAudio();
-                    _track.Tags = _songsSource.SongsQueue[0].Tags as TAG_INFO;
+                _track = new BassAudio();
+                _track.Tags = _songsSource.SongsQueue[0].Tags as TAG_INFO;
 
-                    _track.TrackSync = new SYNCPROC(OnTrackSync);
-                    _track.Volume = Volume * 0.01f;
-                    _track.CreateStream();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("AddToBassMixer");
+                _track.TrackSync = new SYNCPROC(OnTrackSync);
+                _track.Volume = Volume * 0.01f;
+                _track.CreateStream();
             }
         }
 
         private void PlayNextTrack()
         {
-            try
+            lock (_songsSource.SongsQueue)
             {
-                lock (_songsSource.SongsQueue)
+                _getNestSongInfo = "";
+                MediaControls.Instance.VocalChannel = "BAL";
+                Channel = ChannelSelected.Right;
+
+                if (_songsSource.SongQueueCount > 0)
                 {
-                    _getNestSongInfo = "";
-                    MediaControls.Instance.VocalChannel = "BAL";
-                    Channel = ChannelSelected.Right;
+                    MediaControls.Instance.SongTitle = _songsSource.SongsQueue[0].Name;
+                    MediaControls.Instance.SongArtist = _songsSource.SongsQueue[0].Artist;
 
-                    if (_songsSource.SongQueueCount > 0)
+                    if (_songsSource.IsCdgFileType)
                     {
-                        MediaControls.Instance.SongTitle = _songsSource.SongsQueue[0].Name;
-                        MediaControls.Instance.SongArtist = _songsSource.SongsQueue[0].Artist;
-
-                        if (_songsSource.IsCdgFileType)
-                        {
-                            _previousTrack = _currentTrack;
-                            _currentTrack = _track as BassAudio;
-                            VlcPlayer.PlayBackGroundVideo();
-                            _currentTrack.Play();
-                        }
-                        else
-                        {
-                            VlcPlayer.PlayVideoke(_songsSource.SongsQueue[0].FilePath, new VlcSync.SYNCPROC(OnVlcSync));
-                        }
-
-                       _songsSource.RemoveFromQueue(_songsSource.SongsQueue[0], true);
-                       
+                        _previousTrack = _currentTrack;
+                        _currentTrack = _track as BassAudio;
+                        VlcPlayer.PlayBackGroundVideo();
+                        _currentTrack.Play();
                     }
                     else
                     {
-                        Stop();
+                        VlcPlayer.PlayVideoke(_songsSource.SongsQueue[0].FilePath, new VlcSync.SYNCPROC(OnVlcSync));
                     }
+
+                    _songsSource.RemoveFromQueue(_songsSource.SongsQueue[0], true);
+
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("PlayNextTrack");
+                else
+                {
+                    Stop();
+                }
             }
         }
 
         private void OnVlcSync()
         {
-            try
+            if (_songsSource.SongQueueCount <= 0)
             {
-                if (_songsSource.SongQueueCount <= 0)
+                // END SYNC
+                Application.Current.Dispatcher.BeginInvoke(new Action(PlayNextTrack));
+            }
+            else
+            {
+                // POS SYNC
+                Application.Current.Dispatcher.BeginInvoke(new Action(delegate
                 {
-                    // END SYNC
-                    Application.Current.Dispatcher.BeginInvoke(new Action(PlayNextTrack));
-                }
-                else
-                {
-                    // POS SYNC
-                    Application.Current.Dispatcher.BeginInvoke(new Action(delegate
-                    {
                         // this code runs on the UI thread!
                         if (_songsSource.IsCdgFileType)
-                            LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
-                        else
-                            LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
+                        LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                    else
+                        LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
 
                         // and fade out and stop the 'previous' track (for 2 seconds)
                         if (_previousTrack != null)
-                            Bass.BASS_ChannelSlideAttribute(_previousTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
-                    }));
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("OnVlcSync");
+                        Bass.BASS_ChannelSlideAttribute(_previousTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
+                }));
             }
         }
 
@@ -676,42 +637,34 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="user"></param>
         private void OnTrackSync(int handle, int channel, int data, IntPtr user)
         {
-            try
+            if (_songsSource.SongQueueCount <= 0)
+                _currentTrack.NextTrackSync = 0;
+            else
+                _currentTrack.NextTrackSync = 1;
+
+            user = new IntPtr(_currentTrack.NextTrackSync);
+
+            if (user.ToInt32() == 0)
             {
-                if (_songsSource.SongQueueCount <= 0)
-                    _currentTrack.NextTrackSync = 0;
-                else
-                    _currentTrack.NextTrackSync = 1;
-
-                user = new IntPtr(_currentTrack.NextTrackSync);
-
-                if (user.ToInt32() == 0)
-                {
-                    // END SYNC
-                    Application.Current.Dispatcher.BeginInvoke( new Action(PlayNextTrack));
-                }
-                else
-                {
-                    // POS SYNC
-                    Application.Current.Dispatcher.BeginInvoke( new Action(delegate
-                    {
+                // END SYNC
+                Application.Current.Dispatcher.BeginInvoke(new Action(PlayNextTrack));
+            }
+            else
+            {
+                // POS SYNC
+                Application.Current.Dispatcher.BeginInvoke(new Action(delegate
+               {
                         // this code runs on the UI thread!
                         if (_songsSource.IsCdgFileType)
-                            LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
-                        else
-                            LoadVideokeFile(_songsSource.SongsQueue[0].FilePath); 
-                        
+                       LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                   else
+                       LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
+
                         // and fade out and stop the 'previous' track (for 2 seconds)
                         if (_previousTrack != null)
-                            Bass.BASS_ChannelSlideAttribute(_previousTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
-                    }));
-                }
+                       Bass.BASS_ChannelSlideAttribute(_previousTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
+               }));
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("OnTrackSync");
-            }
-
         }
 
         /// <summary>

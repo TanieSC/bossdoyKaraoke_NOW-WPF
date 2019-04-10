@@ -11,7 +11,8 @@
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d"
-       Title="MainWindow" Height="630" Width="820" MinWidth="820" MinHeight="630" Closing="Window_Closing">
+        Icon="bkn_ico.ico"
+       Title="BossDoyKaraoke_Now" Height="630" Width="820" MinWidth="820" MinHeight="630" Closing="Window_Closing">
     <Window.Resources>
         <vm:MainMenuModel x:Key="MainMenuModel"></vm:MainMenuModel>
         <vm:TreeViewDialogModel x:Key="TreeViewDialogModel"/>
