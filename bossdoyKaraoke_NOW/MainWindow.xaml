@@ -38,6 +38,16 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>
+                <!--<MenuItem Header="Add Favorites" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="FolderOpen" />
+                    </MenuItem.Icon>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding AddSongsCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>-->
                 <MenuItem Header="Add Songs" >
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="FolderOpen" />

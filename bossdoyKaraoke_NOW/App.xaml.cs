@@ -40,6 +40,7 @@ namespace bossdoyKaraoke_NOW
             // Wait for the blocker to be signaled before continuing. This is essentially the same as: while(ResetSplashCreated.NotSet) {}
             ResetSplashCreated.WaitOne();
             base.OnStartup(e);
+
             SetupExceptionHandling();
             ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
