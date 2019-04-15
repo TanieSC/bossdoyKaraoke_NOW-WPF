@@ -47,7 +47,7 @@ namespace bossdoyKaraoke_NOW.Media
         private List<ITreeViewModel> _itemSource;
         private static SongsSource _instance;
         private List<ObservableCollection<TrackInfo>> _songs = new List<ObservableCollection<TrackInfo>>();
-        private List<ObservableCollection<TrackInfo>> _favorites = new List<ObservableCollection<TrackInfo>>();
+        private List<ObservableCollection<TrackInfo>> _favorites;// = new List<ObservableCollection<TrackInfo>>();
         private List<TrackInfo> _playedSongs = new List<TrackInfo>();
         private List<TrackInfo> _songsQueue;
         private TrackInfo _trackInfo;
@@ -295,7 +295,7 @@ namespace bossdoyKaraoke_NOW.Media
             string fileName;
             string fileExt;
             Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
-           // songsSource = new TreeViewModel() { PackIconKind = kindParent, Foreground = new SolidColorBrush(color), Title = parentTitle, CurrentTask = CurrentTask };
+            songsSource = new TreeViewModel() { PackIconKind = kindParent, Foreground = new SolidColorBrush(color), Title = parentTitle, CurrentTask = CurrentTask };
             
             if (songs != null)
             {
