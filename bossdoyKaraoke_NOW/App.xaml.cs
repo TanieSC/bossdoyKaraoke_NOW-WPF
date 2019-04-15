@@ -58,7 +58,6 @@ namespace bossdoyKaraoke_NOW
             System.Windows.Threading.Dispatcher.Run();
         }
 
-
         private void SetupExceptionHandling()
         {
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
