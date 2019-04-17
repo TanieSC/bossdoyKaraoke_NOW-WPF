@@ -363,8 +363,6 @@ namespace bossdoyKaraoke_NOW.Media
 
             if (showNextTrack != string.Empty || showNextTrack != "")
             {
-                // int minute = Convert.ToInt32(showNextTrack.Substring(3, 2));
-                // int second = Convert.ToInt32(showNextTrack.Substring(6, 2));
                 double second = TimeSpan.Parse(showNextTrack).TotalSeconds;
 
                 if (second == 30)
@@ -560,8 +558,8 @@ namespace bossdoyKaraoke_NOW.Media
         {
             lock (_songsSource.SongsQueue)
             {
-                //if (_track != null)
-                //    _track.Dispose();
+                if (_track != null)
+                    _track.Dispose();
 
                 _track = new BassAudio();
                 _track.Tags = _songsSource.SongsQueue[0].Tags as TAG_INFO;
