@@ -862,14 +862,6 @@ namespace bossdoyKaraoke_NOW.Media
         }
 
         /// <summary>
-        ///  Set media info and display the Title, Artist and time duration to UI
-        /// </summary>
-        private void SetMediaInfo(IMediaControls controls)
-        {
-
-        }
-
-        /// <summary>
         /// Get the cdg file and replace cdg to mp3
         /// </summary>
         /// <param name="fileName">the filename to replace</param>

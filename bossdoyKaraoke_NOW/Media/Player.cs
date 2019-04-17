@@ -397,6 +397,9 @@ namespace bossdoyKaraoke_NOW.Media
                     if (_currentTrack != null)
                         Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
 
+                    if (_previousTrack != null)
+                        Bass.BASS_StreamFree(_previousTrack.Channel);
+
                     _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
 
                     if (_songsSource.IsCdgFileType)
@@ -557,6 +560,9 @@ namespace bossdoyKaraoke_NOW.Media
         {
             lock (_songsSource.SongsQueue)
             {
+                //if (_track != null)
+                //    _track.Dispose();
+
                 _track = new BassAudio();
                 _track.Tags = _songsSource.SongsQueue[0].Tags as TAG_INFO;
 
@@ -654,15 +660,19 @@ namespace bossdoyKaraoke_NOW.Media
                 // POS SYNC
                 Application.Current.Dispatcher.BeginInvoke(new Action(delegate
                {
-                        // this code runs on the UI thread!
-                        if (_songsSource.IsCdgFileType)
+                   // this code runs on the UI thread!
+                   if (_songsSource.IsCdgFileType)
                        LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
                    else
                        LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
 
-                        // and fade out and stop the 'previous' track (for 2 seconds)
-                        if (_previousTrack != null)
+                   // and fade out and stop the 'previous' track (for 2 seconds)
+                   if (_previousTrack != null)
                        Bass.BASS_ChannelSlideAttribute(_previousTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
+
+                   // set vlc volume to 0 when not playing videoke file
+                   VlcPlayer.Volume = 0f;
+
                }));
             }
         }
@@ -676,14 +686,22 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="user"></param>
         private void OnMixerStall(int handle, int channel, int data, IntPtr user)
         {
-            try
+            Application.Current.Dispatcher.BeginInvoke(new Action(delegate
             {
-               
-            }
-            catch (Exception ex)
-            {
+                // this code runs on the UI thread!
+                if (data == 0)
+                {
+                    // mixer stalled
+                    if (!_isPlayingBass && !_isPlayingVlc)
+                    {
+                        _track = null;
+                        _currentTrack = null;
+                        _previousTrack = null;
 
-            }
+                        Console.WriteLine("mixer stalled");
+                    }
+                }
+            }));
         }
 
 

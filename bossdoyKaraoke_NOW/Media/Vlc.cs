@@ -215,7 +215,7 @@ namespace bossdoyKaraoke_NOW.Media
 
             CurrentPlayState = PlayState.Playing;
 
-            Console.WriteLine("VLC: " + Volume);
+            //Console.WriteLine("VLC: " + Volume);
             return true;
         }
 
