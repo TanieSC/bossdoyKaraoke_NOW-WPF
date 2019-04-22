@@ -399,6 +399,8 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 if (_songsSource.SongQueueCount > 0)
                 {
+
+
                     if (_currentTrack != null)
                         Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
 

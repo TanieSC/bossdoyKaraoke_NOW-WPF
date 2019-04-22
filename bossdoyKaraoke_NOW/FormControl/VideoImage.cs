@@ -55,6 +55,8 @@ namespace bossdoyKaraoke_NOW.FormControl
         {
             LoadResources();
 
+            _player.DbLevel();
+
             if (_player.IsPlayingBass)
             {
                 if (_player.CDGmp3 != null)
@@ -78,7 +80,7 @@ namespace bossdoyKaraoke_NOW.FormControl
                     RenderContext.CdgContext.EndDraw();
                 }
 
-                _player.DbLevel();
+               // _player.DbLevel();
             }
 
             if (_player.IsPlayingVlc)
