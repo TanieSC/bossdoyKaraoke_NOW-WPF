@@ -407,18 +407,17 @@ namespace bossdoyKaraoke_NOW.Media
 
                     _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
 
-                    if (_isPlayingVlc)
-                        VlcVolumeSlideAttribute();
-                    else
-                    {
+                    //if (_isPlayingVlc)
+                    //    VlcVolumeSlideAttribute();
+                    //else
+                    //{
                         if (_songsSource.IsCdgFileType)
                             LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
                         else
                             LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
-                    }
+                   // }
 
-
-                    Console.WriteLine(VlcPlayer.Volume);
+                   // Console.WriteLine(VlcPlayer.Volume);
                 }
             }
         }
