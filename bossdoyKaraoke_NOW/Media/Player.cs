@@ -41,6 +41,8 @@ namespace bossdoyKaraoke_NOW.Media
         private long _renderAtPosition;
         private string _getNestSongInfo = string.Empty;
         private double _progressBarMaximum = 2000;
+        private DispatcherTimer _vlcVolumeSlideAttribute;
+        private int _vlcVolumeCounter;
 
         public bool IsPlayingBass { get { return _isPlayingBass; } }
         public bool IsPlayingVlc { get { return _isPlayingVlc; } }
@@ -158,6 +160,11 @@ namespace bossdoyKaraoke_NOW.Media
 
             //Vocal Channel default value is Balance = ChannelSelected.None)
             Channel = ChannelSelected.Right;
+
+            _vlcVolumeSlideAttribute = new DispatcherTimer();
+            _vlcVolumeSlideAttribute.Tick += _vlcVolumeSlideAttribute_Tick;
+            _vlcVolumeSlideAttribute.IsEnabled = false;
+            _vlcVolumeSlideAttribute.Interval = TimeSpan.FromMilliseconds(100);
         }
 
         public void LoadCDGFile(string cdgFileName)
@@ -400,10 +407,15 @@ namespace bossdoyKaraoke_NOW.Media
 
                     _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
 
-                    if (_songsSource.IsCdgFileType)
-                        LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                    if (_isPlayingVlc)
+                        VlcVolumeSlideAttribute();
                     else
-                        LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
+                    {
+                        if (_songsSource.IsCdgFileType)
+                            LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                        else
+                            LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
+                    }
                 }
             }
         }
@@ -554,13 +566,37 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        private void _vlcVolumeSlideAttribute_Tick(object sender, EventArgs e)
+        {
+            _vlcVolumeCounter--;
+
+            if (_isPlayingVlc)
+                VlcPlayer.Volume = _vlcVolumeCounter;
+
+            if (_vlcVolumeCounter == 0)
+            {
+                _vlcVolumeSlideAttribute.Stop();
+
+                if (_songsSource.IsCdgFileType)
+                    LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                else
+                    LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
+            }
+        }
+
+        private void VlcVolumeSlideAttribute()
+        {
+            int vlcVolume = (int)Volume + 25;
+            int interval = 2000 / vlcVolume;
+            _vlcVolumeCounter = vlcVolume;
+            _vlcVolumeSlideAttribute.Interval = TimeSpan.FromMilliseconds(interval);
+            _vlcVolumeSlideAttribute.Start();
+        }
+
         private void AddToBassMixer()
         {
             lock (_songsSource.SongsQueue)
             {
-                if (_track != null)
-                    _track.Dispose();
-
                 _track = new BassAudio();
                 _track.Tags = _songsSource.SongsQueue[0].Tags as TAG_INFO;
 
@@ -589,6 +625,7 @@ namespace bossdoyKaraoke_NOW.Media
                         _currentTrack = _track as BassAudio;
                         VlcPlayer.PlayBackGroundVideo();
                         _currentTrack.Play();
+
                     }
                     else
                     {
@@ -669,7 +706,7 @@ namespace bossdoyKaraoke_NOW.Media
                        Bass.BASS_ChannelSlideAttribute(_previousTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
 
                    // set vlc volume to 0 when not playing videoke file
-                   VlcPlayer.Volume = 0f;
+                   //VlcPlayer.Volume = 0f;
 
                }));
             }
