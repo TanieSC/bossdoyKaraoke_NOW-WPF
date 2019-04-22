@@ -416,6 +416,9 @@ namespace bossdoyKaraoke_NOW.Media
                         else
                             LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
                     }
+
+
+                    Console.WriteLine(VlcPlayer.Volume);
                 }
             }
         }
@@ -733,7 +736,7 @@ namespace bossdoyKaraoke_NOW.Media
                         _currentTrack = null;
                         _previousTrack = null;
 
-                        Console.WriteLine("mixer stalled");
+                        //Console.WriteLine("mixer stalled");
                     }
                 }
             }));

@@ -78,7 +78,7 @@ namespace bossdoyKaraoke_NOW.Media
 
                 if (info.IsEnabled && info.IsDefault)
                 {
-                    Console.WriteLine(info.ToString());
+                    //Console.WriteLine(info.ToString());
                     // m_defaultdevicelongname = info.name;
                     Bass.BASS_SetDevice(n);
                     //  m_defaultdevice = n;
@@ -96,7 +96,7 @@ namespace bossdoyKaraoke_NOW.Media
             Bass.BASS_SetVolume(0.3051406f);
    
 
-            Console.WriteLine("BASS_SetVolume: " + Bass.BASS_GetVolume());
+            //Console.WriteLine("BASS_SetVolume: " + Bass.BASS_GetVolume());
 
             // already create a mixer
             _mixerChannel = _mixer.MixerStreamCreate(44100);
@@ -126,7 +126,7 @@ namespace bossdoyKaraoke_NOW.Media
                 TrackLength = Bass.BASS_ChannelGetLength(Channel);
                 Bass.BASS_ChannelSetAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, _playerVolume);
                 _mixer.StreamAddChannel(Channel, TrackSync);
-                Console.WriteLine("Bass: " + _playerVolume);            
+                //Console.WriteLine("Bass: " + _playerVolume);            
             }
 
             CurrentPlayState = PlayState.Stopped;
