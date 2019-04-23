@@ -407,19 +407,15 @@ namespace bossdoyKaraoke_NOW.Media
                     if (_previousTrack != null)
                         Bass.BASS_StreamFree(_previousTrack.Channel);
 
-                    _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
-
                     //if (_isPlayingVlc)
                     //    VlcVolumeSlideAttribute();
-                    //else
-                    //{
-                        if (_songsSource.IsCdgFileType)
-                            LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
-                        else
-                            LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
-                   // }
 
-                   // Console.WriteLine(VlcPlayer.Volume);
+                    _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
+
+                    if (_songsSource.IsCdgFileType)
+                        LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                    else
+                        LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
                 }
             }
         }
@@ -580,11 +576,6 @@ namespace bossdoyKaraoke_NOW.Media
             if (_vlcVolumeCounter == 0)
             {
                 _vlcVolumeSlideAttribute.Stop();
-
-                if (_songsSource.IsCdgFileType)
-                    LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
-                else
-                    LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
             }
         }
 
