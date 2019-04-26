@@ -74,6 +74,20 @@ namespace bossdoyKaraoke_NOW.Media
 
         public Vlc()
         {
+            string[] args = new string[]
+            {
+                "-I",
+                "dumy",
+                "--ignore-config",
+                "--no-osd",
+                "--disable-screensaver",
+                "--file-caching=1000",
+                "--plugin-path=./plugins" ,
+                "--audio-filter=equalizer",
+                "--equalizer-preamp=11.9",
+                "--equalizer-bands=0 0 0 0 0 0 0 0 0 0"
+            };
+
             _factory = new MediaPlayerFactory();
             _player = _factory.CreatePlayer<IVideoPlayer>();
             _media_list = _factory.CreateMediaList<IMediaList>();
@@ -268,8 +282,6 @@ namespace bossdoyKaraoke_NOW.Media
                 BitmapData bmpdata = null;
                 _videoWidth = frame.Width;
                 _videoHeight = frame.Height;
-
-                //_bitmapVideo = (Bitmap)frame.Clone();
 
                 try
                 {
