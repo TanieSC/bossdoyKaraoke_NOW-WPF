@@ -82,13 +82,13 @@ namespace bossdoyKaraoke_NOW.Media
                 "--no-osd",
                 "--disable-screensaver",
                 "--file-caching=1000",
-                "--plugin-path=./plugins" ,
-                "--audio-filter=equalizer",
-                "--equalizer-preamp=11.9",
-                "--equalizer-bands=0 0 0 0 0 0 0 0 0 0"
+                "--plugin-path=./plugins"
+                //"--audio-filter=equalizer",
+                //"--equalizer-preamp=11.9",
+               // "--equalizer-bands=0 0 0 0 0 0 0 0 0 0"
             };
 
-            _factory = new MediaPlayerFactory();
+            _factory = new MediaPlayerFactory(args);
             _player = _factory.CreatePlayer<IVideoPlayer>();
             _media_list = _factory.CreateMediaList<IMediaList>();
             _media_list_preview = _factory.CreateMediaList<IMediaList>();
