@@ -43,7 +43,8 @@ namespace bossdoyKaraoke_NOW.Media
         private double _progressBarMaximum = 2000;
         private DispatcherTimer _vlcVolumeSlideAttribute;
         private int _vlcVolumeCounter;
-
+        private float _plus15Volume = 15f;
+        
         public bool IsPlayingBass { get { return _isPlayingBass; } }
         public bool IsPlayingVlc { get { return _isPlayingVlc; } }
         public IntPtr AppMainWindowHandle;
@@ -66,7 +67,7 @@ namespace bossdoyKaraoke_NOW.Media
                     _currentTrack.Volume = value * 0.01f;
 
                 if (_isPlayingVlc)
-                    VlcPlayer.Volume = (value != 0 ? (value + 25) : value);
+                    VlcPlayer.Volume = (value != 0 ? (value + _plus15Volume) : value);
 
                 MediaControls.Instance.VolumeValue = (int)value;
 
@@ -181,7 +182,7 @@ namespace bossdoyKaraoke_NOW.Media
         public void LoadVideokeFile(string videokeFileName)
         {
             CDGmp3 = null;
-            VlcPlayer.Volume = (Volume != 0 ? (Volume + 25) : Volume);
+            VlcPlayer.Volume = (Volume != 0 ? (Volume + _plus15Volume) : Volume);
             PlayNextTrack();
             _isPlayingVlc = true;
             _isPlayingBass = false;
@@ -581,7 +582,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         private void VlcVolumeSlideAttribute()
         {
-            int vlcVolume = (int)Volume + 25;
+            int vlcVolume = (int)Volume + (int)_plus15Volume;
             int interval = 2000 / vlcVolume;
             _vlcVolumeCounter = vlcVolume;
             _vlcVolumeSlideAttribute.Interval = TimeSpan.FromMilliseconds(interval);
