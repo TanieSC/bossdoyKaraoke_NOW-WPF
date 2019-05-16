@@ -150,7 +150,7 @@ namespace bossdoyKaraoke_NOW.Media
             //Initialized Bass Un4seen
             InitBass();
             Thread.Sleep(1000);
-            App.SplashScreen.AddMessage("Initializing VLC Player");
+            App.SplashScreen.AddMessage("Initializing nVLC Player");
             //Initialized nVLC
             VlcPlayer = Vlc.Instance;
             Thread.Sleep(1000);

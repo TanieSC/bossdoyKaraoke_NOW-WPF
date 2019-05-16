@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -130,6 +131,8 @@ namespace bossdoyKaraoke_NOW.Media
                 _videoDir = FilePath + @"VIDEO_NATURE\";
 
             GetVideoBG(_videoDir);
+            SetAudioOutputDevice();
+
             LoadDefaultVideoBG();
 
         }
@@ -236,7 +239,10 @@ namespace bossdoyKaraoke_NOW.Media
 
         public void SetAudioOutputDevice()
         {
-            throw new NotImplementedException();
+            foreach (AudioOutputModuleInfo module in _factory.AudioOutputModules)
+            {
+                List<AudioOutputDeviceInfo> info = _factory.GetAudioOutputDevices(module).ToList();
+            }
         }
 
         public void SetDefaultVideoBG(IntPtr handle)
