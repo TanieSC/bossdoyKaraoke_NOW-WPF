@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:bossdoyKaraoke_NOW"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Preferences" Height="614" Width="552" MaxHeight="614" MaxWidth="552" MinHeight="614" MinWidth="552">
+        Title="Preferences" Height="620" Width="552" MaxHeight="620" MaxWidth="552" MinHeight="614" MinWidth="552">
     <Grid>
-        <TabControl x:Name="tabControl">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="23*"/>
+            <ColumnDefinition Width="11*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl x:Name="tabControl" Grid.ColumnSpan="2">
             <TabItem Header="General">
                 <Grid>
                     <GroupBox Header="Intro text setting" VerticalAlignment="Top" Padding="9,5">
@@ -17,41 +21,69 @@
                     <GroupBox Header="Sound setting" VerticalAlignment="Top" Padding="9,5" Margin="0,70,0,0">
                         <ComboBox  Margin="30,0,0,0" materialDesign:HintAssist.Hint="Select audio output device" />
                     </GroupBox>
-                    <GroupBox Header="Graphic EQ settings" VerticalAlignment="Top" Padding="9,5" Margin="0,139,0,0" Height="336" HorizontalContentAlignment="Stretch">
+                    <GroupBox Header="Graphic EQ settings" VerticalAlignment="Top" Padding="9,5" Margin="0,139,0,0" HorizontalContentAlignment="Stretch">
                         <StackPanel HorizontalAlignment="Center">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <CheckBox x:Name="chkBoxEQ" Content="Enable EQ" />
                                 <ComboBox x:Name="comboBoxEQPresets" Width="180" HorizontalAlignment="Right" Padding="0,6" Margin="255,0,0,0"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Height="212" HorizontalAlignment="Center">
-                                <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Height="210" HorizontalAlignment="Center">
+                                <StackPanel Margin="0,6">
                                     <Label Content="+15" Margin="0,-8,0,0" HorizontalContentAlignment="Center" />
                                     <Label Content="0" Margin="0,75,0,0" HorizontalContentAlignment="Center" />
                                     <Label Content="-15" Padding="5" Margin="0,73,0,0" HorizontalContentAlignment="Center" />
                                 </StackPanel>
-                                <StackPanel Width="450" Orientation="Horizontal" >
-                                    <Slider x:Name="sliderPreamp" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" />
-                                    <Slider x:Name="sliderEQ9" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,0,4,0" />
-                                    <Slider x:Name="sliderEQ8" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,0"/>
-                                    <Slider x:Name="sliderEQ7" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,0"/>
-                                    <Slider x:Name="sliderEQ6" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,0"/>
-                                    <Slider x:Name="sliderEQ5" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,0"/>
-                                    <Slider x:Name="sliderEQ4" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,0"/>
-                                    <Slider x:Name="sliderEQ3" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,0"/>
-                                    <Slider x:Name="sliderEQ2" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,0" />
-                                    <Slider x:Name="sliderEQ1" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,0" />
-                                    <Slider x:Name="sliderEQ0" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,0"/>
+                                <StackPanel Orientation="Horizontal" >
+                                    <Slider x:Name="sliderPreamp" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="0,6"/>
+                                    <Slider x:Name="sliderEQ0" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,6,4,6"/>
+                                    <Slider x:Name="sliderEQ1" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
+                                    <Slider x:Name="sliderEQ2" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
+                                    <Slider x:Name="sliderEQ3" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
+                                    <Slider x:Name="sliderEQ4" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
+                                    <Slider x:Name="sliderEQ5" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
+                                    <Slider x:Name="sliderEQ6" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
+                                    <Slider x:Name="sliderEQ7" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6" />
+                                    <Slider x:Name="sliderEQ8" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6" />
+                                    <Slider x:Name="sliderEQ9" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
                                 </StackPanel>
-                                <StackPanel HorizontalAlignment="Center">
+                                <StackPanel Margin="0,6" HorizontalAlignment="Center">
                                     <Label Content="+15" Margin="0,-8,0,0" HorizontalContentAlignment="Center" />
                                     <Label Content="0" Margin="0,75,0,0" HorizontalContentAlignment="Center" />
                                     <Label Content="-15" Padding="5" Margin="0,73,0,0" HorizontalContentAlignment="Center" />
                                 </StackPanel>
                             </StackPanel>
+                            <StackPanel Orientation="Horizontal" >
+                                <Label Content="Preamp" Margin="20 ,0" />
+                                <Label Content="31Hz" Margin="10,0,4,0" />
+                                <Label Content="63Hz" />
+                                <Label Content="125Hz" Margin="-2 ,0" />
+                                <Label Content="250Hz" Margin="-3 ,0" />
+                                <Label Content="500Hz" Margin="-2 ,0" />
+                                <Label Content="1kHz" Margin="-1 ,0" />
+                                <Label Content="2kHz" Margin="1,0" />
+                                <Label Content="4kHz" Margin="2 ,0" />
+                                <Label Content="8kHz" Margin="0 ,0" />
+                                <Label Content="16kHz" Margin="0 ,0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="dB"/>
+                                <Label Content="0" Width="23" Margin="9,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="0" Width="23" Margin="42,0,5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="0" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="0" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="0" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="0" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="0" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="0" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="0" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="0" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="0" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="dB" Margin="4,0,0,0"/>
+                            </StackPanel>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Mobile application remote install" VerticalAlignment="Bottom" Padding="9,5" Margin="0,477,0,0">
-                       <Button Content="Android install" HorizontalAlignment="Right" HorizontalContentAlignment="Center" />  
+                    <GroupBox Header="Mobile application remote install" VerticalAlignment="Top" Padding="9,5" Margin="0,482,0,0">
+                        <Button Content="Android install" HorizontalAlignment="Right" HorizontalContentAlignment="Center" />
                     </GroupBox>
                 </Grid>
             </TabItem>
