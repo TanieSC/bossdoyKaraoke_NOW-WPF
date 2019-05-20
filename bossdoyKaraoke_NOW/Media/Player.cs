@@ -574,7 +574,7 @@ namespace bossdoyKaraoke_NOW.Media
             if (_isPlayingVlc)
                 VlcPlayer.Volume = _vlcVolumeCounter;
 
-            if (_vlcVolumeCounter == 0)
+            if (_vlcVolumeCounter <= 0)
             {
                 _vlcVolumeSlideAttribute.Stop();
             }
