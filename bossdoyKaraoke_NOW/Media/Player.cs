@@ -702,7 +702,7 @@ namespace bossdoyKaraoke_NOW.Media
                        Bass.BASS_ChannelSlideAttribute(_previousTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
 
                    // set vlc volume to 0 when not playing videoke file
-                   VlcPlayer.Volume = 0f;
+                   //VlcPlayer.Volume = 0f;
 
                }));
             }

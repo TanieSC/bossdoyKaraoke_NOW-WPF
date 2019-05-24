@@ -34,7 +34,7 @@ namespace bossdoyKaraoke_NOW.Media
         string _videoDir;
 
         private SYNCPROC _syncProc;
-        private float _volume = 75f;
+        private float _volume = 65f;
         private static Vlc _instance;
         public static Vlc Instance
         {
@@ -84,10 +84,11 @@ namespace bossdoyKaraoke_NOW.Media
                 "--disable-screensaver",
                 "--file-caching=1000",
                 "--plugin-path=./plugins"
-                //"--audio-filter=equalizer",
-                //"--equalizer-preamp=11.9",
-               // "--equalizer-bands=0 0 0 0 0 0 0 0 0 0"
             };
+
+            //"--audio-filter=equalizer",
+            //"--equalizer-preamp=11.9",
+            // "--equalizer-bands=0 0 0 0 0 0 0 0 0 0"
 
             _factory = new MediaPlayerFactory(args);
             _player = _factory.CreatePlayer<IVideoPlayer>();
@@ -400,6 +401,8 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 CurrentPlayState = PlayState.Playing;
                 _player.Play();
+               // System.Threading.Tasks.Task.Factory.StartNew(() => { _player.Volume = (int)Volume; });
+                Console.WriteLine("Volume Vlc : " + _player.Volume);
             }
         }
 
