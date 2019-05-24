@@ -182,7 +182,7 @@ namespace bossdoyKaraoke_NOW.Media
         public void LoadVideokeFile(string videokeFileName)
         {
             CDGmp3 = null;
-            VlcPlayer.Volume = (Volume != 0 ? (Volume + _plus15Volume) : Volume);
+            VlcPlayer.Volume = Volume != 0 ? (Volume + _plus15Volume) : Volume;
             PlayNextTrack();
             _isPlayingVlc = true;
             _isPlayingBass = false;
