@@ -168,6 +168,15 @@ namespace bossdoyKaraoke_NOW.Media
             _vlcVolumeSlideAttribute.Interval = TimeSpan.FromMilliseconds(100);
         }
 
+        //for test 
+        public void LoadFile(string filename)
+        {
+            if (_songsSource.IsCdgFileType)
+                LoadCDGFile(filename);
+            else
+                LoadVideokeFile(filename);
+        }
+
         public void LoadCDGFile(string cdgFileName)
         {
             CDGmp3 = new CDGFile(cdgFileName);
@@ -401,7 +410,6 @@ namespace bossdoyKaraoke_NOW.Media
                 if (_songsSource.SongQueueCount > 0)
                 {
                     bool bassAudio = false;
-                  //  bool vlcVideo = false;
 
                     if (_currentTrack != null)
                        bassAudio =  Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
@@ -409,23 +417,22 @@ namespace bossdoyKaraoke_NOW.Media
                     if (_previousTrack != null)
                         Bass.BASS_StreamFree(_previousTrack.Channel);
 
-                  //  if (_isPlayingVlc)
-                  //    vlcVideo =  VlcVolumeSlideAttribute();
+                    if (_isPlayingVlc)
+                        VlcVolumeSlideAttribute();
 
                     _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
 
-                  //  while (bassAudio)
-                  //  {
+                   // while (bassAudio || !_vlcVolumeSlideAttribute.IsEnabled)
+                   // {
                         if (_songsSource.IsCdgFileType)
                             LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
                         else
                             LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
 
-                  //      bassAudio = false;
+                        bassAudio = false;
 
-                  //      Console.WriteLine("BASS : " + bassAudio);
-                   // }
-
+                        Console.WriteLine("BASS : " + bassAudio);
+                  //  }
 
                 }
             }
@@ -659,14 +666,14 @@ namespace bossdoyKaraoke_NOW.Media
                 // POS SYNC
                 Application.Current.Dispatcher.BeginInvoke(new Action(delegate
                 {
-                        // this code runs on the UI thread!
-                        if (_songsSource.IsCdgFileType)
+                    // this code runs on the UI thread!
+                    if (_songsSource.IsCdgFileType)
                         LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
                     else
                         LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
 
-                        // and fade out and stop the 'previous' track (for 2 seconds)
-                        if (_previousTrack != null)
+                    // and fade out and stop the 'previous' track (for 2 seconds)
+                    if (_previousTrack != null)
                         Bass.BASS_ChannelSlideAttribute(_previousTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
                 }));
             }
