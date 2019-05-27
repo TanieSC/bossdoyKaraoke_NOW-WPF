@@ -316,7 +316,11 @@ namespace bossdoyKaraoke_NOW.Media
 
         private void Events_StateChanged(object sender, MediaStateChange e)
         {
-          
+            //Console.WriteLine("NewState : " + e.NewState);
+            //if (e.NewState == MediaState.Playing)
+            //{
+              
+            //}               
         }
 
         private void Events_DurationChanged(object sender, MediaDurationChange e)
@@ -401,8 +405,6 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 CurrentPlayState = PlayState.Playing;
                 _player.Play();
-               // System.Threading.Tasks.Task.Factory.StartNew(() => { _player.Volume = (int)Volume; });
-                Console.WriteLine("Volume Vlc : " + _player.Volume);
             }
         }
 

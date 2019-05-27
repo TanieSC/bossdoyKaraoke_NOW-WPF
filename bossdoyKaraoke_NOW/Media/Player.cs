@@ -400,23 +400,33 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 if (_songsSource.SongQueueCount > 0)
                 {
-
+                    bool bassAudio = false;
+                  //  bool vlcVideo = false;
 
                     if (_currentTrack != null)
-                        Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
+                       bassAudio =  Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
 
                     if (_previousTrack != null)
                         Bass.BASS_StreamFree(_previousTrack.Channel);
 
-                    //if (_isPlayingVlc)
-                    //    VlcVolumeSlideAttribute();
+                  //  if (_isPlayingVlc)
+                  //    vlcVideo =  VlcVolumeSlideAttribute();
 
                     _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
 
-                    if (_songsSource.IsCdgFileType)
-                        LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
-                    else
-                        LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
+                  //  while (bassAudio)
+                  //  {
+                        if (_songsSource.IsCdgFileType)
+                            LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                        else
+                            LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
+
+                  //      bassAudio = false;
+
+                  //      Console.WriteLine("BASS : " + bassAudio);
+                   // }
+
+
                 }
             }
         }
@@ -571,8 +581,7 @@ namespace bossdoyKaraoke_NOW.Media
         {
             _vlcVolumeCounter--;
 
-            if (_isPlayingVlc)
-                VlcPlayer.Volume = _vlcVolumeCounter;
+            VlcPlayer.Volume = _vlcVolumeCounter;
 
             if (_vlcVolumeCounter <= 0)
             {
