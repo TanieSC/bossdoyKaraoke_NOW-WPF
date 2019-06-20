@@ -146,15 +146,15 @@ namespace bossdoyKaraoke_NOW.Media
 
         public Player()
         {
-            App.SplashScreen.AddMessage("Initializing Bass Audio");
+            App.SplashScreen.AddMessage("Initializing Bass Audio...");
             //Initialized Bass Un4seen
             InitBass();
             Thread.Sleep(1000);
-            App.SplashScreen.AddMessage("Initializing nVLC Components");
+            App.SplashScreen.AddMessage("Initializing nVLC Components...");
             //Initialized nVLC
             VlcPlayer = Vlc.Instance;
             Thread.Sleep(1000);
-            App.SplashScreen.AddMessage("Loading Song Collections");
+            App.SplashScreen.AddMessage("Loading Song Collections...");
             //Create Instance of song source                                                                                                                             
             _songsSource = SongsSource.Instance;
             _songsSource.LoadSongCollections();
