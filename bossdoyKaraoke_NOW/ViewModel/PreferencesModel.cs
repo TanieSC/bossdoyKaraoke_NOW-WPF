@@ -1,27 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Input;
+using bossdoyKaraoke_NOW.Interactivity;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    class PreferencesModel : IPreferencesModel
+    class PreferencesModel : IPreferencesModel, INotifyPropertyChanged
     {
         //General Tab
-        private float _EQ0;
-        private float _EQ1;
-        private float _EQ2;
-        private float _EQ3;
-        private float _EQ4;
-        private float _EQ5;
-        private float _EQ6;
-        private float _EQ7;
-        private float _EQ8;
-        private float _EQ9;
-        private bool _eqEnabled;
-        private string _infoText;
-        private float _preAmp;
+        private float _EQ0 = 0f;
+        private float _EQ1 = 0f;
+        private float _EQ2 = 0f;
+        private float _EQ3 = 0f;
+        private float _EQ4 = 0f;
+        private float _EQ5 = 0f;
+        private float _EQ6 = 0f;
+        private float _EQ7 = 0f;
+        private float _EQ8 = 0f;
+        private float _EQ9 = 0f;
+        private bool _eqEnabled = false;
+        private string _infoText = "";
+        private float _preAmp = 0f;
+        private ICommand _preAmpCommand;
+        private ICommand _eq0Command;
+        private ICommand _eq1Command;
+        private ICommand _eq2Command;
+        private ICommand _eq3Command;
+        private ICommand _eq4Command;
+        private ICommand _eq5Command;
+        private ICommand _eq6Command;
+        private ICommand _eq7Command;
+        private ICommand _eq8Command;
+        private ICommand _eq9Command;
 
 
         public float EQ0
@@ -34,6 +50,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _EQ0 = value;
+                OnPropertyChanged();
             }
         }
 
@@ -47,6 +64,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _EQ1 = value;
+                OnPropertyChanged();
             }
         }
 
@@ -60,6 +78,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _EQ2 = value;
+                OnPropertyChanged();
             }
         }
 
@@ -73,6 +92,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _EQ3 = value;
+                OnPropertyChanged();
             }
         }
 
@@ -86,6 +106,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _EQ4 = value;
+                OnPropertyChanged();
             }
         }
 
@@ -99,6 +120,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _EQ5 = value;
+                OnPropertyChanged();
             }
         }
 
@@ -112,6 +134,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _EQ6 = value;
+                OnPropertyChanged();
             }
         }
 
@@ -125,6 +148,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _EQ7 = value;
+                OnPropertyChanged();
             }
         }
 
@@ -138,6 +162,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _EQ8 = value;
+                OnPropertyChanged();
             }
         }
 
@@ -151,6 +176,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _EQ9 = value;
+                OnPropertyChanged();
             }
         }
 
@@ -163,7 +189,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
             set
             {
-                value = _eqEnabled;
+                _eqEnabled = value;
+                OnPropertyChanged();
             }
         }
 
@@ -176,7 +203,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
             set
             {
-                value = _infoText;
+                _infoText = value;
+                OnPropertyChanged();
             }
         }
 
@@ -189,8 +217,170 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
             set
             {
-                value = _preAmp;
+                _preAmp = value;
+                OnPropertyChanged();
             }
+        }
+
+        public ICommand PreAmpCommand
+        {
+            get
+            {
+                return _preAmpCommand ?? (_preAmpCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        PreAmp = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQ0Command
+        {
+            get
+            {
+                return _eq0Command ?? (_eq0Command = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQ0 = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQ1Command
+        {
+            get
+            {
+                return _eq1Command ?? (_eq1Command = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQ1 = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQ2Command
+        {
+            get
+            {
+                return _eq2Command ?? (_eq2Command = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQ2 = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQ3Command
+        {
+            get
+            {
+                return _eq3Command ?? (_eq3Command = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQ3 = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQ4Command
+        {
+            get
+            {
+                return _eq4Command ?? (_eq4Command = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQ4 = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQ5Command
+        {
+            get
+            {
+                return _eq5Command ?? (_eq5Command = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQ5 = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQ6Command
+        {
+            get
+            {
+                return _eq6Command ?? (_eq6Command = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQ6 = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQ7Command
+        {
+            get
+            {
+                return _eq7Command ?? (_eq7Command = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQ7 = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQ8Command
+        {
+            get
+            {
+                return _eq8Command ?? (_eq8Command = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQ8 = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQ9Command
+        {
+            get
+            {
+                return _eq9Command ?? (_eq9Command = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQ9 = (float)(x as Slider).Value / 10;
+                    }
+                }));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

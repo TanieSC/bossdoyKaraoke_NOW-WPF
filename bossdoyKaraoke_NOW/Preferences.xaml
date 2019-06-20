@@ -40,17 +40,83 @@
                                     <Label Content="-15" Padding="5" Margin="0,73,0,0" HorizontalContentAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" >
-                                    <Slider x:Name="sliderPreamp" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="0,6"/>
-                                    <Slider x:Name="sliderEQ0" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,6,4,6"/>
-                                    <Slider x:Name="sliderEQ1" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
-                                    <Slider x:Name="sliderEQ2" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
-                                    <Slider x:Name="sliderEQ3" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
-                                    <Slider x:Name="sliderEQ4" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
-                                    <Slider x:Name="sliderEQ5" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
-                                    <Slider x:Name="sliderEQ6" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
-                                    <Slider x:Name="sliderEQ7" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6" />
-                                    <Slider x:Name="sliderEQ8" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6" />
-                                    <Slider x:Name="sliderEQ9" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6"/>
+                                    <Slider x:Name="sliderPreamp" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="0,6">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding PreAmpCommand}" CommandParameter="{ Binding ElementName=sliderPreamp}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
+                                    <Slider x:Name="sliderEQ0" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,6,4,6">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding EQ0Command}" CommandParameter="{ Binding ElementName=sliderEQ0}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
+                                    <Slider x:Name="sliderEQ1" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding EQ1Command}" CommandParameter="{ Binding ElementName=sliderEQ1}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
+                                    <Slider x:Name="sliderEQ2" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding EQ2Command}" CommandParameter="{ Binding ElementName=sliderEQ2}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
+                                    <Slider x:Name="sliderEQ3" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding EQ3Command}" CommandParameter="{ Binding ElementName=sliderEQ3}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
+                                    <Slider x:Name="sliderEQ4" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding EQ4Command}" CommandParameter="{ Binding ElementName=sliderEQ4}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
+                                    <Slider x:Name="sliderEQ5" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding EQ5Command}" CommandParameter="{ Binding ElementName=sliderEQ5}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
+                                    <Slider x:Name="sliderEQ6" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding EQ6Command}" CommandParameter="{ Binding ElementName=sliderEQ6}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
+                                    <Slider x:Name="sliderEQ7" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding EQ7Command}" CommandParameter="{ Binding ElementName=sliderEQ7}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
+                                    <Slider x:Name="sliderEQ8" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6" >
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding EQ8Command}" CommandParameter="{ Binding ElementName=sliderEQ8}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
+                                    <Slider x:Name="sliderEQ9" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding EQ9Command}" CommandParameter="{ Binding ElementName=sliderEQ9}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
                                 </StackPanel>
                                 <StackPanel Margin="0,6" HorizontalAlignment="Center">
                                     <Label Content="+15" Margin="0,-8,0,0" HorizontalContentAlignment="Center" />
@@ -73,17 +139,17 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="dB"/>
-                                <Label Content="0" Width="23" Margin="9,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="0" Width="23" Margin="42,0,5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="0" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="0" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="0" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="0" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="0" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="0" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="0" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="0" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="0" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding PreAmp}" Width="23" Margin="9,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding EQ0}" Width="23" Margin="42,0,5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding EQ1}" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding EQ2}" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding EQ3}" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding EQ4}" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding EQ5}" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding EQ6}" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding EQ7}" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding EQ8}" Width="23" Margin="5,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                <Label Content="{Binding EQ9}" Width="23" Margin="10,0" Padding="0,5" HorizontalContentAlignment="Center"/>
                                 <Label Content="dB" Margin="4,0,0,0"/>
                             </StackPanel>
                         </StackPanel>

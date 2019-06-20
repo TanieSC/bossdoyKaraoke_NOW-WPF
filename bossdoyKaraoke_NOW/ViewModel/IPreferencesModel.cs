@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
@@ -21,6 +22,17 @@ namespace bossdoyKaraoke_NOW.ViewModel
         float EQ7 { get; set; }
         float EQ8 { get; set; }
         float EQ9 { get; set; }
+        ICommand PreAmpCommand { get; }
+        ICommand EQ0Command { get; }
+        ICommand EQ1Command { get; }
+        ICommand EQ2Command { get; }
+        ICommand EQ3Command { get; }
+        ICommand EQ4Command { get; }
+        ICommand EQ5Command { get; }
+        ICommand EQ6Command { get; }
+        ICommand EQ7Command { get; }
+        ICommand EQ8Command { get; }
+        ICommand EQ9Command { get; }
 
     }
 }
