@@ -133,6 +133,7 @@
     <Compile Include="Interactivity\EventArgs.cs" />
     <Compile Include="Interactivity\EventRaiser.cs" />
     <Compile Include="Interactivity\RelayCommand.cs" />
+    <Compile Include="Model\Equalizer.cs" />
     <Compile Include="Preferences.xaml.cs">
       <DependentUpon>Preferences.xaml</DependentUpon>
     </Compile>
@@ -150,12 +151,14 @@
     <Compile Include="ViewModel\IListViewModel.cs" />
     <Compile Include="ViewModel\IMainMenuModel.cs" />
     <Compile Include="ViewModel\IMediaControls.cs" />
+    <Compile Include="ViewModel\IPreferencesModel.cs" />
     <Compile Include="ViewModel\ISearchBoxModel.cs" />
     <Compile Include="ViewModel\ITreeViewDialogModel.cs" />
     <Compile Include="ViewModel\ITreeViewModel.cs" />
     <Compile Include="ViewModel\ListViewModel.cs" />
     <Compile Include="ViewModel\MainMenuModel.cs" />
     <Compile Include="ViewModel\MediaControls.cs" />
+    <Compile Include="ViewModel\PreferencesModel.cs" />
     <Compile Include="ViewModel\SearchBoxModel.cs" />
     <Compile Include="ViewModel\TreeViewDialogModel.cs" />
     <Compile Include="ViewModel\TreeViewModel.cs" />

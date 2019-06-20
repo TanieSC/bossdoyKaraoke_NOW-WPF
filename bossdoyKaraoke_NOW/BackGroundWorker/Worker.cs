@@ -108,6 +108,10 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
             RunWorker(newTask);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newTask"></param>
         private static void RunWorker(NewTask newTask)//, TrackInfo trackInfo = null, int senderID = 0, string filePath = "", string filter = "")
         {           
             Player player = Player.Instance;
