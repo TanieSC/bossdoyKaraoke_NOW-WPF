@@ -52,6 +52,9 @@ namespace bossdoyKaraoke_NOW.Media
         public CDGFile CDGmp3;
         public string GetNextSongInfo { get { return _getNestSongInfo; } }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override float Volume
         {
             get
@@ -82,6 +85,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public long BassChannelPosition
         {
             get
@@ -91,6 +97,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public long CdgRenderAtPosition
         {
             get
@@ -117,6 +126,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void VlcRenderAtPosition()
         {
 
@@ -131,6 +143,9 @@ namespace bossdoyKaraoke_NOW.Media
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private static Player _instance;
         public static Player Instance
         {
@@ -144,6 +159,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Player()
         {
             App.SplashScreen.AddMessage("Initializing Bass Audio");
@@ -177,6 +195,10 @@ namespace bossdoyKaraoke_NOW.Media
                 LoadVideokeFile(filename);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cdgFileName"></param>
         public void LoadCDGFile(string cdgFileName)
         {
             CDGmp3 = new CDGFile(cdgFileName);
@@ -188,6 +210,10 @@ namespace bossdoyKaraoke_NOW.Media
             MediaControls.Instance.KeyTempoOpacity = 1f;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="videokeFileName"></param>
         public void LoadVideokeFile(string videokeFileName)
         {
             CDGmp3 = null;
@@ -199,6 +225,9 @@ namespace bossdoyKaraoke_NOW.Media
             MediaControls.Instance.KeyTempoOpacity = 0.25f;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void KeyMinus()
         {
             if (_isPlayingBass)
@@ -208,6 +237,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void KeyPlus()
         {
             if (_isPlayingBass)
@@ -217,6 +249,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void TempoMinus()
         {
             if (_isPlayingBass)
@@ -226,6 +261,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void TempoPlus()
         {
             if (_isPlayingBass)
@@ -235,6 +273,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Mute()
         {
             if (_isPlayingBass)
@@ -250,6 +291,9 @@ namespace bossdoyKaraoke_NOW.Media
             MediaControls.Instance.IconMuteUnMute = PackIconKind.VolumeMute;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void UnMute()
         {
             if (_isPlayingBass)
@@ -265,6 +309,9 @@ namespace bossdoyKaraoke_NOW.Media
             MediaControls.Instance.IconMuteUnMute = PackIconKind.VolumeHigh;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Pause()
         {
             if (_isPlayingBass)
@@ -280,6 +327,9 @@ namespace bossdoyKaraoke_NOW.Media
             MediaControls.Instance.IconPlayPause = PackIconKind.Play;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Play()
         {
             //if (CurrentPlayState == PlayState.Stopped && _songsSource.SongsQueue.Count > 0)
@@ -304,6 +354,9 @@ namespace bossdoyKaraoke_NOW.Media
             MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Stop()
         {
             if (_isPlayingBass)
@@ -438,6 +491,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void DbLevel()
         {
             double dbLevelL = 0.0;
@@ -584,6 +640,11 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _vlcVolumeSlideAttribute_Tick(object sender, EventArgs e)
         {
             _vlcVolumeCounter--;
@@ -596,6 +657,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void VlcVolumeSlideAttribute()
         {
             int vlcVolume = (int)Volume + (int)_plus15Volume;
@@ -605,6 +669,9 @@ namespace bossdoyKaraoke_NOW.Media
             _vlcVolumeSlideAttribute.Start();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void AddToBassMixer()
         {
             lock (_songsSource.SongsQueue)
@@ -618,6 +685,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void PlayNextTrack()
         {
             lock (_songsSource.SongsQueue)
@@ -654,6 +724,9 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void OnVlcSync()
         {
             if (_songsSource.SongQueueCount <= 0)
