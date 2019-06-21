@@ -25,12 +25,24 @@
                         <ColumnDefinition Width="230*"/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Header="Intro text setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" Grid.ColumnSpan="2" >
-                        <TextBox Margin="30,5,0,5" Padding="1" materialDesign:HintAssist.Hint="Set the intro text"  />
+                        <TextBox x:Name="introText" Text="{Binding IntroText}" Margin="30,5,0,5" Padding="1" materialDesign:HintAssist.Hint="Set the intro text">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding IntroTextCommand}" CommandParameter="{ Binding ElementName=introText}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
                     </GroupBox>
                     <GroupBox Header="Graphic EQ settings" VerticalAlignment="Top" Padding="9,5" Margin="0,85,0,0" HorizontalContentAlignment="Stretch" Grid.ColumnSpan="2">
                         <StackPanel HorizontalAlignment="Center">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <CheckBox x:Name="chkBoxEQ" Content="Enable EQ" />
+                                <CheckBox x:Name="chkBoxEQ" Content="Enable EQ" IsChecked="{Binding EQEnabled}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="TextChanged">
+                                            <i:InvokeCommandAction Command="{Binding EQEnabledCommand}" CommandParameter="{ Binding ElementName=chkBoxEQ}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </CheckBox>
                                 <ComboBox x:Name="comboBoxEQPresets" Width="180" HorizontalAlignment="Right" Padding="0,6" Margin="255,0,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Height="180" HorizontalAlignment="Center">

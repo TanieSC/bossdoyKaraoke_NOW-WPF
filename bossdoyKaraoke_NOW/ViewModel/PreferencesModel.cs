@@ -27,6 +27,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private bool _eqEnabled = false;
         private string _infoText = "";
         private float _preAmp = 0f;
+        private ICommand _eqEnabledCommand;
+        private ICommand _infoTextCommand;
         private ICommand _preAmpCommand;
         private ICommand _eq0Command;
         private ICommand _eq1Command;
@@ -222,6 +224,34 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
+        public ICommand EQEnabledCommand
+        {
+            get
+            {
+                return _eqEnabledCommand ?? (_eqEnabledCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        EQEnabled = (bool)(x as CheckBox).IsChecked;
+                    }
+                }));
+            }
+        }
+
+        public ICommand IntroTextCommand
+        {
+            get
+            {
+                return _infoTextCommand ?? (_infoTextCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        IntroText = (x as TextBox).Text;
+                    }
+                }));
+            }
+        }
+
         public ICommand PreAmpCommand
         {
             get
@@ -375,6 +405,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 }));
             }
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
