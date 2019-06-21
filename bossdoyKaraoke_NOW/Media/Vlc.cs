@@ -59,7 +59,9 @@ namespace bossdoyKaraoke_NOW.Media
         public string TimeDuration { get; private set; }
         public string GetTimeDuration { get; private set; }
         public float PlayerPosition { get; private set; }
-      
+        private static Dictionary<int, Preset> _presets;
+
+
         public Bitmap BitmapVideo
         {
             get
@@ -94,6 +96,8 @@ namespace bossdoyKaraoke_NOW.Media
             _player = _factory.CreatePlayer<IVideoPlayer>();
             _media_list = _factory.CreateMediaList<IMediaList>();
             _media_list_preview = _factory.CreateMediaList<IMediaList>();
+
+            _presets = Equalizer.Presets.ToDictionary(key => key.Index);
 
             //string[] path = new string[] { _path1, _path2, _path3 };
 
@@ -366,6 +370,8 @@ namespace bossdoyKaraoke_NOW.Media
                 _player.Volume = (int)value;
             }
         }
+
+        public Dictionary<int, Preset> EqPresets { get { return _presets; }  }
 
         public override void KeyMinus()
         {

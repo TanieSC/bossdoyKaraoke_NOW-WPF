@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Implementation;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
@@ -12,7 +13,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
     {
         string IntroText { get; set; }
         bool EQEnabled { get; set; }
-        DataTable EQPreset { get; set; }
+       // DataTable EQPresets { get; set; }
+        Dictionary<int, Preset> EQPresets { get; set; }
+        int EQSelectedPreset { get; set; }
         float PreAmp { get; set; }
         float EQ0 { get; set; }
         float EQ1 { get; set; }

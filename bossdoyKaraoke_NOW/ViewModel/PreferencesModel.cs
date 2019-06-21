@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using bossdoyKaraoke_NOW.Interactivity;
+using bossdoyKaraoke_NOW.Media;
+using Implementation;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
@@ -26,7 +28,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private float _EQ8 = 0f;
         private float _EQ9 = 0f;
         private bool _eqEnabled = false;
-        private DataTable _eqPreset;
+        //private DataTable _eqPresets;
+        private Dictionary<int, Preset> _eqPresets;
+        private int _eqSelectedPreset;
         private string _infoText = "";
         private float _preAmp = 0f;
         private ICommand _eqEnabledCommand;
@@ -198,16 +202,44 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public DataTable EQPreset
+        //public DataTable EQPresets
+        //{
+        //    get
+        //    {
+        //        return _eqPresets;
+        //    }
+
+        //    set
+        //    {
+        //        _eqPresets = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+        public Dictionary<int, Preset> EQPresets
         {
             get
             {
-                return _eqPreset;
+                return _eqPresets;
             }
 
             set
             {
-                _eqPreset = value;
+                _eqPresets = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int EQSelectedPreset
+        {
+            get
+            {
+                return _eqSelectedPreset;
+            }
+
+            set
+            {
+                _eqSelectedPreset = value;
                 OnPropertyChanged();
             }
         }
@@ -243,15 +275,17 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
         public PreferencesModel()
         {
-            _eqPreset = new DataTable();
-            _eqPreset.Columns.Add("ID", typeof(int));
-            _eqPreset.Columns.Add("Name");
+            _eqPresets = Vlc.Instance.EqPresets;
 
-            DataRow dr = _eqPreset.NewRow();
-            dr["Name"] = "default";
-            dr["ID"] = 0;
+            //_eqPresets = new DataTable();
+            //_eqPresets.Columns.Add("ID", typeof(int));
+            //_eqPresets.Columns.Add("Name");
 
-            _eqPreset.Rows.Add(dr);
+            //DataRow dr = _eqPresets.NewRow();
+            //dr["Name"] = "default";
+            //dr["ID"] = 0;
+
+            //_eqPresets.Rows.Add(dr);
 
             //if (Equalizer.ArrBandValue[11].PreSet == -1)
             //{
