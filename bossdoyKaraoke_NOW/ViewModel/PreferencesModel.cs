@@ -16,6 +16,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
 {
     class PreferencesModel : IPreferencesModel, INotifyPropertyChanged
     {
+        private Model.Equalizer _equalizer;
+
         //General Tab
         private float _EQ0 = 0f;
         private float _EQ1 = 0f;
@@ -28,9 +30,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private float _EQ8 = 0f;
         private float _EQ9 = 0f;
         private bool _eqEnabled = false;
-        //private DataTable _eqPresets;
         private Dictionary<int, Preset> _eqPresets;
-        private int _eqSelectedPreset;
+        //private int _eqSelectedPreset;
         private string _infoText = "";
         private float _preAmp = 0f;
         private ICommand _eqEnabledCommand;
@@ -46,7 +47,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _eq7Command;
         private ICommand _eq8Command;
         private ICommand _eq9Command;
-
 
         public float EQ0
         {
@@ -202,20 +202,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        //public DataTable EQPresets
-        //{
-        //    get
-        //    {
-        //        return _eqPresets;
-        //    }
-
-        //    set
-        //    {
-        //        _eqPresets = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
         public Dictionary<int, Preset> EQPresets
         {
             get
@@ -230,19 +216,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public int EQSelectedPreset
-        {
-            get
-            {
-                return _eqSelectedPreset;
-            }
+        //public int EQSelectedPreset
+        //{
+        //    get
+        //    {
+        //        return _eqSelectedPreset;
+        //    }
 
-            set
-            {
-                _eqSelectedPreset = value;
-                OnPropertyChanged();
-            }
-        }
+        //    set
+        //    {
+        //        _eqSelectedPreset = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         public string IntroText
         {
@@ -275,28 +261,14 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
         public PreferencesModel()
         {
-            _eqPresets = Vlc.Instance.EqPresets;
-
-            //_eqPresets = new DataTable();
-            //_eqPresets.Columns.Add("ID", typeof(int));
-            //_eqPresets.Columns.Add("Name");
-
-            //DataRow dr = _eqPresets.NewRow();
-            //dr["Name"] = "default";
-            //dr["ID"] = 0;
-
-            //_eqPresets.Rows.Add(dr);
-
-            //if (Equalizer.ArrBandValue[11].PreSet == -1)
-            //{
-            //    dr["Name"] = "";
-            //    dr["ID"] = 0;
-
-            //    dt.Rows.Add(dr);
-
-            //    defBandValue = Equalizer.ArrBandValue;
-
-            //}
+            try
+            {
+                _equalizer = Model.Equalizer.Instance;
+                _eqPresets = _equalizer.EQPresets;
+            }
+            catch
+            {
+            }
         }
 
         public ICommand EQEnabledCommand
@@ -307,7 +279,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQEnabled = (bool)(x as CheckBox).IsChecked;
+                        _equalizer.EQEnabled = (bool)(x as CheckBox).IsChecked;
+                        EQEnabled = _equalizer.EQEnabled;
                     }
                 }));
             }
@@ -335,7 +308,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        PreAmp = (float)(x as Slider).Value / 10;
+                        _equalizer.PreAmp = (float)(x as Slider).Value / 10;
+                        PreAmp = _equalizer.PreAmp;
                     }
                 }));
             }
@@ -349,7 +323,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQ0 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ0 = (float)(x as Slider).Value / 10;
+                        EQ0 = _equalizer.EQ0;
                     }
                 }));
             }
@@ -363,7 +338,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQ1 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ1 = (float)(x as Slider).Value / 10;
+                        EQ1 = _equalizer.EQ1;
                     }
                 }));
             }
@@ -377,7 +353,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQ2 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ2 = (float)(x as Slider).Value / 10;
+                        EQ2 = _equalizer.EQ2;
                     }
                 }));
             }
@@ -391,7 +368,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQ3 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ3 = (float)(x as Slider).Value / 10;
+                        EQ3 = _equalizer.EQ3;
                     }
                 }));
             }
@@ -405,7 +383,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQ4 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ4 = (float)(x as Slider).Value / 10;
+                        EQ4 = _equalizer.EQ4;
                     }
                 }));
             }
@@ -419,7 +398,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQ5 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ5 = (float)(x as Slider).Value / 10;
+                        EQ5 = _equalizer.EQ5;
                     }
                 }));
             }
@@ -433,7 +413,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQ6 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ6 = (float)(x as Slider).Value / 10;
+                        EQ6 = _equalizer.EQ6;
                     }
                 }));
             }
@@ -447,7 +428,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQ7 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ7 = (float)(x as Slider).Value / 10;
+                        EQ7 = _equalizer.EQ7;
                     }
                 }));
             }
@@ -461,7 +443,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQ8 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ8 = (float)(x as Slider).Value / 10;
+                        EQ8 = _equalizer.EQ8;
                     }
                 }));
             }
@@ -475,7 +458,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        EQ9 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ9 = (float)(x as Slider).Value / 10;
+                        EQ9 = _equalizer.EQ9;
                     }
                 }));
             }

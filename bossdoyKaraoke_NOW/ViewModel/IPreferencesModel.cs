@@ -14,8 +14,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         string IntroText { get; set; }
         bool EQEnabled { get; set; }
        // DataTable EQPresets { get; set; }
-        Dictionary<int, Preset> EQPresets { get; set; }
-        int EQSelectedPreset { get; set; }
+       // Dictionary<int, Preset> EQPresets { get; set; }
+        //int EQSelectedPreset { get; set; }
         float PreAmp { get; set; }
         float EQ0 { get; set; }
         float EQ1 { get; set; }
@@ -40,6 +40,5 @@ namespace bossdoyKaraoke_NOW.ViewModel
         ICommand EQ7Command { get; }
         ICommand EQ8Command { get; }
         ICommand EQ9Command { get; }
-
     }
 }

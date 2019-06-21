@@ -164,6 +164,13 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         public Player()
         {
+            App.SplashScreen.AddMessage("Loading Default Configuration");
+            //Initialized Default Configuration
+            AppConfig.Initialize();
+            AppConfig.SetFxDefaultSettings("DEFAudioEQBand");
+            AppConfig.SetFxDefaultSettings("DEFAudioEQPreset");
+            AppConfig.SetFxDefaultSettings("DEFAudioEQPreamp");
+            Thread.Sleep(1000);
             App.SplashScreen.AddMessage("Initializing Bass Audio");
             //Initialized Bass Un4seen
             InitBass();
@@ -176,6 +183,9 @@ namespace bossdoyKaraoke_NOW.Media
             //Create Instance of song source                                                                                                                             
             _songsSource = SongsSource.Instance;
             _songsSource.LoadSongCollections();
+
+            //var equalizer = Equalizer.Instance.EQPresets;
+           // var eqSelectedPreset = new Implementation.Equalizer(equalizer[0]);
 
             //Vocal Channel default value is Balance = ChannelSelected.None)
             Channel = ChannelSelected.Right;

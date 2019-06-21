@@ -33,6 +33,7 @@ namespace bossdoyKaraoke_NOW.Media
         string[] _videoPath;
         string _videoDir;
 
+        private Model.Equalizer _equalizer;
         private SYNCPROC _syncProc;
         private float _volume = 65f;
         private static Vlc _instance;
@@ -92,12 +93,16 @@ namespace bossdoyKaraoke_NOW.Media
             //"--equalizer-preamp=11.9",
             // "--equalizer-bands=0 0 0 0 0 0 0 0 0 0"
 
+            _equalizer = Model.Equalizer.Instance;
+
             _factory = new MediaPlayerFactory(args);
             _player = _factory.CreatePlayer<IVideoPlayer>();
             _media_list = _factory.CreateMediaList<IMediaList>();
             _media_list_preview = _factory.CreateMediaList<IMediaList>();
 
-            _presets = Equalizer.Presets.ToDictionary(key => key.Index);
+            _equalizer.EQPresets = Equalizer.Presets.ToDictionary(key => key.Index);
+
+            //_presets = Equalizer.Presets.ToDictionary(key => key.Index);
 
             //string[] path = new string[] { _path1, _path2, _path3 };
 
@@ -372,7 +377,7 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
-        public Dictionary<int, Preset> EqPresets { get { return _presets; }  }
+       // public Dictionary<int, Preset> EqPresets { get { return _presets; }  }
 
         public override void KeyMinus()
         {
