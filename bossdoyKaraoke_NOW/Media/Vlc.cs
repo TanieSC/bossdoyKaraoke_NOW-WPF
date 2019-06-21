@@ -136,6 +136,7 @@ namespace bossdoyKaraoke_NOW.Media
                 _videoDir = FilePath + @"VIDEO_NATURE\";
 
             GetVideoBG(_videoDir);
+
             SetAudioOutputDevice();
 
             LoadDefaultVideoBG();
