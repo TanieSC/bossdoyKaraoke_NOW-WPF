@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -25,6 +26,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private float _EQ8 = 0f;
         private float _EQ9 = 0f;
         private bool _eqEnabled = false;
+        private DataTable _eqPreset;
         private string _infoText = "";
         private float _preAmp = 0f;
         private ICommand _eqEnabledCommand;
@@ -196,6 +198,20 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
+        public DataTable EQPreset
+        {
+            get
+            {
+                return _eqPreset;
+            }
+
+            set
+            {
+                _eqPreset = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string IntroText
         {
             get
@@ -222,6 +238,31 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 _preAmp = value;
                 OnPropertyChanged();
             }
+        }
+
+
+        public PreferencesModel()
+        {
+            _eqPreset = new DataTable();
+            _eqPreset.Columns.Add("ID", typeof(int));
+            _eqPreset.Columns.Add("Name");
+
+            DataRow dr = _eqPreset.NewRow();
+            dr["Name"] = "default";
+            dr["ID"] = 0;
+
+            _eqPreset.Rows.Add(dr);
+
+            //if (Equalizer.ArrBandValue[11].PreSet == -1)
+            //{
+            //    dr["Name"] = "";
+            //    dr["ID"] = 0;
+
+            //    dt.Rows.Add(dr);
+
+            //    defBandValue = Equalizer.ArrBandValue;
+
+            //}
         }
 
         public ICommand EQEnabledCommand
@@ -406,12 +447,21 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+
+
+        /*
+         <ComboBox 
+   x:Name="myComboBox" 
+   DisplayMemberPath="Name"
+   SelectedValuePath="id"
+   ItemsSource="{Binding myDataTable}"      
+   SelectedValue="{Binding theID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+>*/
     }
 }

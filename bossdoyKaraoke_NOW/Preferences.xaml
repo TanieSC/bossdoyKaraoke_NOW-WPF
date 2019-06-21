@@ -43,7 +43,7 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </CheckBox>
-                                <ComboBox x:Name="comboBoxEQPresets" Width="180" HorizontalAlignment="Right" Padding="0,6" Margin="255,0,0,0"/>
+                                <ComboBox x:Name="comboBoxEQPresets" DisplayMemberPath="Name" SelectedValuePath="ID" ItemsSource="{Binding EQPreset}" Width="180" HorizontalAlignment="Right" Padding="0,6" Margin="255,0,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Height="180" HorizontalAlignment="Center">
                                 <StackPanel Margin="0,6">

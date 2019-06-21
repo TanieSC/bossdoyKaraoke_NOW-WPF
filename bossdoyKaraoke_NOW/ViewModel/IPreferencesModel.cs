@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
     {
         string IntroText { get; set; }
         bool EQEnabled { get; set; }
+        DataTable EQPreset { get; set; }
         float PreAmp { get; set; }
         float EQ0 { get; set; }
         float EQ1 { get; set; }
