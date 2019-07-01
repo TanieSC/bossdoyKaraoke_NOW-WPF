@@ -8,7 +8,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Preferences" Height="555" Width="552" MaxHeight="555" MinHeight="555" MaxWidth="552" MinWidth="552">
+        Title="Preferences" Height="575" Width="552" MaxHeight="55" MinHeight="575" MaxWidth="552" MinWidth="552">
     <Window.DataContext>
         <vm:PreferencesModel></vm:PreferencesModel>
     </Window.DataContext>
@@ -17,205 +17,223 @@
             <ColumnDefinition Width="23*"/>
             <ColumnDefinition Width="11*"/>
         </Grid.ColumnDefinitions>
-        <TabControl x:Name="tabControl" Grid.ColumnSpan="2" Margin="0,5,0,0">
-            <TabItem Header="General">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="37*"/>
-                        <ColumnDefinition Width="230*"/>
-                    </Grid.ColumnDefinitions>
-                    <GroupBox Header="Intro text setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" Grid.ColumnSpan="2" >
-                        <TextBox x:Name="introText" Text="{Binding IntroText}" Margin="30,5,0,5" Padding="1" materialDesign:HintAssist.Hint="Set the intro text">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="TextChanged">
-                                    <i:InvokeCommandAction Command="{Binding IntroTextCommand}" CommandParameter="{ Binding ElementName=introText}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </TextBox>
-                    </GroupBox>
-                    <GroupBox Header="Graphic EQ settings" VerticalAlignment="Top" Padding="9,5" Margin="0,85,0,0" HorizontalContentAlignment="Stretch" Grid.ColumnSpan="2">
-                        <StackPanel x:Name="eqPanel"  HorizontalAlignment="Center">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Loaded">
-                                    <i:InvokeCommandAction Command="{Binding EQLoadedCommand}" CommandParameter="{ Binding ElementName=eqPanel}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <CheckBox x:Name="chkBoxEQ" Content="Enable EQ" IsChecked="{Binding EQEnabled}">
+        <DockPanel Grid.ColumnSpan="2">
+            <TabControl x:Name="tabControl" Margin="0,5,0,0" VerticalContentAlignment="Center">
+                <TabItem Header="General">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="37*"/>
+                            <ColumnDefinition Width="230*"/>
+                        </Grid.ColumnDefinitions>
+                        <DockPanel Grid.ColumnSpan="2">
+                            <GroupBox Header="Intro text setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" DockPanel.Dock="Top" >
+                                <TextBox x:Name="introText" Text="{Binding IntroText}" Margin="30,5,0,5" Padding="1" materialDesign:HintAssist.Hint="Set the intro text">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="TextChanged">
-                                            <i:InvokeCommandAction Command="{Binding EQEnabledCommand}" CommandParameter="{ Binding ElementName=chkBoxEQ}" />
+                                            <i:InvokeCommandAction Command="{Binding IntroTextCommand}" CommandParameter="{ Binding ElementName=introText}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
-                                </CheckBox>
-                                <ComboBox x:Name="comboBoxEQPresets" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedIndex="{Binding EQSelectedPreset}" ItemsSource="{Binding EQPresets}" Width="180" HorizontalAlignment="Right" Padding="0,6" Margin="255,0,0,0"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Height="180" HorizontalAlignment="Center">
-                                <StackPanel Margin="0,6">
-                                    <Label Content="+15" Margin="0,-8,0,0" HorizontalContentAlignment="Center" />
-                                    <Label Content="0" Margin="0,53,0,0" HorizontalContentAlignment="Center" />
-                                    <Label Content="-15" Padding="5" Margin="0,52,0,0" HorizontalContentAlignment="Center" />
+                                </TextBox>
+                            </GroupBox>
+                            <GroupBox Header="Device output setting" VerticalAlignment="Top" Padding="9,5" DockPanel.Dock="Top" Margin="0,8,0,0">
+                                <ComboBox  Margin="30,5,0,5" materialDesign:HintAssist.Hint="Select audio output device" />
+                            </GroupBox>
+                            <GroupBox Header="Mobile application remote install" VerticalAlignment="Top" Padding="9,5" DockPanel.Dock="Top" Margin="0,8,0,0" >
+                                <Button Content="Android install" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Margin="0,5" />
+                            </GroupBox>
+                        </DockPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Audio">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="14*"/>
+                            <ColumnDefinition Width="13*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="501*"/>
+                        </Grid.ColumnDefinitions>
+                        <DockPanel Grid.ColumnSpan="4">
+                            <GroupBox Header="Audio output setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" DockPanel.Dock="Top">
+                                <StackPanel >
+                                    <StackPanel Orientation="Horizontal" Margin="0,4">
+                                        <RadioButton x:Name="radioBtnBass" Content="Default - (Bass)" Padding="4,2,0,0" Margin="30,0,20,0" />
+                                        <RadioButton x:Name="radioBtnWasapi" Content="Wasapi (BassWasapi)" Margin="20,0"/>
+                                        <RadioButton x:Name="radioBtnAsio" Content="Asio (BassAsio)" Margin="20,0,10,0"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,0,5">
+                                        <CheckBox x:Name="chkBoxRefreshAsio" Content="Auto Refresh Asio" HorizontalAlignment="Right" Margin="0,0,35,5" />
+                                        <Button x:Name="asioControlBtn" Content="Asio Control Panel" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Margin="0,0,1,0" />
+                                    </StackPanel>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" >
-                                    <Slider x:Name="sliderPreamp" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="0,6">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding PreAmpCommand}" CommandParameter="{ Binding ElementName=sliderPreamp}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider x:Name="sliderEQ0" Value="{Binding EQ0}" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,6,4,6">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding EQ0Command}" CommandParameter="{ Binding ElementName=sliderEQ0}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider x:Name="sliderEQ1" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding EQ1Command}" CommandParameter="{ Binding ElementName=sliderEQ1}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider x:Name="sliderEQ2" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding EQ2Command}" CommandParameter="{ Binding ElementName=sliderEQ2}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider x:Name="sliderEQ3" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding EQ3Command}" CommandParameter="{ Binding ElementName=sliderEQ3}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider x:Name="sliderEQ4" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding EQ4Command}" CommandParameter="{ Binding ElementName=sliderEQ4}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider x:Name="sliderEQ5" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding EQ5Command}" CommandParameter="{ Binding ElementName=sliderEQ5}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider x:Name="sliderEQ6" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding EQ6Command}" CommandParameter="{ Binding ElementName=sliderEQ6}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider x:Name="sliderEQ7" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding EQ7Command}" CommandParameter="{ Binding ElementName=sliderEQ7}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider x:Name="sliderEQ8" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6" >
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding EQ8Command}" CommandParameter="{ Binding ElementName=sliderEQ8}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider x:Name="sliderEQ9" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding EQ9Command}" CommandParameter="{ Binding ElementName=sliderEQ9}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Slider>
+                            </GroupBox>
+                            <GroupBox Header="Graphic EQ settings" VerticalAlignment="Top" Padding="9,5" Margin="0,8,0,0" HorizontalContentAlignment="Stretch">
+                                <StackPanel x:Name="eqPanel"  HorizontalAlignment="Center">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Loaded">
+                                            <i:InvokeCommandAction Command="{Binding EQLoadedCommand}" CommandParameter="{ Binding ElementName=eqPanel}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox x:Name="chkBoxEQ" Content="Enable EQ" IsChecked="{Binding EQEnabled}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="TextChanged">
+                                                    <i:InvokeCommandAction Command="{Binding EQEnabledCommand}" CommandParameter="{ Binding ElementName=chkBoxEQ}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </CheckBox>
+                                        <ComboBox x:Name="comboBoxEQPresets" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedIndex="{Binding EQSelectedPreset}" ItemsSource="{Binding EQPresets}" Width="180" HorizontalAlignment="Right" Padding="0,6" Margin="255,0,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Height="180" HorizontalAlignment="Center">
+                                        <StackPanel Margin="0,6">
+                                            <Label Content="+15" Margin="0,-8,0,0" HorizontalContentAlignment="Center" />
+                                            <Label Content="0" Margin="0,53,0,0" HorizontalContentAlignment="Center" />
+                                            <Label Content="-15" Padding="5" Margin="0,52,0,0" HorizontalContentAlignment="Center" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" >
+                                            <Slider x:Name="sliderPreamp" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="0,6">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding PreAmpCommand}" CommandParameter="{ Binding ElementName=sliderPreamp}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                            <Slider x:Name="sliderEQ0" Value="{Binding EQ0}" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,6,4,6">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding EQ0Command}" CommandParameter="{ Binding ElementName=sliderEQ0}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                            <Slider x:Name="sliderEQ1" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding EQ1Command}" CommandParameter="{ Binding ElementName=sliderEQ1}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                            <Slider x:Name="sliderEQ2" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding EQ2Command}" CommandParameter="{ Binding ElementName=sliderEQ2}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                            <Slider x:Name="sliderEQ3" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding EQ3Command}" CommandParameter="{ Binding ElementName=sliderEQ3}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                            <Slider x:Name="sliderEQ4" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding EQ4Command}" CommandParameter="{ Binding ElementName=sliderEQ4}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                            <Slider x:Name="sliderEQ5" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding EQ5Command}" CommandParameter="{ Binding ElementName=sliderEQ5}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                            <Slider x:Name="sliderEQ6" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding EQ6Command}" CommandParameter="{ Binding ElementName=sliderEQ6}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                            <Slider x:Name="sliderEQ7" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding EQ7Command}" CommandParameter="{ Binding ElementName=sliderEQ7}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                            <Slider x:Name="sliderEQ8" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6" >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding EQ8Command}" CommandParameter="{ Binding ElementName=sliderEQ8}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                            <Slider x:Name="sliderEQ9" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="4,6">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="ValueChanged">
+                                                        <i:InvokeCommandAction Command="{Binding EQ9Command}" CommandParameter="{ Binding ElementName=sliderEQ9}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Slider>
+                                        </StackPanel>
+                                        <StackPanel Margin="0,6" HorizontalAlignment="Center">
+                                            <Label Content="+15" Margin="0,-8,0,0" HorizontalContentAlignment="Center" />
+                                            <Label Content="0" Margin="0,53,0,0" HorizontalContentAlignment="Center" />
+                                            <Label Content="-15" Padding="5" Margin="0,52,0,0" HorizontalContentAlignment="Center" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" >
+                                        <Label Content="Preamp" Margin="20 ,0" />
+                                        <Label Content="31Hz" Margin="10,0,4,0" />
+                                        <Label Content="63Hz" />
+                                        <Label Content="125Hz" Margin="-2 ,0" />
+                                        <Label Content="250Hz" Margin="-3 ,0" />
+                                        <Label Content="500Hz" Margin="-2 ,0" />
+                                        <Label Content="1kHz" Margin="-1 ,0" />
+                                        <Label Content="2kHz" Margin="1,0" />
+                                        <Label Content="4kHz" Margin="2 ,0" />
+                                        <Label Content="8kHz" Margin="0 ,0" />
+                                        <Label Content="16kHz" Margin="0 ,0" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="dB"/>
+                                        <Label Content="{Binding PreAmp}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="7,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding EQ0}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="40,0,3,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding EQ1}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="8,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding EQ2}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="3,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding EQ3}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="8,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding EQ4}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="3,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding EQ5}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="8,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding EQ6}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="3,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding EQ7}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="8,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding EQ8}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="3,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding EQ9}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="8,0" Padding="0,5" HorizontalContentAlignment="Center"/>
+                                        <Label Content="dB" Margin="4,0,0,0"/>
+                                    </StackPanel>
                                 </StackPanel>
-                                <StackPanel Margin="0,6" HorizontalAlignment="Center">
-                                    <Label Content="+15" Margin="0,-8,0,0" HorizontalContentAlignment="Center" />
-                                    <Label Content="0" Margin="0,53,0,0" HorizontalContentAlignment="Center" />
-                                    <Label Content="-15" Padding="5" Margin="0,52,0,0" HorizontalContentAlignment="Center" />
+                            </GroupBox>
+                        </DockPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Video">
+                    <Grid>
+                        <GroupBox Header="Video setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" Grid.ColumnSpan="2">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Label Content="Video" materialDesign:HintAssist.Hint="Search By Title/Artist" Margin="0,5"/>
+                                    <Button Content="Select Video" HorizontalContentAlignment="Center" Margin="0,5" HorizontalAlignment="Right" />
+                                </DockPanel>
+                                <StackPanel Margin="0,5" Background="Black" >
+                                    <WindowsFormsHost x:Name="bgVideoPreview" Width="390" Height="220"  Background="Black" HorizontalAlignment="Center" >
+                                    </WindowsFormsHost>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" >
-                                <Label Content="Preamp" Margin="20 ,0" />
-                                <Label Content="31Hz" Margin="10,0,4,0" />
-                                <Label Content="63Hz" />
-                                <Label Content="125Hz" Margin="-2 ,0" />
-                                <Label Content="250Hz" Margin="-3 ,0" />
-                                <Label Content="500Hz" Margin="-2 ,0" />
-                                <Label Content="1kHz" Margin="-1 ,0" />
-                                <Label Content="2kHz" Margin="1,0" />
-                                <Label Content="4kHz" Margin="2 ,0" />
-                                <Label Content="8kHz" Margin="0 ,0" />
-                                <Label Content="16kHz" Margin="0 ,0" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="dB"/>
-                                <Label Content="{Binding PreAmp}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="7,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="{Binding EQ0}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="40,0,3,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="{Binding EQ1}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="8,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="{Binding EQ2}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="3,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="{Binding EQ3}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="8,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="{Binding EQ4}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="3,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="{Binding EQ5}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="8,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="{Binding EQ6}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="3,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="{Binding EQ7}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="8,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="{Binding EQ8}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="3,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="{Binding EQ9}" ContentStringFormat="{}{0:0.#}" Width="27" Margin="8,0" Padding="0,5" HorizontalContentAlignment="Center"/>
-                                <Label Content="dB" Margin="4,0,0,0"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </GroupBox>
-                    <GroupBox Header="Mobile application remote install" VerticalAlignment="Top" Padding="9,5" Margin="0,396,0,0" Grid.ColumnSpan="2">
-                        <Button Content="Android install" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Margin="0,5" />
-                    </GroupBox>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Audio">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="7*"/>
-                        <ColumnDefinition Width="260*"/>
-                    </Grid.ColumnDefinitions>
-                    <GroupBox Header="Audio output setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" Grid.ColumnSpan="2">
-                        <StackPanel >
-                            <StackPanel Orientation="Horizontal" Margin="0,10,0,5">
-                                <RadioButton x:Name="radioBtnBass" Content="Default - (Bass)" Padding="4,2,0,0" Margin="30,0,20,0" />
-                                <RadioButton x:Name="radioBtnWasapi" Content="Wasapi (BassWasapi)" Margin="20,0"/>
-                                <RadioButton x:Name="radioBtnAsio" Content="Asio (BassAsio)" Margin="20,0,10,0"/>
-                            </StackPanel>
-                            <StackPanel Margin="0,0,0,5">
-                                <CheckBox x:Name="chkBoxRefreshAsio" Content="Auto Refresh Asio" HorizontalAlignment="Right" Margin="0,0,35,5" />
-                                <Button x:Name="asioControlBtn" Content="Asio Control Panel" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Margin="0,0,1,0" />
-                            </StackPanel>
-                        </StackPanel>
-                    </GroupBox>
-                    <GroupBox Header="Device output setting" VerticalAlignment="Top" Padding="9,5" Margin="0,139,0,0" Grid.ColumnSpan="2">
-                        <ComboBox  Margin="30,5,0,5" materialDesign:HintAssist.Hint="Select audio output device" />
-                    </GroupBox>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Video">
-                <Grid>
-                    <GroupBox Header="Video setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" Grid.ColumnSpan="2">
-                        <StackPanel>
-                            <DockPanel>
-                                <Label Content="Video" materialDesign:HintAssist.Hint="Search By Title/Artist" Margin="0,5"/>
-                                <Button Content="Select Video" HorizontalContentAlignment="Center" Margin="0,5" HorizontalAlignment="Right" />
-                            </DockPanel>
-                            <StackPanel Margin="0,5" Background="Black" >
-                                <WindowsFormsHost x:Name="bgVideoPreview" Width="390" Height="220"  Background="Black" HorizontalAlignment="Center" >
-                                </WindowsFormsHost>
-                            </StackPanel>
-                        </StackPanel>
-                    </GroupBox>
-                </Grid>
-            </TabItem>
-        </TabControl>
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+        <!--<DockPanel Grid.ColumnSpan="2" Margin="10" VerticalAlignment="Bottom">-->
+        <StackPanel Grid.ColumnSpan="2" Margin="10" VerticalAlignment="Bottom">
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1"  Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="-4,5,-4,10"/>
+                <!--<Separator Height="20" Width="Auto" BorderThickness="10" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.ColumnSpan="2"  />-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="saveBtn" Content="Save" d:LayoutOverrides="Height" Margin="0,0,5,0" />
+                    <Button x:Name="cancelBtn" Content="Cancel" d:LayoutOverrides="Height" Margin="5,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        <!--</DockPanel>-->
     </Grid>
 </Window>

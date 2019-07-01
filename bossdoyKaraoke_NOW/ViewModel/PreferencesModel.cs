@@ -270,6 +270,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
+        public void ConvertEqValue()
+        {
+            EQ0 = _equalizer.EQ0 / 10;
+            EQ1 = _equalizer.EQ1;
+            EQ2 = _equalizer.EQ2;
+            EQ3 = _equalizer.EQ3;
+            EQ4 = _equalizer.EQ4;
+            EQ5 = _equalizer.EQ5;
+            EQ6 = _equalizer.EQ6;
+            EQ7 = _equalizer.EQ7;
+            EQ8 = _equalizer.EQ8;
+            EQ9 = _equalizer.EQ9;
+        }
 
         public PreferencesModel()
         {
@@ -303,7 +316,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         var eqPanel = ((x as StackPanel).Children[1] as StackPanel).Children[1] as StackPanel;
                        // (eqPanel.Children[0] as Slider).Value = PreAmp;
-                       //                                                                                                   (eqPanel.Children[1] as Slider).Value = EQ0 * 10;
+                        (eqPanel.Children[1] as Slider).Value = EQ0;
 
                     }
                 }));
@@ -362,7 +375,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        _equalizer.EQ0 = (float)(x as Slider).Value / 10;
+                        _equalizer.EQ0 = (float)(x as Slider).Value;// / 10;
                         EQ0 = _equalizer.EQ0;
                     }
                 }));
