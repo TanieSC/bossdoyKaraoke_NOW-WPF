@@ -225,18 +225,19 @@ namespace bossdoyKaraoke_NOW.Model
 
         public Equalizer()
         {
-            EQ0 = AppConfig.Get<float>("AudioEQBand0");
-            //EQ1 = AppConfig.Get<float>("AudioEQBand" + 1);
-            //EQ2 = AppConfig.Get<float>("AudioEQBand" + 2);
-            //EQ3 = AppConfig.Get<float>("AudioEQBand" + 3);
-            //EQ4 = AppConfig.Get<float>("AudioEQBand" + 4);
-            //EQ5 = AppConfig.Get<float>("AudioEQBand" + 5);
-            //EQ6 = AppConfig.Get<float>("AudioEQBand" + 6);
-            //EQ7 = AppConfig.Get<float>("AudioEQBand" + 7);
-            //EQ8 = AppConfig.Get<float>("AudioEQBand" + 8);
-            //EQ9 = AppConfig.Get<float>("AudioEQBand" + 9);
-            //PreAmp = AppConfig.Get<float>("AudioEQPreamp");
-           // EQPresets = AppConfig.Get<float>("AudioEQPreset");
+            EQ0 = AppConfig.Get<float>("DEFAudioEQBand0");
+            EQ1 = AppConfig.Get<float>("DEFAudioEQBand1");
+            EQ2 = AppConfig.Get<float>("DEFAudioEQBand2");
+            EQ3 = AppConfig.Get<float>("DEFAudioEQBand3");
+            EQ4 = AppConfig.Get<float>("DEFAudioEQBand4");
+            EQ5 = AppConfig.Get<float>("DEFAudioEQBand5");
+            EQ6 = AppConfig.Get<float>("DEFAudioEQBand6");
+            EQ7 = AppConfig.Get<float>("DEFAudioEQBand7");
+            EQ8 = AppConfig.Get<float>("DEFAudioEQBand8");
+            EQ9 = AppConfig.Get<float>("DEFAudioEQBand9");
+            PreAmp = AppConfig.Get<float>("DEFAudioEQPreamp");
+
+          //  EQPresets =  AppConfig.Get<int>("DEFAudioEQPreset");
         }
 
         public class BandValue

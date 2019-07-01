@@ -34,7 +34,12 @@
                         </TextBox>
                     </GroupBox>
                     <GroupBox Header="Graphic EQ settings" VerticalAlignment="Top" Padding="9,5" Margin="0,85,0,0" HorizontalContentAlignment="Stretch" Grid.ColumnSpan="2">
-                        <StackPanel HorizontalAlignment="Center">
+                        <StackPanel x:Name="eqPanel"  HorizontalAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Loaded">
+                                    <i:InvokeCommandAction Command="{Binding EQLoadedCommand}" CommandParameter="{ Binding ElementName=eqPanel}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <CheckBox x:Name="chkBoxEQ" Content="Enable EQ" IsChecked="{Binding EQEnabled}">
                                     <i:Interaction.Triggers>
@@ -59,7 +64,7 @@
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </Slider>
-                                    <Slider x:Name="sliderEQ0" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,6,4,6">
+                                    <Slider x:Name="sliderEQ0" Value="{Binding EQ0}" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,6,4,6">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="ValueChanged">
                                                 <i:InvokeCommandAction Command="{Binding EQ0Command}" CommandParameter="{ Binding ElementName=sliderEQ0}" />

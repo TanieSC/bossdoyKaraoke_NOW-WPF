@@ -29,11 +29,23 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private float _EQ7 = 0f;
         private float _EQ8 = 0f;
         private float _EQ9 = 0f;
+        private Slider _sliderPreAmp;
+        private Slider _sliderEq0;
+        private Slider _sliderEq1;
+        private Slider _sliderEq2;
+        private Slider _sliderEq3;
+        private Slider _sliderEq4;
+        private Slider _sliderEq5;
+        private Slider _sliderEq6;
+        private Slider _sliderEq7;
+        private Slider _sliderEq8;
+        private Slider _sliderEq9;
         private bool _eqEnabled = false;
         private Dictionary<int, Preset> _eqPresets;
         //private int _eqSelectedPreset;
         private string _infoText = "";
         private float _preAmp = 0f;
+        private ICommand _eqLoadedCommand;
         private ICommand _eqEnabledCommand;
         private ICommand _infoTextCommand;
         private ICommand _preAmpCommand;
@@ -265,9 +277,36 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 _equalizer = Model.Equalizer.Instance;
                 _eqPresets = _equalizer.EQPresets;
+                EQ0 = _equalizer.EQ0;
+                EQ1 = _equalizer.EQ1;
+                EQ2 = _equalizer.EQ2;
+                EQ3 = _equalizer.EQ3;
+                EQ4 = _equalizer.EQ4;
+                EQ5 = _equalizer.EQ5;
+                EQ6 = _equalizer.EQ6;
+                EQ7 = _equalizer.EQ7;
+                EQ8 = _equalizer.EQ8;
+                EQ9 = _equalizer.EQ9;
             }
             catch
             {
+            }
+        }
+        
+        public ICommand EQLoadedCommand
+        {
+            get
+            {
+                return _eqLoadedCommand ?? (_eqLoadedCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        var eqPanel = ((x as StackPanel).Children[1] as StackPanel).Children[1] as StackPanel;
+                       // (eqPanel.Children[0] as Slider).Value = PreAmp;
+                       //                                                                                                   (eqPanel.Children[1] as Slider).Value = EQ0 * 10;
+
+                    }
+                }));
             }
         }
 
