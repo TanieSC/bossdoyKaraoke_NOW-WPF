@@ -8,7 +8,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Preferences" Height="575" Width="552" MaxHeight="55" MinHeight="575" MaxWidth="552" MinWidth="552">
+        Title="Preferences" Height="520" Width="552" MaxHeight="520" MinHeight="520" MaxWidth="552" MinWidth="552"><!--Height="575" Width="552" MaxHeight="55" MinHeight="575"-->
     <Window.DataContext>
         <vm:PreferencesModel></vm:PreferencesModel>
     </Window.DataContext>
@@ -35,10 +35,10 @@
                                     </i:Interaction.Triggers>
                                 </TextBox>
                             </GroupBox>
-                            <GroupBox Header="Device output setting" VerticalAlignment="Top" Padding="9,5" DockPanel.Dock="Top" Margin="0,8,0,0">
+                            <GroupBox Header="Audio device setting" VerticalAlignment="Top" Padding="9,5" DockPanel.Dock="Top" Margin="0,8,0,0">
                                 <ComboBox  Margin="30,5,0,5" materialDesign:HintAssist.Hint="Select audio output device" />
                             </GroupBox>
-                            <GroupBox Header="Mobile application remote install" VerticalAlignment="Top" Padding="9,5" DockPanel.Dock="Top" Margin="0,8,0,0" >
+                            <GroupBox Header="Mobile application remote install" VerticalAlignment="Bottom" Padding="9,5" DockPanel.Dock="Bottom" Margin="0,8,0,4" >
                                 <Button Content="Android install" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Margin="0,5" />
                             </GroupBox>
                         </DockPanel>
@@ -97,7 +97,7 @@
                                                     </i:EventTrigger>
                                                 </i:Interaction.Triggers>
                                             </Slider>
-                                            <Slider x:Name="sliderEQ0" Value="{Binding EQ0}" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,6,4,6">
+                                            <Slider x:Name="sliderEQ0" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,6,4,6">
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="ValueChanged">
                                                         <i:InvokeCommandAction Command="{Binding EQ0Command}" CommandParameter="{ Binding ElementName=sliderEQ0}" />
@@ -225,15 +225,12 @@
                 </TabItem>
             </TabControl>
         </DockPanel>
-        <!--<DockPanel Grid.ColumnSpan="2" Margin="10" VerticalAlignment="Bottom">-->
-        <StackPanel Grid.ColumnSpan="2" Margin="10" VerticalAlignment="Bottom">
+        <!--<StackPanel Grid.ColumnSpan="2" Margin="10" VerticalAlignment="Bottom">
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1"  Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="-4,5,-4,10"/>
-                <!--<Separator Height="20" Width="Auto" BorderThickness="10" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.ColumnSpan="2"  />-->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:Name="saveBtn" Content="Save" d:LayoutOverrides="Height" Margin="0,0,5,0" />
-                    <Button x:Name="cancelBtn" Content="Cancel" d:LayoutOverrides="Height" Margin="5,0,0,0"/>
-                </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="saveBtn" Content="Save" d:LayoutOverrides="Height" Margin="0,0,5,0" />
+                <Button x:Name="cancelBtn" Content="Cancel" d:LayoutOverrides="Height" Margin="5,0,0,0"/>
             </StackPanel>
-        <!--</DockPanel>-->
+        </StackPanel>-->
     </Grid>
 </Window>

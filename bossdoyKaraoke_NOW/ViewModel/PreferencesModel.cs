@@ -315,8 +315,30 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     if (x != null)
                     {
                         var eqPanel = ((x as StackPanel).Children[1] as StackPanel).Children[1] as StackPanel;
-                       // (eqPanel.Children[0] as Slider).Value = PreAmp;
-                        (eqPanel.Children[1] as Slider).Value = EQ0;
+                        (eqPanel.Children[0] as Slider).Value = PreAmp * 10;
+                        (eqPanel.Children[1] as Slider).Value = EQ0 * 10;
+                        (eqPanel.Children[2] as Slider).Value = EQ1 * 10;
+                        (eqPanel.Children[3] as Slider).Value = EQ2 * 10;
+                        (eqPanel.Children[4] as Slider).Value = EQ3 * 10;
+                        (eqPanel.Children[5] as Slider).Value = EQ4 * 10;
+                        (eqPanel.Children[6] as Slider).Value = EQ5 * 10;
+                        (eqPanel.Children[7] as Slider).Value = EQ6 * 10;
+                        (eqPanel.Children[8] as Slider).Value = EQ7 * 10;
+                        (eqPanel.Children[9] as Slider).Value = EQ8 * 10;
+                        (eqPanel.Children[10] as Slider).Value = EQ9 * 10;
+
+
+                        //_sliderPreAmp = eqPanel.Children[0] as Slider;
+                        //_sliderEq0 = eqPanel.Children[1] as Slider;
+                        //_sliderEq1 = eqPanel.Children[2] as Slider;
+                        //_sliderEq2 = eqPanel.Children[3] as Slider;
+                        //_sliderEq3 = eqPanel.Children[4] as Slider;
+                        //_sliderEq4 = eqPanel.Children[5] as Slider;
+                        //_sliderEq5 = eqPanel.Children[6] as Slider;
+                        //_sliderEq6 = eqPanel.Children[7] as Slider;
+                        //_sliderEq7 = eqPanel.Children[8] as Slider;
+                        //_sliderEq8 = eqPanel.Children[9] as Slider;
+                        //_sliderEq9 = eqPanel.Children[10] as Slider;
 
                     }
                 }));
@@ -375,7 +397,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        _equalizer.EQ0 = (float)(x as Slider).Value;// / 10;
+                        _equalizer.EQ0 = (float)(x as Slider).Value / 10;
                         EQ0 = _equalizer.EQ0;
                     }
                 }));
