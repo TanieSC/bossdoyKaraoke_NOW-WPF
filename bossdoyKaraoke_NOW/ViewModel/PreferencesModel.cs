@@ -270,20 +270,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public void ConvertEqValue()
-        {
-            EQ0 = _equalizer.EQ0 / 10;
-            EQ1 = _equalizer.EQ1;
-            EQ2 = _equalizer.EQ2;
-            EQ3 = _equalizer.EQ3;
-            EQ4 = _equalizer.EQ4;
-            EQ5 = _equalizer.EQ5;
-            EQ6 = _equalizer.EQ6;
-            EQ7 = _equalizer.EQ7;
-            EQ8 = _equalizer.EQ8;
-            EQ9 = _equalizer.EQ9;
-        }
-
         public PreferencesModel()
         {
             try
@@ -326,20 +312,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         (eqPanel.Children[8] as Slider).Value = EQ7 * 10;
                         (eqPanel.Children[9] as Slider).Value = EQ8 * 10;
                         (eqPanel.Children[10] as Slider).Value = EQ9 * 10;
-
-
-                        //_sliderPreAmp = eqPanel.Children[0] as Slider;
-                        //_sliderEq0 = eqPanel.Children[1] as Slider;
-                        //_sliderEq1 = eqPanel.Children[2] as Slider;
-                        //_sliderEq2 = eqPanel.Children[3] as Slider;
-                        //_sliderEq3 = eqPanel.Children[4] as Slider;
-                        //_sliderEq4 = eqPanel.Children[5] as Slider;
-                        //_sliderEq5 = eqPanel.Children[6] as Slider;
-                        //_sliderEq6 = eqPanel.Children[7] as Slider;
-                        //_sliderEq7 = eqPanel.Children[8] as Slider;
-                        //_sliderEq8 = eqPanel.Children[9] as Slider;
-                        //_sliderEq9 = eqPanel.Children[10] as Slider;
-
                     }
                 }));
             }
