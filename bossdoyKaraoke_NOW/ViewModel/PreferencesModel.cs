@@ -45,6 +45,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         //private int _eqSelectedPreset;
         private string _infoText = "";
         private float _preAmp = 0f;
+        private ICommand _closingCommand;
         private ICommand _eqLoadedCommand;
         private ICommand _eqEnabledCommand;
         private ICommand _infoTextCommand;
@@ -292,6 +293,17 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
         
+        public ICommand ClosingCommand
+        {
+            get
+            {
+                return _closingCommand ?? (_closingCommand = new RelayCommand(x =>
+                {
+
+                }));
+            }
+        }
+
         public ICommand EQLoadedCommand
         {
             get
