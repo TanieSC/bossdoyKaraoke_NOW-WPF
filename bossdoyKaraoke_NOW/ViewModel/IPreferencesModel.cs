@@ -29,6 +29,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         float EQ9 { get; set; }
         ICommand ClosingCommand { get; }
         ICommand EQLoadedCommand { get; }
+        ICommand EQSelectedPresetCommand { get; }
         ICommand EQEnabledCommand { get; }
         ICommand IntroTextCommand { get; }
         ICommand PreAmpCommand { get; }

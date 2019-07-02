@@ -42,11 +42,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private Slider _sliderEq9;
         private bool _eqEnabled = false;
         private Dictionary<int, Preset> _eqPresets;
-        //private int _eqSelectedPreset;
+        private int _eqSelectedPreset;
         private string _infoText = "";
         private float _preAmp = 0f;
         private ICommand _closingCommand;
         private ICommand _eqLoadedCommand;
+        private ICommand _eqSelectedPresetCommand;
         private ICommand _eqEnabledCommand;
         private ICommand _infoTextCommand;
         private ICommand _preAmpCommand;
@@ -229,19 +230,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        //public int EQSelectedPreset
-        //{
-        //    get
-        //    {
-        //        return _eqSelectedPreset;
-        //    }
+        public int EQSelectedPreset
+        {
+            get
+            {
+                return _eqSelectedPreset;
+            }
 
-        //    set
-        //    {
-        //        _eqSelectedPreset = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
+            set
+            {
+                _eqSelectedPreset = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string IntroText
         {
@@ -277,16 +278,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 _equalizer = Model.Equalizer.Instance;
                 _eqPresets = _equalizer.EQPresets;
-                EQ0 = _equalizer.EQ0;
-                EQ1 = _equalizer.EQ1;
-                EQ2 = _equalizer.EQ2;
-                EQ3 = _equalizer.EQ3;
-                EQ4 = _equalizer.EQ4;
-                EQ5 = _equalizer.EQ5;
-                EQ6 = _equalizer.EQ6;
-                EQ7 = _equalizer.EQ7;
-                EQ8 = _equalizer.EQ8;
-                EQ9 = _equalizer.EQ9;
+
+                EQEnabled = _equalizer.EQEnabled;
+                EQSelectedPreset = _equalizer.EQSelectedPreset;
+
+                SetUIEqPreset();
+                
             }
             catch
             {
@@ -313,17 +310,63 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     if (x != null)
                     {
                         var eqPanel = ((x as StackPanel).Children[1] as StackPanel).Children[1] as StackPanel;
-                        (eqPanel.Children[0] as Slider).Value = PreAmp * 10;
-                        (eqPanel.Children[1] as Slider).Value = EQ0 * 10;
-                        (eqPanel.Children[2] as Slider).Value = EQ1 * 10;
-                        (eqPanel.Children[3] as Slider).Value = EQ2 * 10;
-                        (eqPanel.Children[4] as Slider).Value = EQ3 * 10;
-                        (eqPanel.Children[5] as Slider).Value = EQ4 * 10;
-                        (eqPanel.Children[6] as Slider).Value = EQ5 * 10;
-                        (eqPanel.Children[7] as Slider).Value = EQ6 * 10;
-                        (eqPanel.Children[8] as Slider).Value = EQ7 * 10;
-                        (eqPanel.Children[9] as Slider).Value = EQ8 * 10;
-                        (eqPanel.Children[10] as Slider).Value = EQ9 * 10;
+                        //(eqPanel.Children[0] as Slider).Value = PreAmp * 10;
+                        //(eqPanel.Children[1] as Slider).Value = EQ0 * 10;
+                        //(eqPanel.Children[2] as Slider).Value = EQ1 * 10;
+                        //(eqPanel.Children[3] as Slider).Value = EQ2 * 10;
+                        //(eqPanel.Children[4] as Slider).Value = EQ3 * 10;
+                        //(eqPanel.Children[5] as Slider).Value = EQ4 * 10;
+                        //(eqPanel.Children[6] as Slider).Value = EQ5 * 10;
+                        //(eqPanel.Children[7] as Slider).Value = EQ6 * 10;
+                        //(eqPanel.Children[8] as Slider).Value = EQ7 * 10;
+                        //(eqPanel.Children[9] as Slider).Value = EQ8 * 10;
+                        //(eqPanel.Children[10] as Slider).Value = EQ9 * 10;
+
+                        _sliderPreAmp = (eqPanel.Children[0] as Slider);
+                        _sliderEq0 = (eqPanel.Children[1] as Slider);
+                        _sliderEq1 = (eqPanel.Children[2] as Slider);
+                        _sliderEq2 = (eqPanel.Children[3] as Slider);
+                        _sliderEq3 = (eqPanel.Children[4] as Slider);
+                        _sliderEq4 = (eqPanel.Children[5] as Slider);
+                        _sliderEq5 = (eqPanel.Children[6] as Slider);
+                        _sliderEq6 = (eqPanel.Children[7] as Slider);
+                        _sliderEq7 = (eqPanel.Children[8] as Slider);
+                        _sliderEq8 = (eqPanel.Children[9] as Slider);
+                        _sliderEq9 = (eqPanel.Children[10] as Slider);
+                    }
+                }));
+            }
+        }
+
+        public ICommand EQSelectedPresetCommand
+        {
+            get
+            {
+                return _eqSelectedPresetCommand ?? (_eqSelectedPresetCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        var selectedPreset = (x as ComboBox).SelectedIndex;
+                        var preset = ((KeyValuePair<int, Preset>)(x as ComboBox).SelectedItem).Key;
+
+                        if (preset != -1)
+                        {
+                            _equalizer.EQPreset = new Equalizer(_eqPresets[preset]);
+                            _equalizer.EQ0 = (float)_equalizer.EQPreset.Bands[0].Amplitude;
+                            _equalizer.EQ1 = (float)_equalizer.EQPreset.Bands[1].Amplitude;
+                            _equalizer.EQ2 = (float)_equalizer.EQPreset.Bands[2].Amplitude;
+                            _equalizer.EQ3 = (float)_equalizer.EQPreset.Bands[3].Amplitude;
+                            _equalizer.EQ4 = (float)_equalizer.EQPreset.Bands[4].Amplitude;
+                            _equalizer.EQ5 = (float)_equalizer.EQPreset.Bands[5].Amplitude;
+                            _equalizer.EQ6 = (float)_equalizer.EQPreset.Bands[6].Amplitude;
+                            _equalizer.EQ7 = (float)_equalizer.EQPreset.Bands[7].Amplitude;
+                            _equalizer.EQ8 = (float)_equalizer.EQPreset.Bands[8].Amplitude;
+                            _equalizer.EQ9 = (float)_equalizer.EQPreset.Bands[9].Amplitude;
+                            _equalizer.PreAmp = (float)_equalizer.EQPreset.Preamp;
+                            _equalizer.EQSelectedPreset = selectedPreset;
+
+                            SetUIEqPreset();
+                        }
                     }
                 }));
             }
@@ -530,6 +573,32 @@ namespace bossdoyKaraoke_NOW.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
+        private void SetUIEqPreset()
+        {
+            EQ0 = _equalizer.EQ0;
+            EQ1 = _equalizer.EQ1;
+            EQ2 = _equalizer.EQ2;
+            EQ3 = _equalizer.EQ3;
+            EQ4 = _equalizer.EQ4;
+            EQ5 = _equalizer.EQ5;
+            EQ6 = _equalizer.EQ6;
+            EQ7 = _equalizer.EQ7;
+            EQ8 = _equalizer.EQ8;
+            EQ9 = _equalizer.EQ9;
+            PreAmp = _equalizer.PreAmp;
+
+            _sliderPreAmp.Value = PreAmp * 10;
+            _sliderEq0.Value = EQ0 * 10;
+            _sliderEq1.Value = EQ1 * 10;
+            _sliderEq2.Value = EQ2 * 10;
+            _sliderEq3.Value = EQ3 * 10;
+            _sliderEq4.Value = EQ4 * 10;
+            _sliderEq5.Value = EQ5 * 10;
+            _sliderEq6.Value = EQ6 * 10;
+            _sliderEq7.Value = EQ7 * 10;
+            _sliderEq8.Value = EQ8 * 10;
+            _sliderEq9.Value = EQ9 * 10;
+        }
 
         /*
          <ComboBox 

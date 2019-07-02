@@ -15,7 +15,8 @@ namespace bossdoyKaraoke_NOW.Model
 
         private bool _eqEnabled = false;
         private Dictionary<int, Preset> _eqPresets;
-        private Implementation.Equalizer _eqSelectedPreset;
+        private Implementation.Equalizer _eqPreset;
+        private int _eqSelectedPreset;
         private float _preAmp = 0f;
         private float _eq0 = 0f;
         private float _eq1 = 0f;
@@ -54,7 +55,33 @@ namespace bossdoyKaraoke_NOW.Model
             }
         }
 
-        public Implementation.Equalizer EQSelectedPreset
+        //public Implementation.Equalizer EQSelectedPreset
+        //{
+        //    get
+        //    {
+        //        return _eqSelectedPreset;
+        //    }
+
+        //    set
+        //    {
+        //        _eqSelectedPreset = value;
+        //    }
+        //}
+
+        public Implementation.Equalizer EQPreset
+        {
+            get
+            {
+                return _eqPreset;
+            }
+
+            set
+            {
+                _eqPreset = value;
+            }
+        }
+
+        public int EQSelectedPreset
         {
             get
             {
@@ -234,10 +261,10 @@ namespace bossdoyKaraoke_NOW.Model
             EQ6 = AppConfig.Get<float>("DEFAudioEQBand6");
             EQ7 = AppConfig.Get<float>("DEFAudioEQBand7");
             EQ8 = AppConfig.Get<float>("DEFAudioEQBand8");
-            EQ9 = AppConfig.Get<float>("DEFAudioEQBand9");
+            EQ9 = AppConfig.Get<float>("DEFAudioEQBand9"); 
+            EQEnabled = AppConfig.Get<bool>("DEFAudioEQEnabled");
             PreAmp = AppConfig.Get<float>("DEFAudioEQPreamp");
-
-          //  EQPresets =  AppConfig.Get<int>("DEFAudioEQPreset");
+            EQSelectedPreset =  AppConfig.Get<int>("DEFAudioEQPreset");
         }
 
         public class BandValue

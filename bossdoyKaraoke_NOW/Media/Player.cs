@@ -167,9 +167,9 @@ namespace bossdoyKaraoke_NOW.Media
             App.SplashScreen.AddMessage("Loading Default Configuration");
             //Initialized Default Configuration
             AppConfig.Initialize();
-            AppConfig.SetFxDefaultSettings("DEFAudioEQBand");
-            AppConfig.SetFxDefaultSettings("DEFAudioEQPreset");
-            AppConfig.SetFxDefaultSettings("DEFAudioEQPreamp");
+           // AppConfig.SetFxDefaultSettings("DEFAudioEQBand");
+            //AppConfig.SetFxDefaultSettings("DEFAudioEQPreset");
+           // AppConfig.SetFxDefaultSettings("DEFAudioEQPreamp");
             Thread.Sleep(1000);
             App.SplashScreen.AddMessage("Initializing Bass Audio");
             //Initialized Bass Un4seen

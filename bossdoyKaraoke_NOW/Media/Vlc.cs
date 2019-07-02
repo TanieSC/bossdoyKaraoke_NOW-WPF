@@ -100,7 +100,22 @@ namespace bossdoyKaraoke_NOW.Media
             _media_list = _factory.CreateMediaList<IMediaList>();
             _media_list_preview = _factory.CreateMediaList<IMediaList>();
 
-            _equalizer.EQPresets = Equalizer.Presets.ToDictionary(key => key.Index);
+            var eqPresets = new Dictionary<int, Preset>();
+            var presets = Equalizer.Presets.ToDictionary(key => key.Index);
+
+            eqPresets.Add(-1, null);
+            for (int i = 0; i < presets.Count; i++)
+            {
+                eqPresets.Add(i, presets[i]);
+            }
+
+            _equalizer.EQPresets = eqPresets;
+
+            //if (_equalizer.EQSelectedPreset != -1)
+            //{
+            //    _equalizer.EQPreset = new Implementation.Equalizer(eqPresets[_equalizer.EQSelectedPreset]);
+
+            //}
 
             //_presets = Equalizer.Presets.ToDictionary(key => key.Index);
 

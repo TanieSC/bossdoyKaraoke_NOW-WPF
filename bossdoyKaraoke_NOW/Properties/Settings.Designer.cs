@@ -37,7 +37,7 @@ namespace bossdoyKaraoke_NOW.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public float DEFAudioEQBand0 {
             get {
                 return ((float)(this["DEFAudioEQBand0"]));
@@ -127,7 +127,7 @@ namespace bossdoyKaraoke_NOW.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
         public int DEFAudioEQPreset {
             get {
                 return ((int)(this["DEFAudioEQPreset"]));
@@ -136,7 +136,7 @@ namespace bossdoyKaraoke_NOW.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("120")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public float DEFAudioEQPreamp {
             get {
                 return ((float)(this["DEFAudioEQPreamp"]));
@@ -145,7 +145,7 @@ namespace bossdoyKaraoke_NOW.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DEFAudioEQEnabled {
             get {
                 return ((bool)(this["DEFAudioEQEnabled"]));
