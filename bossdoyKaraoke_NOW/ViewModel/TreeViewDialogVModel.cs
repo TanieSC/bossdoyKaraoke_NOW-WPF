@@ -14,14 +14,14 @@ using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
 using MaterialDesignThemes.Wpf;
-using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 using static bossdoyKaraoke_NOW.Enums.KaraokeNowFiles;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    class TreeViewDialogModel : ITreeViewDialogModel, INotifyPropertyChanged
+    class TreeViewDialogVModel : ITreeViewDialogVModel, INotifyPropertyChanged
     {
-        private static TreeViewDialogModel _instance;
+        private static TreeViewDialogVModel _instance;
         private int _count = 0;
         private TextBox _favoritesTitle;
         private string _dialogStatus;
@@ -101,19 +101,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public static TreeViewDialogModel Instance
+        public static TreeViewDialogVModel Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new TreeViewDialogModel();
+                    _instance = new TreeViewDialogVModel();
                 }
                 return _instance;
             }
         }
 
-        public TreeViewDialogModel()
+        public TreeViewDialogVModel()
         {
             _instance = this;
         }

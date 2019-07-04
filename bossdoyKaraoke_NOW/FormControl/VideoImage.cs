@@ -9,7 +9,7 @@ using bossdoyKaraoke_NOW.Media;
 using SharpDX;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
-using static bossdoyKaraoke_NOW.Enums.PlayerState;
+using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 using D2D = SharpDX.Direct2D1;
 
 namespace bossdoyKaraoke_NOW.FormControl

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bossdoyKaraoke_NOW.Enums
 {
-    public class Effects
+    public class EffectsEnum
     {
         private static Load Fx;
 

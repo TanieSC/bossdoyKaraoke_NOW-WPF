@@ -9,14 +9,14 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
-using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    public interface ITreeViewModel
+    public interface ITreeViewVModel
     {
         ObservableCollection<ITreeViewModelChild> Items { get; }
-        List<ITreeViewModel> ItemSource { get; }
+        List<ITreeViewVModel> ItemSource { get; }
         PackIconKind PackIconKind { get; set; }
         SolidColorBrush Foreground { get; set; }
         string Title { get; set; }

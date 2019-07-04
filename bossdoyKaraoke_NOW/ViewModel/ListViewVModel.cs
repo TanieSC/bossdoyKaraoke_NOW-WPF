@@ -13,12 +13,12 @@ using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Model;
-using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
-using static bossdoyKaraoke_NOW.Enums.PlayerState;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
+using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    public class ListViewModel : IListViewModel
+    public class ListViewVModel : IListViewVModel
     {
         private ISongsSource _songsSource = SongsSource.Instance;
         private ICommand _addToQueueDblClkCommand;// _previewMouseDoubleClick;
@@ -28,11 +28,11 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _addToQueueAsNextCommand;
         private ICommand _removeCommand;
 
-        public ObservableCollection<TrackInfo> Items { get; private set; }
+        public ObservableCollection<TrackInfoModel> Items { get; private set; }
 
-        public ListViewModel()
+        public ListViewVModel()
         {
-            Items =  _songsSource.Songs.Count > 0 ? _songsSource.Songs[0] : new ObservableCollection<TrackInfo>();
+            Items =  _songsSource.Songs.Count > 0 ? _songsSource.Songs[0] : new ObservableCollection<TrackInfoModel>();
         }
 
         public ICommand AddToQueueDblClkCommand// PreviewMouseDoubleClick
@@ -43,7 +43,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        AddToQueue(x as TrackInfo);
+                        AddToQueue(x as TrackInfoModel);
                     }
                 }));
             }
@@ -79,7 +79,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 return _addToQueueCommand ?? (_addToQueueCommand = new RelayCommand(x =>
                 {
                     if (x != null)
-                        AddToQueue(x as TrackInfo);
+                        AddToQueue(x as TrackInfoModel);
                 }));
             }
         }
@@ -91,7 +91,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 return _addToQueueAsNextCommand ?? (_addToQueueAsNextCommand = new RelayCommand(x =>
                 {
                     if (x != null)
-                        AddToQueueAsNext(x as TrackInfo);
+                        AddToQueueAsNext(x as TrackInfoModel);
                 }));
             }
         }
@@ -104,7 +104,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        RemoveSong(x as TrackInfo);
+                        RemoveSong(x as TrackInfoModel);
                     }
                 }));
             }
@@ -143,21 +143,21 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        private void AddToQueue(TrackInfo sender)
+        private void AddToQueue(TrackInfoModel sender)
         {
             CurrentTask = NewTask.ADD_TO_QUEUE;
             sender.IsSelected = true;
             Worker.DoWork(CurrentTask, sender);
         }
 
-        private void AddToQueueAsNext(TrackInfo sender)
+        private void AddToQueueAsNext(TrackInfoModel sender)
         {
             CurrentTask = NewTask.ADD_TO_QUEUE_AS_NEXT;
             sender.IsSelected = true;
             Worker.DoWork(CurrentTask, sender);
         }
 
-        private void RemoveSong(TrackInfo sender)
+        private void RemoveSong(TrackInfoModel sender)
         {
             if (CurrentTask == NewTask.LOAD_QUEUE_SONGS)
             {

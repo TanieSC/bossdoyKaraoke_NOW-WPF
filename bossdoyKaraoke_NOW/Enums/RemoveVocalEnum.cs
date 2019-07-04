@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bossdoyKaraoke_NOW.Enums
 {
-    public class RemoveVocal
+    public class RemoveVocalEnum
     {
         private static ChannelSelected _channelSelected;
 

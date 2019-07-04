@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    public interface IFullScreenModel
+    public interface IFullScreenVModel
     {
         ICommand LoadedCommmand { get; }
         ICommand SizeChangedCommmand { get; }

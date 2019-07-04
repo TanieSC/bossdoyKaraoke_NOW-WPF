@@ -14,7 +14,7 @@ using Un4seen.Bass.AddOn.Tags;
 namespace bossdoyKaraoke_NOW.Model
 {
     [Serializable]
-    public class TrackInfo : ITrackInfo, INotifyPropertyChanged
+    public class TrackInfoModel : ITrackInfoModel, INotifyPropertyChanged
     {
         private bool _isSelected = false;
 
@@ -26,11 +26,11 @@ namespace bossdoyKaraoke_NOW.Model
         public TAG_INFO Tags { get; set; }
         public bool IsSelected { get { return _isSelected; } set { _isSelected = value; OnPropertyChanged(); } }
 
-        public TrackInfo()
+        public TrackInfoModel()
         {
         }
 
-        public TrackInfo(TrackInfo trackInfo)
+        public TrackInfoModel(TrackInfoModel trackInfo)
         {
 
             string filename = Regex.Replace(trackInfo.FilePath, "\\.cdg$", ".mp3", RegexOptions.IgnoreCase);
@@ -54,7 +54,7 @@ namespace bossdoyKaraoke_NOW.Model
             //    throw new ArgumentException("File not valid!");
         }
 
-        public TrackInfo(string filepath, int songId)
+        public TrackInfoModel(string filepath, int songId)
         {
 
             string filename = Regex.Replace(filepath, "\\.mp3$", ".cdg", RegexOptions.IgnoreCase);

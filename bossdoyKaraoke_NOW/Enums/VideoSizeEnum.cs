@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bossdoyKaraoke_NOW.Enums
 {
-    public class VideoSize
+    public class VideoSizeEnum
     {
         private static VideoSizeSelected vidoeSize;
 

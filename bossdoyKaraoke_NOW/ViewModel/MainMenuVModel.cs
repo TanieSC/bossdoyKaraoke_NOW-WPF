@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
-using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    class MainMenuModel : IMainMenuModel
+    class MainMenuVModel : IMainMenuVModel
     {
         // private Preferences prefs = new Preferences();
         private ISongsSource _songsSource = SongsSource.Instance;

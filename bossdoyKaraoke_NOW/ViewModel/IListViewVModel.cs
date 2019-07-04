@@ -9,9 +9,9 @@ using bossdoyKaraoke_NOW.Model;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    public interface IListViewModel
+    public interface IListViewVModel
     {
-        ObservableCollection<TrackInfo> Items { get; }
+        ObservableCollection<TrackInfoModel> Items { get; }
         ICommand AddToQueueDblClkCommand { get; }
         ICommand LoadedCommand { get; }
         ICommand ContextMenuLoadedCommand { get; }

@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    public interface ITreeViewDialogModel
+    public interface ITreeViewDialogVModel
     {
         bool ShowDialog { get; set; }
         string DialogStatus { get; set; }

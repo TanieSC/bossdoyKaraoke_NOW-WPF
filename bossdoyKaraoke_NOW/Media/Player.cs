@@ -17,9 +17,9 @@ using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Fx;
 using Un4seen.Bass.AddOn.Mix;
 using Un4seen.Bass.AddOn.Tags;
-using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
-using static bossdoyKaraoke_NOW.Enums.PlayerState;
-using static bossdoyKaraoke_NOW.Enums.RemoveVocal;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
+using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
+using static bossdoyKaraoke_NOW.Enums.RemoveVocalEnum;
 
 namespace bossdoyKaraoke_NOW.Media
 {
@@ -72,15 +72,15 @@ namespace bossdoyKaraoke_NOW.Media
                 if (_isPlayingVlc)
                     VlcPlayer.Volume = (value != 0 ? (value + _plus15Volume) : value);
 
-                MediaControls.Instance.VolumeValue = (int)value;
+                MediaControlsVModel.Instance.VolumeValue = (int)value;
 
                 if (_volume <= 0)
                 {
-                    MediaControls.Instance.IconMuteUnMute = PackIconKind.VolumeMute;
+                    MediaControlsVModel.Instance.IconMuteUnMute = PackIconKind.VolumeMute;
                 }
                 else
                 {
-                    MediaControls.Instance.IconMuteUnMute = PackIconKind.VolumeHigh;
+                    MediaControlsVModel.Instance.IconMuteUnMute = PackIconKind.VolumeHigh;
                 }
             }
         }
@@ -112,11 +112,11 @@ namespace bossdoyKaraoke_NOW.Media
                     _bassChannelInSeconds = Bass.BASS_ChannelBytes2Seconds(_currentTrack.Channel, _bassChannelPosition);
                     _renderAtPosition = Convert.ToInt64(_bassChannelInSeconds * 1000);
 
-                    MediaControls.Instance.ElapsedTime = Utils.FixTimespan(_bassChannelInSeconds, "HHMMSS");
-                    MediaControls.Instance.RemainingTime = Utils.FixTimespan(Bass.BASS_ChannelBytes2Seconds(_currentTrack.Channel, _currentTrack.TrackLength - _bassChannelPosition), "HHMMSS");
+                    MediaControlsVModel.Instance.ElapsedTime = Utils.FixTimespan(_bassChannelInSeconds, "HHMMSS");
+                    MediaControlsVModel.Instance.RemainingTime = Utils.FixTimespan(Bass.BASS_ChannelBytes2Seconds(_currentTrack.Channel, _currentTrack.TrackLength - _bassChannelPosition), "HHMMSS");
 
                     bpp = _currentTrack.TrackLength / _progressBarMaximum;
-                    MediaControls.Instance.ProgressValue = Math.Round(_bassChannelPosition / bpp);
+                    MediaControlsVModel.Instance.ProgressValue = Math.Round(_bassChannelPosition / bpp);
 
                 }
                 else
@@ -134,12 +134,12 @@ namespace bossdoyKaraoke_NOW.Media
 
             double timeElapsed = Convert.ToDouble(VlcPlayer.TimeElapsed);
             double timeRemain = Convert.ToDouble(VlcPlayer.TimeDuration);
-            MediaControls.Instance.ElapsedTime = TimeSpan.FromMilliseconds(timeElapsed).ToString(@"hh\:mm\:ss"); //.Substring(0, 8);
-            MediaControls.Instance.RemainingTime = TimeSpan.FromMilliseconds(timeRemain - timeElapsed).ToString(@"hh\:mm\:ss");//.Substring(0, 8);
+            MediaControlsVModel.Instance.ElapsedTime = TimeSpan.FromMilliseconds(timeElapsed).ToString(@"hh\:mm\:ss"); //.Substring(0, 8);
+            MediaControlsVModel.Instance.RemainingTime = TimeSpan.FromMilliseconds(timeRemain - timeElapsed).ToString(@"hh\:mm\:ss");//.Substring(0, 8);
 
             double bpp = 0;
             bpp = (int)Math.Round(VlcPlayer.PlayerPosition * _progressBarMaximum);
-            MediaControls.Instance.ProgressValue = bpp;
+            MediaControlsVModel.Instance.ProgressValue = bpp;
 
         }
 
@@ -167,9 +167,15 @@ namespace bossdoyKaraoke_NOW.Media
             App.SplashScreen.AddMessage("Loading Default Configuration");
             //Initialized Default Configuration
             AppConfig.Initialize();
-           // AppConfig.SetFxDefaultSettings("DEFAudioEQBand");
-            //AppConfig.SetFxDefaultSettings("DEFAudioEQPreset");
-           // AppConfig.SetFxDefaultSettings("DEFAudioEQPreamp");
+
+            if (!AppConfig.Get<bool>("IsDefaultInit"))
+            {
+                AppConfig.Set("IsDefaultInit", "true");
+                AppConfig.SetFxDefaultSettings("DEFAudioEQBand");
+                AppConfig.SetFxDefaultSettings("DEFAudioEQEnabled");
+                AppConfig.SetFxDefaultSettings("DEFAudioEQPreset");
+                AppConfig.SetFxDefaultSettings("DEFAudioEQPreamp");
+            }
             Thread.Sleep(1000);
             App.SplashScreen.AddMessage("Initializing Bass Audio");
             //Initialized Bass Un4seen
@@ -216,8 +222,8 @@ namespace bossdoyKaraoke_NOW.Media
             PlayNextTrack();
             _isPlayingBass = true;
             _isPlayingVlc = false;
-            MediaControls.Instance.EnableControl = true;
-            MediaControls.Instance.KeyTempoOpacity = 1f;
+            MediaControlsVModel.Instance.EnableControl = true;
+            MediaControlsVModel.Instance.KeyTempoOpacity = 1f;
         }
 
         /// <summary>
@@ -231,8 +237,8 @@ namespace bossdoyKaraoke_NOW.Media
             VlcPlayer.Volume = Volume != 0 ? (Volume + _plus15Volume) : Volume;
             _isPlayingVlc = true;
             _isPlayingBass = false;
-            MediaControls.Instance.EnableControl = false;
-            MediaControls.Instance.KeyTempoOpacity = 0.25f;
+            MediaControlsVModel.Instance.EnableControl = false;
+            MediaControlsVModel.Instance.KeyTempoOpacity = 0.25f;
         }
 
         /// <summary>
@@ -243,7 +249,7 @@ namespace bossdoyKaraoke_NOW.Media
             if (_isPlayingBass)
             {
                 _currentTrack.KeyMinus();
-                MediaControls.Instance.Key = string.Format("{0}", _currentTrack.FXTempo.Key);
+                MediaControlsVModel.Instance.Key = string.Format("{0}", _currentTrack.FXTempo.Key);
             }
         }
 
@@ -255,7 +261,7 @@ namespace bossdoyKaraoke_NOW.Media
             if (_isPlayingBass)
             {
                 _currentTrack.KeyPlus();
-                MediaControls.Instance.Key = string.Format("{0}", _currentTrack.FXTempo.Key);
+                MediaControlsVModel.Instance.Key = string.Format("{0}", _currentTrack.FXTempo.Key);
             }
         }
 
@@ -267,7 +273,7 @@ namespace bossdoyKaraoke_NOW.Media
             if (_isPlayingBass)
             {
                 _currentTrack.TempoMinus();
-                MediaControls.Instance.Tempo = string.Format("{0}", _currentTrack.FXTempo.Tempo + "%");
+                MediaControlsVModel.Instance.Tempo = string.Format("{0}", _currentTrack.FXTempo.Tempo + "%");
             }
         }
 
@@ -279,7 +285,7 @@ namespace bossdoyKaraoke_NOW.Media
             if (_isPlayingBass)
             {
                 _currentTrack.TempoPlus();
-                MediaControls.Instance.Tempo = string.Format("{0}", _currentTrack.FXTempo.Tempo + "%");
+                MediaControlsVModel.Instance.Tempo = string.Format("{0}", _currentTrack.FXTempo.Tempo + "%");
             }
         }
 
@@ -298,7 +304,7 @@ namespace bossdoyKaraoke_NOW.Media
                 VlcPlayer.Mute();
             }
 
-            MediaControls.Instance.IconMuteUnMute = PackIconKind.VolumeMute;
+            MediaControlsVModel.Instance.IconMuteUnMute = PackIconKind.VolumeMute;
         }
 
         /// <summary>
@@ -316,7 +322,7 @@ namespace bossdoyKaraoke_NOW.Media
                 VlcPlayer.UnMute();
             }
 
-            MediaControls.Instance.IconMuteUnMute = PackIconKind.VolumeHigh;
+            MediaControlsVModel.Instance.IconMuteUnMute = PackIconKind.VolumeHigh;
         }
 
         /// <summary>
@@ -334,7 +340,7 @@ namespace bossdoyKaraoke_NOW.Media
                 VlcPlayer.Pause();
             }
 
-            MediaControls.Instance.IconPlayPause = PackIconKind.Play;
+            MediaControlsVModel.Instance.IconPlayPause = PackIconKind.Play;
         }
 
         /// <summary>
@@ -361,7 +367,7 @@ namespace bossdoyKaraoke_NOW.Media
                 }
             //}
 
-            MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
+            MediaControlsVModel.Instance.IconPlayPause = PackIconKind.Pause;
         }
 
         /// <summary>
@@ -388,9 +394,9 @@ namespace bossdoyKaraoke_NOW.Media
             _isPlayingBass = false;
             _isPlayingVlc = false;
 
-            MediaControls.Instance.ElapsedTime = "00:00:00";
-            MediaControls.Instance.RemainingTime = "00:00:00";
-            MediaControls.Instance.IconPlayPause = PackIconKind.Play;
+            MediaControlsVModel.Instance.ElapsedTime = "00:00:00";
+            MediaControlsVModel.Instance.RemainingTime = "00:00:00";
+            MediaControlsVModel.Instance.IconPlayPause = PackIconKind.Play;
         }
 
         /// <summary>
@@ -404,7 +410,7 @@ namespace bossdoyKaraoke_NOW.Media
                 {
                     case ChannelSelected.None: // Center no vocal removed
                         Bass.BASS_ChannelRemoveFX(BassAudio.MixerChannel, _fxMix);
-                        MediaControls.Instance.VocalChannel = "BAL";
+                        MediaControlsVModel.Instance.VocalChannel = "BAL";
                         Channel = ChannelSelected.Right;
 
                         // bt.RemoveVocalLeftOrRight(ChannelSelected.None);
@@ -414,7 +420,7 @@ namespace bossdoyKaraoke_NOW.Media
                         _duplicateChannel = new BASS_BFX_MIX(BASSFXChan.BASS_BFX_CHAN1, BASSFXChan.BASS_BFX_CHAN1);
                         _fxMix = Bass.BASS_ChannelSetFX(BassAudio.MixerChannel, BASSFXType.BASS_FX_BFX_MIX, 0);
                         Bass.BASS_FXSetParameters(_fxMix, _duplicateChannel);
-                        MediaControls.Instance.VocalChannel = "RGT";
+                        MediaControlsVModel.Instance.VocalChannel = "RGT";
                         Channel = ChannelSelected.Left;
 
                         // bt.RemoveVocalLeftOrRight(ChannelSelected.Right);
@@ -424,7 +430,7 @@ namespace bossdoyKaraoke_NOW.Media
                         _duplicateChannel = new BASS_BFX_MIX(BASSFXChan.BASS_BFX_CHAN2, BASSFXChan.BASS_BFX_CHAN2);
                         _fxMix = Bass.BASS_ChannelSetFX(BassAudio.MixerChannel, BASSFXType.BASS_FX_BFX_MIX, 0);
                         Bass.BASS_FXSetParameters(_fxMix, _duplicateChannel);
-                        MediaControls.Instance.VocalChannel = "LFT";
+                        MediaControlsVModel.Instance.VocalChannel = "LFT";
                         Channel = ChannelSelected.None;
 
                         // bt.RemoveVocalLeftOrRight(ChannelSelected.Left);
@@ -439,7 +445,7 @@ namespace bossdoyKaraoke_NOW.Media
         public string GetNextTrackInfo()
         {
 
-            string showNextTrack = MediaControls.Instance.RemainingTime.Trim();
+            string showNextTrack = MediaControlsVModel.Instance.RemainingTime.Trim();
 
             if (showNextTrack != string.Empty || showNextTrack != "")
             {
@@ -517,117 +523,117 @@ namespace bossdoyKaraoke_NOW.Media
 
             if ((int)dbLevelL < -25)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFF0F0F0"; //off
+                MediaControlsVModel.Instance.VUmeterColorL = "#FFF0F0F0"; //off
             }
             else if ((int)dbLevelL < -20)
             {
-                MediaControls.Instance.VUmeterColorL = "#FF00EE55";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FF00EE55";
             }
             else if ((int)dbLevelL < -17)
             {
-                MediaControls.Instance.VUmeterColorL = "#FF00EE55"; 
+                MediaControlsVModel.Instance.VUmeterColorL = "#FF00EE55"; 
             }
             else if ((int)dbLevelL < -15)
             {
-                MediaControls.Instance.VUmeterColorL = "#FF5AF700"; 
+                MediaControlsVModel.Instance.VUmeterColorL = "#FF5AF700"; 
             }
             else if ((int)dbLevelL < -12)
             {
-                MediaControls.Instance.VUmeterColorL = "#FF5DFF00";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FF5DFF00";
             }
             else if ((int)dbLevelL < -10)
             {
-                MediaControls.Instance.VUmeterColorL = "#FF82EE00";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FF82EE00";
             }
             else if ((int)dbLevelL < -8)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFA4F100";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FFA4F100";
             }
             else if ((int)dbLevelL < -6)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFBAFF00";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FFBAFF00";
             }
             else if ((int)dbLevelL < -3)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFBAFF00";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FFBAFF00";
             }
             else if ((int)dbLevelL < 0)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFD1FF00";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FFD1FF00";
             }
             else if ((int)dbLevelL < 1)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFE3EE00";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FFE3EE00";
             }
             else if ((int)dbLevelL < 2)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFEEE300";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FFEEE300";
             }
             else if ((int)dbLevelL < 3)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFEEC300";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FFEEC300";
             }
             else if ((int)dbLevelL < 4)
             {
-                MediaControls.Instance.VUmeterColorL = "#FFEE6100";
+                MediaControlsVModel.Instance.VUmeterColorL = "#FFEE6100";
             }
 
 
             if ((int)dbLevelR < -25)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFF0F0F0"; //off
+                MediaControlsVModel.Instance.VUmeterColorR = "#FFF0F0F0"; //off
             }
             else if ((int)dbLevelR < -20)
             {
-                MediaControls.Instance.VUmeterColorR = "#FF00EE55";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FF00EE55";
             }
             else if ((int)dbLevelR < -17)
             {
-                MediaControls.Instance.VUmeterColorR = "#FF00EE55";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FF00EE55";
             }
             else if ((int)dbLevelR < -15)
             {
-                MediaControls.Instance.VUmeterColorR = "#FF5AF700";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FF5AF700";
             }
             else if ((int)dbLevelR < -12)
             {
-                MediaControls.Instance.VUmeterColorR = "#FF5DFF00";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FF5DFF00";
             }
             else if ((int)dbLevelR < -10)
             {
-                MediaControls.Instance.VUmeterColorR = "#FF82EE00";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FF82EE00";
             }
             else if ((int)dbLevelR < -8)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFA4F100";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FFA4F100";
             }
             else if ((int)dbLevelR < -6)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFBAFF00"; 
+                MediaControlsVModel.Instance.VUmeterColorR = "#FFBAFF00"; 
             }
             else if ((int)dbLevelR < -3)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFBAFF00"; 
+                MediaControlsVModel.Instance.VUmeterColorR = "#FFBAFF00"; 
             }
             else if ((int)dbLevelR < 0)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFD1FF00";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FFD1FF00";
             }
             else if ((int)dbLevelR < 1)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFE3EE00";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FFE3EE00";
             }
             else if ((int)dbLevelR < 2)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFEEE300";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FFEEE300";
             }
             else if ((int)dbLevelR < 3)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFEEC300";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FFEEC300";
             }
             else if ((int)dbLevelR < 4)
             {
-                MediaControls.Instance.VUmeterColorR = "#FFEE6100";
+                MediaControlsVModel.Instance.VUmeterColorR = "#FFEE6100";
             }
         }
 
@@ -703,13 +709,13 @@ namespace bossdoyKaraoke_NOW.Media
             lock (_songsSource.SongsQueue)
             {
                 _getNestSongInfo = "";
-                MediaControls.Instance.VocalChannel = "BAL";
+                MediaControlsVModel.Instance.VocalChannel = "BAL";
                 Channel = ChannelSelected.Right;
 
                 if (_songsSource.SongQueueCount > 0)
                 {
-                    MediaControls.Instance.SongTitle = _songsSource.SongsQueue[0].Name;
-                    MediaControls.Instance.SongArtist = _songsSource.SongsQueue[0].Artist;
+                    MediaControlsVModel.Instance.SongTitle = _songsSource.SongsQueue[0].Name;
+                    MediaControlsVModel.Instance.SongArtist = _songsSource.SongsQueue[0].Artist;
 
                     if (_songsSource.IsCdgFileType)
                     {

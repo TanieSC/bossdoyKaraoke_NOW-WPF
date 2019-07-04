@@ -23,11 +23,11 @@ namespace bossdoyKaraoke_NOW
             {
                 PropertyType = typeof(string),
                 SerializeAs = SettingsSerializeAs.String,
-                DefaultValue = string.Empty,
+                DefaultValue = value,
                 Provider = Settings.Default.Providers["LocalFileSettingsProvider"],
             };
 
-            newProp.Attributes.Add(typeof(ApplicationScopedSettingAttribute), new ApplicationScopedSettingAttribute());  //.Add(getType(Configuration.UserScopedSettingAttribute), New Configuration.UserScopedSettingAttribute())
+            newProp.Attributes.Add(typeof(UserScopedSettingAttribute), new UserScopedSettingAttribute());  //.Add(getType(Configuration.UserScopedSettingAttribute), New Configuration.UserScopedSettingAttribute())
 
             SettingsPropertyValue newPropValue = new SettingsPropertyValue(newProp);
             newPropValue.PropertyValue = value;
@@ -41,7 +41,8 @@ namespace bossdoyKaraoke_NOW
         public static void Initialize()
         {
             _config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-            _entry = _config.GetSectionGroup("applicationSettings").Sections["bossdoyKaraoke_NOW.Properties.Settings"] as ClientSettingsSection;
+            _entry = _config.GetSectionGroup("userSettings").Sections["bossdoyKaraoke_NOW.Properties.Settings"] as ClientSettingsSection;
+            //Console.WriteLine("Local user config path: {0}", _config.FilePath);
         }
 
         public static void Set(string key, string value)

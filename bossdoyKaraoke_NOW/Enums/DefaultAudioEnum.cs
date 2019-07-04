@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bossdoyKaraoke_NOW.Enums
 {
-    public class DefaultAudio
+    public class DefaultAudioEnum
     {
         private static DefaultAudioOutput defaultAudioOutput;
 

@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         Title="Preferences" Height="520" Width="552" MaxHeight="520" MinHeight="520" MaxWidth="552" MinWidth="552"><!--Height="575" Width="552" MaxHeight="55" MinHeight="575"-->
     <Window.DataContext>
-        <vm:PreferencesModel></vm:PreferencesModel>
+        <vm:PreferencesVModel></vm:PreferencesVModel>
     </Window.DataContext>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -81,7 +81,7 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox x:Name="chkBoxEQ" Content="Enable EQ" IsChecked="{Binding EQEnabled}">
                                             <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="TextChanged">
+                                                <i:EventTrigger EventName="Click">
                                                     <i:InvokeCommandAction Command="{Binding EQEnabledCommand}" CommandParameter="{ Binding ElementName=chkBoxEQ}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>

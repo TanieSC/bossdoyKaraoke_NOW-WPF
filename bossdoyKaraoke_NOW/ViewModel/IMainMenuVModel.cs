@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    public interface IMainMenuModel
+    public interface IMainMenuVModel
     {
         ICommand OpenCommand { get; }
         ICommand AddSongsCommand { get; }

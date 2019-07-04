@@ -13,40 +13,40 @@ using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Model;
-using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    class SearchBoxModel : ISearchBoxModel, INotifyPropertyChanged
+    class SearchBoxVModel : ISearchBoxVModel, INotifyPropertyChanged
     {
-        private static SearchBoxModel _instance;
+        private static SearchBoxVModel _instance;
         private ICommand _searchSongsCommand;
         private ISongsSource songsSource = SongsSource.Instance;
-        public ObservableCollection<TrackInfo> Items { get; set; }
+        public ObservableCollection<TrackInfoModel> Items { get; set; }
         public int ItemId { get; set; }
 
-        public static SearchBoxModel Instance
+        public static SearchBoxVModel Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new SearchBoxModel();
+                    _instance = new SearchBoxVModel();
                 }
                 return _instance;
             }
         }
 
-        public SearchBoxModel()
+        public SearchBoxVModel()
         {
             _instance = this;
         }
 
-        public ObservableCollection<TrackInfo> FilteredSong(string filter)
+        public ObservableCollection<TrackInfoModel> FilteredSong(string filter)
         {
             var data = songsSource.Songs[ItemId].Where(w => w.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) != -1 || w.Artist.IndexOf(filter, StringComparison.OrdinalIgnoreCase) != -1);
 
-            return new ObservableCollection<TrackInfo>(data);
+            return new ObservableCollection<TrackInfoModel>(data);
         }
 
         public ICommand SearchSongsCommand

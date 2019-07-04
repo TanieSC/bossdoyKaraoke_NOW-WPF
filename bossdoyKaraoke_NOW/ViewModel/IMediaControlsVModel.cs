@@ -9,7 +9,7 @@ using MaterialDesignThemes.Wpf;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    public interface IMediaControls
+    public interface IMediaControlsVModel
     {
         string SongTitle { get; set; }
         string SongArtist { get; set; }
@@ -27,7 +27,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         double KeyTempoOpacity { get; set; }
         PackIconKind IconPlayPause { get; set; }
         PackIconKind IconMuteUnMute { get; set; }
-        IMediaControls Controls { get; }
+        IMediaControlsVModel Controls { get; }
         ICommand Loaded { get; }
         ICommand VocalChannelCommand { get; }
         ICommand AddNewScreenCommand { get; }

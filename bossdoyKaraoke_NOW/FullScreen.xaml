@@ -11,7 +11,7 @@
         Name="full_screen"
         Title="FullScreen" Height="350" Width="500" MinHeight="350" MinWidth="500">
     <Window.DataContext>
-        <vm:FullScreenModel ></vm:FullScreenModel>
+        <vm:FullScreenVModel ></vm:FullScreenVModel>
     </Window.DataContext>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

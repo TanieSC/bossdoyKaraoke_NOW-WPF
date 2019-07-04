@@ -17,10 +17,10 @@ using bossdoyKaraoke_NOW.ViewModel;
 using MaterialDesignThemes.Wpf;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Tags;
-using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 using static bossdoyKaraoke_NOW.Enums.KaraokeNowFiles;
-using static bossdoyKaraoke_NOW.Enums.PlayerState;
-using static bossdoyKaraoke_NOW.Enums.TreeViewRootItem;
+using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
+using static bossdoyKaraoke_NOW.Enums.TreeViewRootItemEnum;
 
 namespace bossdoyKaraoke_NOW.Media
 {
@@ -44,22 +44,22 @@ namespace bossdoyKaraoke_NOW.Media
         private bool _isAddingToQueue;
 
         private RootNode _rootNode;
-        private List<ITreeViewModel> _itemSource;
+        private List<ITreeViewVModel> _itemSource;
         private static SongsSource _instance;
-        private List<ObservableCollection<TrackInfo>> _songs = new List<ObservableCollection<TrackInfo>>();
-        private List<ObservableCollection<TrackInfo>> _favorites = new List<ObservableCollection<TrackInfo>>();
-        private List<TrackInfo> _playedSongs = new List<TrackInfo>();
-        private List<TrackInfo> _songsQueue;
-        private TrackInfo _trackInfo;
+        private List<ObservableCollection<TrackInfoModel>> _songs = new List<ObservableCollection<TrackInfoModel>>();
+        private List<ObservableCollection<TrackInfoModel>> _favorites = new List<ObservableCollection<TrackInfoModel>>();
+        private List<TrackInfoModel> _playedSongs = new List<TrackInfoModel>();
+        private List<TrackInfoModel> _songsQueue;
+        private TrackInfoModel _trackInfo;
 
-        public List<ITreeViewModel> ItemSource { get { return _itemSource; } }
-        public List<ObservableCollection<TrackInfo>> Songs { get { return _songs; } }
-        public List<ObservableCollection<TrackInfo>> Favorites { get { return _favorites; } set { _favorites = value; } }
-        public ObservableCollection<TrackInfo> SongsQueue
+        public List<ITreeViewVModel> ItemSource { get { return _itemSource; } }
+        public List<ObservableCollection<TrackInfoModel>> Songs { get { return _songs; } }
+        public List<ObservableCollection<TrackInfoModel>> Favorites { get { return _favorites; } set { _favorites = value; } }
+        public ObservableCollection<TrackInfoModel> SongsQueue
         {          
             get
             {
-                return new ObservableCollection<TrackInfo>(_songsQueue);
+                return new ObservableCollection<TrackInfoModel>(_songsQueue);
             }
             set
             {
@@ -100,7 +100,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         public SongsSource()
         {
-            _itemSource = new List<ITreeViewModel>();
+            _itemSource = new List<ITreeViewVModel>();
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace bossdoyKaraoke_NOW.Media
 
             foreach (var node in Enum.GetValues(typeof(RootNode)))
             {
-                ITreeViewModel items = null;
+                ITreeViewVModel items = null;
 
                 if (Enum.TryParse(node.ToString().ToUpper(), out _rootNode))
                 {
@@ -224,7 +224,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         public void LoadSongsInQueue(int songQueuePreviousCount = 0)
         {          
-            var songQueue = Worker.TreeViewElement.Items[0] as ITreeViewModel;
+            var songQueue = Worker.TreeViewElement.Items[0] as ITreeViewVModel;
 
             lock (_songsQueue)
             {
@@ -245,7 +245,7 @@ namespace bossdoyKaraoke_NOW.Media
                             _totalDuration += _trackInfo.Tags.duration;
                             _songQueueTitle = "Song Queue (" + (i + 1) + "-[" + TimeSpan.FromSeconds(_totalDuration).ToString(@"d\.hh\:mm\:ss") + "])";
                             songQueue.Title = _songQueueTitle;
-                            TreeViewDialogModel.Instance.DialogStatus = _songQueueTitle;
+                            TreeViewDialogVModel.Instance.DialogStatus = _songQueueTitle;
                         }
                     }
                 }
@@ -290,12 +290,12 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="kindAddChild">Icon for Add new child treeview node</param>
         /// <param name="addChildTitle">Title for Add new child treeview node</param>
         /// <returns>Returns the created treeview menu in ITreeViewModel form</returns>
-        private ITreeViewModel AddTreeViewItems(ITreeViewModel songsSource, PackIconKind kindParent, string parentTitle, PackIconKind kindChild = PackIconKind.Null, List<string> songs = null, PackIconKind kindAddChild = PackIconKind.Null, string addChildTitle = null)
+        private ITreeViewVModel AddTreeViewItems(ITreeViewVModel songsSource, PackIconKind kindParent, string parentTitle, PackIconKind kindChild = PackIconKind.Null, List<string> songs = null, PackIconKind kindAddChild = PackIconKind.Null, string addChildTitle = null)
         {
             string fileName;
             string fileExt;
             Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
-            songsSource = new TreeViewModel() { PackIconKind = kindParent, Foreground = new SolidColorBrush(color), Title = parentTitle, CurrentTask = CurrentTask };
+            songsSource = new TreeViewVModel() { PackIconKind = kindParent, Foreground = new SolidColorBrush(color), Title = parentTitle, CurrentTask = CurrentTask };
             
             if (songs != null)
             {
@@ -347,10 +347,10 @@ namespace bossdoyKaraoke_NOW.Media
 
             int count = 1;
             DirectoryInfo dir_info = new DirectoryInfo(sDir);
-            List<TrackInfo> file_list = new List<TrackInfo>();
+            List<TrackInfoModel> file_list = new List<TrackInfoModel>();
 
             SearchDirectory(dir_info, file_list, count);
-            _songs.Add(new ObservableCollection<TrackInfo>(file_list));
+            _songs.Add(new ObservableCollection<TrackInfoModel>(file_list));
 
             CreateKaraokeNowFiles(Create.NewSongs);
 
@@ -373,10 +373,10 @@ namespace bossdoyKaraoke_NOW.Media
 
                 items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = filaname, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
 
-                TreeViewDialogModel.Instance.DialogStatus = "Working on it! Please wait...";
-                TreeViewDialogModel.Instance.AddingStatus = Visibility.Collapsed;
-                TreeViewDialogModel.Instance.LoadingStatus = Visibility.Visible;
-                TreeViewDialogModel.Instance.ShowDialog = true;
+                TreeViewDialogVModel.Instance.DialogStatus = "Working on it! Please wait...";
+                TreeViewDialogVModel.Instance.AddingStatus = Visibility.Collapsed;
+                TreeViewDialogVModel.Instance.LoadingStatus = Visibility.Visible;
+                TreeViewDialogVModel.Instance.ShowDialog = true;
                 Worker.DoWork(sender.CurrentTask, items[0].ID, fbd.SelectedPath);
             }
         }
@@ -386,7 +386,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         /// <param name="sender">Contains the information of the selected song</param>
         /// <returns>Returns the total count and total duration of song is song queue</returns>
-        public string AddToQueue(TrackInfo sender)
+        public string AddToQueue(TrackInfoModel sender)
         {
             lock (_songsQueue)
             {
@@ -420,7 +420,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         /// <param name="sender">Contains the information of the selected song</param>
         /// <returns>Returns the total count and total duration of song is song queue</returns>
-        public string AddToQueueAsNext(TrackInfo sender)
+        public string AddToQueueAsNext(TrackInfoModel sender)
         {
             lock (_songsQueue)
             {
@@ -447,7 +447,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         /// <param name="sender">Contains the information of the selected song to be removed</param>
         /// <returns></returns>
-        public string RemoveFromQueue(TrackInfo sender, bool fromPlayNextTrack = false)
+        public string RemoveFromQueue(TrackInfoModel sender, bool fromPlayNextTrack = false)
         {
             AddRemoveFromQueue(sender);
             _songsQueue.Remove(sender);
@@ -463,7 +463,7 @@ namespace bossdoyKaraoke_NOW.Media
             if (fromPlayNextTrack) //PlayNext Method that does not use background worker, so we are calling a data refresh and update UI.
             {
                 _playedSongs.Add(sender);
-                (Worker.TreeViewElement.Items[0] as ITreeViewModel).Title = _songQueueTitle;
+                (Worker.TreeViewElement.Items[0] as ITreeViewVModel).Title = _songQueueTitle;
                 Application.Current.Dispatcher.BeginInvoke(new Action(delegate
                 {
                     if (CurrentTask == NewTask.LOAD_QUEUE_SONGS)
@@ -477,7 +477,7 @@ namespace bossdoyKaraoke_NOW.Media
             return _songQueueTitle;
         }
 
-        public void RemoveSelectedFavorite(TrackInfo trackInfo, ITreeViewModelChild sender)
+        public void RemoveSelectedFavorite(TrackInfoModel trackInfo, ITreeViewModelChild sender)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(delegate
             {
@@ -487,7 +487,7 @@ namespace bossdoyKaraoke_NOW.Media
             }));
         }
 
-        public void RemoveSelectedSong(TrackInfo trackInfo, ITreeViewModelChild sender)
+        public void RemoveSelectedSong(TrackInfoModel trackInfo, ITreeViewModelChild sender)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(delegate
             {
@@ -621,7 +621,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         /// <param name="sender">Contains the information of the song</param>
         /// <param name="isAdding">Check method if adding or removing a song</param>
-        private void AddRemoveFromQueue(TrackInfo sender, bool isAdding = false)
+        private void AddRemoveFromQueue(TrackInfoModel sender, bool isAdding = false)
         {
             if (isAdding) //For adding songs to SongQueue
             {
@@ -650,7 +650,7 @@ namespace bossdoyKaraoke_NOW.Media
 
                 if (GetExtPatern(_mp3FileName).EndsWith(".mp3"))
                 {
-                    _trackInfo = new TrackInfo(sender);
+                    _trackInfo = new TrackInfoModel(sender);
                     _trackInfo.ID = count.ToString();
 
                     if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
@@ -658,7 +658,7 @@ namespace bossdoyKaraoke_NOW.Media
                 }
                 else
                 {
-                    _trackInfo = new TrackInfo();
+                    _trackInfo = new TrackInfoModel();
                     Vlc.Instance.GetDuration(_mp3FileName);
 
                     double vlcTimeDuration = GetVlcTimeOrDuration(Convert.ToDouble(Vlc.Instance.GetTimeDuration));
@@ -720,7 +720,7 @@ namespace bossdoyKaraoke_NOW.Media
                             itemID = sender.ID;
                             title = sender.Title + ".fav";
                             file = _songs[itemID].Select(s => s.FilePath).ToArray();
-                            _favorites.Add(new ObservableCollection<TrackInfo>(_songs[itemID]));
+                            _favorites.Add(new ObservableCollection<TrackInfoModel>(_songs[itemID]));
                         }
                     }
                     else // Creates new empty favorites file use for adding song from played song and from songQueue
@@ -728,7 +728,7 @@ namespace bossdoyKaraoke_NOW.Media
                         // 1 = Favorites index in treeview;
                         itemID = _itemSource[_favoritesIndex].Items[0].ID;
                         title = _itemSource[_favoritesIndex].Items[0].Title + ".fav";
-                        _favorites.Add(new ObservableCollection<TrackInfo>());
+                        _favorites.Add(new ObservableCollection<TrackInfoModel>());
                     }
 
                     Directory.CreateDirectory(_favoritesPath);
@@ -737,7 +737,7 @@ namespace bossdoyKaraoke_NOW.Media
                 case Create.FromPlayedSongs:
                     file = _playedSongs.Select(s => s.FilePath).ToArray();
 
-                    _favorites[sender.ID] = new ObservableCollection<TrackInfo>(_playedSongs);
+                    _favorites[sender.ID] = new ObservableCollection<TrackInfoModel>(_playedSongs);
 
                     Directory.CreateDirectory(_filePath);
                     File.WriteAllLines(_favoritesPath + sender.Title + ".fav", file);
@@ -806,7 +806,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="dir_info">Contains the infomation of the selected directory</param>
         /// <param name="file_list">Add found files to list</param>
         /// <param name="count">Totla number of files in directory</param>
-        private void SearchDirectory(DirectoryInfo dir_info, List<TrackInfo> file_list, int count)
+        private void SearchDirectory(DirectoryInfo dir_info, List<TrackInfoModel> file_list, int count)
         {
             try
             {
@@ -840,15 +840,15 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         /// <param name="sDir">The files from List<string></param>
         /// <returns>Returns the list of song available</returns>
-        private List<ObservableCollection<TrackInfo>> TextSearchSongs(List<string> sDir)
+        private List<ObservableCollection<TrackInfoModel>> TextSearchSongs(List<string> sDir)
         {
             int count = CurrentTask == NewTask.LOAD_QUEUE_SONGS ? 0 : 1;
 
-            var AllSongs = new List<ObservableCollection<TrackInfo>>();
+            var AllSongs = new List<ObservableCollection<TrackInfoModel>>();
 
             for (int i = 0; i < sDir.Count; i++)
             {
-                AllSongs.Add(new ObservableCollection<TrackInfo>(File.ReadAllLines(sDir[i])
+                AllSongs.Add(new ObservableCollection<TrackInfoModel>(File.ReadAllLines(sDir[i])
                     .Where(w => _extensions.Contains(Path.GetExtension(w)))
                     .Select(s =>
                     {
@@ -911,7 +911,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="file">The filename of the song</param>
         /// <param name="count">Song count used as song id</param>
         /// <returns>Returns the information of the song</returns>
-        private TrackInfo trackInfo(string file, int count, int duration = 0)
+        private TrackInfoModel trackInfo(string file, int count, int duration = 0)
         {
             string SongTitle = "";
             string SongArtist = "";
@@ -966,7 +966,7 @@ namespace bossdoyKaraoke_NOW.Media
                     break;
             }
 
-            TrackInfo trackInfo = new TrackInfo();
+            TrackInfoModel trackInfo = new TrackInfoModel();
             trackInfo.ID = Convert.ToString(count);
             trackInfo.Name = SongTitle;
             trackInfo.Artist = SongArtist;

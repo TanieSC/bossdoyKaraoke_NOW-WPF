@@ -7,7 +7,7 @@ using System.Windows.Controls;
 
 namespace bossdoyKaraoke_NOW.Enums
 {
-    class TreeViewRootItem
+    class TreeViewRootItemEnum
     {
         /// <summary>
         /// Enums to Set root node of the treeview

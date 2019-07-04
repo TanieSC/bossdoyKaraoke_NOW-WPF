@@ -11,9 +11,9 @@ using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Model;
 using bossdoyKaraoke_NOW.ViewModel;
 using MaterialDesignThemes.Wpf;
-using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 using static bossdoyKaraoke_NOW.Enums.KaraokeNowFiles;
-using static bossdoyKaraoke_NOW.Enums.PlayerState;
+using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 
 namespace bossdoyKaraoke_NOW.BackGroundWorker
 {
@@ -24,7 +24,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
         private static readonly Queue<QueueItem<NewTask>> _workerQueue = new Queue<QueueItem<NewTask>>();
         private static ListView _listViewElement;
         private static TreeView _treeViewElement;
-        private static TrackInfo _trackInfo;
+        private static TrackInfoModel _trackInfo;
+        private static EqualizerEnum _equalizer;
         private static int _senderID;
         private static string _filePath;
         private static string _searchFilter;
@@ -75,7 +76,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
         /// </summary>
         /// <param name="newTask">Task to run</param>
         /// <param name="trackInfo">Contains the song information for adding, removing, and playing</param>
-        public static void DoWork(NewTask newTask, TrackInfo trackInfo)
+        public static void DoWork(NewTask newTask, TrackInfoModel trackInfo)
         {
             _trackInfo = trackInfo;
             // RunWorker(newTask, trackInfo);
@@ -112,13 +113,24 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
         /// 
         /// </summary>
         /// <param name="newTask"></param>
+        /// <param name="equalizer"></param>
+        public static void DoWork(NewTask newTask, EqualizerEnum equalizer)
+        {
+            _equalizer = equalizer;
+            RunWorker(newTask);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newTask"></param>
         private static void RunWorker(NewTask newTask)//, TrackInfo trackInfo = null, int senderID = 0, string filePath = "", string filter = "")
         {           
             Player player = Player.Instance;
             ISongsSource songsSource = SongsSource.Instance;//player.SongsSrc;
-            IMediaControls mediaControls = MediaControls.Instance;
-            ISearchBoxModel searchBoxModel = SearchBoxModel.Instance;
-            ITreeViewDialogModel dialog = TreeViewDialogModel.Instance;
+            IMediaControlsVModel mediaControls = MediaControlsVModel.Instance;
+            ISearchBoxVModel searchBoxModel = SearchBoxVModel.Instance;
+            ITreeViewDialogVModel dialog = TreeViewDialogVModel.Instance;
             QueuedBackgroundWorker.QueueWorkItem(
             _workerQueue,
             newTask,
@@ -126,7 +138,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
              {
                  var currentTask = args.Argument;
                  string songQueueTitle = string.Empty;
-                 ObservableCollection<TrackInfo> filteredSong = new ObservableCollection<TrackInfo>();
+                 ObservableCollection<TrackInfoModel> filteredSong = new ObservableCollection<TrackInfoModel>();
 
                  switch (currentTask)
                  {
@@ -150,7 +162,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                              else
                                  player.LoadVideokeFile(_trackInfo.FilePath);
 
-                             MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
+                             MediaControlsVModel.Instance.IconPlayPause = PackIconKind.Pause;
                          }
                          break;
                      case NewTask.ADD_FAVORITES_TO_QUEUE:
@@ -169,7 +181,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                              else
                                  player.LoadVideokeFile(songsSource.SongsQueue[0].FilePath);
 
-                             MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
+                             MediaControlsVModel.Instance.IconPlayPause = PackIconKind.Pause;
                          }
 
                          songsSource.LoadSongsInQueue(previousCount);
@@ -203,7 +215,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                              else
                                  player.LoadVideokeFile(songsSource.SongsQueue[0].FilePath);
 
-                             MediaControls.Instance.IconPlayPause = PackIconKind.Pause;
+                             MediaControlsVModel.Instance.IconPlayPause = PackIconKind.Pause;
 
                              songsSource.LoadSongsInQueue();                          
                          }
@@ -231,6 +243,10 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          CurrentTask = NewTask.REMOVE_SONGS;
                          songsSource.RemoveTreeViewItem(Create.NewSongs, _treeViewModelChild);
                          break;
+                     case NewTask.UPDATE_EQ_SETTINGS:
+                         CurrentTask = NewTask.UPDATE_EQ_SETTINGS;
+                         
+                         break;
                  }
 
                  return new {WorkerTask = currentTask, Duration = songQueueTitle, Filter = filteredSong };
@@ -239,7 +255,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
             {
                 var currentTask = args.Result.WorkerTask;
                 var songQueueTitle = args.Result.Duration;
-                var parentTreeview = _treeViewElement.Items[0] as ITreeViewModel;
+                var parentTreeview = _treeViewElement.Items[0] as ITreeViewVModel;
                 var filteredSong = args.Result.Filter;
 
 
@@ -300,6 +316,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                     case NewTask.REMOVE_SONGS:
                         songsSource.ItemSource[_myComputerIndex].Items.Remove(_treeViewModelChild);
                         songsSource.Songs[_senderID].Clear();
+                        break;
+                    case NewTask.UPDATE_EQ_SETTINGS:
                         break;
                 }
             });

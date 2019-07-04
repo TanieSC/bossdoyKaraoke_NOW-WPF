@@ -9,7 +9,7 @@ using Un4seen.Bass.AddOn.Tags;
 
 namespace bossdoyKaraoke_NOW.Model
 {
-    public interface ITrackInfo
+    public interface ITrackInfoModel
     {
         string ID { get; set; }
         string Name { get; set; }

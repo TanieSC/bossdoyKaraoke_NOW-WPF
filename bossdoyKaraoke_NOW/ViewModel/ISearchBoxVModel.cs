@@ -10,10 +10,10 @@ using bossdoyKaraoke_NOW.Model;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    interface ISearchBoxModel
+    interface ISearchBoxVModel
     {
-        ObservableCollection<TrackInfo> Items { get; set; }
-        ObservableCollection<TrackInfo> FilteredSong(string filter);
+        ObservableCollection<TrackInfoModel> Items { get; set; }
+        ObservableCollection<TrackInfoModel> FilteredSong(string filter);
         int ItemId { get; set; }
         ICommand SearchSongsCommand { get; }
     }

@@ -15,13 +15,13 @@ using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
 using MaterialDesignThemes.Wpf;
-using static bossdoyKaraoke_NOW.Enums.PlayerState;
+using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    class MediaControls : IMediaControls, INotifyPropertyChanged
+    class MediaControlsVModel : IMediaControlsVModel, INotifyPropertyChanged
     {
-        private static MediaControls _instance;
+        private static MediaControlsVModel _instance;
         private List<Window> _fullScreen = new List<Window>();
         private string _songTitle;
         private string _songArtist;
@@ -47,7 +47,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private bool _playerStatus = false;
         private PackIconKind _iconPlayPause = PackIconKind.Play;
         private PackIconKind _iconMuteUnMute = PackIconKind.VolumeHigh;
-        private IMediaControls _controls;
+        private IMediaControlsVModel _controls;
         private ICommand _loaded;
         private ICommand _vocalChannelCommand;
         private ICommand _addNewScreenCommand;
@@ -88,19 +88,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public static MediaControls Instance
+        public static MediaControlsVModel Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new MediaControls();
+                    _instance = new MediaControlsVModel();
                 }
                 return _instance;
             }
         }
 
-        public MediaControls()
+        public MediaControlsVModel()
         {
             _instance = this;
         }
@@ -329,7 +329,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public IMediaControls Controls
+        public IMediaControlsVModel Controls
         {
             get
             {

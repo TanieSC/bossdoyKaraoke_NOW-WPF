@@ -17,12 +17,12 @@ using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Model;
 using MaterialDesignThemes.Wpf;
-using static bossdoyKaraoke_NOW.Enums.BackGroundWorker;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 using static bossdoyKaraoke_NOW.Enums.KaraokeNowFiles;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    class TreeViewModel : ITreeViewModel, INotifyPropertyChanged
+    class TreeViewVModel : ITreeViewVModel, INotifyPropertyChanged
     {
         private string _title;
         private const int _favoritesIndex = 1;
@@ -40,7 +40,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ISongsSource _songsSource = SongsSource.Instance;
         private static TreeViewItem _selectedItem = new TreeViewItem();
         public ObservableCollection<ITreeViewModelChild> Items { get; set; }
-        public List<ITreeViewModel> ItemSource { get { return _songsSource.ItemSource; } }
+        public List<ITreeViewVModel> ItemSource { get { return _songsSource.ItemSource; } }
         public PackIconKind PackIconKind { get; set; }
         public SolidColorBrush Foreground { get; set; }
 
@@ -69,7 +69,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public TreeViewModel()
+        public TreeViewVModel()
         {
             Items = new ObservableCollection<ITreeViewModelChild>();
         }
@@ -85,10 +85,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     //This will automatically play the song in SongQueue if queue is not empty.
                     if (_songsSource.SongQueueCount > 0)
                     {
-                        TreeViewDialogModel.Instance.DialogStatus = "Song Queue (0-[0.00:00:00]";
-                        TreeViewDialogModel.Instance.AddingStatus = Visibility.Collapsed;
-                        TreeViewDialogModel.Instance.LoadingStatus = Visibility.Visible;
-                        TreeViewDialogModel.Instance.ShowDialog = true;
+                        TreeViewDialogVModel.Instance.DialogStatus = "Song Queue (0-[0.00:00:00]";
+                        TreeViewDialogVModel.Instance.AddingStatus = Visibility.Collapsed;
+                        TreeViewDialogVModel.Instance.LoadingStatus = Visibility.Visible;
+                        TreeViewDialogVModel.Instance.ShowDialog = true;
                         Worker.DoWork(NewTask.LOAD_QUEUE_SONGS, _songsSource.SongsQueue[0]);
                     }
                 }));
@@ -113,7 +113,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _selectionChangedCommand ?? (_selectionChangedCommand = new RelayCommand(x =>
                 {
-                    LoadSelectedItem(x as ITreeViewModel);
+                    LoadSelectedItem(x as ITreeViewVModel);
                 }));
             }
         }
@@ -140,12 +140,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
             var createFavoritesPlayedSong = favorites.Items[2] as MenuItem;
             var remove = contextMenu.Items[4] as MenuItem;
 
-            var parent = contextMenu.DataContext as ITreeViewModel;
+            var parent = contextMenu.DataContext as ITreeViewVModel;
             var child = contextMenu.DataContext as ITreeViewModelChild;
             var currentTask = CurrentTask;
 
             if (parent != null)
-                currentTask = ((ITreeViewModel)contextMenu.DataContext).CurrentTask;
+                currentTask = ((ITreeViewVModel)contextMenu.DataContext).CurrentTask;
             else
                 currentTask = ((ITreeViewModelChild)contextMenu.DataContext).CurrentTask;
 
@@ -236,7 +236,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        private void LoadSelectedItem(ITreeViewModel sender)
+        private void LoadSelectedItem(ITreeViewVModel sender)
         {
             Worker.DoWork(sender.CurrentTask);
         }
@@ -260,10 +260,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     CurrentTask = NewTask.ADD_FAVORITES_TO_QUEUE;
                     var id = (x as ITreeViewModelChild).ID;
-                    TreeViewDialogModel.Instance.DialogStatus = "Song Queue (0-[0.00:00:00]";
-                    TreeViewDialogModel.Instance.AddingStatus = Visibility.Collapsed;
-                    TreeViewDialogModel.Instance.LoadingStatus = Visibility.Visible;
-                    TreeViewDialogModel.Instance.ShowDialog = true;
+                    TreeViewDialogVModel.Instance.DialogStatus = "Song Queue (0-[0.00:00:00]";
+                    TreeViewDialogVModel.Instance.AddingStatus = Visibility.Collapsed;
+                    TreeViewDialogVModel.Instance.LoadingStatus = Visibility.Visible;
+                    TreeViewDialogVModel.Instance.ShowDialog = true;
                     Worker.DoWork(CurrentTask, id);
                 }));
             }
@@ -396,10 +396,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
                // var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
                // var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
 
-                TreeViewDialogModel.Instance.AddingStatus = Visibility.Visible;
-                TreeViewDialogModel.Instance.LoadingStatus = Visibility.Collapsed;
-                TreeViewDialogModel.Instance.ShowDialog = true;
-                TreeViewDialogModel.Instance.AddFavoritesSender = sender;
+                TreeViewDialogVModel.Instance.AddingStatus = Visibility.Visible;
+                TreeViewDialogVModel.Instance.LoadingStatus = Visibility.Collapsed;
+                TreeViewDialogVModel.Instance.ShowDialog = true;
+                TreeViewDialogVModel.Instance.AddFavoritesSender = sender;
 
                // items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = "Favorites " + items.Count, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
               //  Worker.DoWork(sender.CurrentTask, sender);

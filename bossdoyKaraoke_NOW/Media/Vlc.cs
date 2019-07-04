@@ -6,12 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using bossdoyKaraoke_NOW.Model;
 using Declarations;
 using Declarations.Events;
 using Declarations.Media;
 using Declarations.Players;
 using Implementation;
-using static bossdoyKaraoke_NOW.Enums.PlayerState;
+using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 using static bossdoyKaraoke_NOW.Media.VlcSync;
 
 namespace bossdoyKaraoke_NOW.Media
@@ -33,7 +34,7 @@ namespace bossdoyKaraoke_NOW.Media
         string[] _videoPath;
         string _videoDir;
 
-        private Model.Equalizer _equalizer;
+        private Model.EqualizerModel _equalizer;
         private SYNCPROC _syncProc;
         private float _volume = 65f;
         private static Vlc _instance;
@@ -93,7 +94,7 @@ namespace bossdoyKaraoke_NOW.Media
             //"--equalizer-preamp=11.9",
             // "--equalizer-bands=0 0 0 0 0 0 0 0 0 0"
 
-            _equalizer = Model.Equalizer.Instance;
+            _equalizer = EqualizerModel.Instance;
 
             _factory = new MediaPlayerFactory(args);
             _player = _factory.CreatePlayer<IVideoPlayer>();

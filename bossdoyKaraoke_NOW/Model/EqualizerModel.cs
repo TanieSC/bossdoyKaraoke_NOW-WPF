@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bossdoyKaraoke_NOW.Enums;
 using Implementation;
 
 namespace bossdoyKaraoke_NOW.Model
 {
-    class Equalizer
+    class EqualizerModel
     {
-        private static Equalizer _instance;
+        private static EqualizerModel _instance;
         public static BandValue[] ArrBandValue = new BandValue[12];
         private BandValue _bandValue;
 
         private bool _eqEnabled = false;
         private Dictionary<int, Preset> _eqPresets;
-        private Implementation.Equalizer _eqPreset;
+        private Equalizer _eqPreset;
         private int _eqSelectedPreset;
         private float _preAmp = 0f;
         private float _eq0 = 0f;
@@ -54,19 +55,6 @@ namespace bossdoyKaraoke_NOW.Model
                 _eqPresets = value;
             }
         }
-
-        //public Implementation.Equalizer EQSelectedPreset
-        //{
-        //    get
-        //    {
-        //        return _eqSelectedPreset;
-        //    }
-
-        //    set
-        //    {
-        //        _eqSelectedPreset = value;
-        //    }
-        //}
 
         public Implementation.Equalizer EQPreset
         {
@@ -238,33 +226,39 @@ namespace bossdoyKaraoke_NOW.Model
         }
 
 
-        public static Equalizer Instance
+        public static EqualizerModel Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new Equalizer();
+                    _instance = new EqualizerModel();
                 }
                 return _instance;
             }
         }
 
-        public Equalizer()
+        public EqualizerModel()
         {
-            EQ0 = AppConfig.Get<float>("DEFAudioEQBand0");
-            EQ1 = AppConfig.Get<float>("DEFAudioEQBand1");
-            EQ2 = AppConfig.Get<float>("DEFAudioEQBand2");
-            EQ3 = AppConfig.Get<float>("DEFAudioEQBand3");
-            EQ4 = AppConfig.Get<float>("DEFAudioEQBand4");
-            EQ5 = AppConfig.Get<float>("DEFAudioEQBand5");
-            EQ6 = AppConfig.Get<float>("DEFAudioEQBand6");
-            EQ7 = AppConfig.Get<float>("DEFAudioEQBand7");
-            EQ8 = AppConfig.Get<float>("DEFAudioEQBand8");
-            EQ9 = AppConfig.Get<float>("DEFAudioEQBand9"); 
-            EQEnabled = AppConfig.Get<bool>("DEFAudioEQEnabled");
-            PreAmp = AppConfig.Get<float>("DEFAudioEQPreamp");
-            EQSelectedPreset =  AppConfig.Get<int>("DEFAudioEQPreset");
+            var b = EqualizerEnum.Band.AudioEQBand0;
+            EQ0 = AppConfig.Get<float>("AudioEQBand0");
+            EQ1 = AppConfig.Get<float>("AudioEQBand1");
+            EQ2 = AppConfig.Get<float>("AudioEQBand2");
+            EQ3 = AppConfig.Get<float>("AudioEQBand3");
+            EQ4 = AppConfig.Get<float>("AudioEQBand4");
+            EQ5 = AppConfig.Get<float>("AudioEQBand5");
+            EQ6 = AppConfig.Get<float>("AudioEQBand6");
+            EQ7 = AppConfig.Get<float>("AudioEQBand7");
+            EQ8 = AppConfig.Get<float>("AudioEQBand8");
+            EQ9 = AppConfig.Get<float>("AudioEQBand9"); 
+            EQEnabled = AppConfig.Get<bool>("AudioEQEnabled");
+            PreAmp = AppConfig.Get<float>("AudioEQPreamp");
+            EQSelectedPreset =  AppConfig.Get<int>("AudioEQPreset");
+        }
+
+        public void SaveEQSettings(string eqBand)
+        {
+
         }
 
         public class BandValue

@@ -12,7 +12,7 @@ using bossdoyKaraoke_NOW.Interactivity;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    class FullScreenModel : IFullScreenModel
+    class FullScreenVModel : IFullScreenVModel
     {
         private Window _fullScreen;
         private VideoImage _videoImage;
@@ -20,7 +20,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _loadedCommmand;
         private ICommand _sizeChangedCommmand;
 
-        public FullScreenModel()
+        public FullScreenVModel()
         {
         }
 

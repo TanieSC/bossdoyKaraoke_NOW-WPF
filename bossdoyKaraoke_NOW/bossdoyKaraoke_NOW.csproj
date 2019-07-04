@@ -123,6 +123,7 @@
     <Compile Include="AppConfig.cs" />
     <Compile Include="BackGroundWorker\QueuedBackgroundWorker.cs" />
     <Compile Include="BackGroundWorker\Worker.cs" />
+    <Compile Include="Enums\EqualizerEnum.cs" />
     <Compile Include="Enums\KaraokeNowFiles.cs" />
     <Compile Include="FormControl\VideoImage.cs">
       <SubType>UserControl</SubType>
@@ -134,7 +135,7 @@
     <Compile Include="Interactivity\EventArgs.cs" />
     <Compile Include="Interactivity\EventRaiser.cs" />
     <Compile Include="Interactivity\RelayCommand.cs" />
-    <Compile Include="Model\Equalizer.cs" />
+    <Compile Include="Model\EqualizerModel.cs" />
     <Compile Include="Preferences.xaml.cs">
       <DependentUpon>Preferences.xaml</DependentUpon>
     </Compile>
@@ -147,22 +148,22 @@
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\FullScreenModel.cs" />
-    <Compile Include="ViewModel\IFullScreenModel.cs" />
-    <Compile Include="ViewModel\IListViewModel.cs" />
-    <Compile Include="ViewModel\IMainMenuModel.cs" />
-    <Compile Include="ViewModel\IMediaControls.cs" />
-    <Compile Include="ViewModel\IPreferencesModel.cs" />
-    <Compile Include="ViewModel\ISearchBoxModel.cs" />
-    <Compile Include="ViewModel\ITreeViewDialogModel.cs" />
-    <Compile Include="ViewModel\ITreeViewModel.cs" />
-    <Compile Include="ViewModel\ListViewModel.cs" />
-    <Compile Include="ViewModel\MainMenuModel.cs" />
-    <Compile Include="ViewModel\MediaControls.cs" />
-    <Compile Include="ViewModel\PreferencesModel.cs" />
-    <Compile Include="ViewModel\SearchBoxModel.cs" />
-    <Compile Include="ViewModel\TreeViewDialogModel.cs" />
-    <Compile Include="ViewModel\TreeViewModel.cs" />
+    <Compile Include="ViewModel\FullScreenVModel.cs" />
+    <Compile Include="ViewModel\IFullScreenVModel.cs" />
+    <Compile Include="ViewModel\IListViewVModel.cs" />
+    <Compile Include="ViewModel\IMainMenuVModel.cs" />
+    <Compile Include="ViewModel\IMediaControlsVModel.cs" />
+    <Compile Include="ViewModel\IPreferencesVModel.cs" />
+    <Compile Include="ViewModel\ISearchBoxVModel.cs" />
+    <Compile Include="ViewModel\ITreeViewDialogVModel.cs" />
+    <Compile Include="ViewModel\ITreeViewVModel.cs" />
+    <Compile Include="ViewModel\ListViewVModel.cs" />
+    <Compile Include="ViewModel\MainMenuVModel.cs" />
+    <Compile Include="ViewModel\MediaControlsVModel.cs" />
+    <Compile Include="ViewModel\PreferencesVModel.cs" />
+    <Compile Include="ViewModel\SearchBoxVModel.cs" />
+    <Compile Include="ViewModel\TreeViewDialogVModel.cs" />
+    <Compile Include="ViewModel\TreeViewVModel.cs" />
     <Page Include="FullScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -175,14 +176,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Enums\BackGroundWorker.cs" />
-    <Compile Include="Enums\DefaultAudio.cs" />
-    <Compile Include="Enums\Effects.cs" />
-    <Compile Include="Enums\PlayerState.cs" />
-    <Compile Include="Enums\RemoveVocal.cs" />
-    <Compile Include="Enums\SystemState.cs" />
-    <Compile Include="Enums\TreeViewRootItem.cs" />
-    <Compile Include="Enums\VideoSize.cs" />
+    <Compile Include="Enums\BackGroundWorkerEnum.cs" />
+    <Compile Include="Enums\DefaultAudioEnum.cs" />
+    <Compile Include="Enums\EffectsEnum.cs" />
+    <Compile Include="Enums\PlayerStateEnum.cs" />
+    <Compile Include="Enums\RemoveVocalEnum.cs" />
+    <Compile Include="Enums\SystemStateEnum.cs" />
+    <Compile Include="Enums\TreeViewRootItemEnum.cs" />
+    <Compile Include="Enums\VideoSizeEnum.cs" />
     <Compile Include="FormControl\D2dImageSource.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -223,8 +224,8 @@
     <Compile Include="Media\PlayerBase.cs" />
     <Compile Include="Media\SongsSource.cs" />
     <Compile Include="Media\Vlc.cs" />
-    <Compile Include="Model\ITrackInfo.cs" />
-    <Compile Include="Model\TrackInfo.cs" />
+    <Compile Include="Model\ITrackInfoModel.cs" />
+    <Compile Include="Model\TrackInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

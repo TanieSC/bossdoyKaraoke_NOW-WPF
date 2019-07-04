@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace bossdoyKaraoke_NOW.Enums
 {
-    public class SystemState
+    public class SystemStateEnum
     {
         public enum EXECUTION_STATE : uint //Determine display State
         {

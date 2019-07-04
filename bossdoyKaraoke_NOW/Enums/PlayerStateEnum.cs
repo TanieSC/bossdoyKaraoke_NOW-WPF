@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bossdoyKaraoke_NOW.Enums
 {
-    public class PlayerState
+    public class PlayerStateEnum
     {
         private static PlayState _currentState;
 

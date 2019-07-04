@@ -9,7 +9,7 @@ using Implementation;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    public interface IPreferencesModel
+    public interface IPreferencesVModel
     {
         string IntroText { get; set; }
         bool EQEnabled { get; set; }

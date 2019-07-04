@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bossdoyKaraoke_NOW.Enums
 {
-    public class BackGroundWorker
+    public class BackGroundWorkerEnum
     {
         private static NewTask _currentTask;
 

@@ -14,12 +14,12 @@
         Icon="bkn_ico.ico"
        Title="BossDoyKaraoke_Now" Height="630" Width="820" MinWidth="820" MinHeight="630" Closing="Window_Closing">
     <Window.Resources>
-        <vm:MainMenuModel x:Key="MainMenuModel"></vm:MainMenuModel>
-        <vm:TreeViewDialogModel x:Key="TreeViewDialogModel"/>
-        <vm:TreeViewModel x:Key="TreeViewModel"/>
-        <vm:MediaControls x:Key="MediaControls"/>
-        <vm:SearchBoxModel x:Key="SearchBoxModel"/>
-        <vm:ListViewModel x:Key="ListViewModel"/>
+        <vm:MainMenuVModel x:Key="MainMenuModel"></vm:MainMenuVModel>
+        <vm:TreeViewDialogVModel x:Key="TreeViewDialogModel"/>
+        <vm:TreeViewVModel x:Key="TreeViewModel"/>
+        <vm:MediaControlsVModel x:Key="MediaControls"/>
+        <vm:SearchBoxVModel x:Key="SearchBoxModel"/>
+        <vm:ListViewVModel x:Key="ListViewModel"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -347,7 +347,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <TreeView.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeViewModel}" ItemsSource="{Binding Items}">
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeViewVModel}" ItemsSource="{Binding Items}">
                             <StackPanel Orientation="Horizontal" Margin="0 0 0 0" Background="Transparent">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">

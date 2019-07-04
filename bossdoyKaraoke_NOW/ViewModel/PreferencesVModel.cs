@@ -14,9 +14,9 @@ using Implementation;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    class PreferencesModel : IPreferencesModel, INotifyPropertyChanged
+    class PreferencesVModel : IPreferencesVModel, INotifyPropertyChanged
     {
-        private Model.Equalizer _equalizer;
+        private Model.EqualizerModel _equalizer;
 
         //General Tab
         private float _EQ0 = 0f;
@@ -272,17 +272,15 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public PreferencesModel()
+        public PreferencesVModel()
         {
             try
             {
-                _equalizer = Model.Equalizer.Instance;
+                _equalizer = Model.EqualizerModel.Instance;
                 _eqPresets = _equalizer.EQPresets;
 
                 EQEnabled = _equalizer.EQEnabled;
                 EQSelectedPreset = _equalizer.EQSelectedPreset;
-
-                SetUIEqPreset();
                 
             }
             catch
@@ -333,6 +331,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         _sliderEq7 = (eqPanel.Children[8] as Slider);
                         _sliderEq8 = (eqPanel.Children[9] as Slider);
                         _sliderEq9 = (eqPanel.Children[10] as Slider);
+
+                        SetUIEqPreset();
                     }
                 }));
             }
@@ -382,6 +382,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQEnabled = (bool)(x as CheckBox).IsChecked;
                         EQEnabled = _equalizer.EQEnabled;
+                        AppConfig.Set("AudioEQEnabled", EQEnabled.ToString());
                     }
                 }));
             }
@@ -411,6 +412,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.PreAmp = (float)(x as Slider).Value / 10;
                         PreAmp = _equalizer.PreAmp;
+                        AppConfig.Set("AudioEQPreamp", PreAmp.ToString());
                     }
                 }));
             }

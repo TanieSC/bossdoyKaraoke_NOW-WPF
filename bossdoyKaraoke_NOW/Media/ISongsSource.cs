@@ -13,10 +13,10 @@ namespace bossdoyKaraoke_NOW.Media
 {
     public interface ISongsSource
     {
-        List<ITreeViewModel> ItemSource { get; }
-        List<ObservableCollection<TrackInfo>> Songs { get; }
-        List<ObservableCollection<TrackInfo>> Favorites { get; }
-        ObservableCollection<TrackInfo> SongsQueue { get; set; }
+        List<ITreeViewVModel> ItemSource { get; }
+        List<ObservableCollection<TrackInfoModel>> Songs { get; }
+        List<ObservableCollection<TrackInfoModel>> Favorites { get; }
+        ObservableCollection<TrackInfoModel> SongsQueue { get; set; }
         int SongQueueCount { get; }
         int PlayedSongsCount { get; }
         bool IsCdgFileType{ get; set; }
@@ -28,11 +28,11 @@ namespace bossdoyKaraoke_NOW.Media
         //void CreateFavoritesSongQueue();
         void DirSearchSongs(string sDir);
         void AddNewSongs(ITreeViewModelChild sender);
-        string AddToQueue(TrackInfo sender);
-        string AddToQueueAsNext(TrackInfo sender);
-        string RemoveFromQueue(TrackInfo sender, bool fromPlayNextTrack = false);
-        void RemoveSelectedFavorite(TrackInfo trackInfo, ITreeViewModelChild sender);
-        void RemoveSelectedSong(TrackInfo trackInfo, ITreeViewModelChild sender);
+        string AddToQueue(TrackInfoModel sender);
+        string AddToQueueAsNext(TrackInfoModel sender);
+        string RemoveFromQueue(TrackInfoModel sender, bool fromPlayNextTrack = false);
+        void RemoveSelectedFavorite(TrackInfoModel trackInfo, ITreeViewModelChild sender);
+        void RemoveSelectedSong(TrackInfoModel trackInfo, ITreeViewModelChild sender);
         string EmptyQueueList();
         void CreateFavorites(ITreeViewModelChild sender);
         void RemoveTreeViewItem(Create create, ITreeViewModelChild sender);
