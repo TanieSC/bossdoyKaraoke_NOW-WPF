@@ -8,9 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
 using Implementation;
+using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
+using static bossdoyKaraoke_NOW.Enums.EqualizerEnum;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
@@ -382,7 +385,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQEnabled = (bool)(x as CheckBox).IsChecked;
                         EQEnabled = _equalizer.EQEnabled;
-                        AppConfig.Set("AudioEQEnabled", EQEnabled.ToString());
+                        AppConfig.Set(NewPreset.AudioEQEnabled, EQEnabled);
                     }
                 }));
             }
@@ -412,7 +415,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.PreAmp = (float)(x as Slider).Value / 10;
                         PreAmp = _equalizer.PreAmp;
-                        AppConfig.Set("AudioEQPreamp", PreAmp.ToString());
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQPreamp);
                     }
                 }));
             }
@@ -428,6 +431,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ0 = (float)(x as Slider).Value / 10;
                         EQ0 = _equalizer.EQ0;
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand0);
                     }
                 }));
             }
@@ -443,6 +447,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ1 = (float)(x as Slider).Value / 10;
                         EQ1 = _equalizer.EQ1;
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand1);
                     }
                 }));
             }
@@ -458,6 +463,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ2 = (float)(x as Slider).Value / 10;
                         EQ2 = _equalizer.EQ2;
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand2);
                     }
                 }));
             }
@@ -473,6 +479,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ3 = (float)(x as Slider).Value / 10;
                         EQ3 = _equalizer.EQ3;
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand3);
                     }
                 }));
             }
@@ -488,6 +495,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ4 = (float)(x as Slider).Value / 10;
                         EQ4 = _equalizer.EQ4;
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand4);
                     }
                 }));
             }
@@ -503,6 +511,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ5 = (float)(x as Slider).Value / 10;
                         EQ5 = _equalizer.EQ5;
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand5);
                     }
                 }));
             }
@@ -518,6 +527,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ6 = (float)(x as Slider).Value / 10;
                         EQ6 = _equalizer.EQ6;
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand6);
                     }
                 }));
             }
@@ -533,6 +543,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ7 = (float)(x as Slider).Value / 10;
                         EQ7 = _equalizer.EQ7;
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand7);
                     }
                 }));
             }
@@ -548,6 +559,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ8 = (float)(x as Slider).Value / 10;
                         EQ8 = _equalizer.EQ8;
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand8);
                     }
                 }));
             }
@@ -563,6 +575,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ9 = (float)(x as Slider).Value / 10;
                         EQ9 = _equalizer.EQ9;
+                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand9);
                     }
                 }));
             }

@@ -5,15 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using bossdoyKaraoke_NOW.Enums;
 using Implementation;
+using Un4seen.Bass;
+using Un4seen.Bass.AddOn.Fx;
+using Un4seen.Bass.Misc;
+using static bossdoyKaraoke_NOW.Enums.EqualizerEnum;
 
 namespace bossdoyKaraoke_NOW.Model
 {
     class EqualizerModel
     {
         private static EqualizerModel _instance;
-        public static BandValue[] ArrBandValue = new BandValue[12];
-        private BandValue _bandValue;
-
+        //public static BandValue[] ArrBandValue = new BandValue[12];
+        // private BandValue _bandValue;
+        private DSP_Gain _dsp_gain;
+        private int _handle = -1;
+        private int _fxHandle = -1;
         private bool _eqEnabled = false;
         private Dictionary<int, Preset> _eqPresets;
         private Equalizer _eqPreset;
@@ -29,6 +35,33 @@ namespace bossdoyKaraoke_NOW.Model
         private float _eq7 = 0f;
         private float _eq8 = 0f;
         private float _eq9 = 0f;
+
+        private float[] _centers =
+        {
+            31.0f,
+            63.0f,
+            125.0f,
+            250.0f,
+            500.0f,
+            1000.0f,
+            2000.0f,
+            4000.0f,
+            8000.0f,
+            16000.0f
+        };
+
+        //public int Handle
+        //{
+        //    get
+        //    {
+        //        return _handle;
+        //    }
+
+        //    set
+        //    {
+        //        _handle = value;
+        //    }
+        //}
 
         public bool EQEnabled
         {
@@ -240,20 +273,124 @@ namespace bossdoyKaraoke_NOW.Model
 
         public EqualizerModel()
         {
-            var b = EqualizerEnum.Band.AudioEQBand0;
-            EQ0 = AppConfig.Get<float>("AudioEQBand0");
-            EQ1 = AppConfig.Get<float>("AudioEQBand1");
-            EQ2 = AppConfig.Get<float>("AudioEQBand2");
-            EQ3 = AppConfig.Get<float>("AudioEQBand3");
-            EQ4 = AppConfig.Get<float>("AudioEQBand4");
-            EQ5 = AppConfig.Get<float>("AudioEQBand5");
-            EQ6 = AppConfig.Get<float>("AudioEQBand6");
-            EQ7 = AppConfig.Get<float>("AudioEQBand7");
-            EQ8 = AppConfig.Get<float>("AudioEQBand8");
-            EQ9 = AppConfig.Get<float>("AudioEQBand9"); 
-            EQEnabled = AppConfig.Get<bool>("AudioEQEnabled");
-            PreAmp = AppConfig.Get<float>("AudioEQPreamp");
-            EQSelectedPreset =  AppConfig.Get<int>("AudioEQPreset");
+            EQ0 = AppConfig.Get<float>(NewPreset.AudioEQBand0);
+            EQ1 = AppConfig.Get<float>(NewPreset.AudioEQBand1);
+            EQ2 = AppConfig.Get<float>(NewPreset.AudioEQBand2);
+            EQ3 = AppConfig.Get<float>(NewPreset.AudioEQBand3);
+            EQ4 = AppConfig.Get<float>(NewPreset.AudioEQBand4);
+            EQ5 = AppConfig.Get<float>(NewPreset.AudioEQBand5);
+            EQ6 = AppConfig.Get<float>(NewPreset.AudioEQBand6);
+            EQ7 = AppConfig.Get<float>(NewPreset.AudioEQBand7);
+            EQ8 = AppConfig.Get<float>(NewPreset.AudioEQBand8);
+            EQ9 = AppConfig.Get<float>(NewPreset.AudioEQBand9); 
+            EQEnabled = AppConfig.Get<bool>(NewPreset.AudioEQEnabled);
+            PreAmp = AppConfig.Get<float>(NewPreset.AudioEQPreamp);
+            EQSelectedPreset =  AppConfig.Get<int>(NewPreset.AudioEQPreset);
+        }
+
+        public void SetupEQ(int handle)
+        {
+            _handle = handle;
+
+            if (EQEnabled)
+            {
+                if (handle != -1)
+                {
+                    
+                    BASS_BFX_PEAKEQ eq = new BASS_BFX_PEAKEQ();
+                    BASS_BFX_COMPRESSOR2 comp = new BASS_BFX_COMPRESSOR2();
+                    BASS_BFX_VOLUME preamp = new BASS_BFX_VOLUME();
+
+                   _fxHandle = Bass.BASS_ChannelSetFX(handle, BASSFXType.BASS_FX_BFX_PEAKEQ, 1);
+
+                    if (_dsp_gain != null) _dsp_gain.Dispose();
+
+                    _dsp_gain = new DSP_Gain(handle, 2);
+                    _dsp_gain.Gain_dBV = PreAmp;
+
+                    eq.fQ = 0f;
+                    eq.fBandwidth = 0.6f;
+                    eq.lChannel = BASSFXChan.BASS_BFX_CHANALL;
+
+                    //for (int i = 0; i < _centers.Length; i++)
+                    //{
+                    //    eq.lBand = i;
+                    //    eq.fCenter = _centers[i];
+                    //    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    //}
+
+                    eq.lBand = 0;
+                    eq.fCenter = _centers[0];
+                    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    UpdateEQBass(NewPreset.AudioEQBand0, EQ0);
+
+                    eq.lBand = 1;
+                    eq.fCenter = _centers[1];
+                    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    UpdateEQBass(NewPreset.AudioEQBand1, EQ1);
+
+                    eq.lBand = 2;
+                    eq.fCenter = _centers[2];
+                    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    UpdateEQBass(NewPreset.AudioEQBand2, EQ2);
+
+                    eq.lBand = 3;
+                    eq.fCenter = _centers[3];
+                    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    UpdateEQBass(NewPreset.AudioEQBand3, EQ3);
+
+                    eq.lBand = 4;
+                    eq.fCenter = _centers[4];
+                    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    UpdateEQBass(NewPreset.AudioEQBand4, EQ4);
+
+                    eq.lBand = 5;
+                    eq.fCenter = _centers[5];
+                    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    UpdateEQBass(NewPreset.AudioEQBand5, EQ5);
+
+                    eq.lBand = 6;
+                    eq.fCenter = _centers[6];
+                    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    UpdateEQBass(NewPreset.AudioEQBand6, EQ6);
+
+                    eq.lBand = 7;
+                    eq.fCenter = _centers[7];
+                    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    UpdateEQBass(NewPreset.AudioEQBand7, EQ7);
+
+                    eq.lBand = 8;
+                    eq.fCenter = _centers[8];
+                    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    UpdateEQBass(NewPreset.AudioEQBand8, EQ8);
+
+                    eq.lBand = 9;
+                    eq.fCenter = _centers[9];
+                    Bass.BASS_FXSetParameters(_fxHandle, eq);
+                    UpdateEQBass(NewPreset.AudioEQBand0, EQ9);
+                }
+            }
+        }
+
+        public void UpdateEQBassPreamp(float eqGain)
+        {
+            _dsp_gain.Gain_dBV = eqGain;
+            Console.WriteLine("PreAmp");
+        }
+
+        public void UpdateEQBass(NewPreset band, float eqGain)
+        {
+            BASS_BFX_PEAKEQ eq = new BASS_BFX_PEAKEQ();
+
+            if (_fxHandle == -1) return;
+
+            eq.lBand = (int)band;
+            Bass.BASS_FXGetParameters(_fxHandle, eq);
+            eq.fGain = eqGain;
+            Bass.BASS_FXSetParameters(_fxHandle, eq);
+
+            Console.WriteLine(eq.lBand + " : " + eqGain + " : " + eq.fCenter);
+
         }
 
         public void SaveEQSettings(string eqBand)

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using bossdoyKaraoke_NOW.Properties;
+using Microsoft.CSharp.RuntimeBinder;
 
 namespace bossdoyKaraoke_NOW
 {
@@ -15,8 +16,8 @@ namespace bossdoyKaraoke_NOW
         static ClientSettingsSection _entry;
         static string _appSetting;
 
-        private static void AddProperty(string key, string value)
-        {
+        private static void AddProperty(string key, dynamic value)
+        { 
             //  if (Settings.Default.Properties[key] == null)
             //  {
             SettingsProperty newProp = new SettingsProperty(key)
@@ -24,7 +25,7 @@ namespace bossdoyKaraoke_NOW
                 PropertyType = typeof(string),
                 SerializeAs = SettingsSerializeAs.String,
                 DefaultValue = value,
-                Provider = Settings.Default.Providers["LocalFileSettingsProvider"],
+                Provider = Settings.Default.Providers["LocalFileSettingsProvider"]
             };
 
             newProp.Attributes.Add(typeof(UserScopedSettingAttribute), new UserScopedSettingAttribute());  //.Add(getType(Configuration.UserScopedSettingAttribute), New Configuration.UserScopedSettingAttribute())
@@ -45,11 +46,13 @@ namespace bossdoyKaraoke_NOW
             //Console.WriteLine("Local user config path: {0}", _config.FilePath);
         }
 
-        public static void Set(string key, string value)
+        public static void Set(dynamic key, dynamic value)
         {
+            key = Convert.ToString(key);
+
             if (Settings.Default.Properties[key] != null)
             {
-                Settings.Default[key] = value;
+                Settings.Default[key] = Convert.ToString(value);
                 Settings.Default.Save();
             }
             else
@@ -58,17 +61,22 @@ namespace bossdoyKaraoke_NOW
             }
         }
 
-        public static T Get<T>(string key)
+        public static T Get<T>(dynamic key)
         {
+            key = Convert.ToString(key);
+
             TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
             try
             {
                 // Settings.Default[key].
                 _appSetting = _entry.Settings.Get(key).Value.ValueXml.InnerText;
             }
+            catch (RuntimeBinderException)
+            {
+                return default(T);
+            }
             catch (NullReferenceException)
             {
-
                 return default(T);
             }
 
@@ -88,8 +96,7 @@ namespace bossdoyKaraoke_NOW
                                   else
                                       name = d.Name.Remove(0, 3).Replace(replaceOldStringPortionOfKey, newStringPortionOfKey);
 
-                                  Set(name, d.DefaultValue.ToString());
-
+                                  Set(name, d.DefaultValue);
                               }
 
                               return string.Empty;

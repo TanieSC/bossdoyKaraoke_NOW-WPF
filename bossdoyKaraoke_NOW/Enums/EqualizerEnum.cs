@@ -8,9 +8,9 @@ namespace bossdoyKaraoke_NOW.Enums
 {
     public class EqualizerEnum
     {
-        private static Band _currentBand;
+        private static NewPreset _currentPreset;
 
-        public enum Band
+        public enum NewPreset
         {
             AudioEQBand0,
             AudioEQBand1,
@@ -27,17 +27,22 @@ namespace bossdoyKaraoke_NOW.Enums
             AudioEQPreset
         }
 
-        public static Band CurrentBand
+        public static NewPreset CurrentPreset
         {
             get
             {
-                return _currentBand;
+                return _currentPreset;
             }
             set
             {
-                _currentBand = value;
+                _currentPreset = value;
             }
 
         }
+
+        //public string GetPreset(Preset preset)
+        //{        
+        //    return Enum.GetName(typeof(EqualizerEnum), preset);
+        //}
     }
 }

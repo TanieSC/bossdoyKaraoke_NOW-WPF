@@ -722,6 +722,9 @@ namespace bossdoyKaraoke_NOW.Media
                         _previousTrack = _currentTrack;
                         _currentTrack = _track as BassAudio;
                         VlcPlayer.PlayBackGroundVideo();
+
+                        EqualizerModel.Instance.SetupEQ(_currentTrack.Channel);
+
                         _currentTrack.Play();
 
                     }
