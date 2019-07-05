@@ -11,6 +11,7 @@ using System.Windows.Input;
 using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
+using bossdoyKaraoke_NOW.Model;
 using Implementation;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 using static bossdoyKaraoke_NOW.Enums.EqualizerEnum;
@@ -20,6 +21,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
     class PreferencesVModel : IPreferencesVModel, INotifyPropertyChanged
     {
         private Model.EqualizerModel _equalizer;
+        private bool _isPresetLoaded = false;
+
 
         //General Tab
         private float _EQ0 = 0f;
@@ -279,8 +282,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         {
             try
             {
-                _equalizer = Model.EqualizerModel.Instance;
-                _eqPresets = _equalizer.EQPresets;
+                _equalizer = EqualizerModel.Instance;
+                EQPresets = _equalizer.EQPresets;
 
                 EQEnabled = _equalizer.EQEnabled;
                 EQSelectedPreset = _equalizer.EQSelectedPreset;
@@ -297,10 +300,21 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _closingCommand ?? (_closingCommand = new RelayCommand(x =>
                 {
-
+                    Worker.DoWork(NewTask.SAVE_EQ_SETTINGS);
                 }));
             }
         }
+
+        //public ICommand SaveSettingsCommand
+        //{
+        //    get
+        //    {
+        //        return _closingCommand ?? (_closingCommand = new RelayCommand(x =>
+        //        {
+
+        //        }));
+        //    }
+        //}
 
         public ICommand EQLoadedCommand
         {
@@ -311,18 +325,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     if (x != null)
                     {
                         var eqPanel = ((x as StackPanel).Children[1] as StackPanel).Children[1] as StackPanel;
-                        //(eqPanel.Children[0] as Slider).Value = PreAmp * 10;
-                        //(eqPanel.Children[1] as Slider).Value = EQ0 * 10;
-                        //(eqPanel.Children[2] as Slider).Value = EQ1 * 10;
-                        //(eqPanel.Children[3] as Slider).Value = EQ2 * 10;
-                        //(eqPanel.Children[4] as Slider).Value = EQ3 * 10;
-                        //(eqPanel.Children[5] as Slider).Value = EQ4 * 10;
-                        //(eqPanel.Children[6] as Slider).Value = EQ5 * 10;
-                        //(eqPanel.Children[7] as Slider).Value = EQ6 * 10;
-                        //(eqPanel.Children[8] as Slider).Value = EQ7 * 10;
-                        //(eqPanel.Children[9] as Slider).Value = EQ8 * 10;
-                        //(eqPanel.Children[10] as Slider).Value = EQ9 * 10;
-
                         _sliderPreAmp = (eqPanel.Children[0] as Slider);
                         _sliderEq0 = (eqPanel.Children[1] as Slider);
                         _sliderEq1 = (eqPanel.Children[2] as Slider);
@@ -335,7 +337,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         _sliderEq8 = (eqPanel.Children[9] as Slider);
                         _sliderEq9 = (eqPanel.Children[10] as Slider);
 
-                        SetUIEqPreset();
+                        SetUIEQPreset();
                     }
                 }));
             }
@@ -347,14 +349,18 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _eqSelectedPresetCommand ?? (_eqSelectedPresetCommand = new RelayCommand(x =>
                 {
-                    if (x != null)
-                    {
-                        var selectedPreset = (x as ComboBox).SelectedIndex;
-                        var preset = ((KeyValuePair<int, Preset>)(x as ComboBox).SelectedItem).Key;
+                if (x != null)
+                {
+                    var selectedPreset = (x as ComboBox).SelectedIndex;
+                    var preset = ((KeyValuePair<int, Preset>)(x as ComboBox).SelectedItem).Key;
+
+                    _isPresetLoaded = true;
 
                         if (preset != -1)
                         {
-                            _equalizer.EQPreset = new Equalizer(_eqPresets[preset]);
+                            if (_equalizer.EQPreset != null) _equalizer.EQPreset.Dispose();
+
+                            _equalizer.EQPreset = new Equalizer(EQPresets[preset]);
                             _equalizer.EQ0 = (float)_equalizer.EQPreset.Bands[0].Amplitude;
                             _equalizer.EQ1 = (float)_equalizer.EQPreset.Bands[1].Amplitude;
                             _equalizer.EQ2 = (float)_equalizer.EQPreset.Bands[2].Amplitude;
@@ -368,7 +374,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                             _equalizer.PreAmp = (float)_equalizer.EQPreset.Preamp;
                             _equalizer.EQSelectedPreset = selectedPreset;
 
-                            SetUIEqPreset();
+                            SetUIEQPreset();
+                            Worker.DoWork(NewTask.LOAD_EQ_PRESET);
                         }
                     }
                 }));
@@ -385,7 +392,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQEnabled = (bool)(x as CheckBox).IsChecked;
                         EQEnabled = _equalizer.EQEnabled;
-                        AppConfig.Set(NewPreset.AudioEQEnabled, EQEnabled);
+
+                        Worker.DoWork(NewTask.EQ_ENABLED);
+                        // if (!_isPresetLoaded)
+                        //     AppConfig.Set(NewPreset.AudioEQEnabled, EQEnabled);
                     }
                 }));
             }
@@ -415,7 +425,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.PreAmp = (float)(x as Slider).Value / 10;
                         PreAmp = _equalizer.PreAmp;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQPreamp);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQPreamp);
                     }
                 }));
             }
@@ -431,7 +443,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ0 = (float)(x as Slider).Value / 10;
                         EQ0 = _equalizer.EQ0;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand0);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand0);
                     }
                 }));
             }
@@ -447,7 +461,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ1 = (float)(x as Slider).Value / 10;
                         EQ1 = _equalizer.EQ1;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand1);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand1);
                     }
                 }));
             }
@@ -463,7 +479,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ2 = (float)(x as Slider).Value / 10;
                         EQ2 = _equalizer.EQ2;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand2);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand2);
                     }
                 }));
             }
@@ -479,7 +497,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ3 = (float)(x as Slider).Value / 10;
                         EQ3 = _equalizer.EQ3;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand3);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand3);
                     }
                 }));
             }
@@ -495,7 +515,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ4 = (float)(x as Slider).Value / 10;
                         EQ4 = _equalizer.EQ4;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand4);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand4);
                     }
                 }));
             }
@@ -511,7 +533,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ5 = (float)(x as Slider).Value / 10;
                         EQ5 = _equalizer.EQ5;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand5);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand5);
                     }
                 }));
             }
@@ -527,7 +551,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ6 = (float)(x as Slider).Value / 10;
                         EQ6 = _equalizer.EQ6;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand6);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand6);
                     }
                 }));
             }
@@ -543,7 +569,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ7 = (float)(x as Slider).Value / 10;
                         EQ7 = _equalizer.EQ7;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand7);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand7);
                     }
                 }));
             }
@@ -559,7 +587,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ8 = (float)(x as Slider).Value / 10;
                         EQ8 = _equalizer.EQ8;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand8);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand8);
                     }
                 }));
             }
@@ -575,7 +605,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _equalizer.EQ9 = (float)(x as Slider).Value / 10;
                         EQ9 = _equalizer.EQ9;
-                        Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand9);
+
+                        if (!_isPresetLoaded)
+                            Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand9);
                     }
                 }));
             }
@@ -588,7 +620,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        private void SetUIEqPreset()
+        public void SetUIEQPreset()
         {
             EQ0 = _equalizer.EQ0;
             EQ1 = _equalizer.EQ1;
@@ -602,26 +634,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
             EQ9 = _equalizer.EQ9;
             PreAmp = _equalizer.PreAmp;
 
-            //_sliderPreAmp.Value = PreAmp * 10;
-            //_sliderEq0.Value = EQ0 * 10;
-            //_sliderEq1.Value = EQ1 * 10;
-            //_sliderEq2.Value = EQ2 * 10;
-            //_sliderEq3.Value = EQ3 * 10;
-            //_sliderEq4.Value = EQ4 * 10;
-            //_sliderEq5.Value = EQ5 * 10;
-            //_sliderEq6.Value = EQ6 * 10;
-            //_sliderEq7.Value = EQ7 * 10;
-            //_sliderEq8.Value = EQ8 * 10;
-            //_sliderEq9.Value = EQ9 * 10;
-        }
+            _sliderPreAmp.Value = PreAmp * 10;
+            _sliderEq0.Value = EQ0 * 10;
+            _sliderEq1.Value = EQ1 * 10;
+            _sliderEq2.Value = EQ2 * 10;
+            _sliderEq3.Value = EQ3 * 10;
+            _sliderEq4.Value = EQ4 * 10;
+            _sliderEq5.Value = EQ5 * 10;
+            _sliderEq6.Value = EQ6 * 10;
+            _sliderEq7.Value = EQ7 * 10;
+            _sliderEq8.Value = EQ8 * 10;
+            _sliderEq9.Value = EQ9 * 10;
 
-        /*
-         <ComboBox 
-   x:Name="myComboBox" 
-   DisplayMemberPath="Name"
-   SelectedValuePath="id"
-   ItemsSource="{Binding myDataTable}"      
-   SelectedValue="{Binding theID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
->*/
+            _isPresetLoaded = false;
+        }
     }
 }

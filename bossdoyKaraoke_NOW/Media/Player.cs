@@ -190,8 +190,6 @@ namespace bossdoyKaraoke_NOW.Media
             _songsSource = SongsSource.Instance;
             _songsSource.LoadSongCollections();
 
-            //var equalizer = Equalizer.Instance.EQPresets;
-           // var eqSelectedPreset = new Implementation.Equalizer(equalizer[0]);
 
             //Vocal Channel default value is Balance = ChannelSelected.None)
             Channel = ChannelSelected.Right;
@@ -730,6 +728,8 @@ namespace bossdoyKaraoke_NOW.Media
                     }
                     else
                     {
+                        EqualizerModel.Instance.SetupEQ(-1);
+
                         VlcPlayer.PlayVideoke(_songsSource.SongsQueue[0].FilePath, new VlcSync.SYNCPROC(OnVlcSync));
                     }
 

@@ -36,7 +36,8 @@ namespace bossdoyKaraoke_NOW.Enums
             SHUFFLE_SONGS,
             SORT_SONGS,
             WRITE_TO_QUEUE_LIST,
-
+            EQ_ENABLED,
+            LOAD_EQ_PRESET,
             SAVE_EQ_SETTINGS,
             UPDATE_EQ_SETTINGS,
             UPDATE_EQ_PRESET,

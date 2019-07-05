@@ -34,7 +34,8 @@ namespace bossdoyKaraoke_NOW.Media
         string[] _videoPath;
         string _videoDir;
 
-        private Model.EqualizerModel _equalizer;
+        private EqualizerModel _equalizer;
+        private Equalizer _vlcEqualizer;
         private SYNCPROC _syncProc;
         private float _volume = 65f;
         private static Vlc _instance;
@@ -87,7 +88,10 @@ namespace bossdoyKaraoke_NOW.Media
                 "--no-osd",
                 "--disable-screensaver",
                 "--file-caching=1000",
-                "--plugin-path=./plugins"
+                "--plugin-path=./plugins",
+                "--audio-filter=equalizer",
+                "--equalizer-preamp=0",
+                "--equalizer-bands=0 0 0 0 0 0 0 0 0 0",
             };
 
             //"--audio-filter=equalizer",
@@ -104,29 +108,32 @@ namespace bossdoyKaraoke_NOW.Media
             var eqPresets = new Dictionary<int, Preset>();
             var presets = Equalizer.Presets.ToDictionary(key => key.Index);
 
+            //_equalizer.EQPreset = new Equalizer();
+
+            //_equalizer.EQPreset.Bands[0].Amplitude = _equalizer.EQ0;
+            //_equalizer.EQPreset.Bands[1].Amplitude = _equalizer.EQ1;
+            //_equalizer.EQPreset.Bands[2].Amplitude = _equalizer.EQ2;
+            //_equalizer.EQPreset.Bands[3].Amplitude = _equalizer.EQ3;
+            //_equalizer.EQPreset.Bands[4].Amplitude = _equalizer.EQ4;
+            //_equalizer.EQPreset.Bands[5].Amplitude = _equalizer.EQ5;
+            //_equalizer.EQPreset.Bands[6].Amplitude = _equalizer.EQ6;
+            //_equalizer.EQPreset.Bands[7].Amplitude = _equalizer.EQ7;
+            //_equalizer.EQPreset.Bands[8].Amplitude = _equalizer.EQ8;
+            //_equalizer.EQPreset.Bands[9].Amplitude = _equalizer.EQ9;
+            //_equalizer.EQPreset.Preamp = _equalizer.PreAmp;
+
+            //_player.SetEqualizer(_equalizer.EQPreset);
+
+            //_vlcEqualizer.Dispose();
+
             eqPresets.Add(-1, null);
+
             for (int i = 0; i < presets.Count; i++)
             {
                 eqPresets.Add(i, presets[i]);
             }
 
             _equalizer.EQPresets = eqPresets;
-
-            //if (_equalizer.EQSelectedPreset != -1)
-            //{
-            //    _equalizer.EQPreset = new Implementation.Equalizer(eqPresets[_equalizer.EQSelectedPreset]);
-
-            //}
-
-            //_presets = Equalizer.Presets.ToDictionary(key => key.Index);
-
-            //string[] path = new string[] { _path1, _path2, _path3 };
-
-            //for (int i = 0; i < path.Length; i++)
-            //{
-            //    _media = _factory.CreateMedia<IMediaFromFile>(path[i]);
-            //    _media_list.Add(_media);
-            //}
 
             _player.Volume = (int)_volume;
             _player.Events.PlayerPositionChanged += new EventHandler<MediaPlayerPositionChanged>(Events_PlayerPositionChanged);
@@ -217,6 +224,15 @@ namespace bossdoyKaraoke_NOW.Media
                 _player.Stop();
 
             _list_player.PlayNext();
+        }
+
+        public void UpdateEQ(Equalizer equalizer)
+        {
+            if (_player.IsPlaying)
+            {
+                _player.SetEqualizer(equalizer);
+                equalizer.Dispose();
+            }
         }
 
         public bool PlayVideoke(string filePath, SYNCPROC syncProc )

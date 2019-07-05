@@ -245,49 +245,93 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          CurrentTask = NewTask.REMOVE_SONGS;
                          songsSource.RemoveTreeViewItem(Create.NewSongs, _treeViewModelChild);
                          break;
+                     case NewTask.EQ_ENABLED:
+                         CurrentTask = NewTask.EQ_ENABLED;
+                         AppConfig.Set(NewPreset.AudioEQEnabled, equalizer.EQEnabled);
+                         break;
+                     case NewTask.LOAD_EQ_PRESET:
+                         CurrentTask = NewTask.LOAD_EQ_PRESET;
+                         equalizer.UpdateEQBassPreamp(equalizer.PreAmp);
+                         equalizer.UpdateEQBass(NewPreset.AudioEQBand0, equalizer.EQ0);
+                         equalizer.UpdateEQBass(NewPreset.AudioEQBand1, equalizer.EQ1);
+                         equalizer.UpdateEQBass(NewPreset.AudioEQBand2, equalizer.EQ2);
+                         equalizer.UpdateEQBass(NewPreset.AudioEQBand3, equalizer.EQ3);
+                         equalizer.UpdateEQBass(NewPreset.AudioEQBand4, equalizer.EQ4);
+                         equalizer.UpdateEQBass(NewPreset.AudioEQBand5, equalizer.EQ5);
+                         equalizer.UpdateEQBass(NewPreset.AudioEQBand6, equalizer.EQ6);
+                         equalizer.UpdateEQBass(NewPreset.AudioEQBand7, equalizer.EQ7);
+                         equalizer.UpdateEQBass(NewPreset.AudioEQBand8, equalizer.EQ8);
+                         equalizer.UpdateEQBass(NewPreset.AudioEQBand9, equalizer.EQ9);
+
+
+                         // equalizer.UpdateEQVlc();
+                         equalizer.UpdateEQVlc(NewPreset.AudioEQBand0, equalizer.EQ0);
+                         equalizer.UpdateEQVlc(NewPreset.AudioEQBand1, equalizer.EQ1);
+                         equalizer.UpdateEQVlc(NewPreset.AudioEQBand2, equalizer.EQ2);
+                         equalizer.UpdateEQVlc(NewPreset.AudioEQBand3, equalizer.EQ3);
+                         equalizer.UpdateEQVlc(NewPreset.AudioEQBand4, equalizer.EQ4);
+                         equalizer.UpdateEQVlc(NewPreset.AudioEQBand5, equalizer.EQ5);
+                         equalizer.UpdateEQVlc(NewPreset.AudioEQBand6, equalizer.EQ6);
+                         equalizer.UpdateEQVlc(NewPreset.AudioEQBand7, equalizer.EQ7);
+                         equalizer.UpdateEQVlc(NewPreset.AudioEQBand8, equalizer.EQ8);
+                         equalizer.UpdateEQVlc(NewPreset.AudioEQBand9, equalizer.EQ9);
+                         break;
                      case NewTask.UPDATE_EQ_SETTINGS:
                          CurrentTask = NewTask.UPDATE_EQ_SETTINGS;
+
+                         equalizer.EQSelectedPreset = -1;
+
                          switch (_equalizerPreset)
                          {
                              case NewPreset.AudioEQBand0:
                                  equalizer.UpdateEQBass(NewPreset.AudioEQBand0, equalizer.EQ0);
+                                 equalizer.UpdateEQVlc(NewPreset.AudioEQBand0, equalizer.EQ0);
                                  break;
                              case NewPreset.AudioEQBand1:
                                  equalizer.UpdateEQBass(NewPreset.AudioEQBand1, equalizer.EQ1);
+                                 equalizer.UpdateEQVlc(NewPreset.AudioEQBand1, equalizer.EQ1);
                                  break;
                              case NewPreset.AudioEQBand2:
                                  equalizer.UpdateEQBass(NewPreset.AudioEQBand2, equalizer.EQ2);
+                                 equalizer.UpdateEQVlc(NewPreset.AudioEQBand2, equalizer.EQ2);
                                  break;
                              case NewPreset.AudioEQBand3:
                                  equalizer.UpdateEQBass(NewPreset.AudioEQBand3, equalizer.EQ3);
+                                 equalizer.UpdateEQVlc(NewPreset.AudioEQBand3, equalizer.EQ3);
                                  break;
                              case NewPreset.AudioEQBand4:
                                  equalizer.UpdateEQBass(NewPreset.AudioEQBand4, equalizer.EQ4);
+                                 equalizer.UpdateEQVlc(NewPreset.AudioEQBand4, equalizer.EQ4);
                                  break;
                              case NewPreset.AudioEQBand5:
                                  equalizer.UpdateEQBass(NewPreset.AudioEQBand5, equalizer.EQ5);
+                                 equalizer.UpdateEQVlc(NewPreset.AudioEQBand5, equalizer.EQ5);
                                  break;
                              case NewPreset.AudioEQBand6:
                                  equalizer.UpdateEQBass(NewPreset.AudioEQBand6, equalizer.EQ6);
+                                 equalizer.UpdateEQVlc(NewPreset.AudioEQBand6, equalizer.EQ6);
                                  break;
                              case NewPreset.AudioEQBand7:
                                  equalizer.UpdateEQBass(NewPreset.AudioEQBand7, equalizer.EQ7);
+                                 equalizer.UpdateEQVlc(NewPreset.AudioEQBand7, equalizer.EQ7);
                                  break;
                              case NewPreset.AudioEQBand8:
                                  equalizer.UpdateEQBass(NewPreset.AudioEQBand8, equalizer.EQ8);
+                                 equalizer.UpdateEQVlc(NewPreset.AudioEQBand8, equalizer.EQ8);
                                  break;
                              case NewPreset.AudioEQBand9:
                                  equalizer.UpdateEQBass(NewPreset.AudioEQBand9, equalizer.EQ9);
-                                 break;
-                             case NewPreset.AudioEQEnabled:
+                                 equalizer.UpdateEQVlc(NewPreset.AudioEQBand9, equalizer.EQ9);
                                  break;
                              case NewPreset.AudioEQPreamp:
-                                 //AppConfig.Set(EqPreset.AudioEQPreamp, equalizer.PreAmp);
                                  equalizer.UpdateEQBassPreamp(equalizer.PreAmp);
-                                 break;
-                             case NewPreset.AudioEQPreset:
+                                 equalizer.UpdateEQVlcPreamp(equalizer.PreAmp);
                                  break;
                          }
+                         break;
+                     case NewTask.SAVE_EQ_SETTINGS:
+                         CurrentTask = NewTask.SAVE_EQ_SETTINGS;
+                         equalizer.SaveEQSettings();
                          break;
                  }
 
@@ -360,6 +404,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                         songsSource.Songs[_senderID].Clear();
                         break;
                     case NewTask.UPDATE_EQ_SETTINGS:
+                        break;
+                    case NewTask.LOAD_EQ_PRESET:
                         break;
                 }
             });

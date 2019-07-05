@@ -102,6 +102,7 @@ namespace bossdoyKaraoke_NOW
                               return string.Empty;
 
                           }).ToArray();
+            Initialize();
         }
     }
 }

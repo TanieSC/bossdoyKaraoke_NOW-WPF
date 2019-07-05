@@ -106,6 +106,9 @@
                                                     <i:EventTrigger EventName="ValueChanged">
                                                         <i:InvokeCommandAction Command="{Binding PreAmpCommand}" CommandParameter="{ Binding ElementName=sliderPreamp}" />
                                                     </i:EventTrigger>
+                                                    <!--<i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                                        <i:InvokeCommandAction Command="{Binding SaveSettingsCommand}" CommandParameter="{ Binding ElementName=sliderPreamp}" />
+                                                    </i:EventTrigger>-->
                                                 </i:Interaction.Triggers>
                                             </Slider>
                                             <Slider x:Name="sliderEQ0" Orientation="Vertical" Maximum="150" Minimum="-150" TickFrequency="50" TickPlacement="Both" Margin="45,6,4,6">
