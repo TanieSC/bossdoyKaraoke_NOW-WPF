@@ -602,17 +602,17 @@ namespace bossdoyKaraoke_NOW.ViewModel
             EQ9 = _equalizer.EQ9;
             PreAmp = _equalizer.PreAmp;
 
-            _sliderPreAmp.Value = PreAmp * 10;
-            _sliderEq0.Value = EQ0 * 10;
-            _sliderEq1.Value = EQ1 * 10;
-            _sliderEq2.Value = EQ2 * 10;
-            _sliderEq3.Value = EQ3 * 10;
-            _sliderEq4.Value = EQ4 * 10;
-            _sliderEq5.Value = EQ5 * 10;
-            _sliderEq6.Value = EQ6 * 10;
-            _sliderEq7.Value = EQ7 * 10;
-            _sliderEq8.Value = EQ8 * 10;
-            _sliderEq9.Value = EQ9 * 10;
+            //_sliderPreAmp.Value = PreAmp * 10;
+            //_sliderEq0.Value = EQ0 * 10;
+            //_sliderEq1.Value = EQ1 * 10;
+            //_sliderEq2.Value = EQ2 * 10;
+            //_sliderEq3.Value = EQ3 * 10;
+            //_sliderEq4.Value = EQ4 * 10;
+            //_sliderEq5.Value = EQ5 * 10;
+            //_sliderEq6.Value = EQ6 * 10;
+            //_sliderEq7.Value = EQ7 * 10;
+            //_sliderEq8.Value = EQ8 * 10;
+            //_sliderEq9.Value = EQ9 * 10;
         }
 
         /*

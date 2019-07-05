@@ -367,7 +367,7 @@ namespace bossdoyKaraoke_NOW.Model
                     eq.lBand = 9;
                     eq.fCenter = _centers[9];
                     Bass.BASS_FXSetParameters(_fxHandle, eq);
-                    UpdateEQBass(NewPreset.AudioEQBand0, EQ9);
+                    UpdateEQBass(NewPreset.AudioEQBand9, EQ9);
                 }
             }
         }
