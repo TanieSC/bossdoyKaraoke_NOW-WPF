@@ -1,4 +1,4 @@
-﻿extern alias Nlog4;
+﻿extern alias NLog4;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -8,9 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using bossdoyKaraoke_NOW.Media;
-using Nlog4.NLog;
-using Nlog4.NLog.Config;
-using Nlog4.NLog.Targets;
+using NLog4.NLog;
+using NLog4.NLog.Config;
+using NLog4.NLog.Targets;
 
 namespace bossdoyKaraoke_NOW
 {

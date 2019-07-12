@@ -140,7 +140,6 @@ namespace bossdoyKaraoke_NOW.Media
             double bpp = 0;
             bpp = (int)Math.Round(VlcPlayer.PlayerPosition * _progressBarMaximum);
             MediaControlsVModel.Instance.ProgressValue = bpp;
-
         }
 
         /// <summary>
@@ -190,7 +189,6 @@ namespace bossdoyKaraoke_NOW.Media
             _songsSource = SongsSource.Instance;
             _songsSource.LoadSongCollections();
 
-
             //Vocal Channel default value is Balance = ChannelSelected.None)
             Channel = ChannelSelected.Right;
 
@@ -231,8 +229,8 @@ namespace bossdoyKaraoke_NOW.Media
         public void LoadVideokeFile(string videokeFileName)
         {
             CDGmp3 = null;
+            //VlcPlayer.Volume = Volume != 0 ? (Volume + _plus15Volume) : Volume;
             PlayNextTrack();
-            VlcPlayer.Volume = Volume != 0 ? (Volume + _plus15Volume) : Volume;
             _isPlayingVlc = true;
             _isPlayingBass = false;
             MediaControlsVModel.Instance.EnableControl = false;
@@ -346,24 +344,15 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         public override void Play()
         {
-            //if (CurrentPlayState == PlayState.Stopped && _songsSource.SongsQueue.Count > 0)
-            //{
-            //    CurrentTask = NewTask.ADD_TO_QUEUE;
-            //    Worker.DoWork(CurrentTask, _songsSource.SongsQueue[0]);
-            //}
+            if (_isPlayingBass)
+            {
+                _currentTrack.Play();
+            }
 
-           // if (CurrentPlayState == PlayState.Paused || CurrentPlayState == PlayState.Playing)
-           // {
-                if (_isPlayingBass)
-                {
-                    _currentTrack.Play();
-                }
-
-                if (_isPlayingVlc)
-                {
-                    VlcPlayer.Play();
-                }
-            //}
+            if (_isPlayingVlc)
+            {
+                VlcPlayer.Play();
+            }
 
             MediaControlsVModel.Instance.IconPlayPause = PackIconKind.Pause;
         }
@@ -445,6 +434,9 @@ namespace bossdoyKaraoke_NOW.Media
 
             string showNextTrack = MediaControlsVModel.Instance.RemainingTime.Trim();
 
+            //Hack just to make sure vlc volume and EQ setting is applied because nvlc will not update it 
+            string setVlcVolume = MediaControlsVModel.Instance.ElapsedTime.Trim();
+
             if (showNextTrack != string.Empty || showNextTrack != "")
             {
                 double second = TimeSpan.Parse(showNextTrack).TotalSeconds;
@@ -463,6 +455,18 @@ namespace bossdoyKaraoke_NOW.Media
                 }
             }
 
+            if (setVlcVolume != string.Empty || setVlcVolume != "")
+            {
+                double second = TimeSpan.Parse(setVlcVolume).TotalSeconds;
+
+                if (second < 1)
+                {
+                    EqualizerModel.Instance.SetupEQ(-1);
+                    VlcPlayer.Volume = Volume != 0 ? (Volume + _plus15Volume) : Volume;
+                    Console.WriteLine("setVlcVolume : " + second);
+                }
+            }
+
             return _getNestSongInfo;
         }
 
@@ -476,31 +480,21 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 if (_songsSource.SongQueueCount > 0)
                 {
-                    bool bassAudio = false;
 
                     if (_currentTrack != null)
-                       bassAudio =  Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
+                        Bass.BASS_ChannelSlideAttribute(_currentTrack.Channel, BASSAttribute.BASS_ATTRIB_VOL, -1f, 2000);
 
                     if (_previousTrack != null)
                         Bass.BASS_StreamFree(_previousTrack.Channel);
 
-                    if (_isPlayingVlc)
-                        VlcVolumeSlideAttribute();
-
                     _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
 
-                   // while (bassAudio || !_vlcVolumeSlideAttribute.IsEnabled)
-                   // {
-                        if (_songsSource.IsCdgFileType)
-                            LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
-                        else
-                            LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
+                    VlcVolumeSlideAttribute();
 
-                        bassAudio = false;
-
-                        Console.WriteLine("BASS : " + bassAudio);
-                  //  }
-
+                    //if (_songsSource.IsCdgFileType)
+                    //    LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                    //else
+                    //    LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
                 }
             }
         }
@@ -663,11 +657,17 @@ namespace bossdoyKaraoke_NOW.Media
         {
             _vlcVolumeCounter--;
 
-            VlcPlayer.Volume = _vlcVolumeCounter;
+            if (VlcPlayer.Volume > 0)
+                VlcPlayer.Volume = _vlcVolumeCounter;
 
             if (_vlcVolumeCounter <= 0)
             {
                 _vlcVolumeSlideAttribute.Stop();
+
+                if (_songsSource.IsCdgFileType)
+                    LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
+                else
+                    LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
             }
         }
 
@@ -728,8 +728,6 @@ namespace bossdoyKaraoke_NOW.Media
                     }
                     else
                     {
-                        EqualizerModel.Instance.SetupEQ(-1);
-
                         VlcPlayer.PlayVideoke(_songsSource.SongsQueue[0].FilePath, new VlcSync.SYNCPROC(OnVlcSync));
                     }
 

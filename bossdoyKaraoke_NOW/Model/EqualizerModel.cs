@@ -18,7 +18,6 @@ namespace bossdoyKaraoke_NOW.Model
         private static EqualizerModel _instance;
         private Vlc _vlcPlayer;
         private DSP_Gain _dsp_gain;
-        private Equalizer _equalizerVlc;
         private int _handle = -1;
         private int _fxHandle = -1;
         private bool _eqEnabled = false;
@@ -274,8 +273,6 @@ namespace bossdoyKaraoke_NOW.Model
 
         public EqualizerModel()
         {
-
-
             EQ0 = AppConfig.Get<float>(NewPreset.AudioEQBand0);
             EQ1 = AppConfig.Get<float>(NewPreset.AudioEQBand1);
             EQ2 = AppConfig.Get<float>(NewPreset.AudioEQBand2);
@@ -289,6 +286,29 @@ namespace bossdoyKaraoke_NOW.Model
             EQEnabled = AppConfig.Get<bool>(NewPreset.AudioEQEnabled);
             PreAmp = AppConfig.Get<float>(NewPreset.AudioEQPreamp);
             EQSelectedPreset =  AppConfig.Get<int>(NewPreset.AudioEQPreset);
+        }
+
+        public void EnableEQ()
+        {
+            if (EQEnabled)
+            {
+                SetupEQ(_handle);
+            }
+            else
+            {
+                if (_handle != -1)
+                {
+                    Bass.BASS_ChannelRemoveFX(_handle, _fxHandle);
+                    _dsp_gain.Dispose();
+                }
+                else
+                {
+                    if (_vlcPlayer != null)
+                        _vlcPlayer.UpdateEQ(null);
+                }
+            }
+
+            AppConfig.Set(NewPreset.AudioEQEnabled, EQEnabled);
         }
 
         public void SetupEQ(int handle)
@@ -316,13 +336,6 @@ namespace bossdoyKaraoke_NOW.Model
                     eq.fQ = 0f;
                     eq.fBandwidth = 0.6f;
                     eq.lChannel = BASSFXChan.BASS_BFX_CHANALL;
-
-                    //for (int i = 0; i < _centers.Length; i++)
-                    //{
-                    //    eq.lBand = i;
-                    //    eq.fCenter = _centers[i];
-                    //    Bass.BASS_FXSetParameters(_fxHandle, eq);
-                    //}
 
                     eq.lBand = 0;
                     eq.fCenter = _centers[0];
@@ -378,46 +391,22 @@ namespace bossdoyKaraoke_NOW.Model
                 {
                     if (EQPreset != null) EQPreset.Dispose();
 
-                    //EQPreset = new Equalizer();
+                    EQPreset = new Equalizer();
 
-                    //_equalizerVlc.Bands[(int)NewPreset.AudioEQBand0].Amplitude = EQ0;
-                    //_equalizerVlc.Bands[(int)NewPreset.AudioEQBand1].Amplitude = EQ1;
-                    //_equalizerVlc.Bands[(int)NewPreset.AudioEQBand2].Amplitude = EQ2;
-                    //_equalizerVlc.Bands[(int)NewPreset.AudioEQBand3].Amplitude = EQ3;
-                    //_equalizerVlc.Bands[(int)NewPreset.AudioEQBand4].Amplitude = EQ4;
-                    //_equalizerVlc.Bands[(int)NewPreset.AudioEQBand5].Amplitude = EQ5;
-                    //_equalizerVlc.Bands[(int)NewPreset.AudioEQBand6].Amplitude = EQ6;
-                    //_equalizerVlc.Bands[(int)NewPreset.AudioEQBand7].Amplitude = EQ7;
-                    //_equalizerVlc.Bands[(int)NewPreset.AudioEQBand8].Amplitude = EQ8;
-                    //_equalizerVlc.Bands[(int)NewPreset.AudioEQBand9].Amplitude = EQ9;
-                    //_equalizerVlc.Preamp = PreAmp;
+                    EQPreset.Bands[0].Amplitude = EQ0;
+                    EQPreset.Bands[1].Amplitude = EQ1;
+                    EQPreset.Bands[2].Amplitude = EQ2;
+                    EQPreset.Bands[3].Amplitude = EQ3;
+                    EQPreset.Bands[4].Amplitude = EQ4;
+                    EQPreset.Bands[5].Amplitude = EQ5;
+                    EQPreset.Bands[6].Amplitude = EQ6;
+                    EQPreset.Bands[7].Amplitude = EQ7;
+                    EQPreset.Bands[8].Amplitude = EQ8;
+                    EQPreset.Bands[9].Amplitude = EQ9;
+                    EQPreset.Preamp = PreAmp;
 
-                    //EQPreset = new Equalizer();
-
-                    //EQPreset.Bands[0].Amplitude = EQ0;
-                    //EQPreset.Bands[1].Amplitude = EQ1;
-                    //EQPreset.Bands[2].Amplitude = EQ2;
-                    //EQPreset.Bands[3].Amplitude = EQ3;
-                    //EQPreset.Bands[4].Amplitude = EQ4;
-                    //EQPreset.Bands[5].Amplitude = EQ5;
-                    //EQPreset.Bands[6].Amplitude = EQ6;
-                    //EQPreset.Bands[7].Amplitude = EQ7;
-                    //EQPreset.Bands[8].Amplitude = EQ8;
-                    //EQPreset.Bands[9].Amplitude = EQ9;
-                    //EQPreset.Preamp = PreAmp;
-
-                    //_vlcPlayer.UpdateEQ(EQPreset);
-
-                    UpdateEQVlc(NewPreset.AudioEQBand0, EQ0);
-                    UpdateEQVlc(NewPreset.AudioEQBand1, EQ1);
-                    UpdateEQVlc(NewPreset.AudioEQBand2, EQ2);
-                    UpdateEQVlc(NewPreset.AudioEQBand3, EQ3);
-                    UpdateEQVlc(NewPreset.AudioEQBand4, EQ4);
-                    UpdateEQVlc(NewPreset.AudioEQBand5, EQ5);
-                    UpdateEQVlc(NewPreset.AudioEQBand6, EQ6);
-                    UpdateEQVlc(NewPreset.AudioEQBand7, EQ7);
-                    UpdateEQVlc(NewPreset.AudioEQBand8, EQ8);
-                    UpdateEQVlc(NewPreset.AudioEQBand9, EQ9);
+                    _vlcPlayer.UpdateEQ(EQPreset);
+                    Console.WriteLine(" _vlcPlayer.UpdateEQ(EQPreset)");
                 }
             }
         }
@@ -432,12 +421,11 @@ namespace bossdoyKaraoke_NOW.Model
 
         public void UpdateEQVlcPreamp(float eqGain)
         {
-            if (_equalizerVlc == null) return;
+            if (EQPreset == null) return;
 
-            _equalizerVlc.Preamp = eqGain;
+            EQPreset.Preamp = eqGain;
 
-            Console.WriteLine(_equalizerVlc.Preamp + " : " + eqGain);
-            _vlcPlayer.UpdateEQ(_equalizerVlc);
+            _vlcPlayer.UpdateEQ(EQPreset);
 
         }
 
@@ -452,35 +440,27 @@ namespace bossdoyKaraoke_NOW.Model
             eq.fGain = eqGain;
             Bass.BASS_FXSetParameters(_fxHandle, eq);
 
-            Console.WriteLine(eq.lBand + " : " + eqGain + " : " + eq.fCenter);
+          //  Console.WriteLine(eq.lBand + " : " + eqGain + " : " + eq.fCenter);
 
         }
 
-        public void UpdateEQVlc(NewPreset band, float eqGain)
+        public void UpdateEQVlc()// NewPreset band, float eqGain)
         {
-            if (EQPreset == null) return;
+            if (EQPreset == null || _vlcPlayer == null) return;
 
-            //_equalizerVlc.Bands[(int)band].Amplitude = eqGain;
-
-
-
-            //EQPreset.Bands[0].Amplitude = EQ0;
-            //EQPreset.Bands[1].Amplitude = EQ1;
-            //EQPreset.Bands[2].Amplitude = EQ2;
-            //EQPreset.Bands[3].Amplitude = EQ3;
-            //EQPreset.Bands[4].Amplitude = EQ4;
-            //EQPreset.Bands[5].Amplitude = EQ5;
-            //EQPreset.Bands[6].Amplitude = EQ6;
-            //EQPreset.Bands[7].Amplitude = EQ7;
-            //EQPreset.Bands[8].Amplitude = EQ8;
-            //EQPreset.Bands[9].Amplitude = EQ9;
-            //EQPreset.Preamp = PreAmp;
-
-            EQPreset.Bands[(int)band].Amplitude = eqGain;
+            EQPreset.Bands[0].Amplitude = EQ0;
+            EQPreset.Bands[1].Amplitude = EQ1;
+            EQPreset.Bands[2].Amplitude = EQ2;
+            EQPreset.Bands[3].Amplitude = EQ3;
+            EQPreset.Bands[4].Amplitude = EQ4;
+            EQPreset.Bands[5].Amplitude = EQ5;
+            EQPreset.Bands[6].Amplitude = EQ6;
+            EQPreset.Bands[7].Amplitude = EQ7;
+            EQPreset.Bands[8].Amplitude = EQ8;
+            EQPreset.Bands[9].Amplitude = EQ9;
+            EQPreset.Preamp = PreAmp;
 
             _vlcPlayer.UpdateEQ(EQPreset);
-
-          //  return _equalizerVlc;
         }
 
         public void SaveEQSettings()

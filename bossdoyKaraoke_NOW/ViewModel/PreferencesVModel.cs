@@ -394,8 +394,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         EQEnabled = _equalizer.EQEnabled;
 
                         Worker.DoWork(NewTask.EQ_ENABLED);
-                        // if (!_isPresetLoaded)
-                        //     AppConfig.Set(NewPreset.AudioEQEnabled, EQEnabled);
                     }
                 }));
             }
