@@ -43,7 +43,7 @@ namespace bossdoyKaraoke_NOW.Media
         private double _progressBarMaximum = 2000;
         private DispatcherTimer _vlcVolumeSlideAttribute;
         private int _vlcVolumeCounter;
-        private float _plus15Volume = 15f;
+        private float _plus20Volume = 20f;
         
         public bool IsPlayingBass { get { return _isPlayingBass; } }
         public bool IsPlayingVlc { get { return _isPlayingVlc; } }
@@ -70,7 +70,7 @@ namespace bossdoyKaraoke_NOW.Media
                     _currentTrack.Volume = value * 0.01f;
 
                 if (_isPlayingVlc)
-                    VlcPlayer.Volume = (value != 0 ? (value + _plus15Volume) : value);
+                    VlcPlayer.Volume = (value != 0 ? (value + _plus20Volume) : value);
 
                 MediaControlsVModel.Instance.VolumeValue = (int)value;
 
@@ -229,7 +229,6 @@ namespace bossdoyKaraoke_NOW.Media
         public void LoadVideokeFile(string videokeFileName)
         {
             CDGmp3 = null;
-            //VlcPlayer.Volume = Volume != 0 ? (Volume + _plus15Volume) : Volume;
             PlayNextTrack();
             _isPlayingVlc = true;
             _isPlayingBass = false;
@@ -459,11 +458,10 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 double second = TimeSpan.Parse(setVlcVolume).TotalSeconds;
 
-                if (second < 1)
+                if (second == 1 && _isPlayingVlc)
                 {
                     EqualizerModel.Instance.SetupEQ(-1);
-                    VlcPlayer.Volume = Volume != 0 ? (Volume + _plus15Volume) : Volume;
-                    Console.WriteLine("setVlcVolume : " + second);
+                    VlcPlayer.Volume = Volume != 0 ? (Volume + _plus20Volume) : Volume;
                 }
             }
 
@@ -676,7 +674,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         private void VlcVolumeSlideAttribute()
         {
-            int vlcVolume = (int)Volume + (int)_plus15Volume;
+            int vlcVolume = (int)Volume + (int)_plus20Volume;
             int interval = 2000 / vlcVolume;
             _vlcVolumeCounter = vlcVolume;
             _vlcVolumeSlideAttribute.Interval = TimeSpan.FromMilliseconds(interval);

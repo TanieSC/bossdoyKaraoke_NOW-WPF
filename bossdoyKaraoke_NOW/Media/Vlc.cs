@@ -36,7 +36,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         private EqualizerModel _equalizer;
         private SYNCPROC _syncProc;
-        private float _volume = 65f;
+        private float _volume = 70f;
         private static Vlc _instance;
         public static Vlc Instance
         {
@@ -398,8 +398,6 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 _volume = value;
                 _player.Volume = (int)value;
-
-                Console.WriteLine("_player.Volume : " + _player.Volume);
             }
         }
 

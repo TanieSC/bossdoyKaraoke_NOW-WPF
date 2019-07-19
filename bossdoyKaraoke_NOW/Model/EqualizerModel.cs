@@ -405,8 +405,14 @@ namespace bossdoyKaraoke_NOW.Model
                     EQPreset.Bands[9].Amplitude = EQ9;
                     EQPreset.Preamp = PreAmp;
 
-                    _vlcPlayer.UpdateEQ(EQPreset);
-                    Console.WriteLine(" _vlcPlayer.UpdateEQ(EQPreset)");
+                    if (EQSelectedPreset == 0)
+                    {
+                        _vlcPlayer.UpdateEQ(null);
+                    }
+                    else
+                    {
+                        _vlcPlayer.UpdateEQ(EQPreset);
+                    }
                 }
             }
         }
@@ -421,7 +427,7 @@ namespace bossdoyKaraoke_NOW.Model
 
         public void UpdateEQVlcPreamp(float eqGain)
         {
-            if (EQPreset == null) return;
+            if (EQPreset == null || _vlcPlayer == null) return;
 
             EQPreset.Preamp = eqGain;
 
