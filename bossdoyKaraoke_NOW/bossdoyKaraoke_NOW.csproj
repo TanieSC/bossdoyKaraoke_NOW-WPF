@@ -153,6 +153,7 @@
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SystemState.cs" />
     <Compile Include="ViewModel\FullScreenVModel.cs" />
     <Compile Include="ViewModel\IFullScreenVModel.cs" />
     <Compile Include="ViewModel\IListViewVModel.cs" />
