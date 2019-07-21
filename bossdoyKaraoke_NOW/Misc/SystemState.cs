@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bossdoyKaraoke_NOW
+namespace bossdoyKaraoke_NOW.Misc
 {
     public class SystemState
     {

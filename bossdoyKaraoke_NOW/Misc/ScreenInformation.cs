@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 //Credit to: Matt Becker https://stackoverflow.com/questions/31043829/how-to-get-count-of-monitors-connected-to-the-pc-in-c
-namespace bossdoyKaraoke_NOW
+namespace bossdoyKaraoke_NOW.Misc
 {
     public class ScreenInformation
     {

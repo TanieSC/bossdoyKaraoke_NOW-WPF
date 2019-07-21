@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using bossdoyKaraoke_NOW.Enums;
 using bossdoyKaraoke_NOW.Media;
+using bossdoyKaraoke_NOW.Misc;
 using Implementation;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Fx;

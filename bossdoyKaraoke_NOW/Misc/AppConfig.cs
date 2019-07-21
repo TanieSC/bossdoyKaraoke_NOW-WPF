@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using bossdoyKaraoke_NOW.Properties;
 using Microsoft.CSharp.RuntimeBinder;
 
-namespace bossdoyKaraoke_NOW
+namespace bossdoyKaraoke_NOW.Misc
 {
     class AppConfig
     {

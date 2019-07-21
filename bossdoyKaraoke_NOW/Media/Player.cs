@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using bossdoyKaraoke_NOW.BackGroundWorker;
+using bossdoyKaraoke_NOW.Misc;
 using bossdoyKaraoke_NOW.Model;
 using bossdoyKaraoke_NOW.ViewModel;
 using MaterialDesignThemes.Wpf;

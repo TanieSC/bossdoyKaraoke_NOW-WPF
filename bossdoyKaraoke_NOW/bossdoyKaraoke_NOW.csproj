@@ -125,7 +125,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AppConfig.cs" />
+    <Compile Include="Misc\AppConfig.cs" />
     <Compile Include="BackGroundWorker\QueuedBackgroundWorker.cs" />
     <Compile Include="BackGroundWorker\Worker.cs" />
     <Compile Include="Enums\EqualizerEnum.cs" />
@@ -149,11 +149,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="ScreenInformation.cs" />
+    <Compile Include="Misc\ScreenInformation.cs" />
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SystemState.cs" />
+    <Compile Include="Misc\SystemState.cs" />
     <Compile Include="ViewModel\FullScreenVModel.cs" />
     <Compile Include="ViewModel\IFullScreenVModel.cs" />
     <Compile Include="ViewModel\IListViewVModel.cs" />

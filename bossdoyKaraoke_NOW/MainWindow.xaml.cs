@@ -19,6 +19,7 @@ using System.Windows.Threading;
 using bossdoyKaraoke_NOW.FormControl;
 using bossdoyKaraoke_NOW.Graphic;
 using bossdoyKaraoke_NOW.Media;
+using bossdoyKaraoke_NOW.Misc;
 using SharpDX;
 using SharpDX.Mathematics.Interop;
 using SharpDX.WIC;
@@ -37,7 +38,7 @@ namespace bossdoyKaraoke_NOW
 
         public MainWindow()
         {
-            LoadInBackground();
+            InitInBackground();
             InitializeComponent();
             _player.AppMainWindowHandle = new WindowInteropHelper(this).Handle;
             _videoImage = new VideoImage();
@@ -49,12 +50,17 @@ namespace bossdoyKaraoke_NOW
         {
             _videoImage.Dispose();
             DeviceManager.Instance.Dispose();
+
+            //Restore Previous Settings, ie, Go To Sleep Again
+            SystemState.RestoreDisplaySettings();
         }
 
-        private void LoadInBackground()
+        private void InitInBackground()
         {
             _player = Player.Instance;
             App.SplashScreen.LoadComplete();
+            //Prevent system sleep
+            SystemState.KeepDisplayActive();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
