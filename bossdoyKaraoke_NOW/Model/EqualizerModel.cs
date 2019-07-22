@@ -18,6 +18,7 @@ namespace bossdoyKaraoke_NOW.Model
     {
         private static EqualizerModel _instance;
         private Vlc _vlcPlayer;
+        private Player _player;
         private DSP_Gain _dsp_gain;
         private int _handle = -1;
         private int _fxHandle = -1;
@@ -289,31 +290,9 @@ namespace bossdoyKaraoke_NOW.Model
             EQSelectedPreset =  AppConfig.Get<int>(NewPreset.AudioEQPreset);
         }
 
-        public void EnableEQ()
-        {
-            if (EQEnabled)
-            {
-                SetupEQ(_handle);
-            }
-            else
-            {
-                if (_handle != -1)
-                {
-                    Bass.BASS_ChannelRemoveFX(_handle, _fxHandle);
-                    _dsp_gain.Dispose();
-                }
-                else
-                {
-                    if (_vlcPlayer != null)
-                        _vlcPlayer.UpdateEQ(null);
-                }
-            }
-
-            AppConfig.Set(NewPreset.AudioEQEnabled, EQEnabled);
-        }
-
         public void SetupEQ(int handle)
         {
+            _player = Player.Instance;
             _vlcPlayer = Vlc.Instance;
 
             _handle = handle;
@@ -406,16 +385,32 @@ namespace bossdoyKaraoke_NOW.Model
                     EQPreset.Bands[9].Amplitude = EQ9;
                     EQPreset.Preamp = PreAmp;
 
-                    if (EQSelectedPreset == 0)
-                    {
-                        _vlcPlayer.UpdateEQ(null);
-                    }
-                    else
-                    {
-                        _vlcPlayer.UpdateEQ(EQPreset);
-                    }
+                    _vlcPlayer.UpdateEQ(EQPreset);
                 }
             }
+        }
+
+        public void EnableEQ()
+        {
+            if (EQEnabled)
+            {
+                SetupEQ(_handle);
+            }
+            else
+            {
+                if (_handle != -1)
+                {
+                    Bass.BASS_ChannelRemoveFX(_handle, _fxHandle);
+                    _dsp_gain.Dispose();
+                }
+                else
+                {
+                    if (_vlcPlayer != null)
+                        _vlcPlayer.UpdateEQ(null);
+                }
+            }
+
+            AppConfig.Set(NewPreset.AudioEQEnabled, EQEnabled);
         }
 
         public void UpdateEQBassPreamp(float eqGain)

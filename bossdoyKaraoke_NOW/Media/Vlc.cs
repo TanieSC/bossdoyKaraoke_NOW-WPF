@@ -108,7 +108,7 @@ namespace bossdoyKaraoke_NOW.Media
             _equalizer.EQPreset.Bands[9].Amplitude = _equalizer.EQ9;
             _equalizer.EQPreset.Preamp = _equalizer.PreAmp;
 
-            if (_equalizer.EQSelectedPreset == 0)
+            if (!_equalizer.EQEnabled)
             {
                 _player.SetEqualizer(null);
             }
@@ -396,8 +396,12 @@ namespace bossdoyKaraoke_NOW.Media
 
             set
             {
-                _volume = value;
-                _player.Volume = (int)value;
+                if (_equalizer.EQEnabled)
+                    _volume = value != 0 ? ((value + 20) + _equalizer.PreAmp) : value;
+                else
+                    _volume = value != 0 ? (value + 20) : value;
+
+                _player.Volume = (int)_volume;
             }
         }
 

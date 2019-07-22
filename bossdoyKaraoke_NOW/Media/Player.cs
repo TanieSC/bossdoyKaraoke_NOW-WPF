@@ -71,7 +71,7 @@ namespace bossdoyKaraoke_NOW.Media
                     _currentTrack.Volume = value * 0.01f;
 
                 if (_isPlayingVlc)
-                    VlcPlayer.Volume = (value != 0 ? (value + _plus20Volume) : value);
+                    VlcPlayer.Volume = value;//(value != 0 ? (value + _plus20Volume) : value);
 
                 MediaControlsVModel.Instance.VolumeValue = (int)value;
 
@@ -462,7 +462,8 @@ namespace bossdoyKaraoke_NOW.Media
                 if (second == 1 && _isPlayingVlc)
                 {
                     EqualizerModel.Instance.SetupEQ(-1);
-                    VlcPlayer.Volume = Volume != 0 ? (Volume + _plus20Volume) : Volume;
+                    VlcPlayer.Volume = Volume;// != 0 ? (Volume + _plus20Volume) : Volume;
+                    Console.WriteLine("VlcPlayer.Volume : " + VlcPlayer.Volume);
                 }
             }
 
@@ -675,8 +676,12 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         private void VlcVolumeSlideAttribute()
         {
-            int vlcVolume = (int)Volume + (int)_plus20Volume;
-            int interval = 2000 / vlcVolume;
+            int interval = 0;
+            int vlcVolume = (int)Volume;// + (int)_plus20Volume;
+
+            if (vlcVolume != 0)
+                interval = 2000 / vlcVolume;
+
             _vlcVolumeCounter = vlcVolume;
             _vlcVolumeSlideAttribute.Interval = TimeSpan.FromMilliseconds(interval);
             _vlcVolumeSlideAttribute.Start();
