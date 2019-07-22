@@ -397,11 +397,13 @@ namespace bossdoyKaraoke_NOW.Media
             set
             {
                 if (_equalizer.EQEnabled)
-                    _volume = value != 0 ? ((value + 20) + _equalizer.PreAmp) : value;
+                    _volume = value != 0 ? (value + 20) + _equalizer.PreAmp : value;
                 else
                     _volume = value != 0 ? (value + 20) : value;
 
                 _player.Volume = (int)_volume;
+
+               // Console.WriteLine("Worker VLC2 : " + _player.Volume + " : " + _equalizer.EQEnabled + " : " + _equalizer.PreAmp);
             }
         }
 

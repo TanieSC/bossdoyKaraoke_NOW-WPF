@@ -463,7 +463,7 @@ namespace bossdoyKaraoke_NOW.Media
                 {
                     EqualizerModel.Instance.SetupEQ(-1);
                     VlcPlayer.Volume = Volume;// != 0 ? (Volume + _plus20Volume) : Volume;
-                    Console.WriteLine("VlcPlayer.Volume : " + VlcPlayer.Volume);
+                   // Console.WriteLine("VlcPlayer.Volume : " + VlcPlayer.Volume);
                 }
             }
 
@@ -711,13 +711,17 @@ namespace bossdoyKaraoke_NOW.Media
             lock (_songsSource.SongsQueue)
             {
                 _getNestSongInfo = "";
-                MediaControlsVModel.Instance.VocalChannel = "BAL";
-                Channel = ChannelSelected.Right;
 
                 if (_songsSource.SongQueueCount > 0)
                 {
                     MediaControlsVModel.Instance.SongTitle = _songsSource.SongsQueue[0].Name;
                     MediaControlsVModel.Instance.SongArtist = _songsSource.SongsQueue[0].Artist;
+
+                    if (Channel != ChannelSelected.Right)
+                    {
+                        Channel = ChannelSelected.None;
+                        RemoveVocalLeftRight();
+                    }
 
                     if (_songsSource.IsCdgFileType)
                     {

@@ -247,6 +247,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          break;
                      case NewTask.EQ_ENABLED:
                          CurrentTask = NewTask.EQ_ENABLED;
+                         player.VlcPlayer.Volume = player.Volume;
                          equalizer.EnableEQ();
                          break;
                      case NewTask.LOAD_EQ_PRESET:

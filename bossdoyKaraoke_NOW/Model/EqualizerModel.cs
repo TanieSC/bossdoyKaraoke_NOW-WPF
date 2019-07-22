@@ -18,7 +18,6 @@ namespace bossdoyKaraoke_NOW.Model
     {
         private static EqualizerModel _instance;
         private Vlc _vlcPlayer;
-        private Player _player;
         private DSP_Gain _dsp_gain;
         private int _handle = -1;
         private int _fxHandle = -1;
@@ -292,7 +291,6 @@ namespace bossdoyKaraoke_NOW.Model
 
         public void SetupEQ(int handle)
         {
-            _player = Player.Instance;
             _vlcPlayer = Vlc.Instance;
 
             _handle = handle;
