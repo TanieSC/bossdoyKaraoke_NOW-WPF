@@ -13,7 +13,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
     {
         string IntroText { get; set; }
         bool EQEnabled { get; set; }
-        void SetUIEQPreset();
+        //void SetUIEQPreset();
        // DataTable EQPresets { get; set; }
        // Dictionary<int, Preset> EQPresets { get; set; }
        //int EQSelectedPreset { get; set; }

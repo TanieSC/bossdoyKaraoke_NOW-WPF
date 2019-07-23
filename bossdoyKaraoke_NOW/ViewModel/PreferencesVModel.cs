@@ -618,7 +618,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public void SetUIEQPreset()
+        private void SetUIEQPreset()
         {
             EQ0 = _equalizer.EQ0;
             EQ1 = _equalizer.EQ1;
