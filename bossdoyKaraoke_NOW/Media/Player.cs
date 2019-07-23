@@ -214,7 +214,13 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="cdgFileName"></param>
         public void LoadCDGFile(string cdgFileName)
         {
-            CDGmp3 = new CDGFile(cdgFileName);
+            var extn = Path.GetExtension(cdgFileName.ToLower());
+
+            if (extn == ".cdg")
+                CDGmp3 = new CDGFile(cdgFileName);
+            else
+                CDGmp3 = null;
+
             AddToBassMixer();
             PlayNextTrack();
             _isPlayingBass = true;
@@ -490,6 +496,8 @@ namespace bossdoyKaraoke_NOW.Media
                     _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
 
                     VlcVolumeSlideAttribute();
+
+                    Console.WriteLine("_songsSource : " + _songsSource.IsCdgFileType);
 
                     //if (_songsSource.IsCdgFileType)
                     //    LoadCDGFile(_songsSource.SongsQueue[0].FilePath);

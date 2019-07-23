@@ -393,38 +393,14 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
             if (sender.CurrentTask == NewTask.ADD_NEW_FAVORITES)
             {
-               // var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
-               // var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
-
                 TreeViewDialogVModel.Instance.AddingStatus = Visibility.Visible;
                 TreeViewDialogVModel.Instance.LoadingStatus = Visibility.Collapsed;
                 TreeViewDialogVModel.Instance.ShowDialog = true;
                 TreeViewDialogVModel.Instance.AddFavoritesSender = sender;
-
-               // items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = "Favorites " + items.Count, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
-              //  Worker.DoWork(sender.CurrentTask, sender);
             }
             else if (sender.CurrentTask == NewTask.ADD_NEW_SONGS)
             {
                 _songsSource.AddNewSongs(sender);
-
-                //var fbd = new System.Windows.Forms.FolderBrowserDialog();
-                //if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                //{
-                //    string[] filePath = new string[] { fbd.SelectedPath };
-                //    string folderName = Path.GetFileName(fbd.SelectedPath);
-                //    var items = SongsSource.Instance.ItemSource[_myComputerIndex].Items;
-                //    var songs = SongsSource.Instance.Songs.Count;
-                //    var filaname = SongsSource.Instance.CheckFilenameExist(Create.NewSongs, folderName);
-
-                //    items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = filaname, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
-
-                //    TreeViewDialogModel.Instance.DialogStatus = "Working on it! Please wait...";
-                //    TreeViewDialogModel.Instance.AddingStatus = Visibility.Collapsed;
-                //    TreeViewDialogModel.Instance.LoadingStatus = Visibility.Visible;
-                //    TreeViewDialogModel.Instance.ShowDialog = true;
-                //    Worker.DoWork(sender.CurrentTask, items[0].ID, fbd.SelectedPath);
-                //}
             }
             else
             {

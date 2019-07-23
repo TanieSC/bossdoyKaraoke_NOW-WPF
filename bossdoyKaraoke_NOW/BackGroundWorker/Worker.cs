@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -154,6 +156,29 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          break;
                      case NewTask.ADD_TO_QUEUE:
                          CurrentTask = NewTask.ADD_TO_QUEUE;
+
+                         if (_trackInfo == null)
+                         {
+                             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+                             openFileDialog.Filter = "Media files (*.cdg;*.mp3;*.mp4)|*.cdg;*.mp3;*.mp4|Cdg files (*.cdg)|*.cdg|Mp3 files (*.mp3)|*.mp3|Mp4 files (*.mp4)|*.mp4";
+
+                             if (openFileDialog.ShowDialog() == true)
+                             {
+                                 string filename = openFileDialog.FileName;
+                                 _trackInfo = songsSource.trackInfo(filename, songsSource.SongQueueCount + 1);
+
+                                 filename = Regex.Replace(filename, "\\.mp3$", ".cdg", RegexOptions.IgnoreCase);
+
+                                 if (File.Exists(filename))
+                                 {
+                                     _trackInfo.FilePath = filename;
+                                 }
+                             }
+                             else
+                             {
+                                 break;
+                             }
+                         }
 
                          songQueueTitle = songsSource.AddToQueue(_trackInfo);
 
@@ -351,16 +376,19 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                     case NewTask.ADD_TO_QUEUE:
                     case NewTask.ADD_TO_QUEUE_AS_NEXT:
                     case NewTask.REMOVE_FROM_QUEUE:
-                        parentTreeview.Title = songQueueTitle;
-
-                        if (currentTask == NewTask.ADD_TO_QUEUE || currentTask == NewTask.ADD_TO_QUEUE_AS_NEXT)
+                        if (_trackInfo != null)
                         {
-                            _trackInfo.IsSelected = false;
-                        }
+                            parentTreeview.Title = songQueueTitle;
 
-                        if (currentTask == NewTask.REMOVE_FROM_QUEUE)
-                        {
-                            _listViewElement.ItemsSource = songsSource.SongsQueue;
+                            if (currentTask == NewTask.ADD_TO_QUEUE || currentTask == NewTask.ADD_TO_QUEUE_AS_NEXT)
+                            {
+                                _trackInfo.IsSelected = false;
+                            }
+
+                            if (currentTask == NewTask.REMOVE_FROM_QUEUE)
+                            {
+                                _listViewElement.ItemsSource = songsSource.SongsQueue;
+                            }
                         }
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:

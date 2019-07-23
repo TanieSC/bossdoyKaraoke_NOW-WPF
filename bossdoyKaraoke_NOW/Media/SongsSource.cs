@@ -15,6 +15,7 @@ using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Model;
 using bossdoyKaraoke_NOW.ViewModel;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Tags;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
@@ -26,6 +27,7 @@ namespace bossdoyKaraoke_NOW.Media
 {
     public class SongsSource : ISongsSource
     {
+        private const int _songQueueIndex = 0;
         private const int _favoritesIndex = 1;
         private const int _myComputerIndex = 2;
         private Color color = (Color)ColorConverter.ConvertFromString("#DD000000");
@@ -36,7 +38,7 @@ namespace bossdoyKaraoke_NOW.Media
         private string _favoritesPath = _filePath + @"favorites\";
         private string _songsPath = _filePath + @"songs\";
         private string _songQueueList = _filePath + @"SongQueueList.que";
-        private string _mp3FileName;
+        private string _mediaFileName;
         private string _songQueueTitle = string.Empty;
         private double _totalDuration = 0.0;
 
@@ -224,7 +226,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         public void LoadSongsInQueue(int songQueuePreviousCount = 0)
         {          
-            var songQueue = Worker.TreeViewElement.Items[0] as ITreeViewVModel;
+            var songQueue = Worker.TreeViewElement.Items[_songQueueIndex] as ITreeViewVModel;
 
             lock (_songsQueue)
             {
@@ -357,6 +359,17 @@ namespace bossdoyKaraoke_NOW.Media
         }
 
         /// <summary>
+        /// Method to add song by clicking Open option on main menu.
+        /// </summary>
+        public void AddNewSong()
+        {
+            TrackInfoModel sender = null;
+
+            CurrentTask = NewTask.ADD_TO_QUEUE;
+            Worker.DoWork(CurrentTask, sender);
+        }
+
+        /// <summary>
         /// Method to add collection of songs from a selected folder.
         /// </summary>
         /// <param name="sender"></param>
@@ -379,6 +392,9 @@ namespace bossdoyKaraoke_NOW.Media
                 TreeViewDialogVModel.Instance.ShowDialog = true;
                 Worker.DoWork(sender.CurrentTask, items[0].ID, fbd.SelectedPath);
             }
+
+            // var items = _itemSource[_myComputerIndex].Items;
+            // Worker.DoWork(sender.CurrentTask, items[0].ID, "");
         }
 
         /// <summary>
@@ -534,7 +550,8 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="mediaFileName">The file to be checked</param>
         public void PreProcessFiles(string mediaFileName)
         {
-            string cdgFileName = "";
+            //string cdgFileName = "";
+            string mp3FileName = "";
             // if (Regex.IsMatch(tbFileName.Text, "\\.zip$"))
             // {
             //     string myTempDir = Path.GetTempPath() + Path.GetRandomFileName();
@@ -544,26 +561,38 @@ namespace bossdoyKaraoke_NOW.Media
             //     goto PairUpFiles;
             // }
             // else 
+
+
             if (Regex.IsMatch(mediaFileName, "\\.cdg$", RegexOptions.IgnoreCase))
             {
-                cdgFileName = mediaFileName;
-                _mp3FileName = mediaFileName;
+                //cdgFileName = mediaFileName;
+                //_mp3FileName = mediaFileName;
+                mp3FileName = Regex.Replace(mediaFileName, "\\.cdg$", ".mp3", RegexOptions.IgnoreCase);
+                _mediaFileName = mp3FileName;
+                goto PairUpCdgMp3;
+            }
+            else if (Regex.IsMatch(mediaFileName, "\\.mp3$", RegexOptions.IgnoreCase))
+            {
+                //cdgFileName = mediaFileName;
+                _mediaFileName = mediaFileName;
+                mp3FileName = mediaFileName;
                 goto PairUpCdgMp3;
             }
             else
             {
-                _mp3FileName = mediaFileName;
+                _mediaFileName = mediaFileName;
+                //mp3FileName = _mediaFileName;
                 if (!_isAddingToQueue)
                     _isCdgFileType = false;
+
+                return;
             }
 
-            PairUpCdgMp3:
-            string mp3FileName = Regex.Replace(cdgFileName, "\\.cdg$", ".mp3", RegexOptions.IgnoreCase);
+            PairUpCdgMp3:           
             if (File.Exists(mp3FileName))
             {
-                _mp3FileName = mp3FileName;
-                //_mediaFileName = cdgFileName;
-                //// m_TempDir = "";
+                _mediaFileName = mp3FileName;
+
                 if (!_isAddingToQueue)
                     _isCdgFileType = true;
             }
@@ -629,7 +658,7 @@ namespace bossdoyKaraoke_NOW.Media
                 PreProcessFiles(sender.FilePath);
                 _isAddingToQueue = false;
 
-                if (!File.Exists(_mp3FileName))
+                if (!File.Exists(_mediaFileName))
                 {
                     if (CurrentTask == NewTask.LOAD_QUEUE_SONGS)
                     {
@@ -637,7 +666,7 @@ namespace bossdoyKaraoke_NOW.Media
                     }
                     else
                     {
-                        MessageBox.Show("Cannot find " + Path.GetFileName(_mp3FileName) + " file to play.");
+                        MessageBox.Show("Cannot find " + Path.GetFileName(_mediaFileName) + " file to play.");
                         _trackInfo = null;
                     }
                     return;
@@ -648,7 +677,7 @@ namespace bossdoyKaraoke_NOW.Media
                     count = _songsQueue.Count + 1;
                 }
 
-                if (GetExtPatern(_mp3FileName).EndsWith(".mp3"))
+                if (GetExtPatern(_mediaFileName).EndsWith(".mp3"))
                 {
                     _trackInfo = new TrackInfoModel(sender);
                     _trackInfo.ID = count.ToString();
@@ -659,7 +688,7 @@ namespace bossdoyKaraoke_NOW.Media
                 else
                 {
                     _trackInfo = new TrackInfoModel();
-                    Vlc.Instance.GetDuration(_mp3FileName);
+                    Vlc.Instance.GetDuration(_mediaFileName);
 
                     double vlcTimeDuration = GetVlcTimeOrDuration(Convert.ToDouble(Vlc.Instance.GetTimeDuration));
 
@@ -911,14 +940,14 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="file">The filename of the song</param>
         /// <param name="count">Song count used as song id</param>
         /// <returns>Returns the information of the song</returns>
-        private TrackInfoModel trackInfo(string file, int count, int duration = 0)
+        public TrackInfoModel trackInfo(string file, int count, int duration = 0)
         {
             string SongTitle = "";
             string SongArtist = "";
             string pattern = @"-\s+|–\s+"; //@"-\s+|–\s+|-|–";
-            string fName = System.IO.Path.GetFileName(file);
+            string fName = Path.GetFileName(file);
+            string extensionType = Path.GetExtension(fName);
             string[] regXpattern = Regex.Split(fName, pattern);
-            // var containsSwears = extensions.Any(w => file.Contains(w));
 
             Regex regX = new Regex(_extPattern, RegexOptions.IgnoreCase);
 
@@ -968,6 +997,7 @@ namespace bossdoyKaraoke_NOW.Media
 
             TrackInfoModel trackInfo = new TrackInfoModel();
             trackInfo.ID = Convert.ToString(count);
+            trackInfo.Type = extensionType.ToUpper().Remove(0,1);
             trackInfo.Name = SongTitle;
             trackInfo.Artist = SongArtist;
             trackInfo.Duration = Convert.ToString(duration);

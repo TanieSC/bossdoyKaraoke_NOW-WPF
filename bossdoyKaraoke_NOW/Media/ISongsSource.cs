@@ -17,6 +17,7 @@ namespace bossdoyKaraoke_NOW.Media
         List<ObservableCollection<TrackInfoModel>> Songs { get; }
         List<ObservableCollection<TrackInfoModel>> Favorites { get; }
         ObservableCollection<TrackInfoModel> SongsQueue { get; set; }
+        TrackInfoModel trackInfo(string file, int count, int duration = 0);
         int SongQueueCount { get; }
         int PlayedSongsCount { get; }
         bool IsCdgFileType{ get; set; }
@@ -27,6 +28,7 @@ namespace bossdoyKaraoke_NOW.Media
         void CreateFavoritesPlayedSongs(ITreeViewModelChild sender);
         //void CreateFavoritesSongQueue();
         void DirSearchSongs(string sDir);
+        void AddNewSong();
         void AddNewSongs(ITreeViewModelChild sender);
         string AddToQueue(TrackInfoModel sender);
         string AddToQueueAsNext(TrackInfoModel sender);

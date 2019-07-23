@@ -51,7 +51,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _openCommand ?? (_openCommand = new RelayCommand(x =>
                 {
-
+                    _songsSource.AddNewSong();
                 }));
             }
         }

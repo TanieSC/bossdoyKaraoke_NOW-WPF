@@ -507,8 +507,17 @@
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn Header="ID#" DisplayMemberBinding="{Binding ID }"/>
-                        <GridViewColumn Header="Title" Width="234" DisplayMemberBinding="{Binding Name}"/>
-                        <GridViewColumn Header="Artist"  Width="136" DisplayMemberBinding="{Binding Artist}"/>
+                        <GridViewColumn Header="Type">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding Type}" FontWeight="ExtraBold" Foreground="#FF673AB7"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Title" Width="214" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Artist"  Width="156" DisplayMemberBinding="{Binding Artist}"/>
                         <GridViewColumn Header="Duration" DisplayMemberBinding="{Binding Duration}"/>
                         <GridViewColumn Header="" Width="0" DisplayMemberBinding="{Binding FilePath}"/>
                     </GridView>
@@ -569,6 +578,7 @@
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                         <Setter Property="ContextMenu" Value="{StaticResource lvItemContextMenu}" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsSelected}" Value="true" >
                                 <DataTrigger.EnterActions>
