@@ -20,6 +20,7 @@
         <vm:MediaControlsVModel x:Key="MediaControls"/>
         <vm:SearchBoxVModel x:Key="SearchBoxModel"/>
         <vm:ListViewVModel x:Key="ListViewModel"/>
+        <vm:ItemIndexConverter x:Key="ItemIndexConverter" />
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -506,7 +507,23 @@
                 </i:Interaction.Triggers>
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
-                        <GridViewColumn Header="ID#" DisplayMemberBinding="{Binding ID}"/>
+                        <GridViewColumn Header="ID#">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <Binding>
+                                                    <Binding.Converter>
+                                                        <vm:ItemIndexConverter DataContext="{Binding Source={x:Reference songs_listView} , Path=(ItemsControl.ItemsSource)}" />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn Header="Type">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

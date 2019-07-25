@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
@@ -32,7 +36,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
         public ListViewVModel()
         {
-            Items =  _songsSource.Songs.Count > 0 ? _songsSource.Songs[0] : new ObservableCollection<TrackInfoModel>();
+            Items = _songsSource.Songs.Count > 0 ? _songsSource.Songs[0] : new ObservableCollection<TrackInfoModel>();
         }
 
         public ICommand AddToQueueDblClkCommand// PreviewMouseDoubleClick
@@ -113,7 +117,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private void EnableDisableMenuItem(ContextMenu sender)
         {
             var contextMenu = sender as ContextMenu;
-           // var play = contextMenu.Items[0] as MenuItem;
+            // var play = contextMenu.Items[0] as MenuItem;
             var addToQueue = contextMenu.Items[0] as MenuItem;
             var addToQueueAsNext = contextMenu.Items[1] as MenuItem;
             var removeFromQueue = contextMenu.Items[3] as MenuItem;
@@ -130,7 +134,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 case NewTask.ADD_TO_QUEUE:
                 case NewTask.ADD_TO_QUEUE_AS_NEXT:
                 case NewTask.SEARCH_LISTVIEW:
-                   // play.IsEnabled = true;
+                    // play.IsEnabled = true;
                     addToQueue.IsEnabled = true;
 
                     if (CurrentPlayState == PlayState.Stopped)
@@ -138,7 +142,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     else
                         addToQueueAsNext.IsEnabled = true;
 
-                   // removeFromQueue.IsEnabled = false;
+                    // removeFromQueue.IsEnabled = false;
                     break;
             }
         }
@@ -174,9 +178,25 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 //CurrentTask = NewTask.REMOVE_SELECTED_SONG;
                 Worker.DoWork(NewTask.REMOVE_SELECTED_SONG, sender);
             }
-            
+
             //CurrentTask = NewTask.REMOVE_FROM_QUEUE;
             //Worker.DoWork(CurrentTask, sender);
         }
     }
+
+
+    [ValueConversion(typeof(IList), typeof(int))]
+    public sealed class ItemIndexConverter : FrameworkContentElement, IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int index = ((IList)DataContext).IndexOf(value);
+            return index += 1;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    };
 }

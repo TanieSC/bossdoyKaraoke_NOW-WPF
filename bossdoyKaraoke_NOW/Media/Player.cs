@@ -468,8 +468,7 @@ namespace bossdoyKaraoke_NOW.Media
                 if (second == 1 && _isPlayingVlc)
                 {
                     EqualizerModel.Instance.SetupEQ(-1);
-                    VlcPlayer.Volume = Volume;// != 0 ? (Volume + _plus20Volume) : Volume;
-                   // Console.WriteLine("VlcPlayer.Volume : " + VlcPlayer.Volume);
+                    VlcPlayer.Volume = Volume;
                 }
             }
 

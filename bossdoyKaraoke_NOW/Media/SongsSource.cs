@@ -509,6 +509,7 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 sender.CurrentTask = NewTask.REMOVE_SELECTED_SONG;
                 _songs[sender.ID].Remove(trackInfo);
+                Worker.ListViewElement.Items.Refresh();
                 CreateKaraokeNowFiles(Create.NewSongs, sender);
             }));
         }
@@ -780,23 +781,14 @@ namespace bossdoyKaraoke_NOW.Media
                             itemID = sender.ID;
                             title = sender.Title + ".bkN";
                         }
+
+                        sender.CurrentTask = NewTask.LOAD_SONGS;
                     }
                     else
                     {
                         itemID = _itemSource[_myComputerIndex].Items[0].ID;
                         title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
                     }
-
-                    //if (sender.CurrentTask == NewTask.REMOVE_SELECTED_SONG)
-                    //{
-                    //    itemID = sender.ID;
-                    //    title = sender.Title + ".bkN";
-                    //}
-                    //else
-                    //{
-                    //    itemID = _itemSource[_myComputerIndex].Items[0].ID;
-                    //    title = _itemSource[_myComputerIndex].Items[0].Title + ".bkN";
-                    //}
 
                     file = _songs[itemID].Select(s => s.FilePath).ToArray();
                     Directory.CreateDirectory(_songsPath);
@@ -854,7 +846,7 @@ namespace bossdoyKaraoke_NOW.Media
                      .Select(s =>
                      {
                          return trackInfo(s.FullName, count++);
-                     }).ToList();
+                     }).Where(r => r != null ).ToList();
 
                 if (data.Count > 0)
                     file_list.AddRange(data);
@@ -937,15 +929,15 @@ namespace bossdoyKaraoke_NOW.Media
         /// <summary>
         /// Method to split and get the title and artist of songs
         /// </summary>
-        /// <param name="file">The filename of the song</param>
+        /// <param name="fileName">The filename of the song</param>
         /// <param name="count">Song count used as song id</param>
         /// <returns>Returns the information of the song</returns>
-        public TrackInfoModel trackInfo(string file, int count, int duration = 0)
+        public TrackInfoModel trackInfo(string fileName, int count, int duration = 0)
         {
             string SongTitle = "";
             string SongArtist = "";
             string pattern = @"-\s+|–\s+"; //@"-\s+|–\s+|-|–";
-            string fName = Path.GetFileName(file);
+            string fName = Path.GetFileName(fileName);
             string extensionType = Path.GetExtension(fName);
             string[] regXpattern = Regex.Split(fName, pattern);
 
@@ -995,13 +987,31 @@ namespace bossdoyKaraoke_NOW.Media
                     break;
             }
 
+            //if (extensionType.ToLower() == ".mp3")
+            //{
+            //    fileName = Regex.Replace(fileName, "\\.mp3$", ".cdg", RegexOptions.IgnoreCase);
+            //    if (File.Exists(fileName))
+            //    {
+            //        return null;
+            //    }
+            //}
+            //else if (extensionType.ToLower() == ".cdg")
+            //{
+            //    fileName = Regex.Replace(fileName, "\\.cdg$", ".mp3", RegexOptions.IgnoreCase);
+            //    if (!File.Exists(fileName))
+            //    {
+            //        return null;
+            //    }
+            //}
+
+
             TrackInfoModel trackInfo = new TrackInfoModel();
             trackInfo.ID = Convert.ToString(count);
             trackInfo.Type = extensionType.ToUpper().Remove(0,1);
             trackInfo.Name = SongTitle;
             trackInfo.Artist = SongArtist;
             trackInfo.Duration = Convert.ToString(duration);
-            trackInfo.FilePath = file;
+            trackInfo.FilePath = fileName;
 
             return trackInfo;
         }

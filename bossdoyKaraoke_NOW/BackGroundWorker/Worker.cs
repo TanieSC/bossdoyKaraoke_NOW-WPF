@@ -160,19 +160,20 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                          if (_trackInfo == null)
                          {
                              Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-                             openFileDialog.Filter = "Media files (*.cdg;*.mp3;*.mp4)|*.cdg;*.mp3;*.mp4|Cdg files (*.cdg)|*.cdg|Mp3 files (*.mp3)|*.mp3|Mp4 files (*.mp4)|*.mp4";
+
+                             openFileDialog.Filter = PlayerBase.Filter; //"Media files (*.cdg;*.mp3;*.mp4)|*.cdg;*.mp3;*.mp4|Cdg files (*.cdg)|*.cdg|Mp3 files (*.mp3)|*.mp3|Mp4 files (*.mp4)|*.mp4";
 
                              if (openFileDialog.ShowDialog() == true)
                              {
                                  string filename = openFileDialog.FileName;
                                  _trackInfo = songsSource.trackInfo(filename, songsSource.SongQueueCount + 1);
 
-                                 filename = Regex.Replace(filename, "\\.mp3$", ".cdg", RegexOptions.IgnoreCase);
+                                 //filename = Regex.Replace(filename, "\\.mp3$", ".cdg", RegexOptions.IgnoreCase);
 
-                                 if (File.Exists(filename))
-                                 {
-                                     _trackInfo.FilePath = filename;
-                                 }
+                                 //if (File.Exists(filename))
+                                 //{
+                                 //    _trackInfo.FilePath = filename;
+                                 //}
                              }
                              else
                              {
@@ -410,6 +411,7 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                     case NewTask.REMOVE_SELECTED_SONG:
                         if (songsSource.Songs.Count != 0)
                             _listViewElement.ItemsSource = songsSource.Songs[_senderID];
+                        //songsSource.Songs.Se
                         break;
                     case NewTask.SEARCH_LISTVIEW:
                         _listViewElement.ItemsSource = filteredSong;                        
