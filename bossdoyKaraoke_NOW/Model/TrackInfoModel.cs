@@ -47,13 +47,12 @@ namespace bossdoyKaraoke_NOW.Model
                 return;
             }
 
-            Artist = trackInfo.Artist;
-            Duration = Utils.FixTimespan(Tags.duration, "HHMMSS");
-            FilePath = trackInfo.FilePath;
             ID = trackInfo.ID;
             Type = trackInfo.Type;
             Name = trackInfo.Name;
-
+            Artist = trackInfo.Artist;
+            Duration = Utils.FixTimespan(Tags.duration, "HHMMSS");
+            FilePath = trackInfo.FilePath;
 
             //Tags = BassTags.BASS_TAG_GetFromFile(filename);
             //Duration = Tags.duration.ToString();

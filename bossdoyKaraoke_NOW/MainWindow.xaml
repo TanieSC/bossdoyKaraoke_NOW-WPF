@@ -506,7 +506,7 @@
                 </i:Interaction.Triggers>
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
-                        <GridViewColumn Header="ID#" DisplayMemberBinding="{Binding ID }"/>
+                        <GridViewColumn Header="ID#" DisplayMemberBinding="{Binding ID}"/>
                         <GridViewColumn Header="Type">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
