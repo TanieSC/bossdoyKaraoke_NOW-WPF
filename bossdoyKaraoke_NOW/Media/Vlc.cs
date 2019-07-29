@@ -279,6 +279,11 @@ namespace bossdoyKaraoke_NOW.Media
             foreach (AudioOutputModuleInfo module in _factory.AudioOutputModules)
             {
                 List<AudioOutputDeviceInfo> info = _factory.GetAudioOutputDevices(module).ToList();
+
+                foreach (var device in info)
+                {
+                    Console.WriteLine("Video : " + device.Longname);
+                }
             }
         }
 

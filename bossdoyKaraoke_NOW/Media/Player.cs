@@ -393,7 +393,7 @@ namespace bossdoyKaraoke_NOW.Media
         }
 
         /// <summary>
-        /// Remove left/right vocal on audio track with seperate vocal track  
+        /// Remove left/right vocal on audio track with seperate vocal track on cdgMp3 file
         /// </summary>
         public void RemoveVocalLeftRight()
         {
@@ -495,13 +495,6 @@ namespace bossdoyKaraoke_NOW.Media
                     _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
 
                     VlcVolumeSlideAttribute();
-
-                    Console.WriteLine("_songsSource : " + _songsSource.IsCdgFileType);
-
-                    //if (_songsSource.IsCdgFileType)
-                    //    LoadCDGFile(_songsSource.SongsQueue[0].FilePath);
-                    //else
-                    //    LoadVideokeFile(_songsSource.SongsQueue[0].FilePath);
                 }
             }
         }
