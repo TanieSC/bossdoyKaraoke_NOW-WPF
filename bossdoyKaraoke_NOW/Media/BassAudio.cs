@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bossdoyKaraoke_NOW.Model;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Mix;
 using Un4seen.Bass.AddOn.Tags;
@@ -13,9 +14,11 @@ namespace bossdoyKaraoke_NOW.Media
 {
     class BassAudio : PlayerBase //, IBassAudio
     {
+        private static AudioOutputDeviceModel _audioOutputDevice;
         private static string _startupPath = AppDomain.CurrentDomain.BaseDirectory;
         private static IntPtr _appManWindow;
         private static int _mixerChannel;
+        private static int _defaultdevice;
         private static IMixer _mixer;
         private bool _mute;
         private float _playerVolume = 0.5f;
@@ -48,6 +51,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         public static bool Initialize(IntPtr appMainWindow)
         {
+            _audioOutputDevice = AudioOutputDeviceModel.Instance;
             _mixer = Mixer.Instance;
             _appManWindow = appMainWindow;
 
@@ -81,7 +85,7 @@ namespace bossdoyKaraoke_NOW.Media
                     //Console.WriteLine(info.ToString());
                     // m_defaultdevicelongname = info.name;
                     Bass.BASS_SetDevice(n);
-                    //  m_defaultdevice = n;
+                    _defaultdevice = n;
                 }
 
                 if (!Bass.BASS_Init(n, 44100, BASSInit.BASS_DEVICE_DEFAULT, _appManWindow))
@@ -94,7 +98,10 @@ namespace bossdoyKaraoke_NOW.Media
 
 
             Bass.BASS_SetVolume(0.3051406f);
-   
+
+            int i = 0;
+            _audioOutputDevice.DeviceInfos = Bass.BASS_GetDeviceInfos().ToDictionary(item => i++, item => item);
+            _audioOutputDevice.SelectedDevice = _defaultdevice;
 
             //Console.WriteLine("BASS_SetVolume: " + Bass.BASS_GetVolume());
 
@@ -111,6 +118,11 @@ namespace bossdoyKaraoke_NOW.Media
 
             return true;
 
+        }
+
+        public static void SetAudioOutputDevice()
+        {
+            Bass.BASS_ChannelSetDevice(MixerChannel, _audioOutputDevice.SelectedDevice);
         }
 
         public void CreateStream()

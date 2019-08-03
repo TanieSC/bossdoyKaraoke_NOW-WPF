@@ -18,7 +18,7 @@ using static bossdoyKaraoke_NOW.Media.VlcSync;
 namespace bossdoyKaraoke_NOW.Media
 {
     class Vlc : PlayerBase
-    { 
+    {
         IMediaPlayerFactory _factory;
         IVideoPlayer _player;
         IMemoryRenderer _memRender;
@@ -34,10 +34,22 @@ namespace bossdoyKaraoke_NOW.Media
         string[] _videoPath;
         string _videoDir;
 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct AudioOutputDevice
+        {
+            public AudioOutputModuleInfo Module;
+            public List<AudioOutputDeviceInfo> Devices;
+        }
+
+        private List<AudioOutputDevice> _audioOutputDevices;
+        private AudioOutputDeviceModel _audioOutputDevice;
         private EqualizerModel _equalizer;
         private SYNCPROC _syncProc;
-        private float _volume = 70f;
+        private string _filePath;
+        private float _volume = 50f;
+        private float _plus20Volume = 20f;
         private static Vlc _instance;
+
         public static Vlc Instance
         {
             get
@@ -61,10 +73,11 @@ namespace bossdoyKaraoke_NOW.Media
         public string GetTimeDuration { get; private set; }
         public float PlayerPosition { get; private set; }
 
-        public byte[] ByteArrayBitmap {
+        public byte[] ByteArrayBitmap
+        {
             get
             {
-                return  _byteArrayBitmap;
+                return _byteArrayBitmap;
             }
         }
 
@@ -84,6 +97,7 @@ namespace bossdoyKaraoke_NOW.Media
                 "--equalizer-bands=0 0 0 0 0 0 0 0 0 0"
             };
 
+            _audioOutputDevice = AudioOutputDeviceModel.Instance;
             _equalizer = EqualizerModel.Instance;
 
             _factory = new MediaPlayerFactory(args);
@@ -158,7 +172,7 @@ namespace bossdoyKaraoke_NOW.Media
 
             GetVideoBG(_videoDir);
 
-            SetAudioOutputDevice();
+            GetAudioOutputDevices();
 
             LoadDefaultVideoBG();
 
@@ -183,7 +197,7 @@ namespace bossdoyKaraoke_NOW.Media
                 }
                 else
                 {
-                   // MessageBox.Show("No supported video file(s) found!");
+                    // MessageBox.Show("No supported video file(s) found!");
                 }
             }
 
@@ -229,11 +243,12 @@ namespace bossdoyKaraoke_NOW.Media
             }
         }
 
-        public bool PlayVideoke(string filePath, SYNCPROC syncProc )
+        public bool PlayVideoke(string filePath, SYNCPROC syncProc)
         {
             if (!File.Exists(filePath)) return false;
 
             _syncProc = syncProc;
+            _filePath = filePath;
 
             if (_list_player.IsPlaying)
                 _list_player.Stop();
@@ -273,16 +288,27 @@ namespace bossdoyKaraoke_NOW.Media
             return true;
         }
 
-
         public void SetAudioOutputDevice()
         {
-            foreach (AudioOutputModuleInfo module in _factory.AudioOutputModules)
+            for (int i = 0; i < _audioOutputDevices.Count; i++)
             {
-                List<AudioOutputDeviceInfo> info = _factory.GetAudioOutputDevices(module).ToList();
+                var selected = _audioOutputDevice.SelectedDevice;
 
-                foreach (var device in info)
+                foreach (var device in _audioOutputDevices[i].Devices)
                 {
-                    Console.WriteLine("Video : " + device.Longname);
+                    if (device.Longname == _audioOutputDevice.DeviceInfos[selected].name)
+                    {
+                        _player.SetAudioOutputModuleAndDevice(_audioOutputDevices[i].Module, device);
+
+                        if (_player.IsPlaying)
+                        {
+                            var pos = _player.Position;
+
+                            _player.Stop();
+                            PlayVideoke(_filePath, _syncProc);
+                            _player.Position = pos;
+                        }
+                    }
                 }
             }
         }
@@ -322,7 +348,29 @@ namespace bossdoyKaraoke_NOW.Media
             media.Dispose();
         }
 
-        private void MemRenderSetCallBack( IMemoryRenderer memRender)
+        private void GetAudioOutputDevices()
+        {
+            _audioOutputDevices = new List<AudioOutputDevice>();
+
+            foreach (AudioOutputModuleInfo module in _factory.AudioOutputModules)
+            {
+                var info = _factory.GetAudioOutputDevices(module).ToList();
+
+                if (info.Count > 0)
+                {
+                    AudioOutputDevice device = new AudioOutputDevice();
+
+                    device.Module = module;
+                    device.Devices = info;
+
+                    _audioOutputDevices.Add(device);
+                }
+            }
+
+            SetAudioOutputDevice();
+        }
+
+        private void MemRenderSetCallBack(IMemoryRenderer memRender)
         {
             memRender.SetCallback(delegate (Bitmap frame)
             {
@@ -351,7 +399,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         private void Events_ParsedChanged(object sender, MediaParseChange e)
         {
-           
+
         }
 
         private void Events_StateChanged(object sender, MediaStateChange e)
@@ -365,6 +413,7 @@ namespace bossdoyKaraoke_NOW.Media
         private void Events_DurationChanged(object sender, MediaDurationChange e)
         {
             TimeDuration = Convert.ToDouble(e.NewDuration).ToString();
+
         }
 
         private void Events_GetTimeDuration(object sender, MediaDurationChange e)
@@ -374,7 +423,7 @@ namespace bossdoyKaraoke_NOW.Media
 
         private void Events_PlayerStopped(object sender, EventArgs e)
         {
-            //_syncProc();
+            //_syncProc();           
         }
 
         private void Events_MediaEnded(object sender, EventArgs e)
@@ -402,17 +451,17 @@ namespace bossdoyKaraoke_NOW.Media
             set
             {
                 if (_equalizer.EQEnabled)
-                    _volume = value != 0 ? (value + 20) + _equalizer.PreAmp : value;
+                    _volume = value != 0 ? (value + _plus20Volume) + _equalizer.PreAmp : value;
                 else
-                    _volume = value != 0 ? (value + 20) : value;
+                    _volume = value != 0 ? (value + _plus20Volume) : value;
 
                 _player.Volume = (int)_volume;
 
-               // Console.WriteLine("Worker VLC2 : " + _player.Volume + " : " + _equalizer.EQEnabled + " : " + _equalizer.PreAmp);
+                // Console.WriteLine("Worker VLC2 : " + _player.Volume + " : " + _equalizer.EQEnabled + " : " + _equalizer.PreAmp);
             }
         }
 
-       // public Dictionary<int, Preset> EqPresets { get { return _presets; }  }
+        // public Dictionary<int, Preset> EqPresets { get { return _presets; }  }
 
         public override void KeyMinus()
         {
@@ -522,6 +571,6 @@ namespace bossdoyKaraoke_NOW.Media
 
     class VlcSync
     {
-       public delegate void SYNCPROC();
+        public delegate void SYNCPROC();
     }
 }
