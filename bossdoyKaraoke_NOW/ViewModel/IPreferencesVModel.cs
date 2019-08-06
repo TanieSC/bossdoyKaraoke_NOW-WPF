@@ -6,12 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Implementation;
+using Un4seen.Bass;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
     public interface IPreferencesVModel
     {
         string IntroText { get; set; }
+        Dictionary<int, BASS_DEVICEINFO> DeviceInfos { get; set; }
+        int SelectedDevice { get; set; }
         bool EQEnabled { get; set; }
         Dictionary<int, Preset> EQPresets { get; set; }
        int EQSelectedPreset { get; set; }

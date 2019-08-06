@@ -323,8 +323,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 _equalizer = EqualizerModel.Instance;
                 EQPresets = _equalizer.EQPresets;
                 EQEnabled = _equalizer.EQEnabled;
-                EQSelectedPreset = _equalizer.EQSelectedPreset;
-                
+                EQSelectedPreset = _equalizer.EQSelectedPreset;               
             }
             catch
             {
