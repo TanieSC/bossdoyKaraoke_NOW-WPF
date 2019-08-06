@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
+using bossdoyKaraoke_NOW.Model;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 
 namespace bossdoyKaraoke_NOW.ViewModel
@@ -51,7 +53,14 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _openCommand ?? (_openCommand = new RelayCommand(x =>
                 {
-                    _songsSource.AddNewSong();
+                    //_songsSource.AddNewSong();
+
+                    
+                    TrackInfoModel sender = null;
+
+                    CurrentTask = NewTask.ADD_TO_QUEUE;
+                    Worker.DoWork(CurrentTask, sender);
+
                 }));
             }
         }

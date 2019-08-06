@@ -363,10 +363,10 @@ namespace bossdoyKaraoke_NOW.Media
         /// </summary>
         public void AddNewSong()
         {
-            TrackInfoModel sender = null;
+            //TrackInfoModel sender = null;
 
-            CurrentTask = NewTask.ADD_TO_QUEUE;
-            Worker.DoWork(CurrentTask, sender);
+            //CurrentTask = NewTask.ADD_TO_QUEUE;
+            //Worker.DoWork(CurrentTask, sender);
         }
 
         /// <summary>
