@@ -41,7 +41,13 @@
                                 </TextBox>
                             </GroupBox>
                             <GroupBox Header="Audio device setting" VerticalAlignment="Top" Padding="9,5" DockPanel.Dock="Top" Margin="0,8,0,0">
-                                <ComboBox  Margin="30,5,0,5" materialDesign:HintAssist.Hint="Select audio output device" />
+                                <ComboBox x:Name="comboBoxAudioDevice" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedIndex="{Binding SelectedDevice}" ItemsSource="{Binding DeviceInfos}" Margin="30,5,0,5" materialDesign:HintAssist.Hint="Select audio output device" >
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding SelectedDeviceCommand}" CommandParameter="{ Binding ElementName=comboBoxAudioDevice}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
                             </GroupBox>
                             <GroupBox Header="Mobile application remote install" VerticalAlignment="Bottom" Padding="9,5" DockPanel.Dock="Bottom" Margin="0,8,0,4" >
                                 <Button Content="Android install" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Margin="0,5" />

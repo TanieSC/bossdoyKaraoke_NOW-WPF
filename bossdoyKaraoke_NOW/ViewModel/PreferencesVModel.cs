@@ -13,6 +13,7 @@ using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Model;
 using Implementation;
+using Un4seen.Bass;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 using static bossdoyKaraoke_NOW.Enums.EqualizerEnum;
 
@@ -20,11 +21,14 @@ namespace bossdoyKaraoke_NOW.ViewModel
 {
     class PreferencesVModel : IPreferencesVModel, INotifyPropertyChanged
     {
-        private Model.EqualizerModel _equalizer;
+        private AudioOutputDeviceModel _audioOutputDevice;
+        private EqualizerModel _equalizer;
         private bool _isPresetLoaded = false;
 
 
         //General Tab
+        private Dictionary<int, BASS_DEVICEINFO> _deviceInfos;
+        private int _selectedDevice;
         private float _EQ0 = 0f;
         private float _EQ1 = 0f;
         private float _EQ2 = 0f;
@@ -51,6 +55,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private int _eqSelectedPreset;
         private string _infoText = "";
         private float _preAmp = 0f;
+        private ICommand _selectedDeviceCommand;
         private ICommand _closingCommand;
         private ICommand _eqLoadedCommand;
         private ICommand _eqSelectedPresetCommand;
@@ -67,6 +72,35 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _eq7Command;
         private ICommand _eq8Command;
         private ICommand _eq9Command;
+
+
+        public Dictionary<int, BASS_DEVICEINFO> DeviceInfos
+        {
+            get
+            {
+                return _deviceInfos;
+            }
+
+            set
+            {
+                _deviceInfos = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedDevice
+        {
+            get
+            {
+                return _selectedDevice;
+            }
+
+            set
+            {
+                _selectedDevice = value;
+                OnPropertyChanged();
+            }
+        }
 
         public float EQ0
         {
@@ -282,9 +316,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
         {
             try
             {
+                _audioOutputDevice = AudioOutputDeviceModel.Instance;
+                DeviceInfos = _audioOutputDevice.DeviceInfos;
+                SelectedDevice = _audioOutputDevice.SelectedDevice;
+
                 _equalizer = EqualizerModel.Instance;
                 EQPresets = _equalizer.EQPresets;
-
                 EQEnabled = _equalizer.EQEnabled;
                 EQSelectedPreset = _equalizer.EQSelectedPreset;
                 
@@ -293,7 +330,20 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
             }
         }
-        
+
+        public ICommand SelectedDeviceCommand
+        {
+            get
+            {
+                return _selectedDeviceCommand ?? (_selectedDeviceCommand = new RelayCommand(x =>
+                {
+                    var selectedDevice = (x as ComboBox).SelectedIndex;
+                    _audioOutputDevice.SelectedDevice = selectedDevice;
+                    _audioOutputDevice.SetAudioOutputDevice();
+                }));
+            }
+        }
+
         public ICommand ClosingCommand
         {
             get
