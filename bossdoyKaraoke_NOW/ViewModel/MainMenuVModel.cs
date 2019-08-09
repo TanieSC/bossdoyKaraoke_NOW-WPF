@@ -54,8 +54,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 return _openCommand ?? (_openCommand = new RelayCommand(x =>
                 {
                     //_songsSource.AddNewSong();
-
-                    
+                   
                     TrackInfoModel sender = null;
 
                     CurrentTask = NewTask.ADD_TO_QUEUE;
