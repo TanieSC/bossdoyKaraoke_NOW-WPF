@@ -41,7 +41,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _exitApplicationCommand ?? (_exitApplicationCommand = new RelayCommand(x =>
                 {
-                    App.Current.Shutdown();
+                    System.Windows.Application.Current.Shutdown();
                    // Environment.Exit(0);
                 }));
             }
