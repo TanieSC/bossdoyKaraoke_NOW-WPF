@@ -124,6 +124,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ClientConnect.xaml.cs">
+      <DependentUpon>ClientConnect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Misc\AppConfig.cs" />
     <Compile Include="BackGroundWorker\QueuedBackgroundWorker.cs" />
     <Compile Include="BackGroundWorker\Worker.cs" />
@@ -170,6 +173,10 @@
     <Compile Include="ViewModel\SearchBoxVModel.cs" />
     <Compile Include="ViewModel\TreeViewDialogVModel.cs" />
     <Compile Include="ViewModel\TreeViewVModel.cs" />
+    <Page Include="ClientConnect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FullScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

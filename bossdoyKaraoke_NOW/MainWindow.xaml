@@ -12,7 +12,7 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d"
         Icon="bkn_ico.ico"
-       Title="BossDoyKaraoke_Now" Height="630" Width="820" MinWidth="820" MinHeight="630" Closing="Window_Closing">
+       Title="BossDoyKaraoke_Now" Height="630" Width="820" MinWidth="820" MinHeight="630" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <vm:MainMenuVModel x:Key="MainMenuModel"></vm:MainMenuVModel>
         <vm:TreeViewDialogVModel x:Key="TreeViewDialogModel"/>
@@ -27,19 +27,20 @@
             <ColumnDefinition Width="111*"/>
             <ColumnDefinition Width="295*"/>
         </Grid.ColumnDefinitions>
-        <Menu DataContext="{StaticResource MainMenuModel}" IsMainMenu="True" Grid.ColumnSpan="2" VerticalAlignment="Top" >
-            <MenuItem Header="_File">
-                <MenuItem Header="Open">
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="File" />
-                    </MenuItem.Icon>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                            <i:InvokeCommandAction Command="{Binding OpenCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </MenuItem>
-                <!--<MenuItem Header="Add Favorites" >
+        <DockPanel DataContext="{StaticResource MainMenuModel}" Grid.ColumnSpan="2" VerticalAlignment="Top">
+            <Menu IsMainMenu="True" VerticalAlignment="Top" >
+                <MenuItem Header="_File">
+                    <MenuItem Header="Open">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="File" />
+                        </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding OpenCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <!--<MenuItem Header="Add Favorites" >
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="FolderOpen" />
                     </MenuItem.Icon>
@@ -49,38 +50,76 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>-->
-                <MenuItem Header="Add Songs" >
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="FolderOpen" />
-                    </MenuItem.Icon>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                            <i:InvokeCommandAction Command="{Binding AddSongsCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    <MenuItem Header="Add Songs" >
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="FolderOpen" />
+                        </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding AddSongsCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Header="Preferences" x:Name="preferences" >
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Settings" />
+                        </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding PreferencesShowCommand}" CommandParameter="{Binding ElementName=preferences}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Header="Exit" InputGestureText="Ctrl+E">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="ExitToApp" />
+                        </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ExitApplicationCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Preferences" >
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="Settings" />
-                    </MenuItem.Icon>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                            <i:InvokeCommandAction Command="{Binding PreferencesShowCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+            </Menu>
+            <Menu VerticalAlignment="Top" DockPanel.Dock="Right" HorizontalAlignment="Right" >
+                <MenuItem>
+                    <MenuItem.Header>
+                        <TextBlock Text="Client Connect" TextDecorations="Underline"></TextBlock>
+                    </MenuItem.Header>
+                    <MenuItem Header="Wi-Fi" x:Name="connect_wifi">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Wifi" />
+                        </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{Binding ElementName=connect_wifi}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Header="Wi-Fi Direct" x:Name="connect_wifi_direct">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="WifiFavourite" />
+                        </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{Binding ElementName=connect_wifi_direct}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Header="Bluetooth" x:Name="connect_bluetooth">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Bluetooth" />
+                        </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{Binding ElementName=connect_bluetooth}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Exit" InputGestureText="Ctrl+E">
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="ExitToApp" />
-                    </MenuItem.Icon>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                            <i:InvokeCommandAction Command="{Binding ExitApplicationCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
+            </Menu>
+        </DockPanel>
         <DockPanel DataContext="{StaticResource MediaControls}" Name="media_controls" Grid.ColumnSpan="2" VerticalAlignment="Top">
             <!--<DockPanel.DataContext>
                 <vm:MediaControls/>

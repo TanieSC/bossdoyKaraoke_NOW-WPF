@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
@@ -20,6 +21,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _addSongsCommand;
         private ICommand _exitApplicationCommand;
         private ICommand _openCommand;
+        private ICommand _clientConnectShowCommand;
         private ICommand _preferencesShowCommand;
 
         public ICommand AddSongsCommand
@@ -64,6 +66,23 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
+        public ICommand ClientConnectShowCommand
+        {
+            get
+            {
+                return _clientConnectShowCommand ?? (_clientConnectShowCommand = new RelayCommand(x =>
+                {
+                    ClientConnect cc = new ClientConnect();
+                    var p = (((((x as MenuItem).Parent as MenuItem).Parent as Menu).Parent as DockPanel).Parent as Grid).Parent as MainWindow;
+                    cc.Owner = p;
+                    cc.Topmost = true;
+                    cc.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+                    cc.Show();
+                    cc.Activate();
+                }));
+            }
+        }
+
         public ICommand PreferencesShowCommand
         {
             get
@@ -71,8 +90,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 return _preferencesShowCommand ?? (_preferencesShowCommand = new RelayCommand(x =>
                 {
                     Preferences prefs = new Preferences();
+                    var p = (((((x as MenuItem).Parent as MenuItem).Parent as Menu).Parent as DockPanel).Parent as Grid).Parent as MainWindow;
+                    prefs.Owner = p;
                     prefs.Topmost = true;
-                    prefs.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+                    prefs.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
                     prefs.Show();
                     prefs.Activate();
                 }));
