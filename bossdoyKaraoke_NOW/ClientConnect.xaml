@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel  Orientation="Vertical">
             <Label Content="Connect to:"></Label>
-            <ListBox VerticalContentAlignment="Center" Height="200" Margin="5,0" BorderBrush="#FFB62222" BorderThickness="1" />
+            <ListBox VerticalContentAlignment="Center" Margin="5,0" BorderBrush="#FFB62222" BorderThickness="1" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,5">
             <Button Content="Cancel" Margin="0,0,5,0" />
