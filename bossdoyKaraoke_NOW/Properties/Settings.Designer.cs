@@ -151,5 +151,14 @@ namespace bossdoyKaraoke_NOW.Properties {
                 return ((bool)(this["DEFAudioEQEnabled"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DEFBackGroundVideoDir {
+            get {
+                return ((string)(this["DEFBackGroundVideoDir"]));
+            }
+        }
     }
 }

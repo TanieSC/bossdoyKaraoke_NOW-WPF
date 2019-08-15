@@ -229,11 +229,17 @@
                 </TabItem>
                 <TabItem Header="Video">
                     <Grid>
-                        <GroupBox Header="Video setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" Grid.ColumnSpan="2">
+                        <GroupBox Header="BackGround Video setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" Grid.ColumnSpan="2">
                             <StackPanel>
                                 <DockPanel>
-                                    <Label Content="Video" materialDesign:HintAssist.Hint="Search By Title/Artist" Margin="0,5"/>
-                                    <Button Content="Select Video" HorizontalContentAlignment="Center" Margin="0,5" HorizontalAlignment="Right" />
+                                    <Label Content="{Binding BackGroundVideoPath}" materialDesign:HintAssist.Hint="Search By Title/Artist" Margin="0,5"/>
+                                    <Button Content="Select Video" HorizontalContentAlignment="Center" Margin="0,5" HorizontalAlignment="Right" >
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding SelectBGVideoCommand}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Button>
                                 </DockPanel>
                                 <StackPanel Margin="0,5" Background="Black" >
                                     <WindowsFormsHost x:Name="bgVideoPreview" Width="390" Height="220"  Background="Black" HorizontalAlignment="Center" >

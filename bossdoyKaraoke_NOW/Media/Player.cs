@@ -175,6 +175,7 @@ namespace bossdoyKaraoke_NOW.Media
                 AppConfig.SetFxDefaultSettings("DEFAudioEQEnabled");
                 AppConfig.SetFxDefaultSettings("DEFAudioEQPreset");
                 AppConfig.SetFxDefaultSettings("DEFAudioEQPreamp");
+                AppConfig.SetFxDefaultSettings("DEFBackGroundVideoDir");
             }
             Thread.Sleep(1000);
             App.SplashScreen.AddMessage("Initializing Bass Audio");

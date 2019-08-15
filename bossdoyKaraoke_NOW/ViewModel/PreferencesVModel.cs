@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -54,6 +55,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private Dictionary<int, Preset> _eqPresets;
         private int _eqSelectedPreset;
         private string _infoText = "";
+        private string _backGroundVideoPath = "";
         private float _preAmp = 0f;
         private ICommand _selectedDeviceCommand;
         private ICommand _closingCommand;
@@ -72,6 +74,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _eq7Command;
         private ICommand _eq8Command;
         private ICommand _eq9Command;
+        private ICommand _selectBGVideoCommand;
 
 
         public Dictionary<int, BASS_DEVICEINFO> DeviceInfos
@@ -308,6 +311,20 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _preAmp = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string BackGroundVideoPath
+        {
+            get
+            {
+                return _backGroundVideoPath;
+            }
+
+            set
+            {
+                _backGroundVideoPath = value;
                 OnPropertyChanged();
             }
         }
@@ -655,6 +672,22 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
                         if (!_isPresetLoaded)
                             Worker.DoWork(NewTask.UPDATE_EQ_SETTINGS, NewPreset.AudioEQBand9);
+                    }
+                }));
+            }
+        }
+
+        public ICommand SelectBGVideoCommand
+        {
+            get
+            {
+                return _selectBGVideoCommand ?? (_selectBGVideoCommand = new RelayCommand(x =>
+                {
+                    var fbd = new System.Windows.Forms.FolderBrowserDialog();
+                    if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        string folderName = Path.GetFileName(fbd.SelectedPath);
+                        BackGroundVideoPath = fbd.SelectedPath;
                     }
                 }));
             }

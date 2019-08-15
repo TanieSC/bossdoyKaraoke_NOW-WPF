@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using bossdoyKaraoke_NOW.Misc;
 using bossdoyKaraoke_NOW.Model;
 using Declarations;
 using Declarations.Events;
@@ -97,6 +98,7 @@ namespace bossdoyKaraoke_NOW.Media
                 "--equalizer-bands=0 0 0 0 0 0 0 0 0 0"
             };
 
+            _videoDir = AppConfig.Get<string>("BackGroundVideoDir");
             _audioOutputDevice = AudioOutputDeviceModel.Instance;
             _equalizer = EqualizerModel.Instance;
 
@@ -158,12 +160,14 @@ namespace bossdoyKaraoke_NOW.Media
             //16:9 aspect ratio resolutions: 1024×576, 1152×648, 1280×720, 1366×768, 1600×900, 1920×1080, 2560×1440 and 3840×2160
 
             _list_player.PlaybackMode = PlaybackMode.Loop;
+            _list_player.InnerPlayer.Volume = 0;
             _list_player.InnerPlayer.Mute = true;
             //Background Video
 
             //Preview Background video ==========
             _list_preview_player = _factory.CreateMediaListPlayer<IMediaListPlayer>(_media_list_preview);
             _list_preview_player.PlaybackMode = PlaybackMode.Loop;
+            _list_preview_player.InnerPlayer.Volume = 0;
             _list_preview_player.InnerPlayer.Mute = true;
             //Preview Background video
 

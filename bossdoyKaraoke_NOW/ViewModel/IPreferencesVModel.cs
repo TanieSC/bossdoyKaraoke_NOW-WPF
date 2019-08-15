@@ -13,6 +13,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
     public interface IPreferencesVModel
     {
         string IntroText { get; set; }
+        string BackGroundVideoPath { get; set; }
         Dictionary<int, BASS_DEVICEINFO> DeviceInfos { get; set; }
         int SelectedDevice { get; set; }
         bool EQEnabled { get; set; }
@@ -46,6 +47,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         ICommand EQ7Command { get; }
         ICommand EQ8Command { get; }
         ICommand EQ9Command { get; }
+        ICommand SelectBGVideoCommand { get; }
 
     }
 }
