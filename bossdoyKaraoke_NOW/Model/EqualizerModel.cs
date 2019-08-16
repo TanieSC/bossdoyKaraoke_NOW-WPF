@@ -299,7 +299,6 @@ namespace bossdoyKaraoke_NOW.Model
             {
                 if (handle != -1)
                 {
-
                     BASS_BFX_PEAKEQ eq = new BASS_BFX_PEAKEQ();
                     BASS_BFX_COMPRESSOR2 comp = new BASS_BFX_COMPRESSOR2();
                     BASS_BFX_VOLUME preamp = new BASS_BFX_VOLUME();

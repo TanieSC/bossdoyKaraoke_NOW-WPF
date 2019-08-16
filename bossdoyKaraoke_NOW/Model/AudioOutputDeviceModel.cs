@@ -59,5 +59,6 @@ namespace bossdoyKaraoke_NOW.Model
             BassAudio.SetAudioOutputDevice();
             _vlcPlayer.SetAudioOutputDevice();
         }
+
     }
 }
