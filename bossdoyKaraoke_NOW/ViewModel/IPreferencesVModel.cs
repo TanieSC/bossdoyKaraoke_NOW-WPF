@@ -48,6 +48,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         ICommand EQ8Command { get; }
         ICommand EQ9Command { get; }
         ICommand SelectBGVideoCommand { get; }
-
+        ICommand VideoPreviewSreenLoadedCommand { get; }
+        ICommand ApplyVideoCommand { get; }
     }
 }

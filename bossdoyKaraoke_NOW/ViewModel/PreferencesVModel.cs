@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Forms.Integration;
 using System.Windows.Input;
 using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
@@ -22,6 +23,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
 {
     class PreferencesVModel : IPreferencesVModel, INotifyPropertyChanged
     {
+        private DefaultVideoBGModel _defaultVideoBG;
         private AudioOutputDeviceModel _audioOutputDevice;
         private EqualizerModel _equalizer;
         private bool _isPresetLoaded = false;
@@ -56,6 +58,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private int _eqSelectedPreset;
         private string _infoText = "";
         private string _backGroundVideoPath = "";
+        private System.Windows.Forms.Panel _panelPreviewScreen;
         private float _preAmp = 0f;
         private ICommand _selectedDeviceCommand;
         private ICommand _closingCommand;
@@ -75,6 +78,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _eq8Command;
         private ICommand _eq9Command;
         private ICommand _selectBGVideoCommand;
+        private ICommand _videoPreviewSreenLoadedCommand;
+        private ICommand _applyVideoCommand;
 
 
         public Dictionary<int, BASS_DEVICEINFO> DeviceInfos
@@ -333,6 +338,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         {
             try
             {
+                _defaultVideoBG = DefaultVideoBGModel.Instance;
                 _audioOutputDevice = AudioOutputDeviceModel.Instance;
                 DeviceInfos = _audioOutputDevice.DeviceInfos;
                 SelectedDevice = _audioOutputDevice.SelectedDevice;
@@ -366,6 +372,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _closingCommand ?? (_closingCommand = new RelayCommand(x =>
                 {
+                    _defaultVideoBG.StopPreviewVideoBG();
                     Worker.DoWork(NewTask.SAVE_EQ_SETTINGS);
                 }));
             }
@@ -677,7 +684,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand SelectBGVideoCommand
+        public ICommand SelectBGVideoCommand //planning on how to implement this method
         {
             get
             {
@@ -688,7 +695,41 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         string folderName = Path.GetFileName(fbd.SelectedPath);
                         BackGroundVideoPath = fbd.SelectedPath;
+
+                        var isIfExist = _defaultVideoBG.GetVideoBG(BackGroundVideoPath);
+
+                        if (isIfExist)
+                        {
+                            _defaultVideoBG.SetDefaultVideoBG(_panelPreviewScreen.Handle);
+                        }
                     }
+                }));
+            }
+        }
+
+        public ICommand VideoPreviewSreenLoadedCommand
+        {
+            get
+            {
+                return _videoPreviewSreenLoadedCommand ?? (_videoPreviewSreenLoadedCommand = new RelayCommand(x =>
+                {
+                    if (x != null)
+                    {
+                        var formHost = x as WindowsFormsHost;
+                        _panelPreviewScreen = formHost.Child as System.Windows.Forms.Panel;
+                        
+                    }
+                }));
+            }
+        }
+
+        public ICommand ApplyVideoCommand
+        {
+            get
+            {
+                return _applyVideoCommand ?? (_applyVideoCommand = new RelayCommand(x =>
+                {
+                    _defaultVideoBG.LoadDefaultVideoBG(BackGroundVideoPath);
                 }));
             }
         }

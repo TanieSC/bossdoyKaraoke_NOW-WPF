@@ -34,7 +34,7 @@ namespace bossdoyKaraoke_NOW
     {
         private const int WM_DISPLAYCHANGE = 0x7E;
         private Player _player;
-        public VideoImage _videoImage;
+        private VideoImage _videoImage;
 
         public MainWindow()
         {

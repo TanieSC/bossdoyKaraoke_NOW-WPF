@@ -6,9 +6,11 @@
         xmlns:local="clr-namespace:bossdoyKaraoke_NOW"
         xmlns:vm="clr-namespace:bossdoyKaraoke_NOW.ViewModel"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Preferences" Height="520" Width="552" MaxHeight="520" MinHeight="520" MaxWidth="552" MinWidth="552"><!--Height="575" Width="552" MaxHeight="55" MinHeight="575"-->
+        Title="Preferences" Height="520" Width="552" MaxHeight="520" MinHeight="520" MaxWidth="552" MinWidth="552" Closing="Window_Closing">
+    <!--Height="575" Width="552" MaxHeight="55" MinHeight="575"-->
     <Window.DataContext>
         <vm:PreferencesVModel></vm:PreferencesVModel>
     </Window.DataContext>
@@ -242,11 +244,26 @@
                                     </Button>
                                 </DockPanel>
                                 <StackPanel Margin="0,5" Background="Black" >
-                                    <WindowsFormsHost x:Name="bgVideoPreview" Width="390" Height="220"  Background="Black" HorizontalAlignment="Center" >
+                                    <WindowsFormsHost x:Name="bgVideoPreviewScreen" Width="390" Height="220"  Background="Black" HorizontalAlignment="Center" >
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <i:InvokeCommandAction Command="{Binding VideoPreviewSreenLoadedCommand}" CommandParameter="{ Binding ElementName=bgVideoPreviewScreen}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <wf:Panel x:Name="panelPreviewScreen">
+                                        </wf:Panel>
                                     </WindowsFormsHost>
                                 </StackPanel>
                             </StackPanel>
                         </GroupBox>
+                        <Separator Margin="2,380,3,50"/>
+                        <Button Content="Apply Video" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,6,9" >
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding ApplyVideoCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
                     </Grid>
                 </TabItem>
             </TabControl>

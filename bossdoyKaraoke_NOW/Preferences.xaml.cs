@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using bossdoyKaraoke_NOW.FormControl;
 
 namespace bossdoyKaraoke_NOW
 {
@@ -19,9 +20,15 @@ namespace bossdoyKaraoke_NOW
     /// </summary>
     public partial class Preferences : Window
     {
+
         public Preferences()
         {
-            InitializeComponent();
+            InitializeComponent();            
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            panelPreviewScreen.Dispose();
         }
     }
 }

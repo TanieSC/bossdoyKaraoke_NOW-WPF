@@ -159,6 +159,7 @@
     <Compile Include="Interactivity\EventRaiser.cs" />
     <Compile Include="Interactivity\RelayCommand.cs" />
     <Compile Include="Model\AudioOutputDeviceModel.cs" />
+    <Compile Include="Model\DefaultVideoBGModel.cs" />
     <Compile Include="Model\EqualizerModel.cs" />
     <Compile Include="Preferences.xaml.cs">
       <DependentUpon>Preferences.xaml</DependentUpon>

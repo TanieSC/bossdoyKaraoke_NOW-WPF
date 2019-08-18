@@ -105,7 +105,7 @@ namespace bossdoyKaraoke_NOW.Media
             _factory = new MediaPlayerFactory(args);
             _player = _factory.CreatePlayer<IVideoPlayer>();
             _media_list = _factory.CreateMediaList<IMediaList>();
-            _media_list_preview = _factory.CreateMediaList<IMediaList>();
+            //_media_list_preview = _factory.CreateMediaList<IMediaList>();
 
             var eqPresets = new Dictionary<int, Preset>();
             var presets = Equalizer.Presets.ToDictionary(key => key.Index);
@@ -165,10 +165,10 @@ namespace bossdoyKaraoke_NOW.Media
             //Background Video
 
             //Preview Background video ==========
-            _list_preview_player = _factory.CreateMediaListPlayer<IMediaListPlayer>(_media_list_preview);
-            _list_preview_player.PlaybackMode = PlaybackMode.Loop;
-            _list_preview_player.InnerPlayer.Volume = 0;
-            _list_preview_player.InnerPlayer.Mute = true;
+            //_list_preview_player = _factory.CreateMediaListPlayer<IMediaListPlayer>(_media_list_preview);
+            //_list_preview_player.PlaybackMode = PlaybackMode.Loop;
+            //_list_preview_player.InnerPlayer.Volume = 0;
+            //_list_preview_player.InnerPlayer.Mute = true;
             //Preview Background video
 
             if (_videoDir == string.Empty || !Directory.Exists(_videoDir))
@@ -188,6 +188,7 @@ namespace bossdoyKaraoke_NOW.Media
 
             if (sDir != string.Empty && Directory.Exists(sDir))
             {
+                _videoDir = sDir;
                 _videoPath = Directory.EnumerateFiles(sDir, "*.*", SearchOption.AllDirectories)
                        .Where(s => Entensions.Contains(Path.GetExtension(s)))
                        .Select(s =>
@@ -220,10 +221,12 @@ namespace bossdoyKaraoke_NOW.Media
                 for (int i = 0; i < _videoPath.Length; i++)
                 {
                     _media_preview = _factory.CreateMedia<IMediaFromFile>(_videoPath[i]);
+                    _media_preview.Parse(true);
                     _media_list.Add(_media_preview);
+                    _media_preview.Dispose();
                 }
 
-                _media_preview.Parse(true);
+
                 if (_list_player.IsPlaying) _list_player.Stop();
                 _list_player.Play();
 
@@ -319,7 +322,33 @@ namespace bossdoyKaraoke_NOW.Media
 
         public void SetDefaultVideoBG(IntPtr handle)
         {
-            throw new NotImplementedException();
+            if (_videoDir != string.Empty)
+            {
+
+                if (_media_list_preview != null && _media_list_preview.Count() > 0)
+                {
+                    _media_list_preview.Clear();
+                }
+
+                StopPreviewVideoBG();
+
+                _media_list_preview = _factory.CreateMediaList<IMediaList>();
+                _list_preview_player = _factory.CreateMediaListPlayer<IMediaListPlayer>(_media_list_preview);
+                _list_preview_player.PlaybackMode = PlaybackMode.Loop;
+                _list_preview_player.InnerPlayer.Volume = 0;
+                _list_preview_player.InnerPlayer.Mute = true;
+
+                for (int i = 0; i < _videoPath.Length; i++)
+                {
+                    _media_preview = _factory.CreateMedia<IMediaFromFile>(_videoPath[i]);
+                    _media_preview.Parse(true);
+                    _media_list_preview.Add(_media_preview);
+                    _media_preview.Dispose();
+                }
+                _list_preview_player.InnerPlayer.WindowHandle = handle;
+                _list_preview_player.Play();
+
+            }
         }
 
         public void ViewNextVideoBG()
@@ -332,6 +361,13 @@ namespace bossdoyKaraoke_NOW.Media
             throw new NotImplementedException();
         }
 
+        public void StopPreviewVideoBG()
+        {
+            if (_list_preview_player != null && _list_preview_player.IsPlaying) _list_preview_player.Stop();
+            if (_media_list_preview != null) _media_list_preview.Dispose();
+            if (_media_preview != null)  _media_preview.Dispose();
+            if(_list_preview_player != null) _list_preview_player.Dispose();
+        }
 
         public void GetDuration(string filePath)
         {
