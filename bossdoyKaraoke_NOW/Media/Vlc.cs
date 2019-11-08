@@ -105,7 +105,7 @@ namespace bossdoyKaraoke_NOW.Media
             _factory = new MediaPlayerFactory(args);
             _player = _factory.CreatePlayer<IVideoPlayer>();
             _media_list = _factory.CreateMediaList<IMediaList>();
-            //_media_list_preview = _factory.CreateMediaList<IMediaList>();
+            _media_list_preview = _factory.CreateMediaList<IMediaList>();
 
             var eqPresets = new Dictionary<int, Preset>();
             var presets = Equalizer.Presets.ToDictionary(key => key.Index);
@@ -165,10 +165,10 @@ namespace bossdoyKaraoke_NOW.Media
             //Background Video
 
             //Preview Background video ==========
-            //_list_preview_player = _factory.CreateMediaListPlayer<IMediaListPlayer>(_media_list_preview);
-            //_list_preview_player.PlaybackMode = PlaybackMode.Loop;
-            //_list_preview_player.InnerPlayer.Volume = 0;
-            //_list_preview_player.InnerPlayer.Mute = true;
+            _list_preview_player = _factory.CreateMediaListPlayer<IMediaListPlayer>(_media_list_preview);
+            _list_preview_player.PlaybackMode = PlaybackMode.Loop;
+            _list_preview_player.InnerPlayer.Volume = 0;
+            _list_preview_player.InnerPlayer.Mute = true;
             //Preview Background video
 
             if (_videoDir == string.Empty || !Directory.Exists(_videoDir))
@@ -325,18 +325,13 @@ namespace bossdoyKaraoke_NOW.Media
             if (_videoDir != string.Empty)
             {
 
-                if (_media_list_preview != null && _media_list_preview.Count() > 0)
-                {
-                    _media_list_preview.Clear();
-                }
-
                 StopPreviewVideoBG();
 
-                _media_list_preview = _factory.CreateMediaList<IMediaList>();
-                _list_preview_player = _factory.CreateMediaListPlayer<IMediaListPlayer>(_media_list_preview);
-                _list_preview_player.PlaybackMode = PlaybackMode.Loop;
-                _list_preview_player.InnerPlayer.Volume = 0;
-                _list_preview_player.InnerPlayer.Mute = true;
+               // _media_list_preview = _factory.CreateMediaList<IMediaList>();
+               // _list_preview_player = _factory.CreateMediaListPlayer<IMediaListPlayer>(_media_list_preview);
+               // _list_preview_player.PlaybackMode = PlaybackMode.Loop;
+               // _list_preview_player.InnerPlayer.Volume = 0;
+               // _list_preview_player.InnerPlayer.Mute = true;
 
                 for (int i = 0; i < _videoPath.Length; i++)
                 {
@@ -363,10 +358,18 @@ namespace bossdoyKaraoke_NOW.Media
 
         public void StopPreviewVideoBG()
         {
-            if (_list_preview_player != null && _list_preview_player.IsPlaying) _list_preview_player.Stop();
-            if (_media_list_preview != null) _media_list_preview.Dispose();
-            if (_media_preview != null)  _media_preview.Dispose();
-            if(_list_preview_player != null) _list_preview_player.Dispose();
+            if (_media_list_preview != null && _media_list_preview.Count() > 0)
+            {
+                _media_list_preview.Clear();
+            }
+
+            if (_list_preview_player != null && _list_preview_player.IsPlaying)
+            {
+                _list_preview_player.Stop();
+            }
+           // if (_media_list_preview != null) _media_list_preview.Dispose();
+           // if (_media_preview != null)  _media_preview.Dispose();
+           // if(_list_preview_player != null) _list_preview_player.Dispose();
         }
 
         public void GetDuration(string filePath)
