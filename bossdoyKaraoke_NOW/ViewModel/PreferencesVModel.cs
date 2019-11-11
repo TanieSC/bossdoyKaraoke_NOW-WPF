@@ -79,6 +79,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _eq9Command;
         private ICommand _selectBGVideoCommand;
         private ICommand _videoPreviewSreenLoadedCommand;
+        private ICommand _viewPreviousVideoBGCommand;
+        private ICommand _viewNextVideoBGCommand;
         private ICommand _applyVideoCommand;
 
 
@@ -684,7 +686,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand SelectBGVideoCommand //planning on how to implement this method
+        public ICommand SelectBGVideoCommand //looking for better way on how to implement this method without using two much memory
         {
             get
             {
@@ -717,8 +719,38 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         var formHost = x as WindowsFormsHost;
                         _panelPreviewScreen = formHost.Child as System.Windows.Forms.Panel;
-                        
+
+                        BackGroundVideoPath = _defaultVideoBG.VideoPathDir;
+
+                        var isIfExist = _defaultVideoBG.GetVideoBG(BackGroundVideoPath);
+
+                        if (isIfExist)
+                        {
+                            _defaultVideoBG.SetDefaultVideoBG(_panelPreviewScreen.Handle);
+                        }                    
                     }
+                }));
+            }
+        }
+
+        public ICommand ViewNextVideoBGCommand
+        {
+            get
+            {
+                return _viewNextVideoBGCommand ?? (_viewNextVideoBGCommand = new RelayCommand(x =>
+                {
+                    _defaultVideoBG.ViewNextVideoBG();
+                }));
+            }
+        }
+
+        public ICommand ViewPreviousVideoBGCommand
+        {
+            get
+            {
+                return _viewPreviousVideoBGCommand ?? (_viewPreviousVideoBGCommand = new RelayCommand(x =>
+                {
+                    _defaultVideoBG.ViewPreviousVideoBG();
                 }));
             }
         }

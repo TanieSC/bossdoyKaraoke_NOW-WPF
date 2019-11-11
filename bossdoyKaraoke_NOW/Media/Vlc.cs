@@ -73,6 +73,7 @@ namespace bossdoyKaraoke_NOW.Media
         public string TimeDuration { get; private set; }
         public string GetTimeDuration { get; private set; }
         public float PlayerPosition { get; private set; }
+        public string VideoPathDir { get { return _videoDir; } }
 
         public byte[] ByteArrayBitmap
         {
@@ -226,7 +227,6 @@ namespace bossdoyKaraoke_NOW.Media
                     _media_preview.Dispose();
                 }
 
-
                 if (_list_player.IsPlaying) _list_player.Stop();
                 _list_player.Play();
 
@@ -348,12 +348,18 @@ namespace bossdoyKaraoke_NOW.Media
 
         public void ViewNextVideoBG()
         {
-            throw new NotImplementedException();
+            if (_list_preview_player != null && _list_preview_player.IsPlaying)
+            {
+                _list_preview_player.PlayNext();
+            }
         }
 
         public void ViewPreviousVideoBG()
         {
-            throw new NotImplementedException();
+            if (_list_preview_player != null && _list_preview_player.IsPlaying)
+            {
+                _list_preview_player.PlayPrevios();
+            }
         }
 
         public void StopPreviewVideoBG()

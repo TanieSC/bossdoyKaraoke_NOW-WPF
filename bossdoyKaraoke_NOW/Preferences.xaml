@@ -18,6 +18,9 @@
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}" />
         </i:EventTrigger>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding VideoPreviewSreenLoadedCommand}" CommandParameter="{ Binding ElementName=bgVideoPreviewScreen}" />
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -234,6 +237,7 @@
                         <GroupBox Header="BackGround Video setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" Grid.ColumnSpan="2">
                             <StackPanel>
                                 <DockPanel>
+                                    <Label Content="Video:" Margin="0,5"/>
                                     <Label Content="{Binding BackGroundVideoPath}" materialDesign:HintAssist.Hint="Search By Title/Artist" Margin="0,5"/>
                                     <Button Content="Select Video" HorizontalContentAlignment="Center" Margin="0,5" HorizontalAlignment="Right" >
                                         <i:Interaction.Triggers>
@@ -245,14 +249,25 @@
                                 </DockPanel>
                                 <StackPanel Margin="0,5" Background="Black" >
                                     <WindowsFormsHost x:Name="bgVideoPreviewScreen" Width="390" Height="220"  Background="Black" HorizontalAlignment="Center" >
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="Loaded">
-                                                <i:InvokeCommandAction Command="{Binding VideoPreviewSreenLoadedCommand}" CommandParameter="{ Binding ElementName=bgVideoPreviewScreen}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
                                         <wf:Panel x:Name="panelPreviewScreen">
                                         </wf:Panel>
                                     </WindowsFormsHost>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  >
+                                    <Button Margin="0,0,2,0" Content="{materialDesign:PackIcon Kind=SkipPrevious}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding ViewPreviousVideoBGCommand}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Button>
+                                    <Button Margin="2,0,0,0"  Content="{materialDesign:PackIcon Kind=SkipNext}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding ViewNextVideoBGCommand}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Button>
                                 </StackPanel>
                             </StackPanel>
                         </GroupBox>
