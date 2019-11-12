@@ -9,6 +9,7 @@
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        Name="prefs_window"
         Title="Preferences" Height="520" Width="552" MaxHeight="520" MinHeight="520" MaxWidth="552" MinWidth="552" Closing="Window_Closing">
     <!--Height="575" Width="552" MaxHeight="55" MinHeight="575"-->
     <Window.DataContext>
@@ -16,10 +17,11 @@
     </Window.DataContext>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding ClosingCommand}" />
+            <i:InvokeCommandAction Command="{Binding ClosingCommand}" CommandParameter="{ Binding ElementName=prefs_window}"/>
         </i:EventTrigger>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding VideoPreviewSreenLoadedCommand}" CommandParameter="{ Binding ElementName=bgVideoPreviewScreen}" />
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{ Binding ElementName=prefs_window}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
@@ -69,7 +71,7 @@
                             <ColumnDefinition Width="501*"/>
                         </Grid.ColumnDefinitions>
                         <DockPanel Grid.ColumnSpan="4">
-                            <GroupBox Header="Audio output setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" DockPanel.Dock="Top">
+                            <GroupBox Header="Audio output setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" DockPanel.Dock="Top" IsEnabled="False">
                                 <StackPanel >
                                     <StackPanel Orientation="Horizontal" Margin="0,4">
                                         <RadioButton x:Name="radioBtnBass" Content="Default - (Bass)" Padding="4,2,0,0" Margin="30,0,20,0" />

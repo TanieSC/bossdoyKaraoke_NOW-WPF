@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.Integration;
 using System.Windows.Input;
@@ -29,7 +30,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private bool _isPresetLoaded = false;
 
 
-        //General Tab
+        //Prefs Tab
+        private Window _prefsWindow;
         private Dictionary<int, BASS_DEVICEINFO> _deviceInfos;
         private int _selectedDevice;
         private float _EQ0 = 0f;
@@ -352,6 +354,17 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
             catch
             {
+            }
+        }
+
+        public ICommand LoadedCommand
+        {
+            get
+            {
+                return _selectedDeviceCommand ?? (_selectedDeviceCommand = new RelayCommand(x =>
+                {
+                    _prefsWindow = x as Window;
+                }));
             }
         }
 
@@ -686,7 +699,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand SelectBGVideoCommand //looking for better way on how to implement this method without using two much memory
+        public ICommand SelectBGVideoCommand
         {
             get
             {
@@ -762,6 +775,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 return _applyVideoCommand ?? (_applyVideoCommand = new RelayCommand(x =>
                 {
                     _defaultVideoBG.LoadDefaultVideoBG(BackGroundVideoPath);
+                    _prefsWindow.Close();
                 }));
             }
         }
