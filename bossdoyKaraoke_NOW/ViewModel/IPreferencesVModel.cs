@@ -12,7 +12,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
 {
     public interface IPreferencesVModel
     {
-        string IntroText { get; set; }
+        string TitleText { get; set; }
         string BackGroundVideoPath { get; set; }
         Dictionary<int, BASS_DEVICEINFO> DeviceInfos { get; set; }
         int SelectedDevice { get; set; }
@@ -35,7 +35,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         ICommand EQLoadedCommand { get; }
         ICommand EQSelectedPresetCommand { get; }
         ICommand EQEnabledCommand { get; }
-        ICommand IntroTextCommand { get; }
+        ICommand TitleTextCommand { get; }
         ICommand PreAmpCommand { get; }
         ICommand EQ0Command { get; }
         ICommand EQ1Command { get; }

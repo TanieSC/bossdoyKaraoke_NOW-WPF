@@ -47,5 +47,8 @@
     <Setting Name="DEFBackGroundVideoDir" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DEFTitleText" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">BossDoy KaraokeNow/Select a song</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

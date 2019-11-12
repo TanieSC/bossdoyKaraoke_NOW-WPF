@@ -161,6 +161,7 @@
     <Compile Include="Model\AudioOutputDeviceModel.cs" />
     <Compile Include="Model\DefaultVideoBGModel.cs" />
     <Compile Include="Model\EqualizerModel.cs" />
+    <Compile Include="Model\TitleTextModel.cs" />
     <Compile Include="Preferences.xaml.cs">
       <DependentUpon>Preferences.xaml</DependentUpon>
     </Compile>

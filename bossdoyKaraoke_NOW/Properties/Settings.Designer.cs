@@ -160,5 +160,14 @@ namespace bossdoyKaraoke_NOW.Properties {
                 return ((string)(this["DEFBackGroundVideoDir"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("BossDoy KaraokeNow/Select a song")]
+        public string DEFTitleText {
+            get {
+                return ((string)(this["DEFTitleText"]));
+            }
+        }
     }
 }

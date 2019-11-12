@@ -24,6 +24,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
 {
     class PreferencesVModel : IPreferencesVModel, INotifyPropertyChanged
     {
+        private TitleTextModel _setTitleText;
         private DefaultVideoBGModel _defaultVideoBG;
         private AudioOutputDeviceModel _audioOutputDevice;
         private EqualizerModel _equalizer;
@@ -58,7 +59,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private bool _eqEnabled = false;
         private Dictionary<int, Preset> _eqPresets;
         private int _eqSelectedPreset;
-        private string _infoText = "";
+        private string _titleText = "";
         private string _backGroundVideoPath = "";
         private System.Windows.Forms.Panel _panelPreviewScreen;
         private float _preAmp = 0f;
@@ -67,7 +68,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _eqLoadedCommand;
         private ICommand _eqSelectedPresetCommand;
         private ICommand _eqEnabledCommand;
-        private ICommand _infoTextCommand;
+        private ICommand _titleTextCommand;
         private ICommand _preAmpCommand;
         private ICommand _eq0Command;
         private ICommand _eq1Command;
@@ -296,16 +297,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public string IntroText
+        public string TitleText
         {
             get
             {
-                return _infoText;
+                return _titleText;
             }
 
             set
             {
-                _infoText = value;
+                _titleText = value;
                 OnPropertyChanged();
             }
         }
@@ -342,6 +343,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
         {
             try
             {
+                _setTitleText = TitleTextModel.Instance;
+                TitleText = _setTitleText.TitleText;
+
                 _defaultVideoBG = DefaultVideoBGModel.Instance;
                 _audioOutputDevice = AudioOutputDeviceModel.Instance;
                 DeviceInfos = _audioOutputDevice.DeviceInfos;
@@ -487,15 +491,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand IntroTextCommand
+        public ICommand TitleTextCommand
         {
             get
             {
-                return _infoTextCommand ?? (_infoTextCommand = new RelayCommand(x =>
+                return _titleTextCommand ?? (_titleTextCommand = new RelayCommand(x =>
                 {
                     if (x != null)
                     {
-                        IntroText = (x as TextBox).Text;
+                       // IntroText = (x as TextBox).Text;
+                       _setTitleText.TitleText = (x as TextBox).Text;
                     }
                 }));
             }

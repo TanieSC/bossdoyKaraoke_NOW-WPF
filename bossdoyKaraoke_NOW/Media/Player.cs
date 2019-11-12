@@ -171,11 +171,12 @@ namespace bossdoyKaraoke_NOW.Media
             if (!AppConfig.Get<bool>("IsDefaultInit"))
             {
                 AppConfig.Set("IsDefaultInit", "true");
-                AppConfig.SetFxDefaultSettings("DEFAudioEQBand");
-                AppConfig.SetFxDefaultSettings("DEFAudioEQEnabled");
-                AppConfig.SetFxDefaultSettings("DEFAudioEQPreset");
-                AppConfig.SetFxDefaultSettings("DEFAudioEQPreamp");
-                AppConfig.SetFxDefaultSettings("DEFBackGroundVideoDir");
+                AppConfig.SetDefaultSettings("DEFAudioEQBand");
+                AppConfig.SetDefaultSettings("DEFAudioEQEnabled");
+                AppConfig.SetDefaultSettings("DEFAudioEQPreset");
+                AppConfig.SetDefaultSettings("DEFAudioEQPreamp");
+                AppConfig.SetDefaultSettings("DEFBackGroundVideoDir");
+                AppConfig.SetDefaultSettings("DEFTitleText");
             }
             Thread.Sleep(1000);
             App.SplashScreen.AddMessage("Initializing Bass Audio");
@@ -190,6 +191,9 @@ namespace bossdoyKaraoke_NOW.Media
             //Create Instance of song source                                                                                                                             
             _songsSource = SongsSource.Instance;
             _songsSource.LoadSongCollections();
+            
+            //Set the Title Text of the application
+            TitleTextModel.Instance.TitleText = AppConfig.Get<string>("TitleText");
 
             //Vocal Channel default value is Balance = ChannelSelected.None)
             Channel = ChannelSelected.Right;

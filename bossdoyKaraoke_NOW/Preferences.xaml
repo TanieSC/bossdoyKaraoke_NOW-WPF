@@ -38,11 +38,11 @@
                             <ColumnDefinition Width="230*"/>
                         </Grid.ColumnDefinitions>
                         <DockPanel Grid.ColumnSpan="2">
-                            <GroupBox Header="Intro text setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" DockPanel.Dock="Top" >
-                                <TextBox x:Name="introText" Text="{Binding IntroText}" Margin="30,5,0,5" Padding="1" materialDesign:HintAssist.Hint="Set intro text">
+                            <GroupBox Header="Title text setting" VerticalAlignment="Top" Padding="9,5" Margin="0,5,0,0" DockPanel.Dock="Top" >
+                                <TextBox x:Name="titleText" Text="{Binding TitleText}" Margin="30,5,0,5" Padding="1" materialDesign:HintAssist.Hint="Set title text (add / to seperate the line)">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="TextChanged">
-                                            <i:InvokeCommandAction Command="{Binding IntroTextCommand}" CommandParameter="{ Binding ElementName=introText}" />
+                                            <i:InvokeCommandAction Command="{Binding TitleTextCommand}" CommandParameter="{ Binding ElementName=titleText}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </TextBox>

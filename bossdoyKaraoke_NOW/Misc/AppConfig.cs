@@ -83,7 +83,7 @@ namespace bossdoyKaraoke_NOW.Misc
             return (T)(converter.ConvertFromInvariantString(_appSetting));
         }
 
-        public static void SetFxDefaultSettings(string key, string replaceOldStringPortionOfKey = null, string newStringPortionOfKey = null)
+        public static void SetDefaultSettings(string key, string replaceOldStringPortionOfKey = null, string newStringPortionOfKey = null)
         {
             Settings.Default.Properties.Cast<SettingsProperty>().OrderBy(s => s.Name).Select(d =>
                           {
