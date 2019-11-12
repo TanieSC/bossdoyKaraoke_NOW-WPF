@@ -329,12 +329,6 @@ namespace bossdoyKaraoke_NOW.Media
 
                 StopPreviewVideoBG();
 
-               // _media_list_preview = _factory.CreateMediaList<IMediaList>();
-               // _list_preview_player = _factory.CreateMediaListPlayer<IMediaListPlayer>(_media_list_preview);
-               // _list_preview_player.PlaybackMode = PlaybackMode.Loop;
-               // _list_preview_player.InnerPlayer.Volume = 0;
-               // _list_preview_player.InnerPlayer.Mute = true;
-
                 for (int i = 0; i < _videoPath.Length; i++)
                 {
                     _media_preview = _factory.CreateMedia<IMediaFromFile>(_videoPath[i]);
@@ -377,9 +371,6 @@ namespace bossdoyKaraoke_NOW.Media
                 _list_preview_player.InnerPlayer.WindowHandle = IntPtr.Zero;
                 _list_preview_player.InnerPlayer.Dispose();
             }
-           // if (_media_list_preview != null) _media_list_preview.Dispose();
-           // if (_media_preview != null)  _media_preview.Dispose();
-           // if(_list_preview_player != null) _list_preview_player.Dispose();
         }
 
         public void GetDuration(string filePath)
