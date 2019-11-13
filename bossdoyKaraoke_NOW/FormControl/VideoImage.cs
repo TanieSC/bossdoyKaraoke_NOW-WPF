@@ -40,6 +40,7 @@ namespace bossdoyKaraoke_NOW.FormControl
         private D2D.Effects.Composite _compositeEffect;
         private ISongsSource _songsSource = SongsSource.Instance;
 
+        private D2D.Bitmap _TitleText = null;
         private bool _isFullScreen;
         private float _fontSize10 = 10f;
         private float _fontSize15 = 15f;
@@ -129,6 +130,11 @@ namespace bossdoyKaraoke_NOW.FormControl
             RenderContext.VideoContext.FillRoundedRectangle(_roundedRecReserve, _roundedRecInColor);
             RenderContext.VideoContext.DrawTextLayout(new Vector2(_roundedRecReserve.Rect.Left + 5, _roundedRecReserve.Rect.Top), _textLayout, _textBrush);
 
+            if (!_player.IsPlayingBass && !_player.IsPlayingVlc)
+            {
+                RenderContext.VideoContext.DrawBitmap(_TitleText, new RawRectangleF(_videoBitmapRectangle.Left, _videoBitmapRectangle.Top, _videoBitmapRectangle.Right, _videoBitmapRectangle.Bottom), 1.0f, D2D.BitmapInterpolationMode.Linear);
+            }
+
             if (_isFullScreen)
             {
                 if (nextsong != "" || nextsong != string.Empty)
@@ -183,7 +189,7 @@ namespace bossdoyKaraoke_NOW.FormControl
             _roundedRecInColor = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(240, 240, 240)); // new Color(234, 137, 6));
             _textFormat10 = new TextFormat(RenderContext.DWFactory, "Arial", FontWeight.Bold, FontStyle.Normal, _fontSize10);
             _textFormat15 = new TextFormat(RenderContext.DWFactory, "Arial", FontWeight.UltraBold, FontStyle.Normal, _fontSize15);
- 
+            _TitleText = GraphicUtil.DrawString(RenderContext.VideoContext, "", (int)_videoBitmapRectangle.Right, (int)_videoBitmapRectangle.Bottom, _fontSize15, _fontSize30);
         }
 
         private void UnloadResources()
@@ -204,6 +210,9 @@ namespace bossdoyKaraoke_NOW.FormControl
             _textFormat10.Dispose();
             _textFormat15.Dispose();
             _textLayout.Dispose();
+
+            if (_TitleText != null)
+                _TitleText.Dispose();
         }
 
         private StringSize MeasureStringDX(string Message, float Width, TextFormat format)

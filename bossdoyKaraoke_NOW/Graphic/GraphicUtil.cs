@@ -12,7 +12,7 @@ namespace bossdoyKaraoke_NOW.Graphic
 {
     class GraphicUtil
     {
-
+        private static System.Drawing.FontFamily _fontFamily;
         private static DataStream _dataStream;
         public static readonly DXGI.Format DXGIFormat = DXGI.Format.B8G8R8A8_UNorm;
         public static readonly D2D.PixelFormat D2PixelFormat = new D2D.PixelFormat(DXGIFormat, D2D.AlphaMode.Premultiplied);
@@ -145,7 +145,6 @@ namespace bossdoyKaraoke_NOW.Graphic
 
         public static D2D.Bitmap ConvertToSharpDXBitmap(D2D.DeviceContext context, System.Drawing.Bitmap bmp)
         {
-
             D2D.Bitmap Image = null;
             try
             {
@@ -230,6 +229,85 @@ namespace bossdoyKaraoke_NOW.Graphic
             }
 
             return Image;
+        }
+
+
+        //Dont know how to draw this on SharpDx so i'm using system drawing to draw and convet it to SharpDX Bitmap.
+        public static SharpDX.Direct2D1.Bitmap DrawString(D2D.DeviceContext target, string textString, int width, int height, float fontSize15, float fontSize30)
+        {
+            System.Drawing.Graphics gr = System.Drawing.Graphics.FromHwnd(IntPtr.Zero);
+            System.Drawing.Bitmap bm = new System.Drawing.Bitmap(width, height, gr);
+
+            gr.Dispose();
+            _fontFamily = new System.Drawing.FontFamily("Arial");
+            gr = System.Drawing.Graphics.FromImage(bm);
+            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+
+            var strformat = new System.Drawing.StringFormat
+            {
+                Alignment = System.Drawing.StringAlignment.Center,
+                LineAlignment = System.Drawing.StringAlignment.Center
+            };
+
+            gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+
+            if (textString == string.Empty || textString == null)
+            {
+                string b = "BossDoy KaraokeNow";
+                var stringSize = MeasureString(b, fontSize15);
+                path.AddString(b, _fontFamily, (int)System.Drawing.FontStyle.Bold, fontSize15, new System.Drawing.Point((bm.Width / 2), (bm.Height / 2) - ((int)stringSize.Height) / 2), strformat);
+                path.AddString("Select a song", _fontFamily,
+                (int)System.Drawing.FontStyle.Bold, fontSize30, new System.Drawing.Point(bm.Width / 2, (bm.Height / 2) + ((int)stringSize.Height) / 2), strformat);
+            }
+            else
+            {
+
+                string[] intro = textString.Split(new char[] { '/' }, StringSplitOptions.None);
+                var stringSize = MeasureString(intro[0], fontSize15);
+                path.AddString(intro[0], _fontFamily, (int)System.Drawing.FontStyle.Bold, fontSize15, new System.Drawing.Point((bm.Width / 2), (bm.Height / 2) - ((int)stringSize.Height) / 2), strformat);
+                if (intro.Length > 1)
+                {
+                    path.AddString(intro[1], _fontFamily,
+                     (int)System.Drawing.FontStyle.Bold, fontSize30, new System.Drawing.Point(bm.Width / 2, (bm.Height / 2) + ((int)stringSize.Height) / 2), strformat);
+
+                }
+                else
+                {
+                    path.AddString("Select a song", _fontFamily,
+                    (int)System.Drawing.FontStyle.Bold, fontSize30, new System.Drawing.Point(bm.Width / 2, (bm.Height / 2) + ((int)stringSize.Height) / 2), strformat);
+                }
+            }
+
+            System.Drawing.Pen penOut = new System.Drawing.Pen(System.Drawing.Color.FromArgb(32, 117, 81), (fontSize30 / 4));
+            penOut.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+            gr.DrawPath(penOut, path);
+
+            System.Drawing.Pen pen = new System.Drawing.Pen(System.Drawing.Color.FromArgb(240, 240, 240), (fontSize30 / 8));
+            pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+            gr.DrawPath(pen, path);
+            System.Drawing.SolidBrush brush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(128, 0, 255));
+            gr.FillPath(brush, path);
+
+            path.Dispose();
+            penOut.Dispose();
+            pen.Dispose();
+            brush.Dispose();
+            gr.Dispose();
+            _fontFamily.Dispose();
+
+            return ConvertToSharpDXBitmap(target, bm);
+
+        }
+
+        private static System.Drawing.SizeF MeasureString(string txtstring, float fontSize)
+        {
+            System.Drawing.Graphics gr = System.Drawing.Graphics.FromHwnd(IntPtr.Zero);
+            var stringSize = gr.MeasureString(txtstring, new System.Drawing.Font(_fontFamily, fontSize));
+            gr.Dispose();
+            return stringSize;
         }
     }
 }
