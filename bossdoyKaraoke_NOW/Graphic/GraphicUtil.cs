@@ -288,7 +288,7 @@ namespace bossdoyKaraoke_NOW.Graphic
             System.Drawing.Pen pen = new System.Drawing.Pen(System.Drawing.Color.FromArgb(240, 240, 240), (fontSize30 / 8));
             pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
             gr.DrawPath(pen, path);
-            System.Drawing.SolidBrush brush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(128, 0, 255));
+            System.Drawing.SolidBrush brush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(103, 58, 183));
             gr.FillPath(brush, path);
 
             path.Dispose();
