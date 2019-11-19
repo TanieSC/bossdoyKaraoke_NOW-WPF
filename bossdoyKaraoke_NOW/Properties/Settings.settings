@@ -48,7 +48,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DEFTitleText" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">BossDoy KaraokeNow/Select a song</Value>
+      <Value Profile="(Default)">BossDoy KaraokeNow</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -163,7 +163,7 @@ namespace bossdoyKaraoke_NOW.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("BossDoy KaraokeNow/Select a song")]
+        [global::System.Configuration.DefaultSettingValueAttribute("BossDoy KaraokeNow")]
         public string DEFTitleText {
             get {
                 return ((string)(this["DEFTitleText"]));

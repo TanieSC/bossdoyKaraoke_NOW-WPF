@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using bossdoyKaraoke_NOW.Graphic;
 using bossdoyKaraoke_NOW.Media;
+using bossdoyKaraoke_NOW.Model;
 using SharpDX;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
@@ -166,7 +167,7 @@ namespace bossdoyKaraoke_NOW.FormControl
 
             byte[] bmpBytes = _player.VlcPlayer.ByteArrayBitmap;
             _bmp = GraphicUtil.ConvertToSharpDXBitmap(RenderContext.VideoContext, bmpBytes, _player.VlcPlayer.VideoWidth, _player.VlcPlayer.VideoHeight);
-
+            _TitleText = GraphicUtil.DrawString(RenderContext.VideoContext, TitleTextModel.Instance.TitleText, (int)_videoBitmapRectangle.Right, (int)_videoBitmapRectangle.Bottom, _fontSize15, _fontSize30);
             _cdgTarget = new D2D.Bitmap1(RenderContext.CdgContext, new Size2((int)_videoBitmapRectangle.Right, (int)_videoBitmapRectangle.Bottom), GraphicUtil.BitmapProps1);
 
             //// Create image shadow effect
@@ -189,7 +190,6 @@ namespace bossdoyKaraoke_NOW.FormControl
             _roundedRecInColor = new D2D.SolidColorBrush(RenderContext.VideoContext, new Color(240, 240, 240)); // new Color(234, 137, 6));
             _textFormat10 = new TextFormat(RenderContext.DWFactory, "Arial", FontWeight.Bold, FontStyle.Normal, _fontSize10);
             _textFormat15 = new TextFormat(RenderContext.DWFactory, "Arial", FontWeight.UltraBold, FontStyle.Normal, _fontSize15);
-            _TitleText = GraphicUtil.DrawString(RenderContext.VideoContext, "", (int)_videoBitmapRectangle.Right, (int)_videoBitmapRectangle.Bottom, _fontSize15, _fontSize30);
         }
 
         private void UnloadResources()

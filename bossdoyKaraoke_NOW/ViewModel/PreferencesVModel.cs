@@ -392,6 +392,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 return _closingCommand ?? (_closingCommand = new RelayCommand(x =>
                 {
                     _defaultVideoBG.StopPreviewVideoBG();
+                    _setTitleText.UpdateTitleText();
                     Worker.DoWork(NewTask.SAVE_EQ_SETTINGS);
                 }));
             }

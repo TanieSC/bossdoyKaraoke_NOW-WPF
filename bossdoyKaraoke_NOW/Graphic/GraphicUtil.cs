@@ -265,20 +265,29 @@ namespace bossdoyKaraoke_NOW.Graphic
             else
             {
 
-                string[] intro = textString.Split(new char[] { '/' }, StringSplitOptions.None);
-                var stringSize = MeasureString(intro[0], fontSize15);
-                path.AddString(intro[0], _fontFamily, (int)System.Drawing.FontStyle.Bold, fontSize15, new System.Drawing.Point((bm.Width / 2), (bm.Height / 2) - ((int)stringSize.Height) / 2), strformat);
-                if (intro.Length > 1)
-                {
-                    path.AddString(intro[1], _fontFamily,
-                     (int)System.Drawing.FontStyle.Bold, fontSize30, new System.Drawing.Point(bm.Width / 2, (bm.Height / 2) + ((int)stringSize.Height) / 2), strformat);
+                //string[] intro = textString.Split(new char[] { '/' }, StringSplitOptions.None);
+                //var stringSize = MeasureString(intro[0], fontSize15);
 
-                }
-                else
-                {
-                    path.AddString("Select a song", _fontFamily,
+                //path.AddString(intro[0], _fontFamily, (int)System.Drawing.FontStyle.Bold, fontSize15, new System.Drawing.Point((bm.Width / 2), (bm.Height / 2) - ((int)stringSize.Height) / 2), strformat);
+                //if (intro.Length > 1)
+                //{
+                //    path.AddString(intro[1], _fontFamily,
+                //     (int)System.Drawing.FontStyle.Bold, fontSize30, new System.Drawing.Point(bm.Width / 2, (bm.Height / 2) + ((int)stringSize.Height) / 2), strformat);
+
+                //}
+                //else
+                //{
+                //    path.AddString("Select a song", _fontFamily,
+                //    (int)System.Drawing.FontStyle.Bold, fontSize30, new System.Drawing.Point(bm.Width / 2, (bm.Height / 2) + ((int)stringSize.Height) / 2), strformat);
+                //}
+
+                var stringSize = MeasureString(textString, fontSize15);
+
+                path.AddString(textString, _fontFamily, 
+                    (int)System.Drawing.FontStyle.Bold, fontSize15, new System.Drawing.Point(bm.Width / 2, (bm.Height / 2) - ((int)stringSize.Height) / 2), strformat);
+
+                path.AddString("Select a song", _fontFamily,
                     (int)System.Drawing.FontStyle.Bold, fontSize30, new System.Drawing.Point(bm.Width / 2, (bm.Height / 2) + ((int)stringSize.Height) / 2), strformat);
-                }
             }
 
             System.Drawing.Pen penOut = new System.Drawing.Pen(System.Drawing.Color.FromArgb(32, 117, 81), (fontSize30 / 4));
