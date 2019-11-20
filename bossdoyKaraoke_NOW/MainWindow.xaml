@@ -12,6 +12,7 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d"
         Icon="bkn_ico.ico"
+        Name="main_window"
        Title="BossDoyKaraoke_Now" Height="630" Width="820" MinWidth="820" MinHeight="630" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <vm:MainMenuVModel x:Key="MainMenuModel"></vm:MainMenuVModel>
@@ -22,15 +23,30 @@
         <vm:ListViewVModel x:Key="ListViewModel"/>
         <vm:ItemIndexConverter x:Key="ItemIndexConverter" />
     </Window.Resources>
+    <Window.DataContext>
+        <StaticResource ResourceKey="MainMenuModel"/>
+    </Window.DataContext>
+    <!--<Window.InputBindings>
+        <KeyBinding Command="{Binding ExitApplicationCommand}" Modifiers="Ctrl" Key="E"/>
+        <KeyBinding Command="{Binding OpenCommand}" Modifiers="Ctrl" Key="O"/>
+    </Window.InputBindings>-->
+    <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding ExitApplicationCommand}" CommandParameter="{ Binding ElementName=main_window}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{ Binding ElementName=main_window}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="111*"/>
             <ColumnDefinition Width="295*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel DataContext="{StaticResource MainMenuModel}" Grid.ColumnSpan="2" VerticalAlignment="Top">
+        <DockPanel Grid.ColumnSpan="2" VerticalAlignment="Top">
             <Menu IsMainMenu="True" VerticalAlignment="Top" >
                 <MenuItem Header="_File">
-                    <MenuItem Header="Open">
+                    <MenuItem Header="Open" InputGestureText="Ctrl+O">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="File" />
                         </MenuItem.Icon>
@@ -50,7 +66,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>-->
-                    <MenuItem Header="Add Songs" >
+                    <MenuItem Header="Add Songs" InputGestureText="Ctrl+A">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="FolderOpen" />
                         </MenuItem.Icon>
@@ -60,7 +76,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
-                    <MenuItem Header="Preferences" x:Name="preferences" >
+                    <MenuItem Header="Preferences" x:Name="preferences" InputGestureText="Ctrl+P" >
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Settings" />
                         </MenuItem.Icon>

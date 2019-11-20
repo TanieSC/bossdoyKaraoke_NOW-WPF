@@ -9,6 +9,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
 {
     public interface IMainMenuVModel
     {
+        ICommand LoadedCommand { get; }
         ICommand OpenCommand { get; }
         ICommand AddSongsCommand { get; }
         ICommand ClientConnectShowCommand { get; }
