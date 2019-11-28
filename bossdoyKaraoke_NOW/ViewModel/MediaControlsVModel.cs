@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
+using bossdoyKaraoke_NOW.Misc;
 using MaterialDesignThemes.Wpf;
 using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 

@@ -46,35 +46,6 @@ namespace bossdoyKaraoke_NOW
             _player.AppMainWindowHandle = new WindowInteropHelper(this).Handle;
             _videoImage = new VideoImage();
             main_video_screen.Child = _videoImage;
-
-         //   if (_ctlO != null) _ctlO.Dispose();
-
-         // _ctlO = new GlobalHotkeyService(Key.O, KeyModifier.Ctrl, OnHotKeyHandler);
-
-         //   if (_ctlO != null) _ctlO.Dispose();
-
-        }
-
-        private void OnHotKeyHandler(GlobalHotkeyService hotKey)
-        {
-            if (hotKey.KeyModifiers == KeyModifier.Ctrl)
-            {
-                switch (hotKey.Key)
-                {
-                    case Key.O:
-                        Console.WriteLine("Key O");
-                        break;
-                    case Key.A:
-
-                        break;
-                    case Key.P:
-
-                        break;
-                    case Key.E:
-
-                        break;
-                }
-            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -84,7 +55,6 @@ namespace bossdoyKaraoke_NOW
 
             //Restore Previous Settings, ie, Go To Sleep Again
             SystemState.RestoreDisplaySettings();
-
         }
 
         private void InitInBackground()
@@ -168,7 +138,6 @@ namespace bossdoyKaraoke_NOW
         protected override void OnClosed(EventArgs e)
         {
             _source.RemoveHook(WndProc);
-           // UnregisterHotKey(_source.Handle, HOTKEY_ID);
             _source.Dispose();
             base.OnClosed(e);
         }

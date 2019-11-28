@@ -13,6 +13,7 @@ using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Misc;
 using bossdoyKaraoke_NOW.Model;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
+using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 using static bossdoyKaraoke_NOW.Misc.GlobalHotkeyService;
 
 namespace bossdoyKaraoke_NOW.ViewModel
@@ -20,10 +21,20 @@ namespace bossdoyKaraoke_NOW.ViewModel
     class MainMenuVModel : IMainMenuVModel
     {
         private MainWindow _parent;
-        private GlobalHotkeyService _ctlO;
-        private GlobalHotkeyService _ctlA;
-        private GlobalHotkeyService _ctlP;
-        private GlobalHotkeyService _ctlE;
+        private GlobalHotkeyService _ctlO; // Open File
+        private GlobalHotkeyService _ctlA; //Add Songs
+        private GlobalHotkeyService _ctlP; //Preferences form
+        private GlobalHotkeyService _ctlE; //Exit
+        private GlobalHotkeyService _spceBar; //PlayPause
+        private GlobalHotkeyService _ctlN; //Next
+        private GlobalHotkeyService _ctlUP; //Volume UP
+        private GlobalHotkeyService _ctlDwn; // Volume Down
+        private GlobalHotkeyService _ctlM; // Mute/UnMute 
+        private GlobalHotkeyService _ctlAltUp; // Key Up
+        private GlobalHotkeyService _ctlAltDwn; // Key Down
+        private GlobalHotkeyService _ctlShftUp; // Tempo Up
+        private GlobalHotkeyService _ctlShftDwn; // Tempo Down
+        private bool _isMute;
 
         // private Preferences prefs = new Preferences();
         private ISongsSource _songsSource = SongsSource.Instance;
@@ -45,6 +56,15 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     _ctlA = new GlobalHotkeyService(Key.A, KeyModifier.Ctrl, OnHotKeyHandler);
                     _ctlP = new GlobalHotkeyService(Key.P, KeyModifier.Ctrl, OnHotKeyHandler);
                     _ctlE = new GlobalHotkeyService(Key.E, KeyModifier.Ctrl, OnHotKeyHandler);
+                    _spceBar = new GlobalHotkeyService(Key.Space, KeyModifier.None, OnHotKeyHandler);
+                    _ctlN = new GlobalHotkeyService(Key.N, KeyModifier.Ctrl, OnHotKeyHandler);
+                    _ctlUP = new GlobalHotkeyService(Key.Up, KeyModifier.Ctrl, OnHotKeyHandler);
+                    _ctlDwn = new GlobalHotkeyService(Key.Down, KeyModifier.Ctrl, OnHotKeyHandler);
+                    _ctlM = new GlobalHotkeyService(Key.M, KeyModifier.Ctrl, OnHotKeyHandler);
+                    _ctlAltUp = new GlobalHotkeyService(Key.Up, KeyModifier.Ctrl | KeyModifier.Alt, OnHotKeyHandler);
+                    _ctlAltDwn = new GlobalHotkeyService(Key.Down, KeyModifier.Ctrl | KeyModifier.Alt, OnHotKeyHandler);
+                    _ctlShftUp = new GlobalHotkeyService(Key.Up, KeyModifier.Ctrl | KeyModifier.Shift, OnHotKeyHandler);
+                    _ctlShftDwn = new GlobalHotkeyService(Key.Down, KeyModifier.Ctrl | KeyModifier.Shift, OnHotKeyHandler);
 
                     _parent = x as MainWindow;
 
@@ -115,24 +135,113 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
         private void OnHotKeyHandler(GlobalHotkeyService hotKey)
         {
-            if (hotKey.KeyModifiers == KeyModifier.Ctrl)
+            switch (hotKey.KeyModifiers)
             {
-                switch (hotKey.Key)
-                {
-                    case Key.O:
-                        OpenFile();
-                        break;
-                    case Key.A:
-                        AddSongs();
-                        break;
-                    case Key.P:
-                        PreferencesShow();
-                        break;
-                    case Key.E:
-                        ExitApplication();
-                        break;
-                }
+                case KeyModifier.None:
+                    if (hotKey.Key == Key.Space)
+                    {
+                        if (CurrentPlayState == PlayState.Paused)
+                        {
+                            Player.Instance.Play();
+                        }
+                        else
+                        {
+                            Player.Instance.Pause();
+                        }
+                    }
+                    break;
+                case KeyModifier.Ctrl:
+                    switch (hotKey.Key)
+                    {
+                        case Key.O:
+                            OpenFile();
+                            break;
+                        case Key.A:
+                            AddSongs();
+                            break;
+                        case Key.P:
+                            PreferencesShow();
+                            break;
+                        case Key.E:
+                            ExitApplication();
+                            break;
+                        case Key.N:
+                            Player.Instance.PlayNext();
+                            break;
+                        case Key.Up:
+                            if (Player.Instance.Volume < 100)
+                                Player.Instance.Volume += 1;
+                            break;
+                        case Key.Down:
+                            if (Player.Instance.Volume > 0)
+                                Player.Instance.Volume -= 1;
+                            break;
+                        case Key.M:
+                            if (!_isMute)
+                            {
+                                Player.Instance.Mute();
+                                _isMute = true;
+                            }
+                            else
+                            {
+                                Player.Instance.UnMute();
+                                _isMute = false;
+                            }
+                            break;
+                    }
+                    break;
+                case KeyModifier.Ctrl | KeyModifier.Alt:
+                    if (hotKey.Key == Key.Up)
+                    {
+                        Player.Instance.KeyPlus();
+                    }
+                    else if (hotKey.Key == Key.Down)
+                    {
+                        Player.Instance.KeyMinus();
+                    }
+                    break;
+                case KeyModifier.Ctrl | KeyModifier.Shift:
+                    if (hotKey.Key == Key.Up)
+                    {
+                        Player.Instance.TempoPlus();
+                    }
+                    else if (hotKey.Key == Key.Down)
+                    {
+                        Player.Instance.TempoMinus();
+                    }
+                    break;
             }
+
+            //if (hotKey.KeyModifiers == KeyModifier.Ctrl)
+            //{
+            //    switch (hotKey.Key)
+            //    {
+            //        case Key.O:
+            //            OpenFile();
+            //            break;
+            //        case Key.A:
+            //            AddSongs();
+            //            break;
+            //        case Key.P:
+            //            PreferencesShow();
+            //            break;
+            //        case Key.E:
+            //            ExitApplication();
+            //            break;
+            //        case Key.N:
+
+            //            break;
+            //        case Key.Up:
+
+            //            break;
+            //        case Key.Down:
+
+            //            break;
+            //        case Key.M:
+
+            //            break;
+            //    }
+            //}
         }
 
         private void AddSongs()
@@ -159,7 +268,17 @@ namespace bossdoyKaraoke_NOW.ViewModel
             _ctlA.Dispose();
             _ctlP.Dispose();
             _ctlE.Dispose();
-            System.Windows.Application.Current.Shutdown();
+            _spceBar.Dispose();
+            _ctlN.Dispose();
+            _ctlUP.Dispose();
+            _ctlDwn.Dispose();
+            _ctlM.Dispose();
+            _ctlAltUp.Dispose();
+            _ctlAltDwn.Dispose();
+            _ctlShftUp.Dispose();
+            _ctlShftDwn.Dispose();
+
+            Application.Current.Shutdown();
             // Environment.Exit(0);
         }
 

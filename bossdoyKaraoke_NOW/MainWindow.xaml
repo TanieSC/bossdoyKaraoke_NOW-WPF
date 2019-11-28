@@ -31,7 +31,7 @@
         <KeyBinding Command="{Binding OpenCommand}" Modifiers="Ctrl" Key="O"/>
     </Window.InputBindings>-->
     <i:Interaction.Triggers>
-            <i:EventTrigger EventName="Closing">
+        <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ExitApplicationCommand}" CommandParameter="{ Binding ElementName=main_window}"/>
         </i:EventTrigger>
         <i:EventTrigger EventName="Loaded">
@@ -41,10 +41,11 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="111*"/>
-            <ColumnDefinition Width="295*"/>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="286*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.ColumnSpan="2" VerticalAlignment="Top">
-            <Menu IsMainMenu="True" VerticalAlignment="Top" >
+        <DockPanel Grid.ColumnSpan="3" VerticalAlignment="Top">
+            <Menu VerticalAlignment="Top" >
                 <MenuItem Header="_File">
                     <MenuItem Header="Open" InputGestureText="Ctrl+O">
                         <MenuItem.Icon>
@@ -76,6 +77,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
+                    <Separator/>
                     <MenuItem Header="Preferences" x:Name="preferences" InputGestureText="Ctrl+P" >
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Settings" />
@@ -86,6 +88,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
+                    <Separator/>
                     <MenuItem Header="Exit" InputGestureText="Ctrl+E">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="ExitToApp" />
@@ -95,6 +98,67 @@
                                 <i:InvokeCommandAction Command="{Binding ExitApplicationCommand}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <Menu VerticalAlignment="Top">
+                <MenuItem Header="PlayBack">
+                    <MenuItem Header="Play/Pause" InputGestureText="Space">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="PlayPause" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Next" InputGestureText="Ctrl+N">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="SkipNext" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Volume Up" InputGestureText="Ctrl+Up">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="VolumePlus" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Volume Down" InputGestureText="Ctrl+Down">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="VolumeMinus" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Mute/UnMute" InputGestureText="Ctrl+M">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Mute" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Key Up" InputGestureText="Ctrl+Alt+Up">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Hashtag" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Key Down" InputGestureText="Ctrl+Alt+Down">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="FormatParagraph" RenderTransformOrigin="0.5,0.5"  >
+                                <materialDesign:PackIcon.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleY="-1" ScaleX="1"/>
+                                        <SkewTransform AngleY="0" AngleX="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </materialDesign:PackIcon.RenderTransform>
+                            </materialDesign:PackIcon>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Tempo Up" InputGestureText="Ctrl+Shift+Up">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Plus" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Tempo Down" InputGestureText="Ctrl+Shift+Down">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Minus" />
+                        </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
             </Menu>
@@ -136,7 +200,7 @@
                 </MenuItem>
             </Menu>
         </DockPanel>
-        <DockPanel DataContext="{StaticResource MediaControls}" Name="media_controls" Grid.ColumnSpan="2" VerticalAlignment="Top">
+        <DockPanel DataContext="{StaticResource MediaControls}" Name="media_controls" Grid.ColumnSpan="3" VerticalAlignment="Top">
             <!--<DockPanel.DataContext>
                 <vm:MediaControls/>
             </DockPanel.DataContext>-->
@@ -154,7 +218,7 @@
                         <DockPanel Background="#FFFAFAFA">
                             <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"  >
                                 <TextBlock Text="Volume" Margin="0,0,0,10" />
-                                <Slider x:Name="volume_slider" TickPlacement="BottomRight" Orientation="Vertical" Height="150" Maximum="100" Value="50" TickFrequency="5" SmallChange="1" LargeChange="5" >
+                                <Slider x:Name="volume_slider" TickPlacement="BottomRight" Orientation="Vertical" Height="150" Maximum="100" Value="{Binding VolumeValue}" TickFrequency="5" SmallChange="1" LargeChange="5" >
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="ValueChanged">
                                             <i:InvokeCommandAction 
@@ -328,7 +392,7 @@
                 </DockPanel>
             </materialDesign:ColorZone>
         </DockPanel>
-        <Grid Name="media_grid" Margin="0,114,0,0" Grid.ColumnSpan="2">
+        <Grid Name="media_grid" Margin="0,114,0,0" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MinWidth="250" MaxWidth="350"/>
                 <ColumnDefinition Width="4" />
