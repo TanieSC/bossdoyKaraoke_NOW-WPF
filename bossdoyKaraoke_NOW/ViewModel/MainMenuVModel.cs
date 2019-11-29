@@ -211,37 +211,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     }
                     break;
             }
-
-            //if (hotKey.KeyModifiers == KeyModifier.Ctrl)
-            //{
-            //    switch (hotKey.Key)
-            //    {
-            //        case Key.O:
-            //            OpenFile();
-            //            break;
-            //        case Key.A:
-            //            AddSongs();
-            //            break;
-            //        case Key.P:
-            //            PreferencesShow();
-            //            break;
-            //        case Key.E:
-            //            ExitApplication();
-            //            break;
-            //        case Key.N:
-
-            //            break;
-            //        case Key.Up:
-
-            //            break;
-            //        case Key.Down:
-
-            //            break;
-            //        case Key.M:
-
-            //            break;
-            //    }
-            //}
         }
 
         private void AddSongs()

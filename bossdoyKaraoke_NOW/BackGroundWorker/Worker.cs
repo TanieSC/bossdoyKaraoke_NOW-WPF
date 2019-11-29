@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using bossdoyKaraoke_NOW.Enums;
 using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Model;
@@ -391,6 +392,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                                 _listViewElement.ItemsSource = songsSource.SongsQueue;
                             }
                         }
+
+                        Mouse.OverrideCursor = Cursors.Arrow;
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:
                     case NewTask.ADD_FAVORITES_TO_QUEUE:

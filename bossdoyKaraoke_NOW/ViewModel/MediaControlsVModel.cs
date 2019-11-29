@@ -524,7 +524,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         _volumeControl.PopupAnimation = PopupAnimation.Fade;
                         _volumeControl.HorizontalOffset = 10;
                         _volumeControl.VerticalOffset = 5;
-                        _volumeControl.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+                        _volumeControl.VerticalAlignment = VerticalAlignment.Bottom;
 
                         if (!_volumeControl.IsOpen)
                         {
