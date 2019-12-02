@@ -222,6 +222,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private void OpenFile()
         {
             //_songsSource.AddNewSong();
+            if (Mouse.OverrideCursor != Cursors.Wait)
+                Mouse.OverrideCursor = Cursors.Wait;
 
             TrackInfoModel sender = null;
 

@@ -393,7 +393,8 @@ namespace bossdoyKaraoke_NOW.BackGroundWorker
                             }
                         }
 
-                        Mouse.OverrideCursor = Cursors.Arrow;
+                        if (Mouse.OverrideCursor != Cursors.Arrow)
+                            Mouse.OverrideCursor = Cursors.Arrow;
                         break;
                     case NewTask.LOAD_QUEUE_SONGS:
                     case NewTask.ADD_FAVORITES_TO_QUEUE:
