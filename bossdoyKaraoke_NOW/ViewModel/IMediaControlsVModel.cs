@@ -18,6 +18,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         string VUmeterColorL { get; set; }
         string VUmeterColorR { get; set; }
         string VocalChannel { get; set; }
+        int NewScreenCount { get; set; }
         string ElapsedTime { get; set; }
         string RemainingTime { get; set; }
         double ProgressValue { get; set; }

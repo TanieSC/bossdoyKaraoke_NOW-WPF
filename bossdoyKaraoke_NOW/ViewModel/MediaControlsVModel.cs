@@ -190,7 +190,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public int AddNewSrceen
+        public int NewScreenCount
         {
             get
             {
@@ -615,9 +615,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private void UpdateFullScreenCount()
         {
             if (_fullScreen != null)
-                AddNewSrceen = _fullScreen.Count();
+                NewScreenCount = _fullScreen.Count();
             else
-                AddNewSrceen = 0;
+                NewScreenCount = 0;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

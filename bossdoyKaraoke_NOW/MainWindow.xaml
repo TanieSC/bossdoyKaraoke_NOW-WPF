@@ -301,7 +301,7 @@
                     </StackPanel>
                     <StackPanel Name="dual_screen_panel" Panel.ZIndex="2" Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" BorderThickness="1" Background="#1F000000" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="6,5" />
-                        <materialDesign:Badged Badge="{Binding AddNewSrceen}" x:Name="full_screen_count">
+                        <materialDesign:Badged Badge="{Binding NewScreenCount}" x:Name="full_screen_count">
                             <Button Name="add_Screen" Panel.ZIndex="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="#FF673AB7" BorderBrush="#FF673AB7"
                             materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                             materialDesign:ButtonProgressAssist.Value="100"
