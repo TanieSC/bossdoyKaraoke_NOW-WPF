@@ -29,7 +29,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         PackIconKind IconPlayPause { get; set; }
         PackIconKind IconMuteUnMute { get; set; }
         IMediaControlsVModel Controls { get; }
-        ICommand Loaded { get; }
+        ICommand LoadedCommand { get; }
         ICommand VocalChannelCommand { get; }
         ICommand AddNewScreenCommand { get; }
         ICommand PlayPauseCommand { get; }

@@ -46,12 +46,12 @@ namespace bossdoyKaraoke_NOW.Graphic
         public static byte[] StreamToBytes(ref Stream stream, int width, int height)
         { 
             WriteableBitmap wbBitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
-            byte[] wbBytes = new byte[stream.Length];
+            byte[] myBytes = new byte[stream.Length];
             try
             {
                 wbBitmap.Lock();
                 stream.Seek(0, SeekOrigin.Begin);
-                byte[] myBytes = new byte[stream.Length];
+                //byte[] myBytes = new byte[stream.Length];
                 stream.Read(myBytes, 0, Convert.ToInt32(stream.Length));
                 IntPtr buff = wbBitmap.BackBuffer;
                 unsafe
@@ -91,10 +91,10 @@ namespace bossdoyKaraoke_NOW.Graphic
 
             }
 
-            return wbBytes;
+            return myBytes;// wbBytes;
         }
 
-        public static unsafe WriteableBitmap StreamToBitmap(ref Stream stream, int width, int height)
+        public static WriteableBitmap StreamToBitmap(ref Stream stream, int width, int height)
         {
 
             WriteableBitmap wbBitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
@@ -105,32 +105,32 @@ namespace bossdoyKaraoke_NOW.Graphic
                 byte[] myBytes = new byte[stream.Length];
                 stream.Read(myBytes, 0, Convert.ToInt32(stream.Length));
                 IntPtr buff = wbBitmap.BackBuffer;
-                // unsafe
-                // {
-                byte* p = (byte*)buff.ToPointer();
-                //Get start index of the specified pixel
-                int i = ((1 * width) + 1) * 4;
-                byte b = myBytes[i];
-                byte g = myBytes[i + 1];
-                byte r = myBytes[i + 2];
-                byte a = myBytes[i + 3];
-
-                for (int n = 0; n < stream.Length; n += 4)
+                unsafe
                 {
-                    if (myBytes[n + 3] == a && myBytes[n + 2] == r && myBytes[n + 1] == g && myBytes[n] == b)
-                    {
-                        for (var j = n; j < n + 4; j++)
-                        {
-                            myBytes[j] = 0;
-                        }
-                    }
+                    byte* p = (byte*)buff.ToPointer();
+                    //Get start index of the specified pixel
+                    int i = ((1 * width) + 1) * 4;
+                    byte b = myBytes[i];
+                    byte g = myBytes[i + 1];
+                    byte r = myBytes[i + 2];
+                    byte a = myBytes[i + 3];
 
-                    p[n] = myBytes[n];
-                    p[n + 1] = myBytes[n + 1];
-                    p[n + 2] = myBytes[n + 2];
-                    p[n + 3] = myBytes[n + 3];
+                    for (int n = 0; n < stream.Length; n += 4)
+                    {
+                        if (myBytes[n + 3] == a && myBytes[n + 2] == r && myBytes[n + 1] == g && myBytes[n] == b)
+                        {
+                            for (var j = n; j < n + 4; j++)
+                            {
+                                myBytes[j] = 0;
+                            }
+                        }
+
+                        p[n] = myBytes[n];
+                        p[n + 1] = myBytes[n + 1];
+                        p[n + 2] = myBytes[n + 2];
+                        p[n + 3] = myBytes[n + 3];
+                    }
                 }
-                //}
 
                 wbBitmap.AddDirtyRect(new Int32Rect(0, 0, width, height));
                 wbBitmap.Unlock();

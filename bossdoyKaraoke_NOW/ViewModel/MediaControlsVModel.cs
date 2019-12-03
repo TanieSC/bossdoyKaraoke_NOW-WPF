@@ -49,7 +49,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private PackIconKind _iconPlayPause = PackIconKind.Play;
         private PackIconKind _iconMuteUnMute = PackIconKind.VolumeHigh;
         private IMediaControlsVModel _controls;
-        private ICommand _loaded;
+        private ICommand _loadedCommand;
         private ICommand _vocalChannelCommand;
         private ICommand _addNewScreenCommand;
         private ICommand _tempoPlusCommand;
@@ -342,16 +342,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand Loaded
+        public ICommand LoadedCommand
         {
             get
             {
-                return _loaded ?? (_loaded = new RelayCommand(x =>
+                return _loadedCommand ?? (_loadedCommand = new RelayCommand(x =>
                 {
                     if (x != null)
                     {
-                        var dockPanel = x as DockPanel;
-                        var colorZone = (dockPanel.Children[2] as ColorZone).Content as DockPanel;
+                        //var dockPanel = x as DockPanel;
+                        //var colorZone = (dockPanel.Children[2] as ColorZone).Content as DockPanel;
                         //  _controls = dockPanel.DataContext as IMediaControls;
 
                         //  _audio_panel = dockPanel.Children[0] as StackPanel;

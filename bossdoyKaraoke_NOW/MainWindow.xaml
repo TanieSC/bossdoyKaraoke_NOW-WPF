@@ -204,11 +204,11 @@
             <!--<DockPanel.DataContext>
                 <vm:MediaControls/>
             </DockPanel.DataContext>-->
-            <i:Interaction.Triggers>
+            <!--<i:Interaction.Triggers>
                 <i:EventTrigger EventName="Loaded">
-                    <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{ Binding ElementName=media_controls}" />
+                    <i:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{ Binding ElementName=media_controls}" />
                 </i:EventTrigger>
-            </i:Interaction.Triggers>
+            </i:Interaction.Triggers>-->
             <Popup x:Name="volume_control"  PlacementTarget="{Binding ElementName=volume_main}"  AllowsTransparency="True">
                 <ContentControl Margin="3">
                     <Border BorderBrush="#89000000" CornerRadius="5">
