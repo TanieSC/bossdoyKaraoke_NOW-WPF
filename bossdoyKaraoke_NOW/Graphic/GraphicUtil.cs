@@ -90,7 +90,7 @@ namespace bossdoyKaraoke_NOW.Graphic
             {
 
             }
-
+            
             return myBytes;// wbBytes;
         }
 
