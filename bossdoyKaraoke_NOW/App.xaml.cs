@@ -35,7 +35,7 @@ namespace bossdoyKaraoke_NOW
             SplashThread = new Thread(ShowSplash);
             SplashThread.SetApartmentState(ApartmentState.STA);
             SplashThread.IsBackground = true;
-            SplashThread.Name = "bossdoyKaraoke_NOW";
+            SplashThread.Name = "BossdoyKaraoke_NOW";
             SplashThread.Start();
 
             // Wait for the blocker to be signaled before continuing. This is essentially the same as: while(ResetSplashCreated.NotSet) {}

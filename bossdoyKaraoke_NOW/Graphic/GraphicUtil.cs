@@ -134,6 +134,7 @@ namespace bossdoyKaraoke_NOW.Graphic
 
                 wbBitmap.AddDirtyRect(new Int32Rect(0, 0, width, height));
                 wbBitmap.Unlock();
+                stream.Dispose();
             }
             catch
             {
