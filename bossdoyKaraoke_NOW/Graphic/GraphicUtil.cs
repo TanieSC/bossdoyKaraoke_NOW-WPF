@@ -234,7 +234,7 @@ namespace bossdoyKaraoke_NOW.Graphic
 
 
         //Dont know how to draw this on SharpDx so i'm using system drawing to draw and convet it to SharpDX Bitmap.
-        public static SharpDX.Direct2D1.Bitmap DrawString(D2D.DeviceContext target, string textString, int width, int height, float fontSize15, float fontSize30)
+        public static D2D.Bitmap DrawString(D2D.DeviceContext target, string textString, int width, int height, float fontSize15, float fontSize30)
         {
             System.Drawing.Graphics gr = System.Drawing.Graphics.FromHwnd(IntPtr.Zero);
             System.Drawing.Bitmap bm = new System.Drawing.Bitmap(width, height, gr);
