@@ -1,24 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SharpDX;
 using Rendercontext = bossdoyKaraoke_NOW.Graphic;
-using SharpDX.Mathematics.Interop;
-using D2D = SharpDX.Direct2D1;
-using DW = SharpDX.DirectWrite;
-using DXGI = SharpDX.DXGI;
-using System.Drawing;
-using System.Drawing.Imaging;
-using bossdoyKaraoke_NOW.Media;
-using System.Runtime.InteropServices;
-using System.IO;
-using System.Windows.Media.Imaging;
-using System.Windows;
 
 namespace bossdoyKaraoke_NOW.FormControl
 {
@@ -83,7 +65,7 @@ namespace bossdoyKaraoke_NOW.FormControl
             }
         }
 
-        private void D2dImageSource_Resize(object sender, System.EventArgs e)
+        private void D2dImageSource_Resize(object sender, EventArgs e)
         {
             if (DesignMode) return;
             if (RenderContext == null) return;

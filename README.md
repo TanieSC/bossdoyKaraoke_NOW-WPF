@@ -1,5 +1,5 @@
 # BossdoyKaraoke_NOW
-Karaoke player that plays mp3cdg with video as background through BASS, the player can also play videoke files with ".cdg", ".vob", ".mp4", ".flv", ".avi", ".mov", ".mkv", ".mpg", ".wav", ".wmv" extension through nVLC
+Karaoke player that plays mp3cdg through BASS with video as background, the player can also play videoke files with ".cdg", ".vob", ".mp4", ".flv", ".avi", ".mov", ".mkv", ".mpg", ".wav", ".wmv" extension through nVLC
 
 Download sample background video located at https://www.dropbox.com/sh/e212tsjgdp50o0j/AAC70MMPy2ZW-hVZjMzfucxha?dl=0 and extract/copy the "VIDEO_NATURE" folder to C:\ProgramData\karaokeNow location or to any location you want just select the video from preferences window under video tab.
 
