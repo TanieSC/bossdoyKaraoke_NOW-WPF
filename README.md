@@ -14,6 +14,6 @@ ShARPZIPLIB: https://github.com/icsharpcode/SharpZipLib
 Material Design: https://materialdesigninxaml.net/  
 
 Credit to: natelowry/DynamicSplashScreen https://github.com/natelowry/DynamicSplashScreen  
-Credit to https://stackoverflow.com/questions/93650/apply-stroke-to-a-textblock-in-wpf  
-Credit to Andy : https://www.technical-recipes.com/2017/how-to-use-interaction-triggers-to-handle-user-initiated-events-in-wpf-mvvm/   
+Credit to: https://stackoverflow.com/questions/93650/apply-stroke-to-a-textblock-in-wpf  
+Credit to: Andy https://www.technical-recipes.com/2017/how-to-use-interaction-triggers-to-handle-user-initiated-events-in-wpf-mvvm/   
 
