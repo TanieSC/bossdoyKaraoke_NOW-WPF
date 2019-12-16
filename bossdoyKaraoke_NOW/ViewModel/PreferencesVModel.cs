@@ -30,7 +30,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private EqualizerModel _equalizer;
         private bool _isPresetLoaded = false;
 
-
         //Prefs Tab
         private Window _prefsWindow;
         private Dictionary<int, BASS_DEVICEINFO> _deviceInfos;
