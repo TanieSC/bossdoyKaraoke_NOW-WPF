@@ -15,7 +15,6 @@ using bossdoyKaraoke_NOW.Model;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 using static bossdoyKaraoke_NOW.Enums.HotKeyEnum;
 using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
-using static bossdoyKaraoke_NOW.Misc.GlobalHotkeyService;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
