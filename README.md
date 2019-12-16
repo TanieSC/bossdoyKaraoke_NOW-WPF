@@ -3,8 +3,8 @@ Karaoke player that plays mp3cdg through BASS with video as background, the play
 
 Download sample background video located at https://www.dropbox.com/sh/e212tsjgdp50o0j/AAC70MMPy2ZW-hVZjMzfucxha?dl=0 and extract/copy the "VIDEO_NATURE" folder to C:\ProgramData\karaokeNow location or to any location you want just select the video from preferences window under video tab.
 
+# Application main window
 ![Apllication Interface](https://github.com/TanieSC/bossdoyKaraoke_NOW-WPF/blob/master/application.png)
-
 
 # Credits:
 This application uses Open Source components. You can find the source code of their open source projects along with license information below. I acknowledge and is grateful to these developers for their contributions to open source.
