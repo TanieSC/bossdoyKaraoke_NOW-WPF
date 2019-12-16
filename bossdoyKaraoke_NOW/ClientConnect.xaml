@@ -8,7 +8,7 @@
         Title="ClientConnect" Height="300" MinHeight="300" MaxHeight="300" Width="300" MinWidth="300" MaxWidth="300">
     <Grid>
         <StackPanel  Orientation="Vertical">
-            <Label Content="Connect to:"></Label>
+            <Label Content="Connect to: Work in progress"></Label>
             <ListBox VerticalContentAlignment="Center" Margin="5,0" BorderBrush="#FFB62222" BorderThickness="1" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,5">
