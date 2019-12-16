@@ -13,6 +13,7 @@ using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Misc;
 using bossdoyKaraoke_NOW.Model;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
+using static bossdoyKaraoke_NOW.Enums.HotKeyEnum;
 using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 using static bossdoyKaraoke_NOW.Misc.GlobalHotkeyService;
 

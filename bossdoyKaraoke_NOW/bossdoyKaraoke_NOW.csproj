@@ -144,6 +144,7 @@
     <Compile Include="ClientConnect.xaml.cs">
       <DependentUpon>ClientConnect.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Enums\HotKeyEnum.cs" />
     <Compile Include="Misc\AppConfig.cs" />
     <Compile Include="BackGroundWorker\QueuedBackgroundWorker.cs" />
     <Compile Include="BackGroundWorker\Worker.cs" />

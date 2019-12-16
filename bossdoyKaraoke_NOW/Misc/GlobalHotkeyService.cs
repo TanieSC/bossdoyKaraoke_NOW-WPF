@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Interop;
+using static bossdoyKaraoke_NOW.Enums.HotKeyEnum;
 
 
 //Credit To: https://stackoverflow.com/questions/48935/how-can-i-register-a-global-hot-key-to-say-ctrlshiftletter-using-wpf-and-ne
@@ -14,18 +15,6 @@ namespace bossdoyKaraoke_NOW.Misc
 {
     class GlobalHotkeyService : IDisposable
     {
-
-        [Flags]
-        public enum KeyModifier
-        {
-            None = 0x0000,
-            Alt = 0x0001,
-            Ctrl = 0x0002,
-            NoRepeat = 0x4000,
-            Shift = 0x0004,
-            Win = 0x0008
-        }
-
         private static Dictionary<int, GlobalHotkeyService> _dictHotKeyToCalBackProc;
 
         [DllImport("user32.dll")]
