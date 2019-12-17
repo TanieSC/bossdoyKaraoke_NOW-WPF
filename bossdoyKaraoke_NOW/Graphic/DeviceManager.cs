@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using D3D = SharpDX.Direct3D;
 using D3D11 = SharpDX.Direct3D11;
 using DXGI = SharpDX.DXGI;

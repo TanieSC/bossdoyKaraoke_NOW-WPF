@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SharpDX;
 using D3D11 = SharpDX.Direct3D11;
 using DXGI = SharpDX.DXGI;
 using D2D = SharpDX.Direct2D1;

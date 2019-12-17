@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Threading;
-using bossdoyKaraoke_NOW.BackGroundWorker;
 using bossdoyKaraoke_NOW.Misc;
 using bossdoyKaraoke_NOW.Model;
 using bossdoyKaraoke_NOW.ViewModel;
@@ -18,7 +11,6 @@ using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Fx;
 using Un4seen.Bass.AddOn.Mix;
 using Un4seen.Bass.AddOn.Tags;
-using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 using static bossdoyKaraoke_NOW.Enums.RemoveVocalEnum;
 
