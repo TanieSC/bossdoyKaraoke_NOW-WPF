@@ -109,7 +109,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                    // _parent = (((((x as MenuItem).Parent as MenuItem).Parent as Menu).Parent as DockPanel).Parent as Grid).Parent as MainWindow;
                     cc.Owner = _parent;
                     cc.Topmost = true;
-                    cc.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+                    cc.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                     cc.Show();
                     cc.Activate();
                 }));
