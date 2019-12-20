@@ -19,7 +19,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private GlobalHotkeyService _ctlA; //Add Songs
         private GlobalHotkeyService _ctlP; //Preferences form
         private GlobalHotkeyService _ctlE; //Exit
-        private GlobalHotkeyService _spceBar; //PlayPause
+        private GlobalHotkeyService _ctlSpceBar; //PlayPause
         private GlobalHotkeyService _ctlN; //Next
         private GlobalHotkeyService _ctlUP; //Volume UP
         private GlobalHotkeyService _ctlDwn; // Volume Down
@@ -50,7 +50,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     _ctlA = new GlobalHotkeyService(Key.A, KeyModifier.Ctrl, OnHotKeyHandler);
                     _ctlP = new GlobalHotkeyService(Key.P, KeyModifier.Ctrl, OnHotKeyHandler);
                     _ctlE = new GlobalHotkeyService(Key.E, KeyModifier.Ctrl, OnHotKeyHandler);
-                    _spceBar = new GlobalHotkeyService(Key.Space, KeyModifier.None, OnHotKeyHandler);
+                    _ctlSpceBar = new GlobalHotkeyService(Key.Space, KeyModifier.Ctrl, OnHotKeyHandler);
                     _ctlN = new GlobalHotkeyService(Key.N, KeyModifier.Ctrl, OnHotKeyHandler);
                     _ctlUP = new GlobalHotkeyService(Key.Up, KeyModifier.Ctrl, OnHotKeyHandler);
                     _ctlDwn = new GlobalHotkeyService(Key.Down, KeyModifier.Ctrl, OnHotKeyHandler);
@@ -233,7 +233,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             _ctlA.Dispose();
             _ctlP.Dispose();
             _ctlE.Dispose();
-            _spceBar.Dispose();
+            _ctlSpceBar.Dispose();
             _ctlN.Dispose();
             _ctlUP.Dispose();
             _ctlDwn.Dispose();
