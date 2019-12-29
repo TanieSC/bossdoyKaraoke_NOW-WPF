@@ -580,7 +580,7 @@ namespace bossdoyKaraoke_NOW.Media
                 _mediaFileName = mediaFileName;
                 //mp3FileName = _mediaFileName;
                 if (!_isAddingToQueue)
-                    _isCdgFileType = false;
+                    IsCdgFileType = false;
 
                 return;
             }
@@ -591,7 +591,7 @@ namespace bossdoyKaraoke_NOW.Media
                 _mediaFileName = mp3FileName;
 
                 if (!_isAddingToQueue)
-                    _isCdgFileType = true;
+                    IsCdgFileType = true;
             }
         }
 
@@ -679,8 +679,8 @@ namespace bossdoyKaraoke_NOW.Media
                     _trackInfo = new TrackInfoModel(sender);
                     _trackInfo.ID = count.ToString();
 
-                    if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
-                        _isCdgFileType = true;
+                    if (!IsCdgFileType && CurrentPlayState == PlayState.Stopped)
+                        IsCdgFileType = true;
                 }
                 else
                 {
@@ -689,7 +689,7 @@ namespace bossdoyKaraoke_NOW.Media
 
                     double vlcTimeDuration = GetVlcTimeOrDuration(Convert.ToDouble(Vlc.Instance.GetTimeDuration));
 
-                    if (!_isCdgFileType && CurrentPlayState == PlayState.Stopped)
+                    if (!IsCdgFileType && CurrentPlayState == PlayState.Stopped)
                         IsCdgFileType = false;
 
                     _trackInfo.ID = count.ToString();
