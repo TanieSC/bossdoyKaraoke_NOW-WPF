@@ -182,6 +182,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
                                 _isMute = false;
                             }
                             break;
+                        case Key.Space:
+                            if (CurrentPlayState == PlayState.Paused)
+                            {
+                                Player.Instance.Play();
+                            }
+                            else
+                            {
+                                Player.Instance.Pause();
+                            }
+                            break;
                     }
                     break;
                 case KeyModifier.Ctrl | KeyModifier.Alt:
