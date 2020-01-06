@@ -138,7 +138,7 @@ namespace bossdoyKaraoke_NOW.Media
             Directory.CreateDirectory(_songsPath);
             if (!File.Exists(_songQueueList))
             {
-                using (File.Create(_songQueueList)) ;
+                using (File.Create(_songQueueList));
             }
 
             List<string> songs;
