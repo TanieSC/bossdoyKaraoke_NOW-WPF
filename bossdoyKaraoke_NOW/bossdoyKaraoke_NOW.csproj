@@ -62,6 +62,10 @@
       <HintPath>..\packages\Bass.NetWrapper.2.4.12.5\lib\net45\Bass.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ManagedWifi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\managedwifi.1.1.0\lib\net20\ManagedWifi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.2.2.920, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.2.2\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
@@ -165,6 +169,7 @@
     <Compile Include="Model\DefaultVideoBGModel.cs" />
     <Compile Include="Model\EqualizerModel.cs" />
     <Compile Include="Model\TitleTextModel.cs" />
+    <Compile Include="Model\WifiModel.cs" />
     <Compile Include="Preferences.xaml.cs">
       <DependentUpon>Preferences.xaml</DependentUpon>
     </Compile>
@@ -187,6 +192,7 @@
     <Compile Include="ViewModel\ISearchBoxVModel.cs" />
     <Compile Include="ViewModel\ITreeViewDialogVModel.cs" />
     <Compile Include="ViewModel\ITreeViewVModel.cs" />
+    <Compile Include="ViewModel\IConnectionViewModel.cs" />
     <Compile Include="ViewModel\ListViewVModel.cs" />
     <Compile Include="ViewModel\MainMenuVModel.cs" />
     <Compile Include="ViewModel\MediaControlsVModel.cs" />
@@ -194,6 +200,7 @@
     <Compile Include="ViewModel\SearchBoxVModel.cs" />
     <Compile Include="ViewModel\TreeViewDialogVModel.cs" />
     <Compile Include="ViewModel\TreeViewVModel.cs" />
+    <Compile Include="ViewModel\ConnectionViewModel.cs" />
     <Page Include="ClientConnect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
