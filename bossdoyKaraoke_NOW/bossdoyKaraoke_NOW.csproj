@@ -148,6 +148,7 @@
     <Compile Include="ClientConnect.xaml.cs">
       <DependentUpon>ClientConnect.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Enums\ConnectionEnum.cs" />
     <Compile Include="Enums\HotKeyEnum.cs" />
     <Compile Include="Misc\AppConfig.cs" />
     <Compile Include="BackGroundWorker\QueuedBackgroundWorker.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Interactivity\RelayCommand.cs" />
     <Compile Include="Misc\GlobalHotkeyService.cs" />
     <Compile Include="Model\AudioOutputDeviceModel.cs" />
+    <Compile Include="Model\ConnectionModel.cs" />
     <Compile Include="Model\DefaultVideoBGModel.cs" />
     <Compile Include="Model\EqualizerModel.cs" />
     <Compile Include="Model\TitleTextModel.cs" />
@@ -192,7 +194,7 @@
     <Compile Include="ViewModel\ISearchBoxVModel.cs" />
     <Compile Include="ViewModel\ITreeViewDialogVModel.cs" />
     <Compile Include="ViewModel\ITreeViewVModel.cs" />
-    <Compile Include="ViewModel\IConnectionViewModel.cs" />
+    <Compile Include="ViewModel\IConnectionVModel.cs" />
     <Compile Include="ViewModel\ListViewVModel.cs" />
     <Compile Include="ViewModel\MainMenuVModel.cs" />
     <Compile Include="ViewModel\MediaControlsVModel.cs" />
@@ -200,7 +202,7 @@
     <Compile Include="ViewModel\SearchBoxVModel.cs" />
     <Compile Include="ViewModel\TreeViewDialogVModel.cs" />
     <Compile Include="ViewModel\TreeViewVModel.cs" />
-    <Compile Include="ViewModel\ConnectionViewModel.cs" />
+    <Compile Include="ViewModel\ConnectionVModel.cs" />
     <Page Include="ClientConnect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using bossdoyKaraoke_NOW.BackGroundWorker;
+using bossdoyKaraoke_NOW.Enums;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Misc;
@@ -105,6 +106,21 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _clientConnectShowCommand ?? (_clientConnectShowCommand = new RelayCommand(x =>
                 {
+                    var connType = x as string;
+
+                    if (connType == "WiFi")
+                    {
+                        ConnectionEnum.CurrentConnection = ConnectionEnum.ConnectionType.WiFi;
+                    }
+                    else if (connType == "WiFiDirect")
+                    {
+                        ConnectionEnum.CurrentConnection = ConnectionEnum.ConnectionType.WiFiDirect;
+                    }
+                    else
+                    {
+                        ConnectionEnum.CurrentConnection = ConnectionEnum.ConnectionType.BlueTooth;
+                    }
+                                     
                     ClientConnect cc = new ClientConnect();
                    // _parent = (((((x as MenuItem).Parent as MenuItem).Parent as Menu).Parent as DockPanel).Parent as Grid).Parent as MainWindow;
                     cc.Owner = _parent;

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    public interface IConnectionViewModel
+    public interface IConnectionVModel
     {
-
+        ICommand LoadedCommand { get; }
     }
 }

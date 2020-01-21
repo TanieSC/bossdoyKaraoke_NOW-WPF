@@ -173,7 +173,7 @@
                         </MenuItem.Icon>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{Binding ElementName=connect_wifi}" />
+                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="WiFi" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
@@ -183,7 +183,7 @@
                         </MenuItem.Icon>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{Binding ElementName=connect_wifi_direct}" />
+                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="WiFiDirect" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
@@ -193,7 +193,7 @@
                         </MenuItem.Icon>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{Binding ElementName=connect_bluetooth}" />
+                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="BlueTooth" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
