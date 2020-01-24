@@ -58,12 +58,15 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         {
                             // Lists all available networks
                             Wlan.WlanAvailableNetwork[] networks = _wlanIface.GetAvailableNetworkList(0);
-
+                            
                             foreach (Wlan.WlanAvailableNetwork network in networks)
                             {
                                 var name = GetStringForSSID(network.dot11Ssid);
                                 var ssidBytes = Encoding.Default.GetBytes(name);
 
+                                if (network.flags == Wlan.WlanAvailableNetworkFlags.HasProfile)
+                                {
+                                }
                               //  var rrr = Wlan.WlanAvailableNetworkFlags.Connected;
 
                                 WifiModel wifi = new WifiModel
@@ -75,6 +78,11 @@ namespace bossdoyKaraoke_NOW.ViewModel
                                    // SSIDHex = StringToHex(ssidBytes),
                                     Key = ""
                                 };
+
+                                if (network.flags == Wlan.WlanAvailableNetworkFlags.HasProfile)
+                                {
+                                    Console.WriteLine("WIFI " + wifi.DisplayName);
+                                }
 
                                 Items.Add(wifi.DisplayName);
                             }
