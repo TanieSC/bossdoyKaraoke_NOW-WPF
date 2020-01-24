@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="Enums\ConnectionEnum.cs" />
     <Compile Include="Enums\HotKeyEnum.cs" />
+    <Compile Include="Enums\MediaControlsEnum.cs" />
     <Compile Include="Misc\AppConfig.cs" />
     <Compile Include="BackGroundWorker\QueuedBackgroundWorker.cs" />
     <Compile Include="BackGroundWorker\Worker.cs" />

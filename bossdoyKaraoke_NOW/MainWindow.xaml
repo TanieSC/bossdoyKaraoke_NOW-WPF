@@ -6,6 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:bossdoyKaraoke_NOW"
+        xmlns:enum="clr-namespace:bossdoyKaraoke_NOW.Enums"
         xmlns:tv="clr-namespace:bossdoyKaraoke_NOW.Media"
         xmlns:vm="clr-namespace:bossdoyKaraoke_NOW.ViewModel"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -21,7 +22,7 @@
         <vm:MediaControlsVModel x:Key="MediaControls"/>
         <vm:SearchBoxVModel x:Key="SearchBoxModel"/>
         <vm:ListViewVModel x:Key="ListViewModel"/>
-        <vm:ItemIndexConverter x:Key="ItemIndexConverter" />
+        <vm:ItemIndexConverter x:Key="ItemIndexConverter"/>
     </Window.Resources>
     <Window.DataContext>
         <StaticResource ResourceKey="MainMenuModel"/>
@@ -102,38 +103,68 @@
                 </MenuItem>
             </Menu>
             <Menu VerticalAlignment="Top">
-                <MenuItem Header="PlayBack">
-                    <MenuItem Header="Play/Pause" InputGestureText="Space">
+                <MenuItem Header="_PlayBack">
+                    <MenuItem Header="Play/Pause" InputGestureText="Ctrl+Space">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="PlayPause" />
                         </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding MediaControlsCommand}" CommandParameter="{x:Static enum:MediaControlsEnum+Control.PlayPause}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </MenuItem>
                     <MenuItem Header="Next" InputGestureText="Ctrl+N">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="SkipNext" />
                         </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding MediaControlsCommand}" CommandParameter="{x:Static enum:MediaControlsEnum+Control.Next}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </MenuItem>
                     <Separator/>
                     <MenuItem Header="Volume Up" InputGestureText="Ctrl+Up">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="VolumePlus" />
                         </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding MediaControlsCommand}" CommandParameter="{x:Static enum:MediaControlsEnum+Control.VolumeUp}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </MenuItem>
                     <MenuItem Header="Volume Down" InputGestureText="Ctrl+Down">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="VolumeMinus" />
                         </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding MediaControlsCommand}" CommandParameter="{x:Static enum:MediaControlsEnum+Control.VolumeDown}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </MenuItem>
                     <MenuItem Header="Mute/UnMute" InputGestureText="Ctrl+M">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Mute" />
                         </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding MediaControlsCommand}" CommandParameter="{x:Static enum:MediaControlsEnum+Control.MuteUnmute}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </MenuItem>
                     <Separator/>
                     <MenuItem Header="Key Up" InputGestureText="Ctrl+Alt+Up">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Hashtag" />
                         </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding MediaControlsCommand}" CommandParameter="{x:Static enum:MediaControlsEnum+Control.KeyUp}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </MenuItem>
                     <MenuItem Header="Key Down" InputGestureText="Ctrl+Alt+Down">
                         <MenuItem.Icon>
@@ -148,17 +179,32 @@
                                 </materialDesign:PackIcon.RenderTransform>
                             </materialDesign:PackIcon>
                         </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding MediaControlsCommand}" CommandParameter="{x:Static enum:MediaControlsEnum+Control.KeyDown}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </MenuItem>
                     <Separator/>
                     <MenuItem Header="Tempo Up" InputGestureText="Ctrl+Shift+Up">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Plus" />
                         </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding MediaControlsCommand}" CommandParameter="{x:Static enum:MediaControlsEnum+Control.TempoUp}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </MenuItem>
                     <MenuItem Header="Tempo Down" InputGestureText="Ctrl+Shift+Down">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Minus" />
                         </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding MediaControlsCommand}" CommandParameter="{x:Static enum:MediaControlsEnum+Control.TempoDown}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </MenuItem>
                 </MenuItem>
             </Menu>
@@ -173,7 +219,7 @@
                         </MenuItem.Icon>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="WiFi" />
+                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{x:Static enum:ConnectionEnum+ConnectionType.WiFi}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
@@ -183,7 +229,7 @@
                         </MenuItem.Icon>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="WiFiDirect" />
+                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{x:Static enum:ConnectionEnum+ConnectionType.WiFiDirect}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
@@ -193,7 +239,7 @@
                         </MenuItem.Icon>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="BlueTooth" />
+                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{x:Static enum:ConnectionEnum+ConnectionType.BlueTooth}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>

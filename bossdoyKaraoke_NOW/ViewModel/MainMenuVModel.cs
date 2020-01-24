@@ -8,7 +8,9 @@ using bossdoyKaraoke_NOW.Media;
 using bossdoyKaraoke_NOW.Misc;
 using bossdoyKaraoke_NOW.Model;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
+using static bossdoyKaraoke_NOW.Enums.ConnectionEnum;
 using static bossdoyKaraoke_NOW.Enums.HotKeyEnum;
+using static bossdoyKaraoke_NOW.Enums.MediaControlsEnum;
 using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 
 namespace bossdoyKaraoke_NOW.ViewModel
@@ -33,13 +35,21 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
         // private Preferences prefs = new Preferences();
         private ISongsSource _songsSource = SongsSource.Instance;
-        ITreeViewModelChild sender = new TreeViewModelChild();
+        private ITreeViewModelChild sender = new TreeViewModelChild();
+        private MediaControlsVModel _mediaControls;
         private ICommand _loadedCommand;
         private ICommand _addSongsCommand;
         private ICommand _exitApplicationCommand;
         private ICommand _openCommand;
         private ICommand _clientConnectShowCommand;
         private ICommand _preferencesShowCommand;
+        private ICommand _mediaControlsCommand;
+
+
+        public MediaControlsVModel MediaControl
+        {
+           get { return _mediaControls = MediaControlsVModel.Instance; }
+        }
 
         public ICommand LoadedCommand
         {
@@ -62,7 +72,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     _ctlShftDwn = new GlobalHotkeyService(Key.Down, KeyModifier.Ctrl | KeyModifier.Shift, OnHotKeyHandler);
 
                     _parent = x as MainWindow;
-
+                    
                 }));
             }
         }
@@ -106,20 +116,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 return _clientConnectShowCommand ?? (_clientConnectShowCommand = new RelayCommand(x =>
                 {
-                    var connType = x as string;
-
-                    if (connType == "WiFi")
-                    {
-                        ConnectionEnum.CurrentConnection = ConnectionEnum.ConnectionType.WiFi;
-                    }
-                    else if (connType == "WiFiDirect")
-                    {
-                        ConnectionEnum.CurrentConnection = ConnectionEnum.ConnectionType.WiFiDirect;
-                    }
-                    else
-                    {
-                        ConnectionEnum.CurrentConnection = ConnectionEnum.ConnectionType.BlueTooth;
-                    }
+                    CurrentConnection = (ConnectionType)x;
                                      
                     ClientConnect cc = new ClientConnect();
                    // _parent = (((((x as MenuItem).Parent as MenuItem).Parent as Menu).Parent as DockPanel).Parent as Grid).Parent as MainWindow;
@@ -142,6 +139,57 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 }));
             }
         }
+
+        public ICommand MediaControlsCommand
+        {
+            get
+            {
+                return _mediaControlsCommand ?? (_mediaControlsCommand = new RelayCommand(x =>
+                {
+
+                    var control = (Control)x;
+                    switch (control)
+                    {
+                        case Control.PlayPause:
+                            //System.Windows.Input.Mouse.LeftButton
+                            OnHotKeyHandler(_ctlSpceBar);
+                            break;
+                        case Control.Next:
+                            //System.Windows.Input.Mouse.LeftButton
+                            OnHotKeyHandler(_ctlN);
+                            break;
+                        case Control.VolumeUp:
+                            //System.Windows.Input.Mouse.LeftButton
+                            OnHotKeyHandler(_ctlUP);
+                            break;
+                        case Control.VolumeDown:
+                            //System.Windows.Input.Mouse.LeftButton
+                            OnHotKeyHandler(_ctlDwn);
+                            break;
+                        case Control.MuteUnmute:
+                            //System.Windows.Input.Mouse.LeftButton
+                            OnHotKeyHandler(_ctlM);
+                            break;
+                        case Control.KeyUp:
+                            //System.Windows.Input.Mouse.LeftButton
+                            OnHotKeyHandler(_ctlAltUp);
+                            break;
+                        case Control.KeyDown:
+                            //System.Windows.Input.Mouse.LeftButton
+                            OnHotKeyHandler(_ctlAltDwn);
+                            break;
+                        case Control.TempoUp:
+                            //System.Windows.Input.Mouse.LeftButton
+                            OnHotKeyHandler(_ctlShftUp);
+                            break;
+                        case Control.TempoDown:
+                            //System.Windows.Input.Mouse.LeftButton
+                            OnHotKeyHandler(_ctlShftDwn);
+                            break;
+                    }
+                }));
+            }
+        }       
 
         private void OnHotKeyHandler(GlobalHotkeyService hotKey)
         {

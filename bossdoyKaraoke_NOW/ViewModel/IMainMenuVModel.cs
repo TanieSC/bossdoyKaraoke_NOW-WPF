@@ -15,5 +15,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         ICommand ClientConnectShowCommand { get; }
         ICommand PreferencesShowCommand { get; }
         ICommand ExitApplicationCommand { get; }
+        ICommand MediaControlsCommand { get; }
     }
+
 }
