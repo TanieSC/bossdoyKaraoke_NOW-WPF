@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -10,12 +12,14 @@ using System.Windows.Input;
 using bossdoyKaraoke_NOW.Enums;
 using bossdoyKaraoke_NOW.Interactivity;
 using bossdoyKaraoke_NOW.Model;
+using MaterialDesignThemes.Wpf;
 using NativeWifi;
 using static NativeWifi.WlanClient;
+using static bossdoyKaraoke_NOW.Enums.ConnectionEnum;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
-    class ConnectionVModel : IConnectionVModel
+    class ConnectionVModel : IConnectionVModel, INotifyPropertyChanged
     {
         private WlanClient _client;
         private WlanInterface _wlanIface;
@@ -25,6 +29,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _loadedCommand;
         private ICommand _selectedItemCommand;
         private ICommand _connectCommand;
+        private ICommand _clientConnectCommand;
+        private PackIconKind _iconClientConnect = PackIconKind.EthernetCableOff;
 
         public ConnectionVModel()
         {
@@ -32,8 +38,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
             _wlanIface = _client.Interfaces.FirstOrDefault();
 
             var gg = NetworkInterface.GetAllNetworkInterfaces();
+        }
 
-
+        public PackIconKind IconClientConnect
+        {
+            get
+            {
+                return _iconClientConnect;
+            }
+            set
+            {
+                _iconClientConnect = value;
+                OnPropertyChanged();
+            }
         }
 
         public ICommand LoadedCommand
@@ -97,6 +114,31 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         }
                     }
 
+                }));
+            }
+        }
+
+
+        public ICommand ClientConnectCommand
+        {
+            get
+            {
+                return _clientConnectCommand ?? (_clientConnectCommand = new RelayCommand(x =>
+                {
+                    CurrentConnection = (ConnectionType)x;
+
+                    if (CurrentConnection == ConnectionType.WiFi)
+                    {
+                        IconClientConnect = PackIconKind.Wifi;
+                    }
+                    if (CurrentConnection == ConnectionType.WiFiDirect)
+                    {
+                        IconClientConnect = PackIconKind.WifiFavourite;
+                    }
+                    if (CurrentConnection == ConnectionType.BlueTooth)
+                    {
+                        IconClientConnect = PackIconKind.Bluetooth;
+                    }
                 }));
             }
         }
@@ -194,6 +236,13 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 sb.Append(Convert.ToString(byStr[i], 16));
             }
             return (sb.ToString().ToUpper());
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

@@ -119,7 +119,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     CurrentConnection = (ConnectionType)x;
                                      
                     ClientConnect cc = new ClientConnect();
-                   // _parent = (((((x as MenuItem).Parent as MenuItem).Parent as Menu).Parent as DockPanel).Parent as Grid).Parent as MainWindow;
                     cc.Owner = _parent;
                     cc.Topmost = true;
                     cc.WindowStartupLocation = WindowStartupLocation.CenterOwner;

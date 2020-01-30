@@ -16,10 +16,11 @@
         Name="main_window"
        Title="BossDoyKaraoke_Now" Height="630" Width="820" MinWidth="820" MinHeight="630" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <vm:MainMenuVModel x:Key="MainMenuModel"></vm:MainMenuVModel>
+        <vm:MainMenuVModel x:Key="MainMenuModel"/>
+        <vm:MediaControlsVModel x:Key="MediaControlsModel"/>
+        <vm:ConnectionVModel x:Key="ConnectionModel"/>
         <vm:TreeViewDialogVModel x:Key="TreeViewDialogModel"/>
         <vm:TreeViewVModel x:Key="TreeViewModel"/>
-        <vm:MediaControlsVModel x:Key="MediaControls"/>
         <vm:SearchBoxVModel x:Key="SearchBoxModel"/>
         <vm:ListViewVModel x:Key="ListViewModel"/>
         <vm:ItemIndexConverter x:Key="ItemIndexConverter"/>
@@ -208,18 +209,21 @@
                     </MenuItem>
                 </MenuItem>
             </Menu>
-            <Menu VerticalAlignment="Top" DockPanel.Dock="Right" HorizontalAlignment="Right" >
+            <Menu DataContext="{StaticResource ConnectionModel}" VerticalAlignment="Top" DockPanel.Dock="Right" HorizontalAlignment="Right" >
                 <MenuItem>
                     <MenuItem.Header>
                         <TextBlock Text="Client Connect" TextDecorations="Underline"></TextBlock>
                     </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="{Binding IconClientConnect}" />
+                    </MenuItem.Icon>
                     <MenuItem Header="Wi-Fi" x:Name="connect_wifi">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Wifi" />
                         </MenuItem.Icon>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{x:Static enum:ConnectionEnum+ConnectionType.WiFi}" />
+                                <i:InvokeCommandAction Command="{Binding ClientConnectCommand}" CommandParameter="{x:Static enum:ConnectionEnum+ConnectionType.WiFi}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
@@ -229,7 +233,7 @@
                         </MenuItem.Icon>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{x:Static enum:ConnectionEnum+ConnectionType.WiFiDirect}" />
+                                <i:InvokeCommandAction Command="{Binding ClientConnectCommand}" CommandParameter="{x:Static enum:ConnectionEnum+ConnectionType.WiFiDirect}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
@@ -239,14 +243,14 @@
                         </MenuItem.Icon>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClientConnectShowCommand}" CommandParameter="{x:Static enum:ConnectionEnum+ConnectionType.BlueTooth}" />
+                                <i:InvokeCommandAction Command="{Binding ClientConnectCommand}" CommandParameter="{x:Static enum:ConnectionEnum+ConnectionType.BlueTooth}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
                 </MenuItem>
             </Menu>
         </DockPanel>
-        <DockPanel DataContext="{StaticResource MediaControls}" Name="media_controls" Grid.ColumnSpan="3" VerticalAlignment="Top">
+        <DockPanel DataContext="{StaticResource MediaControlsModel}" Name="media_controls" Grid.ColumnSpan="3" VerticalAlignment="Top">
             <!--<DockPanel.DataContext>
                 <vm:MediaControls/>
             </DockPanel.DataContext>-->
