@@ -145,9 +145,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ClientConnect.xaml.cs">
-      <DependentUpon>ClientConnect.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ClientConnect\WiFiorCableConnect.cs" />
     <Compile Include="Enums\ConnectionEnum.cs" />
     <Compile Include="Enums\HotKeyEnum.cs" />
     <Compile Include="Enums\MediaControlsEnum.cs" />
@@ -204,10 +202,6 @@
     <Compile Include="ViewModel\TreeViewDialogVModel.cs" />
     <Compile Include="ViewModel\TreeViewVModel.cs" />
     <Compile Include="ViewModel\ConnectionVModel.cs" />
-    <Page Include="ClientConnect.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="FullScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

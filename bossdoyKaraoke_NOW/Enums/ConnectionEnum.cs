@@ -13,6 +13,7 @@ namespace bossdoyKaraoke_NOW.Enums
         public enum ConnectionType
         {
             BlueTooth,
+            LanCable,
             WiFi,
             WiFiDirect
         }

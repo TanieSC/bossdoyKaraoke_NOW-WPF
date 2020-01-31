@@ -118,12 +118,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     CurrentConnection = (ConnectionType)x;
                                      
-                    ClientConnect cc = new ClientConnect();
-                    cc.Owner = _parent;
-                    cc.Topmost = true;
-                    cc.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                    cc.Show();
-                    cc.Activate();
+                    //ClientConnect cc = new ClientConnect();
+                    //cc.Owner = _parent;
+                    //cc.Topmost = true;
+                    //cc.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                    //cc.Show();
+                    //cc.Activate();
                 }));
             }
         }

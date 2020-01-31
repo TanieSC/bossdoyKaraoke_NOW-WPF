@@ -16,12 +16,16 @@ using MaterialDesignThemes.Wpf;
 using NativeWifi;
 using static NativeWifi.WlanClient;
 using static bossdoyKaraoke_NOW.Enums.ConnectionEnum;
-using System.Net;
+using System.Net.Sockets;
+using System.Windows;
+using bossdoyKaraoke_NOW.ClientConnect;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
     class ConnectionVModel : IConnectionVModel, INotifyPropertyChanged
     {
+        private string _ipv4Addr;
+        private bool _isAvailbale;
         private WlanClient _client;
         private WlanInterface _wlanIface;
         private ListBox _device_list;
@@ -60,59 +64,59 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     _device_list = x as ListBox;
 
-                   
 
 
-                //    if (_wlanIface == null)
-                //    {
-                //        Console.WriteLine("No Wifi Interface available!");
-                //        throw new Exception("No Wifi Interface available!");
-                //    }
-                //    else
-                //    {
-                //        if (ConnectionEnum.CurrentConnection == ConnectionEnum.ConnectionType.WiFi)
-                //        {
-                //            // Lists all available networks
-                //            Wlan.WlanAvailableNetwork[] networks = _wlanIface.GetAvailableNetworkList(0);
-                            
-                //            foreach (Wlan.WlanAvailableNetwork network in networks)
-                //            {
-                //                var name = GetStringForSSID(network.dot11Ssid);
-                //                var ssidBytes = Encoding.Default.GetBytes(name);
 
-                //                if (network.flags == Wlan.WlanAvailableNetworkFlags.HasProfile)
-                //                {
-                //                }
-                //              //  var rrr = Wlan.WlanAvailableNetworkFlags.Connected;
+                    //    if (_wlanIface == null)
+                    //    {
+                    //        Console.WriteLine("No Wifi Interface available!");
+                    //        throw new Exception("No Wifi Interface available!");
+                    //    }
+                    //    else
+                    //    {
+                    //        if (ConnectionEnum.CurrentConnection == ConnectionEnum.ConnectionType.WiFi)
+                    //        {
+                    //            // Lists all available networks
+                    //            Wlan.WlanAvailableNetwork[] networks = _wlanIface.GetAvailableNetworkList(0);
 
-                //                WifiModel wifi = new WifiModel
-                //                {
-                //                    DisplayName = name,
-                //                    ProfileName = network.profileName,
-                //                    SSID = name,
-                //                    SSIDBytes = ssidBytes,
-                //                   // SSIDHex = StringToHex(ssidBytes),
-                //                    Key = ""
-                //                };
+                    //            foreach (Wlan.WlanAvailableNetwork network in networks)
+                    //            {
+                    //                var name = GetStringForSSID(network.dot11Ssid);
+                    //                var ssidBytes = Encoding.Default.GetBytes(name);
 
-                //                if (network.flags == Wlan.WlanAvailableNetworkFlags.HasProfile)
-                //                {
-                                  
-                //                    Console.WriteLine("WIFI " + wifi.DisplayName);
-                //                }
+                    //                if (network.flags == Wlan.WlanAvailableNetworkFlags.HasProfile)
+                    //                {
+                    //                }
+                    //              //  var rrr = Wlan.WlanAvailableNetworkFlags.Connected;
 
-                //                Items.Add(wifi.DisplayName);
-                //            }
+                    //                WifiModel wifi = new WifiModel
+                    //                {
+                    //                    DisplayName = name,
+                    //                    ProfileName = network.profileName,
+                    //                    SSID = name,
+                    //                    SSIDBytes = ssidBytes,
+                    //                   // SSIDHex = StringToHex(ssidBytes),
+                    //                    Key = ""
+                    //                };
 
-                //            // device_list.ItemsSource = Items; //planning to move this to backgrond worker
-                //        }
-                //        else if (ConnectionEnum.CurrentConnection == ConnectionEnum.ConnectionType.WiFiDirect)
-                //        {
-                //        }
-                //        else
-                //        {
-                //        }
-                //    }
+                    //                if (network.flags == Wlan.WlanAvailableNetworkFlags.HasProfile)
+                    //                {
+
+                    //                    Console.WriteLine("WIFI " + wifi.DisplayName);
+                    //                }
+
+                    //                Items.Add(wifi.DisplayName);
+                    //            }
+
+                    //            // device_list.ItemsSource = Items; //planning to move this to backgrond worker
+                    //        }
+                    //        else if (ConnectionEnum.CurrentConnection == ConnectionEnum.ConnectionType.WiFiDirect)
+                    //        {
+                    //        }
+                    //        else
+                    //        {
+                    //        }
+                    //    }
 
                 }));
             }
@@ -129,32 +133,53 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
                     if (CurrentConnection == ConnectionType.WiFi)
                     {
-                        IconClientConnect = PackIconKind.Wifi;
+                        _isAvailbale = GetLocalIPv4(NetworkInterfaceType.Wireless80211);
 
-                        IPAddress ipAd = IPAddress.Parse("127.0.0.1");
-
-                        var df =  IsNetworkAvailable(10000000);
-                        //if (_wlanIface == null)
-                        //{
-                        //    Console.WriteLine("No Wifi Interface available!");
-                        //    //throw new Exception("No Wifi Interface available!");
-                        //}
-                        //else
-                        //{
-                        //    Wlan.WlanAvailableNetwork[] networks = _wlanIface.GetAvailableNetworkList(0);
-                        //    foreach (Wlan.WlanAvailableNetwork network in networks)
-                        //    {
-                        //        if (network.flags.ToString().Contains(Wlan.WlanAvailableNetworkFlags.Connected.ToString()))
-                        //        {
-                        //            Console.WriteLine("WIFI Connected");
-                        //        }
-
-                        //    }
-                        //}
+                        if (!_isAvailbale)
+                        {
+                            MessageBox.Show("WiFi is not connected!");
+                            return;
+                        }
+                        else
+                        {
+                            IconClientConnect = PackIconKind.Wifi;
+                            WiFiorCableConnect.Start(_ipv4Addr);
+                        }
                     }
                     if (CurrentConnection == ConnectionType.WiFiDirect)
                     {
-                        IconClientConnect = PackIconKind.WifiFavourite;
+                        {
+                            _isAvailbale = GetLocalIPv4(NetworkInterfaceType.Wireless80211);
+
+                            if (!_isAvailbale)
+                            {
+                                MessageBox.Show("WiFiDirect is not available!");
+                                return;
+                            }
+                            else
+                            {
+                                IconClientConnect = PackIconKind.WifiFavourite;
+                               // WiFiorCableConnect.Start(_ipv4Addr);
+                            }
+                        }
+                    }
+                    if (CurrentConnection == ConnectionType.LanCable)
+                    {                      
+                        _isAvailbale = GetLocalIPv4(NetworkInterfaceType.Ethernet);
+
+                        if (!_isAvailbale)
+                            _isAvailbale = GetLocalIPv4(NetworkInterfaceType.GigabitEthernet);
+
+                        if (!_isAvailbale)
+                        {
+                            MessageBox.Show("Lan Cable is not connected!");
+                            return;
+                        }
+                        else
+                        {
+                            IconClientConnect = PackIconKind.Lan;
+                            // WiFiorCableConnect.Start(_ipv4Addr);
+                        }
                     }
                     if (CurrentConnection == ConnectionType.BlueTooth)
                     {
@@ -196,9 +221,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
             try
             {
-               // var f = _wlanIface.GetProfileXml(profileName);
-               // _wlanIface.SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
-                _wlanIface.Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Any, profileName);                
+                // var f = _wlanIface.GetProfileXml(profileName);
+                // _wlanIface.SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
+                _wlanIface.Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Any, profileName);
             }
             catch (Exception ex)
             {
@@ -207,13 +232,14 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-
-        internal static string GetLocalIPv4(NetworkInterfaceType _type)
+        private bool GetLocalIPv4(NetworkInterfaceType type)
         {
-            string output = "";
+            if (!NetworkInterface.GetIsNetworkAvailable())
+                return false; //"No Network Interface available!";
+
             foreach (NetworkInterface item in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (item.NetworkInterfaceType == _type && item.OperationalStatus == OperationalStatus.Up)
+                if (item.NetworkInterfaceType == type && item.OperationalStatus == OperationalStatus.Up)
                 {
                     IPInterfaceProperties adapterProperties = item.GetIPProperties();
 
@@ -221,56 +247,20 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         foreach (UnicastIPAddressInformation ip in adapterProperties.UnicastAddresses)
                         {
-                            if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                            if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
                             {
-                                output = ip.Address.ToString();
+                                _ipv4Addr = ip.Address.ToString();
+                                return true;
                             }
                         }
                     }
                 }
             }
 
-            return output;
+            return false;
         }
 
-        public static string IsNetworkAvailable(long minimumSpeed)
-        {
-            if (!NetworkInterface.GetIsNetworkAvailable())
-                return "";
-
-            var ddd = NetworkInterface.GetAllNetworkInterfaces();
-
-            var dfg = ddd[7].GetIPProperties().DhcpServerAddresses;
-
-            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
-            {
-                // discard because of standard reasons
-                if ((ni.OperationalStatus != OperationalStatus.Up) ||
-                    (ni.NetworkInterfaceType == NetworkInterfaceType.Loopback) ||
-                    (ni.NetworkInterfaceType == NetworkInterfaceType.Tunnel))
-                    continue;
-
-                // this allow to filter modems, serial, etc.
-                // I use 10000000 as a minimum speed for most cases
-                if (ni.Speed < minimumSpeed)
-                    continue;
-
-                // discard virtual cards (virtual box, virtual pc, etc.)
-                if ((ni.Description.IndexOf("virtual", StringComparison.OrdinalIgnoreCase) >= 0) ||
-                    (ni.Name.IndexOf("virtual", StringComparison.OrdinalIgnoreCase) >= 0))
-                    continue;
-
-                // discard "Microsoft Loopback Adapter", it will not show as NetworkInterfaceType.Loopback but as Ethernet Card.
-                if (ni.Description.Equals("Microsoft Loopback Adapter", StringComparison.OrdinalIgnoreCase))
-                    continue;
-
-                if (ni.OperationalStatus == OperationalStatus.Up)
-                    return ni.GetPhysicalAddress().ToString();
-            }
-            return "";
-        }
-
-        static string GetStringForSSID(Wlan.Dot11Ssid ssid)
+            static string GetStringForSSID(Wlan.Dot11Ssid ssid)
         {
             return Encoding.UTF8.GetString(ssid.SSID, 0, (int)ssid.SSIDLength);
         }

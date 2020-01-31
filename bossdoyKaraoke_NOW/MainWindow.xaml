@@ -237,6 +237,16 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
+                    <MenuItem Header="Lan Cable" x:Name="connect_Lan">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Lan" />
+                        </MenuItem.Icon>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ClientConnectCommand}" CommandParameter="{x:Static enum:ConnectionEnum+ConnectionType.LanCable}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
                     <MenuItem Header="Bluetooth" x:Name="connect_bluetooth">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Bluetooth" />
