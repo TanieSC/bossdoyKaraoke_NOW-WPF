@@ -36,8 +36,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
         {
             _client = new WlanClient();
             _wlanIface = _client.Interfaces.FirstOrDefault();
-
-            var gg = NetworkInterface.GetAllNetworkInterfaces();
         }
 
         public PackIconKind IconClientConnect
@@ -53,7 +51,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand LoadedCommand
+        public ICommand LoadedCommand //Not in use
         {
             get
             {
@@ -64,55 +62,56 @@ namespace bossdoyKaraoke_NOW.ViewModel
                    
 
 
-                    if (_wlanIface == null)
-                    {
-                        Console.WriteLine("No Wifi Interface available!");
-                        throw new Exception("No Wifi Interface available!");
-                    }
-                    else
-                    {
-                        if (ConnectionEnum.CurrentConnection == ConnectionEnum.ConnectionType.WiFi)
-                        {
-                            // Lists all available networks
-                            Wlan.WlanAvailableNetwork[] networks = _wlanIface.GetAvailableNetworkList(0);
+                //    if (_wlanIface == null)
+                //    {
+                //        Console.WriteLine("No Wifi Interface available!");
+                //        throw new Exception("No Wifi Interface available!");
+                //    }
+                //    else
+                //    {
+                //        if (ConnectionEnum.CurrentConnection == ConnectionEnum.ConnectionType.WiFi)
+                //        {
+                //            // Lists all available networks
+                //            Wlan.WlanAvailableNetwork[] networks = _wlanIface.GetAvailableNetworkList(0);
                             
-                            foreach (Wlan.WlanAvailableNetwork network in networks)
-                            {
-                                var name = GetStringForSSID(network.dot11Ssid);
-                                var ssidBytes = Encoding.Default.GetBytes(name);
+                //            foreach (Wlan.WlanAvailableNetwork network in networks)
+                //            {
+                //                var name = GetStringForSSID(network.dot11Ssid);
+                //                var ssidBytes = Encoding.Default.GetBytes(name);
 
-                                if (network.flags == Wlan.WlanAvailableNetworkFlags.HasProfile)
-                                {
-                                }
-                              //  var rrr = Wlan.WlanAvailableNetworkFlags.Connected;
+                //                if (network.flags == Wlan.WlanAvailableNetworkFlags.HasProfile)
+                //                {
+                //                }
+                //              //  var rrr = Wlan.WlanAvailableNetworkFlags.Connected;
 
-                                WifiModel wifi = new WifiModel
-                                {
-                                    DisplayName = name,
-                                    ProfileName = network.profileName,
-                                    SSID = name,
-                                    SSIDBytes = ssidBytes,
-                                   // SSIDHex = StringToHex(ssidBytes),
-                                    Key = ""
-                                };
+                //                WifiModel wifi = new WifiModel
+                //                {
+                //                    DisplayName = name,
+                //                    ProfileName = network.profileName,
+                //                    SSID = name,
+                //                    SSIDBytes = ssidBytes,
+                //                   // SSIDHex = StringToHex(ssidBytes),
+                //                    Key = ""
+                //                };
 
-                                if (network.flags == Wlan.WlanAvailableNetworkFlags.HasProfile)
-                                {
-                                    Console.WriteLine("WIFI " + wifi.DisplayName);
-                                }
+                //                if (network.flags == Wlan.WlanAvailableNetworkFlags.HasProfile)
+                //                {
+                                  
+                //                    Console.WriteLine("WIFI " + wifi.DisplayName);
+                //                }
 
-                                Items.Add(wifi.DisplayName);
-                            }
+                //                Items.Add(wifi.DisplayName);
+                //            }
 
-                            // device_list.ItemsSource = Items; //planning to move this to backgrond worker
-                        }
-                        else if (ConnectionEnum.CurrentConnection == ConnectionEnum.ConnectionType.WiFiDirect)
-                        {
-                        }
-                        else
-                        {
-                        }
-                    }
+                //            // device_list.ItemsSource = Items; //planning to move this to backgrond worker
+                //        }
+                //        else if (ConnectionEnum.CurrentConnection == ConnectionEnum.ConnectionType.WiFiDirect)
+                //        {
+                //        }
+                //        else
+                //        {
+                //        }
+                //    }
 
                 }));
             }
@@ -130,6 +129,24 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     if (CurrentConnection == ConnectionType.WiFi)
                     {
                         IconClientConnect = PackIconKind.Wifi;
+
+                        //if (_wlanIface == null)
+                        //{
+                        //    Console.WriteLine("No Wifi Interface available!");
+                        //    //throw new Exception("No Wifi Interface available!");
+                        //}
+                        //else
+                        //{
+                        //    Wlan.WlanAvailableNetwork[] networks = _wlanIface.GetAvailableNetworkList(0);
+                        //    foreach (Wlan.WlanAvailableNetwork network in networks)
+                        //    {
+                        //        if (network.flags.ToString().Contains(Wlan.WlanAvailableNetworkFlags.Connected.ToString()))
+                        //        {
+                        //            Console.WriteLine("WIFI Connected");
+                        //        }
+
+                        //    }
+                        //}
                     }
                     if (CurrentConnection == ConnectionType.WiFiDirect)
                     {
