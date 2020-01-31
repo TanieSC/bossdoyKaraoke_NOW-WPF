@@ -16,6 +16,7 @@ using MaterialDesignThemes.Wpf;
 using NativeWifi;
 using static NativeWifi.WlanClient;
 using static bossdoyKaraoke_NOW.Enums.ConnectionEnum;
+using System.Net;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
@@ -130,6 +131,9 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         IconClientConnect = PackIconKind.Wifi;
 
+                        IPAddress ipAd = IPAddress.Parse("127.0.0.1");
+
+                        var df =  IsNetworkAvailable(10000000);
                         //if (_wlanIface == null)
                         //{
                         //    Console.WriteLine("No Wifi Interface available!");
@@ -204,10 +208,14 @@ namespace bossdoyKaraoke_NOW.ViewModel
         }
 
 
-        public static bool IsNetworkAvailable(long minimumSpeed)
+        public static string IsNetworkAvailable(long minimumSpeed)
         {
             if (!NetworkInterface.GetIsNetworkAvailable())
-                return false;
+                return "";
+
+            var ddd = NetworkInterface.GetAllNetworkInterfaces();
+
+            var dfg = ddd[7].GetIPProperties().DhcpServerAddresses;
 
             foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
             {
@@ -231,11 +239,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 if (ni.Description.Equals("Microsoft Loopback Adapter", StringComparison.OrdinalIgnoreCase))
                     continue;
 
-                
-
-                return true;
+                if (ni.OperationalStatus == OperationalStatus.Up)
+                    return ni.GetPhysicalAddress().ToString();
             }
-            return false;
+            return "";
         }
 
         static string GetStringForSSID(Wlan.Dot11Ssid ssid)
