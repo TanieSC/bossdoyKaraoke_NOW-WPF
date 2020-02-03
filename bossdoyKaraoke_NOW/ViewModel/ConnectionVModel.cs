@@ -37,10 +37,14 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _clientConnectCommand;
         private PackIconKind _iconClientConnect = PackIconKind.EthernetCableOff;
 
+
+        WiFiorCableConnect socketconnect = new WiFiorCableConnect();
         public ConnectionVModel()
         {
             _client = new WlanClient();
             _wlanIface = _client.Interfaces.FirstOrDefault();
+
+           // GetLocalIPv4(NetworkInterfaceType.Ethernet);
         }
 
         public PackIconKind IconClientConnect
@@ -135,6 +139,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     {
                         _isAvailbale = GetLocalIPv4(NetworkInterfaceType.Wireless80211);
 
+                        socketconnect.CloseSockets();
+
                         if (!_isAvailbale)
                         {
                             MessageBox.Show("WiFi is not connected!");
@@ -143,7 +149,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         else
                         {
                             IconClientConnect = PackIconKind.Wifi;
-                            WiFiorCableConnect.Start(_ipv4Addr);
+                            //WiFiorCableConnect.Start(_ipv4Addr);
                         }
                     }
                     if (CurrentConnection == ConnectionType.WiFiDirect)
@@ -176,9 +182,13 @@ namespace bossdoyKaraoke_NOW.ViewModel
                             return;
                         }
                         else
-                        {
-                            IconClientConnect = PackIconKind.Lan;
-                            // WiFiorCableConnect.Start(_ipv4Addr);
+                        { 
+                            var listening = socketconnect.StartListening();
+
+                            if (listening)
+                                IconClientConnect = PackIconKind.Lan;
+                            else
+                                IconClientConnect = PackIconKind.EthernetCableOff;
                         }
                     }
                     if (CurrentConnection == ConnectionType.BlueTooth)
