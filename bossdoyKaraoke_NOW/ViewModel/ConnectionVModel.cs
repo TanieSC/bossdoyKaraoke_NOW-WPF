@@ -37,8 +37,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _clientConnectCommand;
         private PackIconKind _iconClientConnect = PackIconKind.EthernetCableOff;
 
+        private WiFiLanConnect socketconnect = new WiFiLanConnect();
 
-        WiFiorCableConnect socketconnect = new WiFiorCableConnect();
         public ConnectionVModel()
         {
             _client = new WlanClient();

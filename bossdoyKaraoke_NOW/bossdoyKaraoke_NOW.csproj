@@ -145,7 +145,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ClientConnect\WiFiorCableConnect.cs" />
+    <Compile Include="ClientConnect\WiFiLanConnect.cs" />
     <Compile Include="Enums\ConnectionEnum.cs" />
     <Compile Include="Enums\HotKeyEnum.cs" />
     <Compile Include="Enums\MediaControlsEnum.cs" />

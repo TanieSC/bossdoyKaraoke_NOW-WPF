@@ -14,7 +14,7 @@ using System.Windows;
 //Modified the code for my needs
 namespace bossdoyKaraoke_NOW.ClientConnect
 {
-    class WiFiorCableConnect
+    class WiFiLanConnect
     {
         public AsyncCallback pfnWorkerCallBack;
         private Socket _mainSocket;
@@ -31,7 +31,7 @@ namespace bossdoyKaraoke_NOW.ClientConnect
         // in a thread safe manner
         private int _clientCount = 0;
 
-        public WiFiorCableConnect()
+        public WiFiLanConnect()
         {
 
         }
