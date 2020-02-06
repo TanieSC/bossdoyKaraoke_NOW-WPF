@@ -19,6 +19,7 @@ using static bossdoyKaraoke_NOW.Enums.ConnectionEnum;
 using System.Net.Sockets;
 using System.Windows;
 using bossdoyKaraoke_NOW.ClientConnect;
+using System.Net;
 
 namespace bossdoyKaraoke_NOW.ViewModel
 {
@@ -36,6 +37,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private ICommand _connectCommand;
         private ICommand _clientConnectCommand;
         private PackIconKind _iconClientConnect = PackIconKind.EthernetCableOff;
+        private string _clientConnectIP = "[Connection info here]";
 
         private WiFiLanConnect socketconnect = new WiFiLanConnect();
 
@@ -56,6 +58,19 @@ namespace bossdoyKaraoke_NOW.ViewModel
             set
             {
                 _iconClientConnect = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ClientConnectIP
+        {
+            get
+            {
+                return _clientConnectIP;
+            }
+            set
+            {
+                _clientConnectIP = value;
                 OnPropertyChanged();
             }
         }
@@ -137,9 +152,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
 
                     if (CurrentConnection == ConnectionType.WiFi)
                     {
-                        _isAvailbale = GetLocalIPv4(NetworkInterfaceType.Wireless80211);
-
-                        socketconnect.CloseSockets();
+                        _isAvailbale = GetLocalIPv4(NetworkInterfaceType.Wireless80211);                       
 
                         if (!_isAvailbale)
                         {
@@ -148,14 +161,22 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         }
                         else
                         {
-                            IconClientConnect = PackIconKind.Wifi;
-                            //WiFiorCableConnect.Start(_ipv4Addr);
+                            var listeningPort = socketconnect.StartListening();
+
+                            if (listeningPort != "")
+                            {
+                                IconClientConnect = PackIconKind.Wifi;
+                                ClientConnectIP = "[" + _ipv4Addr + ":" + listeningPort + "]";
+                            }
+                            else
+                                IconClientConnect = PackIconKind.EthernetCableOff;
                         }
                     }
                     if (CurrentConnection == ConnectionType.WiFiDirect)
                     {
                         {
-                            _isAvailbale = GetLocalIPv4(NetworkInterfaceType.Wireless80211);
+                            socketconnect.CloseSockets();
+                            _isAvailbale = false;
 
                             if (!_isAvailbale)
                             {
@@ -183,10 +204,13 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         }
                         else
                         { 
-                            var listening = socketconnect.StartListening();
+                            var listeningPort = socketconnect.StartListening();
 
-                            if (listening)
+                            if (listeningPort != "")
+                            {
                                 IconClientConnect = PackIconKind.Lan;
+                                ClientConnectIP = "[" + _ipv4Addr + ":" + listeningPort + "]"; 
+                            }
                             else
                                 IconClientConnect = PackIconKind.EthernetCableOff;
                         }
@@ -270,7 +294,24 @@ namespace bossdoyKaraoke_NOW.ViewModel
             return false;
         }
 
-            static string GetStringForSSID(Wlan.Dot11Ssid ssid)
+        string GetIP()
+        {
+            string strHostName = Dns.GetHostName();
+
+            // Find host by name
+            IPHostEntry iphostentry = Dns.GetHostEntry(strHostName);
+
+            // Grab the first IP addresses
+            string IPStr = "";
+            foreach (IPAddress ipaddress in iphostentry.AddressList)
+            {
+                IPStr = ipaddress.ToString();
+                return IPStr;
+            }
+            return IPStr;
+        }
+
+        static string GetStringForSSID(Wlan.Dot11Ssid ssid)
         {
             return Encoding.UTF8.GetString(ssid.SSID, 0, (int)ssid.SSIDLength);
         }

@@ -36,15 +36,16 @@ namespace bossdoyKaraoke_NOW.ClientConnect
 
         }
 
-        public bool StartListening()
+        public string StartListening()
         {
             try
             {
+                char[] delimiterChars = {':'};
                 // Create the listening socket...
                 _mainSocket = new Socket(AddressFamily.InterNetwork,
                     SocketType.Stream,
                     ProtocolType.Tcp);
-                IPEndPoint ipLocal = new IPEndPoint(IPAddress.Any, 8000);
+                IPEndPoint ipLocal = new IPEndPoint(IPAddress.Any, 0);
                 // Bind to local IP Address...
                 _mainSocket.Bind(ipLocal);
                 // Start listening...
@@ -52,15 +53,13 @@ namespace bossdoyKaraoke_NOW.ClientConnect
                 // Create the call back for any client connections...
                 _mainSocket.BeginAccept(new AsyncCallback(OnClientConnect), null);
 
-                // ShowActiveTcpListeners();
-
-                return true;
+                return _mainSocket.LocalEndPoint.ToString().Split(delimiterChars)[1];
             }
             catch (SocketException se)
             {
                 //MessageBox.Show(se.Message);
 
-                return false;
+                return "";
             }
         }
 
@@ -240,23 +239,6 @@ namespace bossdoyKaraoke_NOW.ClientConnect
 
             Socket workerSocket = (Socket)_workerSocketList[clientNumber - 1];
             workerSocket.Send(byData);
-        }
-
-        string GetIP()
-        {
-            string strHostName = Dns.GetHostName();
-
-            // Find host by name
-            IPHostEntry iphostentry = Dns.GetHostEntry(strHostName);
-
-            // Grab the first IP addresses
-            string IPStr = "";
-            foreach (IPAddress ipaddress in iphostentry.AddressList)
-            {
-                IPStr = ipaddress.ToString();
-                return IPStr;
-            }
-            return IPStr;
         }
     }
 }

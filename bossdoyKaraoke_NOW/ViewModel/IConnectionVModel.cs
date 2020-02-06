@@ -11,6 +11,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
     public interface IConnectionVModel
     {
         PackIconKind IconClientConnect { get; }
+        string ClientConnectIP { get; }
         ICommand LoadedCommand { get; }
         ICommand ClientConnectCommand { get; }
     }

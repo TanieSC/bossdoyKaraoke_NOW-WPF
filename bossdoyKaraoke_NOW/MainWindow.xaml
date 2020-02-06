@@ -212,7 +212,10 @@
             <Menu DataContext="{StaticResource ConnectionModel}" VerticalAlignment="Top" DockPanel.Dock="Right" HorizontalAlignment="Right" >
                 <MenuItem>
                     <MenuItem.Header>
-                        <TextBlock Text="Client Connect" TextDecorations="Underline"></TextBlock>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Client Connect" TextDecorations="Underline"></TextBlock>
+                            <TextBlock Text="{Binding ClientConnectIP}"></TextBlock>
+                        </StackPanel>
                     </MenuItem.Header>
                     <MenuItem.Icon>
                         <materialDesign:PackIcon Kind="{Binding IconClientConnect}" />
