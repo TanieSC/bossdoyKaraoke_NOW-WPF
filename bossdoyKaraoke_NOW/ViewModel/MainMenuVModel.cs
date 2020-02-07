@@ -110,7 +110,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand ClientConnectShowCommand
+        public ICommand ClientConnectShowCommand // Not in use
         {
             get
             {
