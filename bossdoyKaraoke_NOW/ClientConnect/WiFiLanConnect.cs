@@ -53,7 +53,7 @@ namespace bossdoyKaraoke_NOW.ClientConnect
                 // Create the call back for any client connections...
                 _mainSocket.BeginAccept(new AsyncCallback(OnClientConnect), null);
 
-                return _mainSocket.LocalEndPoint.ToString().Split(delimiterChars)[1];
+                return _mainSocket.LocalEndPoint.ToString().Split(delimiterChars)[1]; //return port number
             }
             catch (SocketException se)
             {

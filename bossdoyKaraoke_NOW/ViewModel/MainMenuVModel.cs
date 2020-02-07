@@ -145,45 +145,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
 
                     var control = (Control)x;
-                    switch (control)
-                    {
-                        case Control.PlayPause:
-                            //System.Windows.Input.Mouse.LeftButton
-                            _mainmenu.OnHotKeyHandler(_mainmenu.CtlSpceBar);
-                            break;
-                        case Control.Next:
-                            //System.Windows.Input.Mouse.LeftButton
-                            _mainmenu.OnHotKeyHandler(_mainmenu.CtlN);
-                            break;
-                        case Control.VolumeUp:
-                            //System.Windows.Input.Mouse.LeftButton
-                            _mainmenu.OnHotKeyHandler(_mainmenu.CtlUP);
-                            break;
-                        case Control.VolumeDown:
-                            //System.Windows.Input.Mouse.LeftButton
-                            _mainmenu.OnHotKeyHandler(_mainmenu.CtlDwn);
-                            break;
-                        case Control.MuteUnmute:
-                            //System.Windows.Input.Mouse.LeftButton
-                            _mainmenu.OnHotKeyHandler(_mainmenu.CtlM);
-                            break;
-                        case Control.KeyUp:
-                            //System.Windows.Input.Mouse.LeftButton
-                            _mainmenu.OnHotKeyHandler(_mainmenu.CtlAltUp);
-                            break;
-                        case Control.KeyDown:
-                            //System.Windows.Input.Mouse.LeftButton
-                            _mainmenu.OnHotKeyHandler(_mainmenu.CtlAltDwn);
-                            break;
-                        case Control.TempoUp:
-                            //System.Windows.Input.Mouse.LeftButton
-                            _mainmenu.OnHotKeyHandler(_mainmenu.CtlShftUp);
-                            break;
-                        case Control.TempoDown:
-                            //System.Windows.Input.Mouse.LeftButton
-                            _mainmenu.OnHotKeyHandler(_mainmenu.CtlShftDwn);
-                            break;
-                    }
+                    _mainmenu.MediaControl(control);
                 }));
             }
         }       

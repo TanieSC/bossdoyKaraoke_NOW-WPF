@@ -11,6 +11,7 @@ using bossdoyKaraoke_NOW.Misc;
 using bossdoyKaraoke_NOW.ViewModel;
 using static bossdoyKaraoke_NOW.Enums.BackGroundWorkerEnum;
 using static bossdoyKaraoke_NOW.Enums.HotKeyEnum;
+using static bossdoyKaraoke_NOW.Enums.MediaControlsEnum;
 using static bossdoyKaraoke_NOW.Enums.PlayerStateEnum;
 
 namespace bossdoyKaraoke_NOW.Model
@@ -85,7 +86,101 @@ namespace bossdoyKaraoke_NOW.Model
 
         }
 
-        public void OnHotKeyHandler(GlobalHotkeyService hotKey)
+        public void MediaControl(Control mediaControl)
+        {
+            switch (mediaControl)
+            {
+                case Control.PlayPause:
+                    //System.Windows.Input.Mouse.LeftButton
+                    OnHotKeyHandler(CtlSpceBar);
+                    break;
+                case Control.Next:
+                    //System.Windows.Input.Mouse.LeftButton
+                    OnHotKeyHandler(CtlN);
+                    break;
+                case Control.VolumeUp:
+                    //System.Windows.Input.Mouse.LeftButton
+                    OnHotKeyHandler(CtlUP);
+                    break;
+                case Control.VolumeDown:
+                    //System.Windows.Input.Mouse.LeftButton
+                    OnHotKeyHandler(CtlDwn);
+                    break;
+                case Control.MuteUnmute:
+                    //System.Windows.Input.Mouse.LeftButton
+                    OnHotKeyHandler(CtlM);
+                    break;
+                case Control.KeyUp:
+                    //System.Windows.Input.Mouse.LeftButton
+                    OnHotKeyHandler(CtlAltUp);
+                    break;
+                case Control.KeyDown:
+                    //System.Windows.Input.Mouse.LeftButton
+                    OnHotKeyHandler(CtlAltDwn);
+                    break;
+                case Control.TempoUp:
+                    //System.Windows.Input.Mouse.LeftButton
+                    OnHotKeyHandler(CtlShftUp);
+                    break;
+                case Control.TempoDown:
+                    //System.Windows.Input.Mouse.LeftButton
+                    OnHotKeyHandler(CtlShftDwn);
+                    break;
+            }
+        }
+
+        public void AddSongs()
+        {
+            _sender.CurrentTask = NewTask.ADD_NEW_SONGS;
+            _songsSource.AddNewSongs(_sender);
+        }
+
+        public void OpenFile()
+        {
+            //_songsSource.AddNewSong();
+            if (Mouse.OverrideCursor != Cursors.Wait)
+                Mouse.OverrideCursor = Cursors.Wait;
+
+            TrackInfoModel sender = null;
+
+            CurrentTask = NewTask.ADD_TO_QUEUE;
+            Worker.DoWork(CurrentTask, sender);
+
+            Console.WriteLine("OpenCommand");
+        }
+
+        public void ExitApplication()
+        {
+            _ctlO.Dispose();
+            _ctlA.Dispose();
+            _ctlP.Dispose();
+            _ctlE.Dispose();
+            _ctlSpceBar.Dispose();
+            _ctlN.Dispose();
+            _ctlUP.Dispose();
+            _ctlDwn.Dispose();
+            _ctlM.Dispose();
+            _ctlAltUp.Dispose();
+            _ctlAltDwn.Dispose();
+            _ctlShftUp.Dispose();
+            _ctlShftDwn.Dispose();
+
+            Application.Current.Shutdown();
+            // Environment.Exit(0);
+        }
+
+        public void PreferencesShow()
+        {
+            Preferences prefs = new Preferences();
+            // _parent = (((((x as MenuItem).Parent as MenuItem).Parent as Menu).Parent as DockPanel).Parent as Grid).Parent as MainWindow;
+            prefs.Owner = ParentWindow;
+            prefs.Topmost = true;
+            prefs.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            prefs.Show();
+            prefs.Activate();
+        }
+
+        private void OnHotKeyHandler(GlobalHotkeyService hotKey)
         {
             switch (hotKey.KeyModifiers)
             {
@@ -173,57 +268,6 @@ namespace bossdoyKaraoke_NOW.Model
                     }
                     break;
             }
-        }
-
-        public void AddSongs()
-        {
-            _sender.CurrentTask = NewTask.ADD_NEW_SONGS;
-            _songsSource.AddNewSongs(_sender);
-        }
-
-        public void OpenFile()
-        {
-            //_songsSource.AddNewSong();
-            if (Mouse.OverrideCursor != Cursors.Wait)
-                Mouse.OverrideCursor = Cursors.Wait;
-
-            TrackInfoModel sender = null;
-
-            CurrentTask = NewTask.ADD_TO_QUEUE;
-            Worker.DoWork(CurrentTask, sender);
-
-            Console.WriteLine("OpenCommand");
-        }
-
-        public void ExitApplication()
-        {
-            _ctlO.Dispose();
-            _ctlA.Dispose();
-            _ctlP.Dispose();
-            _ctlE.Dispose();
-            _ctlSpceBar.Dispose();
-            _ctlN.Dispose();
-            _ctlUP.Dispose();
-            _ctlDwn.Dispose();
-            _ctlM.Dispose();
-            _ctlAltUp.Dispose();
-            _ctlAltDwn.Dispose();
-            _ctlShftUp.Dispose();
-            _ctlShftDwn.Dispose();
-
-            Application.Current.Shutdown();
-            // Environment.Exit(0);
-        }
-
-        public void PreferencesShow()
-        {
-            Preferences prefs = new Preferences();
-            // _parent = (((((x as MenuItem).Parent as MenuItem).Parent as Menu).Parent as DockPanel).Parent as Grid).Parent as MainWindow;
-            prefs.Owner = ParentWindow;
-            prefs.Topmost = true;
-            prefs.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            prefs.Show();
-            prefs.Activate();
         }
     }
 }
