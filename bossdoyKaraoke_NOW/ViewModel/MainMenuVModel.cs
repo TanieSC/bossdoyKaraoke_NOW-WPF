@@ -68,6 +68,8 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     //_ctlShftDwn = new GlobalHotkeyService(Key.Down, KeyModifier.Ctrl | KeyModifier.Shift, OnHotKeyHandler);
 
                     _parent = x as MainWindow;
+
+                    _mainmenu.ParentWindow = _parent;
                     
                 }));
             }

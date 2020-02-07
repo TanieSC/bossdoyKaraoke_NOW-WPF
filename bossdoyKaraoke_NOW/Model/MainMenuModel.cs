@@ -48,8 +48,10 @@ namespace bossdoyKaraoke_NOW.Model
         public GlobalHotkeyService CtlShftUp { get { return _ctlShftUp; } set { _ctlShftUp = value; } } // Tempo Up
         public GlobalHotkeyService CtlShftDwn { get { return _ctlShftDwn; } set { _ctlShftDwn = value; } } // Tempo Down
 
+        public MainWindow ParentWindow { get { return _parent; } set { _parent = value; } }
+
         private ISongsSource _songsSource = SongsSource.Instance;
-        private ITreeViewModelChild sender = new TreeViewModelChild();
+        private ITreeViewModelChild _sender = new TreeViewModelChild();
 
 
 
@@ -175,8 +177,8 @@ namespace bossdoyKaraoke_NOW.Model
 
         public void AddSongs()
         {
-            sender.CurrentTask = NewTask.ADD_NEW_SONGS;
-            _songsSource.AddNewSongs(sender);
+            _sender.CurrentTask = NewTask.ADD_NEW_SONGS;
+            _songsSource.AddNewSongs(_sender);
         }
 
         public void OpenFile()
@@ -217,7 +219,7 @@ namespace bossdoyKaraoke_NOW.Model
         {
             Preferences prefs = new Preferences();
             // _parent = (((((x as MenuItem).Parent as MenuItem).Parent as Menu).Parent as DockPanel).Parent as Grid).Parent as MainWindow;
-            prefs.Owner = _parent;
+            prefs.Owner = ParentWindow;
             prefs.Topmost = true;
             prefs.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             prefs.Show();
