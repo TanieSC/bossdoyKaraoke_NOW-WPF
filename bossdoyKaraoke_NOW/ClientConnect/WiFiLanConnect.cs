@@ -181,10 +181,14 @@ namespace bossdoyKaraoke_NOW.ClientConnect
                     0, iRx, chars, 0);
 
                 //data received
+
+
                 string szData = new string(chars);
+                MessageBox.Show(szData);
+
                 if (Enum.TryParse(szData, out enumValue))
                 {
-                    _mainMenu.MediaControl(enumValue);
+                    //_mainMenu.MediaControl(enumValue);
                 }
                 else
                 { 
