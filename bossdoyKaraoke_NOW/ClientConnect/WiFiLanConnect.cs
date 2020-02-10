@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using bossdoyKaraoke_NOW.Model;
+using static bossdoyKaraoke_NOW.Enums.MediaControlsEnum;
 
 // Credit to: Jayan Nair https://www.codeguru.com/csharp/csharp/cs_network/sockets/article.php/c8781/Asynchronous-Socket-Programming-in-C-Part-II.htm
 //Modified the code for my needs
@@ -16,6 +18,7 @@ namespace bossdoyKaraoke_NOW.ClientConnect
 {
     class WiFiLanConnect
     {
+
         public AsyncCallback pfnWorkerCallBack;
         private Socket _mainSocket;
 
@@ -30,6 +33,7 @@ namespace bossdoyKaraoke_NOW.ClientConnect
         // can access this variable, modifying this variable should be done
         // in a thread safe manner
         private int _clientCount = 0;
+        private MainMenuModel _mainMenu;
 
         public WiFiLanConnect()
         {
@@ -52,6 +56,8 @@ namespace bossdoyKaraoke_NOW.ClientConnect
                 _mainSocket.Listen(10);
                 // Create the call back for any client connections...
                 _mainSocket.BeginAccept(new AsyncCallback(OnClientConnect), null);
+
+                _mainMenu = MainMenuModel.Instance;
 
                 return _mainSocket.LocalEndPoint.ToString().Split(delimiterChars)[1]; //return port number
             }
@@ -162,6 +168,8 @@ namespace bossdoyKaraoke_NOW.ClientConnect
             SocketPacket socketData = (SocketPacket)asyn.AsyncState;
             try
             {
+
+                Control enumValue;
                 // Complete the BeginReceive() asynchronous call by EndReceive() method
                 // which will return the number of characters written to the stream 
                 // by the client
@@ -174,7 +182,17 @@ namespace bossdoyKaraoke_NOW.ClientConnect
 
                 //data received
                 string szData = new string(chars);
-                string msg = "" + socketData.clientNumber + ":";
+                if (Enum.TryParse(szData, out enumValue))
+                {
+                    _mainMenu.MediaControl(enumValue);
+                }
+                else
+                { 
+                }
+
+
+
+                    string msg = "" + socketData.clientNumber + ":";
                 Console.WriteLine("Data received from client: " + msg + " " + szData);
 
                 // Send back the reply to the client
