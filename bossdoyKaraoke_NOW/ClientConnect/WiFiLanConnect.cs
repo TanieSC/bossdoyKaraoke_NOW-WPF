@@ -195,8 +195,7 @@ namespace bossdoyKaraoke_NOW.ClientConnect
                 }
 
 
-
-                    string msg = "" + socketData.clientNumber + ":";
+                string msg = "" + socketData.clientNumber + ":";
                 Console.WriteLine("Data received from client: " + msg + " " + szData);
 
                 // Send back the reply to the client
