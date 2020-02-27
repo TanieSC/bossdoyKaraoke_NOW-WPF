@@ -54,8 +54,6 @@ namespace bossdoyKaraoke_NOW.Model
         private ISongsSource _songsSource = SongsSource.Instance;
         private ITreeViewModelChild _sender = new TreeViewModelChild();
 
-
-
         public static MainMenuModel Instance
         {
             get
