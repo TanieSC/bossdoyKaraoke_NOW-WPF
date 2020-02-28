@@ -39,7 +39,7 @@ namespace bossdoyKaraoke_NOW.Graphic
 
         public DeviceManager()
         {
-            D3d11Device = new D3D11.Device(D3D.DriverType.Hardware,
+            D3d11Device = new D3D11.Device(D3D.DriverType.Hardware | D3D.DriverType.Software,
 #if DEBUG
                D3D11.DeviceCreationFlags.Debug |
 #endif

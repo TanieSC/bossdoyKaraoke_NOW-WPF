@@ -76,7 +76,7 @@ namespace bossdoyKaraoke_NOW.ClientConnect
         //    IPEndPoint[] endPoints = properties.GetActiveTcpListeners();
         //    foreach (IPEndPoint e in endPoints)
         //    {
-        //        Console.WriteLine(e.ToString());
+        //        Console.WriteLine(e.ToString()); 
         //    }
         //}
 
