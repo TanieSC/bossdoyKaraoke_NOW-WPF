@@ -8,5 +8,6 @@ namespace bossdoyKaraoke_NOW.ClientConnect
 {
     class BluetoothConnect
     {
+
     }
 }

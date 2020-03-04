@@ -261,5 +261,30 @@ namespace bossdoyKaraoke_NOW.ClientConnect
             Socket workerSocket = (Socket)_workerSocketList[clientNumber - 1];
             workerSocket.Send(byData);
         }
+
+        void SendMsgToClients(string msg)
+        {
+            try
+            {
+                // Convert the reply to byte array
+                byte[] byData = Encoding.ASCII.GetBytes(msg);
+                Socket workerSocket = null;
+                for (int i = 0; i < _workerSocketList.Count; i++)
+                {
+                    workerSocket = (Socket)_workerSocketList[i];
+                    if (workerSocket != null)
+                    {
+                        if (workerSocket.Connected)
+                        {
+                            workerSocket.Send(byData);
+                        }
+                    }
+                }
+            }
+            catch (SocketException se)
+            {
+               // MessageBox.Show(se.Message);
+            }
+        }
     }
 }
