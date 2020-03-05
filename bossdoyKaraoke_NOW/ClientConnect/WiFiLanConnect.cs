@@ -21,6 +21,7 @@ namespace bossdoyKaraoke_NOW.ClientConnect
 
         public AsyncCallback pfnWorkerCallBack;
         private Socket _mainSocket;
+        private string _localEndPointPort;
 
         // An ArrayList is used to keep track of worker sockets that are designed
         // to communicate with each connected client. Make it a synchronized ArrayList
@@ -35,12 +36,19 @@ namespace bossdoyKaraoke_NOW.ClientConnect
         private int _clientCount = 0;
         private MainMenuModel _mainMenu;
 
+        public string GetLocalEndPointPort { get { return _localEndPointPort; } }
+
         public WiFiLanConnect()
         {
 
         }
 
-        public string StartListening()
+        public void Start() {
+            Thread t = new Thread(new ThreadStart(StartListening));
+            t.Start();
+        }
+
+        public void StartListening()
         {
             try
             {
@@ -59,13 +67,16 @@ namespace bossdoyKaraoke_NOW.ClientConnect
 
                 _mainMenu = MainMenuModel.Instance;
 
-                return _mainSocket.LocalEndPoint.ToString().Split(delimiterChars)[1]; //return port number
+                _localEndPointPort = _mainSocket.LocalEndPoint.ToString().Split(delimiterChars)[1]; //return port number
+
+                //return _mainSocket.LocalEndPoint.ToString().Split(delimiterChars)[1]; //return port number
             }
             catch (SocketException se)
             {
                 //MessageBox.Show(se.Message);
 
-                return "";
+                //return "";
+                _localEndPointPort = "";
             }
         }
 

@@ -161,12 +161,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         }
                         else
                         {
-                            var listeningPort = socketconnect.StartListening();
+                            socketconnect.Start();
 
-                            if (listeningPort != "")
+                            if (socketconnect.GetLocalEndPointPort != "")
                             {
                                 IconClientConnect = PackIconKind.Wifi;
-                                ClientConnectIP = "[" + _ipv4Addr + ":" + listeningPort + "]";
+                                ClientConnectIP = "[" + _ipv4Addr + ":" + socketconnect.GetLocalEndPointPort + "]";
                             }
                             else
                                 IconClientConnect = PackIconKind.EthernetCableOff;
@@ -204,12 +204,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         }
                         else
                         { 
-                            var listeningPort = socketconnect.StartListening();
+                            socketconnect.Start();
 
-                            if (listeningPort != "")
+                            if (socketconnect.GetLocalEndPointPort != "")
                             {
                                 IconClientConnect = PackIconKind.Lan;
-                                ClientConnectIP = "[" + _ipv4Addr + ":" + listeningPort + "]"; 
+                                ClientConnectIP = "[" + _ipv4Addr + ":" + socketconnect.GetLocalEndPointPort + "]"; 
                             }
                             else
                                 IconClientConnect = PackIconKind.EthernetCableOff;
