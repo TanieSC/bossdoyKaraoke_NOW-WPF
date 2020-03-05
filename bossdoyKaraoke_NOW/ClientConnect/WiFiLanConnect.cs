@@ -181,8 +181,6 @@ namespace bossdoyKaraoke_NOW.ClientConnect
                     0, iRx, chars, 0);
 
                 //data received
-
-
                 string szData = new string(chars);
                 MessageBox.Show(szData);
 
