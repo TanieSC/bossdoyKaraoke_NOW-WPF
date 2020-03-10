@@ -83,9 +83,6 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     _device_list = x as ListBox;
 
-
-
-
                     //    if (_wlanIface == null)
                     //    {
                     //        Console.WriteLine("No Wifi Interface available!");
