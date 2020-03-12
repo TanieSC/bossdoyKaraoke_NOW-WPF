@@ -220,16 +220,16 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public ICommand SelectedItemCommand
-        {
-            get
-            {
-                return _selectedItemCommand ?? (_selectedItemCommand = new RelayCommand(x =>
-                {
-                    Connect(x as string);
-                }));
-            }
-        }
+        //public ICommand SelectedItemCommand
+        //{
+        //    get
+        //    {
+        //        return _selectedItemCommand ?? (_selectedItemCommand = new RelayCommand(x =>
+        //        {
+        //            Connect(x as string);
+        //        }));
+        //    }
+        //}
 
         public ICommand ConnectCommand
         {
@@ -242,26 +242,26 @@ namespace bossdoyKaraoke_NOW.ViewModel
             }
         }
 
-        public void Connect(string ssid)
-        {
-            string profileName = ssid; // this is also the SSID
-            string mac = StringToHex(profileName);
-            //string profileXml = string.Format("<?xml version=\"1.0\"?>\r\n<WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\">\r\n\t<name>{0}</name>\r\n\t<SSIDConfig>\r\n\t\t<SSID>\r\n\t\t\t<hex>{1}</hex>\r\n\t\t\t<name>{0}</name>\r\n\t\t</SSID>\r\n\t</SSIDConfig>\r\n\t<connectionType>ESS</connectionType>\r\n\t<connectionMode>auto</connectionMode>\r\n\t<MSM>\r\n\t\t<security>\r\n\t\t\t<authEncryption>\r\n\t\t\t\t<authentication>WPA2PSK</authentication>\r\n\t\t\t\t<encryption>AES</encryption>\r\n\t\t\t\t<useOneX>false</useOneX>\r\n\t\t\t</authEncryption>\r\n\t\t\t<sharedKey>\r\n\t\t\t\t<keyType>passPhrase</keyType>\r\n\t\t\t\t<protected>true</protected>\r\n\t\t\t\t<keyMaterial>{2}</keyMaterial>\r\n\t\t\t</sharedKey>\r\n\t\t</security>\r\n\t</MSM>\r\n</WLANProfile>\r\n", ssid, mac, "BX_744ky19");
+        //public void Connect(string ssid)
+        //{
+        //    string profileName = ssid; // this is also the SSID
+        //    string mac = StringToHex(profileName);
+        //    //string profileXml = string.Format("<?xml version=\"1.0\"?>\r\n<WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\">\r\n\t<name>{0}</name>\r\n\t<SSIDConfig>\r\n\t\t<SSID>\r\n\t\t\t<hex>{1}</hex>\r\n\t\t\t<name>{0}</name>\r\n\t\t</SSID>\r\n\t</SSIDConfig>\r\n\t<connectionType>ESS</connectionType>\r\n\t<connectionMode>auto</connectionMode>\r\n\t<MSM>\r\n\t\t<security>\r\n\t\t\t<authEncryption>\r\n\t\t\t\t<authentication>WPA2PSK</authentication>\r\n\t\t\t\t<encryption>AES</encryption>\r\n\t\t\t\t<useOneX>false</useOneX>\r\n\t\t\t</authEncryption>\r\n\t\t\t<sharedKey>\r\n\t\t\t\t<keyType>passPhrase</keyType>\r\n\t\t\t\t<protected>true</protected>\r\n\t\t\t\t<keyMaterial>{2}</keyMaterial>\r\n\t\t\t</sharedKey>\r\n\t\t</security>\r\n\t</MSM>\r\n</WLANProfile>\r\n", ssid, mac, "BX_744ky19");
 
-            string profileXml = string.Format("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><hex>{1}</hex><name>{0}</name></SSID></SSIDConfig><connectionType>ESS</connectionType><connectionMode>auto</connectionMode><MSM><security><authEncryption><authentication>WPA2PSK</authentication><encryption>AES</encryption><useOneX>false</useOneX></authEncryption><sharedKey><keyType>passPhrase</keyType><protected>true</protected><keyMaterial>{2}</keyMaterial></sharedKey></security></MSM></WLANProfile>", ssid, mac, "BX_744ky19");
+        //    string profileXml = string.Format("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><hex>{1}</hex><name>{0}</name></SSID></SSIDConfig><connectionType>ESS</connectionType><connectionMode>auto</connectionMode><MSM><security><authEncryption><authentication>WPA2PSK</authentication><encryption>AES</encryption><useOneX>false</useOneX></authEncryption><sharedKey><keyType>passPhrase</keyType><protected>true</protected><keyMaterial>{2}</keyMaterial></sharedKey></security></MSM></WLANProfile>", ssid, mac, "BX_744ky19");
 
-            try
-            {
-                // var f = _wlanIface.GetProfileXml(profileName);
-                // _wlanIface.SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
-                _wlanIface.Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Any, profileName);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error Occured!");
-                //throw;
-            }
-        }
+        //    try
+        //    {
+        //        // var f = _wlanIface.GetProfileXml(profileName);
+        //        // _wlanIface.SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
+        //        _wlanIface.Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Any, profileName);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Error Occured!");
+        //        //throw;
+        //    }
+        //}
 
         private bool GetLocalIPv4(NetworkInterfaceType type)
         {
