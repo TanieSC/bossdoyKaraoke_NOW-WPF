@@ -73,7 +73,7 @@ namespace bossdoyKaraoke_NOW.ClientConnect
             }
             catch (SocketException se)
             {
-                //MessageBox.Show(se.Message);
+                //MessageBox.Show(se.Message);               
 
                 //return "";
                 _localEndPointPort = "";
