@@ -36,7 +36,7 @@ namespace bossdoyKaraoke_NOW.ClientConnect
         private int _clientCount = 0;
         private MainMenuModel _mainMenu;
 
-        public string GetLocalEndPointPort { private set { value = _localEndPointPort; } get { return _localEndPointPort; } }
+        public string GetLocalEndPointPort { get { return _localEndPointPort; } }
 
         public WiFiLanConnect()
         {
