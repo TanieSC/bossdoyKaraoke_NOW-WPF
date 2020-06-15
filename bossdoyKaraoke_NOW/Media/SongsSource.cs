@@ -592,6 +592,8 @@ namespace bossdoyKaraoke_NOW.Media
 
                 if (!_isAddingToQueue)
                     IsCdgFileType = true;
+                else
+                    IsCdgFileType = false;
             }
         }
 

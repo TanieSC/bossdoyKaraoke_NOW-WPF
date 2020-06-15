@@ -476,7 +476,10 @@ namespace bossdoyKaraoke_NOW.ViewModel
                 {
                     if (x != null)
                     {
-                        Player.Instance.PlayNext();
+                       // if (CurrentPlayState == PlayState.Paused)
+                        //    CurrentPlayState = PlayState.Playing;
+
+                            Player.Instance.PlayNext();
                     }
                 }));
             }

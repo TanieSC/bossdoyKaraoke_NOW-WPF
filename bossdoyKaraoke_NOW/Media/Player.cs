@@ -713,6 +713,12 @@ namespace bossdoyKaraoke_NOW.Media
                 {
                     MediaControlsVModel.Instance.SongTitle = _songsSource.SongsQueue[0].Name;
                     MediaControlsVModel.Instance.SongArtist = _songsSource.SongsQueue[0].Artist;
+                    MediaControlsVModel.Instance.IconPlayPause = PackIconKind.Pause;
+
+                    if (CurrentPlayState == PlayState.Stopped || CurrentPlayState == PlayState.Paused)
+                    {
+                        CurrentPlayState = PlayState.Playing;
+                    }
 
                     if (Channel != ChannelSelected.Right)
                     {
@@ -729,7 +735,6 @@ namespace bossdoyKaraoke_NOW.Media
                         EqualizerModel.Instance.SetupEQ(_currentTrack.Channel);
 
                         _currentTrack.Play();
-
                     }
                     else
                     {
