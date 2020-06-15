@@ -39,7 +39,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
         private PackIconKind _iconClientConnect = PackIconKind.EthernetCableOff;
         private string _clientConnectIP = "[Connection info here]";
 
-        private WiFiLanConnect socketconnect = new WiFiLanConnect();
+        private WiFiLanConnect _socketconnect = new WiFiLanConnect();
 
         public ConnectionVModel()
         {
@@ -158,12 +158,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         }
                         else
                         {
-                            socketconnect.Start();
+                            _socketconnect.Start();
 
-                            if (socketconnect.GetLocalEndPointPort != "")
+                            if (_socketconnect.GetLocalEndPointPort != "")
                             {
                                 IconClientConnect = PackIconKind.Wifi;
-                                ClientConnectIP = "[" + _ipv4Addr + ":" + socketconnect.GetLocalEndPointPort + "]";
+                                ClientConnectIP = "[" + _ipv4Addr + ":" + _socketconnect.GetLocalEndPointPort + "]";
                             }
                             else
                                 IconClientConnect = PackIconKind.EthernetCableOff;
@@ -172,7 +172,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     if (CurrentConnection == ConnectionType.WiFiDirect)
                     {
                         {
-                            socketconnect.CloseSockets();
+                            _socketconnect.CloseSockets();
                             _isAvailbale = false;
 
                             if (!_isAvailbale)
@@ -201,12 +201,12 @@ namespace bossdoyKaraoke_NOW.ViewModel
                         }
                         else
                         { 
-                            socketconnect.Start();
+                            _socketconnect.Start();
 
-                            if (socketconnect.GetLocalEndPointPort != "")
+                            if (_socketconnect.GetLocalEndPointPort != "")
                             {
                                 IconClientConnect = PackIconKind.Lan;
-                                ClientConnectIP = "[" + _ipv4Addr + ":" + socketconnect.GetLocalEndPointPort + "]"; 
+                                ClientConnectIP = "[" + _ipv4Addr + ":" + _socketconnect.GetLocalEndPointPort + "]"; 
                             }
                             else
                                 IconClientConnect = PackIconKind.EthernetCableOff;

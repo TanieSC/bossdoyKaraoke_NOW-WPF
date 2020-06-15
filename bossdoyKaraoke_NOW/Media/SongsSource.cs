@@ -378,7 +378,7 @@ namespace bossdoyKaraoke_NOW.Media
                 string folderName = Path.GetFileName(fbd.SelectedPath);
                 var items = _itemSource[_myComputerIndex].Items;
                 var songs = _songs.Count;
-                var filaname = CheckFilenameExist(Create.NewSongs, folderName);
+                var filaname = CheckFileNameExist(Create.NewSongs, folderName);
 
                 items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Music, Foreground = new SolidColorBrush(color), Title = filaname, ID = songs, IsProgressVisible = Visibility.Visible, CurrentTask = NewTask.LOAD_SONGS });
 
@@ -601,7 +601,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="createFile">Task to run</param>
         /// <param name="filename">The filename for checking</param>
         /// <returns></returns>
-        public string CheckFilenameExist(Create createFile, string filename)
+        public string CheckFileNameExist(Create createFile, string filename)
         {
             var n = 0;
             var path = string.Empty;

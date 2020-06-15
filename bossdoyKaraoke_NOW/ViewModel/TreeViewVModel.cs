@@ -325,7 +325,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
             {
                 var items = SongsSource.Instance.ItemSource[_favoritesIndex].Items;
                 var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
-                var filaname = SongsSource.Instance.CheckFilenameExist(Create.Favorites, sender.Title);
+                var filaname = SongsSource.Instance.CheckFileNameExist(Create.Favorites, sender.Title);
 
                 //Console.WriteLine("F: " + filaname + " " + sender.Title);
 

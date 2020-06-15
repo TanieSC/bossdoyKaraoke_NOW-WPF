@@ -39,7 +39,7 @@ namespace bossdoyKaraoke_NOW.Media
         void CreateFavorites(ITreeViewModelChild sender);
         void RemoveTreeViewItem(Create create, ITreeViewModelChild sender);
         void PreProcessFiles(string mediaFileName);
-        string CheckFilenameExist(Create createFile, string filename);
+        string CheckFileNameExist(Create createFile, string filename);
     }
 
 }

@@ -145,7 +145,7 @@ namespace bossdoyKaraoke_NOW.ViewModel
                     var items = SongsSource.Instance.ItemSource[favoritesIndex].Items;
                     var favorites = SongsSource.Instance.Favorites != null ? SongsSource.Instance.Favorites.Count : items.Count - 1;
 
-                    var filename = SongsSource.Instance.CheckFilenameExist(Create.Favorites, _favoritesTitle.Text);
+                    var filename = SongsSource.Instance.CheckFileNameExist(Create.Favorites, _favoritesTitle.Text);
 
                     items.Insert(0, new TreeViewModelChild() { PackIconKind = PackIconKind.Favorite, Foreground = new SolidColorBrush(color), Title = filename, ID = favorites, IsProgressVisible = Visibility.Hidden, CurrentTask = NewTask.LOAD_FAVORITES });
                     _favoritesTitle.Text = string.Empty;
