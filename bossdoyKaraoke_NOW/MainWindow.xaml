@@ -317,7 +317,7 @@
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                         materialDesign:ButtonProgressAssist.Value="100"
                         materialDesign:ButtonProgressAssist.IndicatorBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-                        Content="{materialDesign:PackIcon  Kind=SkipNext ,Size=35 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        Content="{materialDesign:PackIcon  Kind=SkipNext ,Size=35 }" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Center" HorizontalAlignment="Center" Click="play_next_Click">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                     <i:InvokeCommandAction Command="{Binding PlayNextCommand}" CommandParameter="{ Binding ElementName=play_next}" />
