@@ -715,11 +715,6 @@ namespace bossdoyKaraoke_NOW.Media
                     MediaControlsVModel.Instance.SongArtist = _songsSource.SongsQueue[0].Artist;
                     MediaControlsVModel.Instance.IconPlayPause = PackIconKind.Pause;
 
-                    if (CurrentPlayState == PlayState.Stopped || CurrentPlayState == PlayState.Paused)
-                    {
-                        CurrentPlayState = PlayState.Playing;
-                    }
-
                     if (Channel != ChannelSelected.Right)
                     {
                         Channel = ChannelSelected.None;
