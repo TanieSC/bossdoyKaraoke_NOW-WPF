@@ -61,10 +61,10 @@ namespace bossdoyKaraoke_NOW.FormControl
 
             if (_player.IsPlayingBass)
             {
-                if (_player.CDGmp3 != null)
+                if (_player.CDGfile != null)
                 {
-                    var cdgbmp = _player.CDGmp3.RGBImage as WriteableBitmap;
-                    _player.CDGmp3.renderAtPosition(_player.CdgRenderAtPosition);
+                    var cdgbmp = _player.CDGfile.RGBImage as WriteableBitmap;
+                    _player.CDGfile.renderAtPosition(_player.CdgRenderAtPosition);
                     _cdgbmp = GraphicUtil.ConvertToSharpDXBitmap(RenderContext.CdgContext, cdgbmp);
 
                     var width = this.Width / 1.5f;

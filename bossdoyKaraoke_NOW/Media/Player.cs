@@ -42,7 +42,7 @@ namespace bossdoyKaraoke_NOW.Media
         public bool IsPlayingVlc { get { return _isPlayingVlc; } }
         public IntPtr AppMainWindowHandle;
         public Vlc VlcPlayer;
-        public CDGFile CDGmp3;
+        public CDGFile CDGfile;
         public string GetNextSongInfo { get { return _getNestSongInfo; } }
 
         /// <summary>
@@ -214,9 +214,9 @@ namespace bossdoyKaraoke_NOW.Media
             var extn = Path.GetExtension(cdgFileName.ToLower());
 
             if (extn == ".cdg")
-                CDGmp3 = new CDGFile(cdgFileName);
+                CDGfile = new CDGFile(cdgFileName);
             else
-                CDGmp3 = null;
+                CDGfile = null;
 
             AddToBassMixer();
             PlayNextTrack();
@@ -232,7 +232,7 @@ namespace bossdoyKaraoke_NOW.Media
         /// <param name="videokeFileName"></param>
         public void LoadVideokeFile(string videokeFileName)
         {
-            CDGmp3 = null;
+            CDGfile = null;
             PlayNextTrack();
             _isPlayingVlc = true;
             _isPlayingBass = false;
@@ -368,7 +368,7 @@ namespace bossdoyKaraoke_NOW.Media
             if (_isPlayingBass)
             {
                 _currentTrack.Stop();
-                CDGmp3 = null;
+                CDGfile = null;
                 _track = null;
                 _currentTrack = null;
                 _previousTrack = null;
