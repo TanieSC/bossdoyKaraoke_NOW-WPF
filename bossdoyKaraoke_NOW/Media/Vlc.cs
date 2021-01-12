@@ -213,7 +213,9 @@ namespace bossdoyKaraoke_NOW.Media
         public void LoadDefaultVideoBG()
         {
 
-            if (_player.IsPlaying) _player.Stop();
+            //if (_player.IsPlaying)
+
+                _player.Stop();
 
             if (_videoDir != string.Empty && _videoPath != null)
             {
@@ -229,7 +231,10 @@ namespace bossdoyKaraoke_NOW.Media
                     _media_preview.Dispose();
                 }
 
-                if (_list_player.IsPlaying) _list_player.Stop();
+                //if (_list_player.IsPlaying)
+
+                _list_player.Stop();
+
                 _list_player.Play();
 
             }
@@ -238,8 +243,8 @@ namespace bossdoyKaraoke_NOW.Media
         public void PlayBackGroundVideo()
         {
 
-            if (_player.IsPlaying)
-                _player.Stop();
+            //if (_player.IsPlaying)
+            _player.Stop();
 
             _list_player.PlayNext();
         }
@@ -259,10 +264,10 @@ namespace bossdoyKaraoke_NOW.Media
             _syncProc = syncProc;
             _filePath = filePath;
 
-            if (_list_player.IsPlaying)
+            //if (_list_player.IsPlaying)
                 _list_player.Stop();
 
-            if (_player.IsPlaying)
+            //if (_player.IsPlaying)
                 _player.Stop();
 
             _media = _factory.CreateMedia<IMediaFromFile>(filePath);

@@ -451,6 +451,7 @@ namespace bossdoyKaraoke_NOW.Media
                         if (_songsSource.SongQueueCount > 0)
                         {
                             _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
+                            //_songsSource.IsCdgFileType = _songsSource.GetExtPatern(_songsSource.SongsQueue[0].FilePath).EndsWith("mp3");
                             string nextSong = _songsSource.SongsQueue[0].Name + "[ " + _songsSource.SongsQueue[0].Artist + " ]";
                             _getNestSongInfo = nextSong;
                         }
@@ -490,6 +491,7 @@ namespace bossdoyKaraoke_NOW.Media
                         Bass.BASS_StreamFree(_previousTrack.Channel);
 
                     _songsSource.PreProcessFiles(_songsSource.SongsQueue[0].FilePath);
+                    //_songsSource.IsCdgFileType = _songsSource.GetExtPatern(_songsSource.SongsQueue[0].FilePath).EndsWith("mp3");
 
                     VlcVolumeSlideAttribute();
                 }

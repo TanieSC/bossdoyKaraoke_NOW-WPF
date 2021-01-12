@@ -40,6 +40,7 @@ namespace bossdoyKaraoke_NOW.Media
         void RemoveTreeViewItem(Create create, ITreeViewModelChild sender);
         void PreProcessFiles(string mediaFileName);
         string CheckFileNameExist(Create createFile, string filename);
+        string GetExtPatern(string fileName);
     }
 
 }

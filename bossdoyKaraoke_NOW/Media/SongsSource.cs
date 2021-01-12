@@ -428,7 +428,7 @@ namespace bossdoyKaraoke_NOW.Media
         }
 
         /// <summary>
-        /// Method inserting song to song queue to played next 
+        /// Method inserting song to song queue to be played next 
         /// </summary>
         /// <param name="sender">Contains the information of the selected song</param>
         /// <returns>Returns the total count and total duration of song is song queue</returns>
@@ -564,37 +564,40 @@ namespace bossdoyKaraoke_NOW.Media
             {
                 //cdgFileName = mediaFileName;
                 //_mp3FileName = mediaFileName;
-                mp3FileName = Regex.Replace(mediaFileName, "\\.cdg$", ".mp3", RegexOptions.IgnoreCase);
-                _mediaFileName = mp3FileName;
-                goto PairUpCdgMp3;
+                //mp3FileName = Regex.Replace(mediaFileName, "\\.cdg$", ".mp3", RegexOptions.IgnoreCase);
+                _mediaFileName = Regex.Replace(mediaFileName, "\\.cdg$", ".mp3", RegexOptions.IgnoreCase);
+                IsCdgFileType = true;
+                // _mediaFileName = mp3FileName;
+                //goto PairUpCdgMp3;
             }
             else if (Regex.IsMatch(mediaFileName, "\\.mp3$", RegexOptions.IgnoreCase))
             {
                 //cdgFileName = mediaFileName;
                 _mediaFileName = mediaFileName;
-                mp3FileName = mediaFileName;
-                goto PairUpCdgMp3;
+                IsCdgFileType = true;
+                // mp3FileName = mediaFileName;
+                //goto PairUpCdgMp3;
             }
             else
             {
                 _mediaFileName = mediaFileName;
                 //mp3FileName = _mediaFileName;
-                if (!_isAddingToQueue)
-                    IsCdgFileType = false;
+                //if (!_isAddingToQueue)
+                IsCdgFileType = false;
 
-                return;
+               // return;
             }
 
-            PairUpCdgMp3:           
-            if (File.Exists(mp3FileName))
-            {
-                _mediaFileName = mp3FileName;
+            //PairUpCdgMp3:           
+            //if (File.Exists(_mediaFileName))// mp3FileName))
+            //{
+            //    //_mediaFileName = mp3FileName;
 
-                if (!_isAddingToQueue)
-                    IsCdgFileType = true;
-                else
-                    IsCdgFileType = false;
-            }
+            //    if (!_isAddingToQueue)
+            //        IsCdgFileType = true;
+            //    else
+            //        IsCdgFileType = false;
+            //}
         }
 
         /// <summary>
@@ -643,6 +646,22 @@ namespace bossdoyKaraoke_NOW.Media
 
             return newName;
         }
+
+
+        /// <summary>
+        /// Get the cdg file and replace cdg to mp3
+        /// </summary>
+        /// <param name="fileName">the filename to replace</param>
+        /// <returns></returns>
+        public string GetExtPatern(string fileName)
+        {
+            string extPattern = ".cdg$";
+            Regex regX = new Regex(extPattern, RegexOptions.IgnoreCase);
+            string mediaFileName = regX.Replace(fileName, ".mp3");
+
+            return mediaFileName;
+        }
+
 
         /// <summary>
         /// Method to add or remove the song in song queue collection if not empty on application start up. "SongQueueList.que"
@@ -695,6 +714,7 @@ namespace bossdoyKaraoke_NOW.Media
                         IsCdgFileType = false;
 
                     _trackInfo.ID = count.ToString();
+                    _trackInfo.Type = sender.Type;
                     _trackInfo.Name = sender.Name;
                     _trackInfo.Artist = sender.Artist;
                     _trackInfo.Duration = Utils.FixTimespan(vlcTimeDuration, "HHMMSS");
@@ -880,20 +900,7 @@ namespace bossdoyKaraoke_NOW.Media
             return AllSongs;
         }
 
-        /// <summary>
-        /// Get the cdg file and replace cdg to mp3
-        /// </summary>
-        /// <param name="fileName">the filename to replace</param>
-        /// <returns></returns>
-        private string GetExtPatern(string fileName)
-        {
-            string extPattern = ".cdg$";
-            Regex regX = new Regex(extPattern, RegexOptions.IgnoreCase);
-            string mediaFileName = regX.Replace(fileName, ".mp3");
-
-            return mediaFileName;
-        }
-
+  
         /// <summary>
         /// The file extensions supported by the player
         /// </summary>
